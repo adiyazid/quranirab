@@ -145,6 +145,7 @@ class _TestState extends State<Test> {
                           : null,
                       child: const Text('Previous Page'),
                     ),
+
                     const SizedBox(width: 25),
                     ElevatedButton(
                         onPressed: () {
