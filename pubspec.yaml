@@ -123,6 +123,9 @@ flutter:
     - family: MeQuran2
       fonts:
         - asset: fonts/me_quran2.ttf
+    - family: Surah
+      fonts:
+        - asset: fonts/SourceSansPro-Regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
