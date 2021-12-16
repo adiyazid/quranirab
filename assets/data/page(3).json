@@ -1,0 +1,78 @@
+{
+  "plist": {
+    "dictparent": {
+      "type": "suras",
+      "arrayparent": {
+        "dictchild": {
+          "keychild": [
+            "name",
+            "aname",
+            "tname",
+            "ename",
+            "ayaNumbers",
+            "translations",
+            "texts",
+            "juz"
+          ],
+          "ayah_name": [
+            "البقرة",
+            "ﮎ",
+            "Al-Baqara",
+            "The Cow",
+            "ﰸﰹ"
+          ],
+          "ayah_array": [
+            {
+              "integer": [
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16
+              ]
+            },
+            {
+              "ayah": [
+                "ﭑﭒﭓﭔﭕﭖﭗﭘﭙ&lt;br /&gt;ﭚﭛﭜ",
+                "ﭝﭞﭟﭠﭡﭢﭣﭤ&lt;br /&gt;ﭥﭦﭧﭨﭩﭪﭫ",
+                "ﭬﭭ&lt;br /&gt;ﭮﭯﭰﭱﭲﭳﭴﭵﭶﭷ&lt;br /&gt;",
+                "ﭸﭹﭺﭻﭼﭽﭾﭿ&lt;br /&gt;ﮀﮁﮂ",
+                "ﮃﮄﮅﮆﮇﮈﮉ&lt;br /&gt;ﮊﮋﮌﮍﮎﮏﮐ",
+                "ﮑﮒﮓ&lt;br /&gt;ﮔﮕﮖﮗﮘﮙﮚﮛﮜ&lt;br /&gt;",
+                "ﮝﮞﮟﮠﮡﮢﮣﮤ",
+                "ﮥﮦ&lt;br /&gt;ﮧﮨﮩﮪﮫﮬﮭﮮﮯﮰﮱ&lt;br /&gt;ﯓﯔﯕﯖﯗﯘﯙﯚ",
+                "ﯛﯜ&lt;br /&gt;ﯝﯞﯟﯠﯡﯢﯣﯤﯥﯦ&lt;br /&gt;ﯧﯨﯩﯪﯫ",
+                "ﯬﯭﯮﯯ&lt;br /&gt;ﯰﯱﯲﯳ",
+                "ﯴﯵﯶﯷ&lt;br /&gt;ﯸﯹﯺﯻﯼﯽﯾﯿ"
+              ]
+            }
+          ],
+          "translations": {
+            "language": "english",
+            "translation_list": {
+              "translation": [
+                "Indeed, those who disbelieve - it is all the same for them whether you warn them or do not warn them - they will not believe.",
+                "Allah has set a seal upon their hearts and upon their hearing, and over their vision is a veil. And for them is a great punishment.",
+                "And of the people are some who say, &quot;We believe in Allah and the Last Day,&quot; but they are not believers.",
+                "They [think to] deceive Allah and those who believe, but they deceive not except themselves and perceive [it] not.",
+                "In their hearts is disease, so Allah has increased their disease; and for them is a painful punishment because they [habitually] used to lie.",
+                "And when it is said to them, &quot;Do not cause corruption on the earth,&quot; they say, &quot;We are but reformers.&quot;",
+                "Unquestionably, it is they who are the corrupters, but they perceive [it] not.",
+                "And when it is said to them, &quot;Believe as the people have believed,&quot; they say, &quot;Should we believe as the foolish have believed?&quot; Unquestionably, it is they who are the foolish, but they know [it] not.",
+                "And when they meet those who believe, they say, &quot;We believe&quot;; but when they are alone with their evil ones, they say, &quot;Indeed, we are with you; we were only mockers.&quot;",
+                "[But] Allah mocks them and prolongs them in their transgression [while] they wander blindly.",
+                "Those are the ones who have purchased error [in exchange] for guidance, so their transaction has brought no profit, nor were they guided."
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
