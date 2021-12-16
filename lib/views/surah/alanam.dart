@@ -6,12 +6,10 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/models/surah.model.dart';
 import 'package:quranirab/themes/theme_model.dart';
-import 'package:quranirab/views/surah/alfatihah.dart';
 import 'package:quranirab/views/surah/almaidah.dart';
 
 import '../nav.draw.dart';
-import 'aliimran.dart';
-import 'annisa.dart';
+import 'alaraf.dart';
 
 class AlAnAm extends StatefulWidget {
   AlAnAm({Key? key}) : super(key: key);
@@ -23,9 +21,10 @@ class AlAnAm extends StatefulWidget {
 class _AlAnAmState extends State<AlAnAm> {
   List<dynamic> surahList = [];
   int length = 0;
+  ///current surah no
   int i = 6;
+  ///current surah first page
   int page = 128;
-
   Future<String> loadFromAssets() async {
     return await rootBundle.loadString('assets/data/quran_text_all.json');
   }
@@ -78,6 +77,7 @@ class _AlAnAmState extends State<AlAnAm> {
           return Scaffold(
             drawer: navDrawer(),
             appBar: AppBar(
+              ///surah name
               title: const Text('Al-An\'am'),
               centerTitle: true,
               backgroundColor: Colors.orange[700],
@@ -110,7 +110,8 @@ class _AlAnAmState extends State<AlAnAm> {
                 ),
                 Center(
                   child: Container(
-                    width: 900,
+                    ///adjust if surah per page was too long
+                    width: 1000,
                     padding: const EdgeInsets.all(8.0),
                     child: Center(
                       child: Directionality(
@@ -140,6 +141,7 @@ class _AlAnAmState extends State<AlAnAm> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ElevatedButton(
+                          ///more than current page
                             onPressed: (page > 128)
                                 ? () {
                               setState(() {
@@ -148,16 +150,19 @@ class _AlAnAmState extends State<AlAnAm> {
                               loadData();
                             }
                                 : () {
+                              ///navigate to previous surah screen
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => AlMaidah()));
                             },
+                            ///current surah start page
                             child: (page == 128)
                                 ? const Text('Previous Surah')
                                 : const Text('Previous Page')),
                         const SizedBox(width: 25),
                         ElevatedButton(
+                          ///less than surah last page - 1
                             onPressed: (page < 150)
                                 ? () {
                               setState(() {
@@ -166,15 +171,18 @@ class _AlAnAmState extends State<AlAnAm> {
                               loadData();
                             }
                                 : () {
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) => AlAnAm()));
+                              ///navigate to next surah
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AlAraf()));
                             },
+                            ///equal to last surah page - 1
                             child: (page == 150)
                                 ? const Text('Next Surah')
                                 : const Text('Next Page')),
                         const SizedBox(width: 25),
+                        ///not equal to last surah page - 1
                         if (page != 150)
                           ElevatedButton(
                               onPressed: () {

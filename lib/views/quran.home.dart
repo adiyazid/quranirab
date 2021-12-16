@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/themes/theme_model.dart';
 import 'package:quranirab/views/surah/alanam.dart';
+import 'package:quranirab/views/surah/alanfal.dart';
+import 'package:quranirab/views/surah/alaraf.dart';
 import 'package:quranirab/views/surah/albaqarah.dart';
 import 'package:quranirab/views/surah/alfatihah.dart';
 import 'package:quranirab/views/surah/aliimran.dart';
@@ -116,6 +118,27 @@ class _QuranHomeState extends State<QuranHome> {
                         MaterialPageRoute(builder: (context) => AlAnAm()));
                   },
                   child: const Text('Al-An\'am')),
+              const SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => AlAraf()));
+                  },
+                  child: const Text('Al-A\'raf')),
+              const SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => AlAnFal()));
+                  },
+                  child: const Text('Al-Anfal')),
+              const SizedBox(
+                height: 20,
+              ),
               Container(),
             ],
           ),
