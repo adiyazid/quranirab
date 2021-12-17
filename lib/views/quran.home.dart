@@ -169,10 +169,10 @@ class _QuranHomeState extends State<QuranHome> {
                   child: Container(
                     alignment: Alignment.center,
                     child: Text(
-                      'Surah ${surah[index]['name']}',
+                      'Surah ${surah[index]['name']}',textAlign: TextAlign.center,style: const TextStyle(fontSize: 20),
                     ),
                     decoration: BoxDecoration(
-                        color: Colors.amber,
+                        color: (themeNotifier.isDark)?Colors.cyan:Colors.amber,
                         borderRadius: BorderRadius.circular(15)),
                   ),
                 ),

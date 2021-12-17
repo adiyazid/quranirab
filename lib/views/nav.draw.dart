@@ -45,8 +45,10 @@ class navDrawer extends StatelessWidget {
                   style: TextStyle(color: Colors.white),
                 ),
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const QuranHome()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const QuranHome()));
                 }),
             ListTile(
                 leading: const Icon(
@@ -84,20 +86,6 @@ class navDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const Words()));
-              },
-            ),
-            ListTile(
-              leading: const Icon(
-                Icons.device_hub,
-                color: Colors.white,
-              ),
-              title: const Text(
-                'QuranText',
-                style: TextStyle(color: Colors.white),
-              ),
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Alfatihah()));
               },
             ),
           ],
