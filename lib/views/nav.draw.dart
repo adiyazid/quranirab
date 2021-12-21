@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:quranirab/views/page1.dart';
-import 'package:quranirab/views/homePage.dart';
-import 'package:quranirab/views/login.dart';
+import 'package:provider/provider.dart';
+import 'package:quranirab/provider/user.provider.dart';
+import 'package:quranirab/views/home.page.dart';
 import 'package:quranirab/views/quran.home.dart';
 import 'package:quranirab/views/quran.words.dart';
-import 'package:quranirab/views/surah/alfatihah.dart';
 
 class navDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final appUser = Provider.of<AppUser>(context);
     return Theme(
       data: Theme.of(context).copyWith(
         canvasColor:
@@ -50,19 +50,19 @@ class navDrawer extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => const QuranHome()));
                 }),
-            ListTile(
-                leading: const Icon(
-                  Icons.group,
-                  color: Colors.white,
-                ),
-                title: const Text(
-                  'Sign in',
-                  style: TextStyle(color: Colors.white),
-                ),
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => LoginPage()));
-                }),
+            // ListTile(
+            //     leading: const Icon(
+            //       Icons.group,
+            //       color: Colors.white,
+            //     ),
+            //     title: const Text(
+            //       'Sign in',
+            //       style: TextStyle(color: Colors.white),
+            //     ),
+            //     onTap: () {
+            //       Navigator.push(context,
+            //           MaterialPageRoute(builder: (context) => LoginPage()));
+            //     }),
             ListTile(
               leading: const Icon(
                 Icons.device_hub,
@@ -86,6 +86,19 @@ class navDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const Words()));
+              },
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.exit_to_app,
+                color: Colors.white,
+              ),
+              title: const Text(
+                'Logout',
+                style: TextStyle(color: Colors.white),
+              ),
+              onTap: () async {
+                await appUser.signOut();
               },
             ),
           ],

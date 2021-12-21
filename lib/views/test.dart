@@ -3,10 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:quran/quran.dart';
 import 'package:quranirab/models/surah.model.dart';
 import 'package:quranirab/themes/theme_model.dart';
-import 'package:quranirab/views/login.dart';
 import 'package:quranirab/views/quran.home.dart';
 
 import 'nav.draw.dart';
@@ -146,26 +144,26 @@ class _TestState extends State<Test> {
                     padding: const EdgeInsets.all(25.0),
                     child: Directionality(
                         textDirection: TextDirection.rtl,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: surahList
-                              .map(
-                                (e) => Expanded(
-                                  child: Text(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: surahList
+                                .map(
+                                  (e) => Text(
                                     e.text,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontFamily: 'MeQuran2',
-                                      fontSize: 25,
+                                      fontSize: 30,
                                       color: (themeNotifier.isDark)
                                           ? Colors.white
                                           : Colors.black,
                                     ),
                                   ),
-                                ),
-                              )
-                              .toList(),
+                                )
+                                .toList(),
+                          ),
                         )),
                   ),
                 ],
