@@ -155,36 +155,36 @@ class _QuranHomeState extends State<QuranHome> {
                 })
           ],
         ),
-        body: GridView.builder(
-            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 200,
-                childAspectRatio: 3 / 2,
-                crossAxisSpacing: 20,
-                mainAxisSpacing: 20),
-            itemCount: surah.length,
-            itemBuilder: (BuildContext ctx, index) {
-              return InkWell(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Surah ${surah[index]['name']}',textAlign: TextAlign.center,style: const TextStyle(fontSize: 20),
-                    ),
-                    decoration: BoxDecoration(
-                        color: (themeNotifier.isDark)?Colors.cyan:Colors.amber,
-                        borderRadius: BorderRadius.circular(15)),
-                  ),
-                ),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Test(surah[index]["pageGreen"],
-                              surah[index]["name"],index+1,surah[index]["end"])));
-                },
-              );
-            }),
+        // body: GridView.builder(
+        //     gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+        //         maxCrossAxisExtent: 200,
+        //         childAspectRatio: 3 / 2,
+        //         crossAxisSpacing: 20,
+        //         mainAxisSpacing: 20),
+        //     itemCount: surah.length,
+        //     itemBuilder: (BuildContext ctx, index) {
+        //       return InkWell(
+        //         child: Padding(
+        //           padding: const EdgeInsets.all(8.0),
+        //           child: Container(
+        //             alignment: Alignment.center,
+        //             child: Text(
+        //               'Surah ${surah[index]['name']}',textAlign: TextAlign.center,style: const TextStyle(fontSize: 20),
+        //             ),
+        //             decoration: BoxDecoration(
+        //                 color: (themeNotifier.isDark)?Colors.cyan:Colors.amber,
+        //                 borderRadius: BorderRadius.circular(15)),
+        //           ),
+        //         ),
+        //         onTap: () {
+        //           Navigator.push(
+        //               context,
+        //               MaterialPageRoute(
+        //                   builder: (context) => Test(surah[index]["pageGreen"],
+        //                       surah[index]["name"],index+1,surah[index]["end"])));
+        //         },
+        //       );
+        //     }),
       );
     });
   }
