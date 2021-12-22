@@ -68,6 +68,8 @@ class _WordsState extends State<Words> {
       return Scaffold(
         drawer: navDrawer(),
         appBar: AppBar(
+          centerTitle: true,
+          title: const Text('Words-Json'),
           backgroundColor: Colors.orange[700],
           elevation: 0,
           actions: [
@@ -86,20 +88,27 @@ class _WordsState extends State<Words> {
                 })
           ],
         ),
-        body: Container(
-          padding: const EdgeInsets.all(8.0),
-          child: RichText(
-            text: TextSpan(
-              children: ayatList
-                  .map((data) => TextSpan(
-                text: data.text,
-                style: TextStyle(
-                  fontFamily: 'MeQuran2',
-                  fontSize: 30,
-                  color: checkColor(data.text),
+        body: Center(
+          child: Container(
+            width: 900,
+            padding: const EdgeInsets.all(8.0),
+            child: Directionality(
+              textDirection: TextDirection.rtl,
+              child: RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  children: ayatList
+                      .map((data) => TextSpan(
+                            text: data.text,
+                            style: TextStyle(
+                              fontFamily: 'MeQuran2',
+                              fontSize: 40,
+                              color: checkColor(data.text),
+                            ),
+                          ))
+                      .toList(),
                 ),
-              ))
-                  .toList(),
+              ),
             ),
           ),
         ),
