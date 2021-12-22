@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quranirab/views/nav.draw.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/themes/theme_model.dart';
+
+import 'mushaf.page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -34,12 +37,43 @@ class _HomePageState extends State<HomePage> {
                   })
             ],
           ),
-          body: Container(
-            margin: EdgeInsets.all(170),
-            decoration: BoxDecoration(
-              color: Colors.orange[300],
-              shape: BoxShape.circle,
-            ),
+          body: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(28.0),
+                child: Container(
+                  width: 500,
+                  margin: const EdgeInsets.all(30.0),
+                  padding: const EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(color: Colors.orange),
+                  ),
+                  //             <--- BoxDecoration here
+                  child: GestureDetector(
+                    child: ListTile(
+                      leading: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.orange[700],
+                              borderRadius: BorderRadius.circular(5)),
+                          width: 25,
+                          height: 25,
+                          child: const Text(
+                            '1',
+                            textAlign: TextAlign.center,
+                          )),
+                      title: const Text('Al-fatihah'),
+                      subtitle: const Text('The Opener'),
+                      trailing: const Text('الفاتحة'),
+                    ),
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MushafPage())),
+                  ),
+                ),
+              )
+            ],
           ));
     });
   }
