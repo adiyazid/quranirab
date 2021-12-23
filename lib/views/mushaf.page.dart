@@ -71,9 +71,9 @@ class _MushafPageState extends State<MushafPage> {
                   color: (themeNotifier.isDark)
                       ? const Color(0xff808ba1)
                       : const Color(0xfffff3ca),
-                  width: 220,
+                  width: 206,
                   child: Padding(
-                    padding: const EdgeInsets.all(18.0),
+                    padding: const EdgeInsets.only(left: 14.0, top: 153),
                     child: ListView(
                       children: [
                         Padding(

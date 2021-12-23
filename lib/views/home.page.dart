@@ -4,6 +4,7 @@ import 'package:quranirab/views/nav.draw.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/themes/theme_model.dart';
 
+import 'data.from.firestore.dart';
 import 'mushaf.page.dart';
 
 class HomePage extends StatefulWidget {
@@ -72,7 +73,15 @@ class _HomePageState extends State<HomePage> {
                             builder: (context) => const MushafPage())),
                   ),
                 ),
-              )
+              ),
+              ElevatedButton(
+                  onPressed: () async {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const DataFromFirestore()));
+                  },
+                  child: const Text('Data from firestore'))
             ],
           ));
     });
