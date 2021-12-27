@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,8 +23,8 @@ class _MushafPageState extends State<MushafPage> {
   SurahModel? surahModel1;
   List<String>? surah = [];
   List<String>? sur = [];
-  bool a = true;
-  bool b = false;
+  bool a = false;
+  bool b = true;
 
   readJsonData() async {
     String jsonData = await rootBundle.loadString("assets/data/page.json");
@@ -42,12 +43,36 @@ class _MushafPageState extends State<MushafPage> {
     });
   }
 
+  List _list = [];
+  final CollectionReference _collectionRef =
+      FirebaseFirestore.instance.collection('quran_translations');
+
+  Future<void> getData() async {
+    // Get docs from collection reference
+    QuerySnapshot querySnapshot = await _collectionRef
+        .where('translation_id', isEqualTo: "2")
+        .where('sura_id', isEqualTo: "1")
+        .get();
+
+    // Get data from docs and convert map to List
+    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+    setState(() {
+      _list = allData;
+    });
+    //convert dynamic map list into string list
+    var data = _list.map((e) => e["text"]).toList();
+    setState(() {
+      _list = data;
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     _controller = ScrollController();
     super.initState();
     readJsonData();
+    getData();
   }
 
   Color? _check() {
@@ -118,7 +143,7 @@ class _MushafPageState extends State<MushafPage> {
                   color: (themeNotifier.isDark)
                       ? const Color(0xff808ba1)
                       : const Color(0xfffff3ca),
-                  width: screenSize.width * 0.25,
+                  width: screenSize.width * 0.2,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 14.0, top: 153),
                     child: ListView(
@@ -217,7 +242,7 @@ class _MushafPageState extends State<MushafPage> {
                                 setState(() {
                                   a = true;
                                   b = false;
-                                  controller.jumpToPage(0);
+                                  controller.jumpToPage(1);
                                 });
                               },
                             ),
@@ -242,7 +267,7 @@ class _MushafPageState extends State<MushafPage> {
                                 setState(() {
                                   a = false;
                                   b = true;
-                                  controller.jumpToPage(1);
+                                  controller.jumpToPage(0);
                                 });
                               },
                             ),
@@ -258,7 +283,7 @@ class _MushafPageState extends State<MushafPage> {
                 child: Align(
                   alignment: Alignment.center,
                   child: SizedBox(
-                    width: screenSize.width * 0.6,
+                    width: screenSize.width * 0.7,
                     height: 850,
                     child: PageView(
                       controller: controller,
@@ -308,10 +333,11 @@ class _MushafPageState extends State<MushafPage> {
                                       ),
                                       subtitle: Row(
                                         children: [
-                                          const Expanded(
+                                          Expanded(
                                             child: Text(
-                                              'translation',
-                                              style: TextStyle(fontSize: 18),
+                                              _list[index],
+                                              style:
+                                                  const TextStyle(fontSize: 18),
                                             ),
                                           ),
                                           Expanded(
