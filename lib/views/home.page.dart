@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:quranirab/views/nav.draw.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/themes/theme_model.dart';
+import 'package:quranirab/views/split.dart';
 
 import 'data.from.firestore.dart';
 import 'mushaf.page.dart';
@@ -81,7 +82,16 @@ class _HomePageState extends State<HomePage> {
                         MaterialPageRoute(
                             builder: (context) => const DataFromFirestore()));
                   },
-                  child: const Text('Data from firestore'))
+                  child: const Text('Data from firestore')),
+              SizedBox(
+                height: 30,
+              ),
+              ElevatedButton(
+                  onPressed: () async {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => const Split()));
+                  },
+                  child: const Text('Test'))
             ],
           ));
     });
