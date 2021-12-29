@@ -36,10 +36,8 @@ class _MushafPageState extends State<MushafPage> {
     setState(() {
       surah = surahModel
           ?.plist?.dictparent?.arrayparent?.dictchild?.ayahArray?[1].ayah;
-      print(surah);
       sur = surahModel1
           ?.plist?.dictparent?.arrayparent?.dictchild?.ayahArray?[1].ayah;
-      print(sur);
     });
   }
 
@@ -120,6 +118,7 @@ class _MushafPageState extends State<MushafPage> {
             backgroundColor: Colors.orange[700],
             elevation: 0,
             actions: [
+
               IconButton(
                   icon: Icon(
                       themeNotifier.isDark
