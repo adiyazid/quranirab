@@ -9,6 +9,8 @@ import 'package:quranirab/widget/menu.dart';
 import 'package:quranirab/widget/setting.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -35,8 +37,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   void initState() {
     // TODO: implement initState
     getData();
+
     super.initState();
   }
+
 
   final TextEditingController _search = TextEditingController();
   String surah = 'Surah Name';

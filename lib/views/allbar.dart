@@ -11,6 +11,8 @@ class AllBar extends StatefulWidget {
 }
 
 class _AllBarState extends State<AllBar> {
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +42,8 @@ class _AllBarState extends State<AllBar> {
                   size: 26.0,
                 )),
           ),
-          Padding(padding: const EdgeInsets.only(right: 20.0), child: Language()),
+          Padding(
+              padding: const EdgeInsets.only(right: 20.0), child: Language()),
           Builder(
             builder: (context) => IconButton(
               icon: const Icon(

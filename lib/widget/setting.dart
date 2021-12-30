@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Setting extends StatefulWidget {
   const Setting({Key? key}) : super(key: key);
@@ -21,7 +20,6 @@ class _SettingState extends State<Setting> with SingleTickerProviderStateMixin {
   List<bool> isSelected = [true, false, true];
 
   late TabController _controller;
-  int _selectedIndex = 1;
 
   List<Widget> list = [
     const Tab(
@@ -58,24 +56,13 @@ class _SettingState extends State<Setting> with SingleTickerProviderStateMixin {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getIndex();
-    _controller =
-        TabController(length: list.length, vsync: this, initialIndex: index);
+    _controller = TabController(length: list.length, vsync: this);
     // Create TabController for getting the index of current tab
     _controller.addListener(() {
-      setState(() {
-        _selectedIndex = _controller.index;
-      });
+      setState(() {});
       if (_controller.indexIsChanging) {
         print(_controller.index);
       }
-    });
-  }
-
-  Future<void> getIndex() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      index = prefs.getInt('index') ?? 0;
     });
   }
 
@@ -134,16 +121,8 @@ class _SettingState extends State<Setting> with SingleTickerProviderStateMixin {
               onTap: (index) async {
                 if (_controller.index == 1) {
                   themeProvider.toggleTheme(false);
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-
-                  await prefs.setInt('index', _selectedIndex);
                 } else if (_controller.index == 2) {
                   themeProvider.toggleTheme(true);
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-
-                  await prefs.setInt('index', _selectedIndex);
                 } else {
                   if (brightness.toString() == "Brightness.light" &&
                       themeProvider.isDarkMode == true) {
@@ -152,10 +131,6 @@ class _SettingState extends State<Setting> with SingleTickerProviderStateMixin {
                   if (brightness.toString() == "Brightness.dark") {
                     themeProvider.toggleTheme(true);
                   }
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-
-                  await prefs.setInt('index', _selectedIndex);
                 }
               },
               controller: _controller,

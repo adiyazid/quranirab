@@ -67,18 +67,6 @@ class _MushafPageState extends State<MushafPage> {
 
   bool isSearch = false;
 
-  final CollectionReference _collectionRefs =
-      FirebaseFirestore.instance.collection('suras');
-
-  Future<void> getDatas() async {
-    // Get docs from collection reference
-    QuerySnapshot querySnapshot =
-        await _collectionRefs.orderBy("created_at").get();
-
-    // Get data from docs and convert map to List
-    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-    setState(() {});
-  }
 
   @override
   void initState() {
@@ -87,7 +75,6 @@ class _MushafPageState extends State<MushafPage> {
     super.initState();
     readJsonData();
     getData();
-    getDatas();
   }
 
   Color? _check() {
