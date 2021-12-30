@@ -1,20 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:quranirab/views/nav.draw.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/themes/theme_model.dart';
-import 'package:quranirab/views/split.dart';
-
-import 'data.from.firestore.dart';
-import 'mushaf.page.dart';
+import 'package:quranirab/views/mushaf.page.dart';
+import 'package:quranirab/widget/language.dart';
+import 'package:quranirab/widget/menu.dart';
+import 'package:quranirab/widget/setting.dart';
 
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   bool isSearch = false;
   List _suraList = [];
   final CollectionReference _collectionRef =
@@ -46,129 +45,196 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    TabController _tabController = TabController(length: 2, vsync: this);
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
-        drawer: navDrawer(),
+        drawer: Menu(),
+        endDrawer: const Setting(),
         appBar: AppBar(
-          backgroundColor: Colors.orange[700],
-          elevation: 20,
-          actions: [
-            SizedBox(
-              width: 200,
-              child: TextField(
-                controller: _search,
-                onChanged: (v) async {
-                  setState(() {
-                    if (v.isEmpty) {
-                      isSearch = false;
-                    }
-                    isSearch = true;
-                  });
-                },
-                decoration: InputDecoration(
-                  label: const Text(
-                    "Search",
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  suffixIcon: (isSearch)
-                      ? IconButton(
-                          onPressed: () {
-                            setState(() {
-                              _search.clear();
-                              isSearch = false;
-                            });
-                          },
-                          icon: const Icon(
-                            Icons.cancel,
-                            color: Colors.black,
-                          ))
-                      : const Icon(
-                          Icons.search,
-                          color: Colors.black,
-                        ),
-                ),
+          iconTheme: Theme.of(context).iconTheme,
+          title: Row(
+            children: const [
+              CircleAvatar(
+                backgroundImage: AssetImage('assets/quranirab.png'),
+                radius: 18.0,
+              ),
+            ],
+          ),
+          elevation: 0,
+          centerTitle: false,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          actions: <Widget>[
+            IconButton(
+              tooltip: MaterialLocalizations.of(context).searchFieldLabel,
+              onPressed: () => setState(() {
+                isSearch = true;
+              }),
+              icon: Icon(
+                Icons.search,
+                color: Theme.of(context).iconTheme.color,
               ),
             ),
-            const SizedBox(
-              width: 20,
+            const SizedBox(width: 20),
+            Padding(
+                padding: const EdgeInsets.only(right: 20.0), child: Language()),
+            Builder(
+              builder: (context) => IconButton(
+                icon: const Icon(
+                  Icons.settings,
+                ),
+                onPressed: () => Scaffold.of(context).openEndDrawer(),
+                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              ),
             ),
-            IconButton(
-                icon: Icon(
-                    themeNotifier.isDark
-                        ? Icons.nightlight_round
-                        : Icons.wb_sunny,
-                    color: themeNotifier.isDark
-                        ? Colors.white
-                        : Colors.grey.shade900),
-                onPressed: () {
-                  themeNotifier.isDark
-                      ? themeNotifier.isDark = false
-                      : themeNotifier.isDark = true;
-                })
           ],
         ),
-        body: Column(
+        body: Stack(
           children: [
-            isSearch
-                ? buildSuggestions(context)
-                : Container(
-                    height: 300,
-                  ),
-            Align(
-              alignment: Alignment.center,
-              child: Padding(
-                padding: const EdgeInsets.all(28.0),
-                child: Container(
-                  width: 500,
-                  margin: const EdgeInsets.all(30.0),
-                  padding: const EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(color: Colors.orange),
-                  ),
-                  //             <--- BoxDecoration here
-                  child: GestureDetector(
-                    child: ListTile(
-                      leading: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.orange[700],
-                              borderRadius: BorderRadius.circular(5)),
-                          width: 25,
-                          height: 25,
-                          child: const Text(
-                            '1',
-                            textAlign: TextAlign.center,
-                          )),
-                      title: Text(surah),
-                      subtitle: Text(detail),
-                      trailing: Text(arab),
+            isSearch ? buildSuggestions(context) : Container(),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 89,
+                ),
+                Container(
+                    padding: const EdgeInsets.only(left: 69),
+                    child: RichText(
+                      text: TextSpan(children: [
+                        const TextSpan(
+                          text: "Bookmark",
+                          style: TextStyle(
+                            shadows: [
+                              Shadow(
+                                  color: Colors.black, offset: Offset(0, -10))
+                            ],
+                            fontSize: 20.0,
+                            color: Colors.transparent,
+                            decoration: TextDecoration.underline,
+                            decorationColor: Colors.grey,
+                            decorationThickness: 2,
+                          ),
+                        ),
+                        TextSpan(
+                            text: "\nYou do not have any bookmark yet.",
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Theme.of(context).iconTheme.color)),
+                      ]),
+                    )),
+                const SizedBox(
+                  height: 100,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 19.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: TabBar(
+                      labelColor: Colors.black,
+                      unselectedLabelColor: Colors.grey,
+                      isScrollable: true,
+                      labelPadding: const EdgeInsets.only(left: 50, right: 50),
+                      indicatorSize: TabBarIndicatorSize.label,
+                      indicatorColor: Colors.orange,
+                      controller: _tabController,
+                      tabs: const [
+                        Tab(
+                          text: "Sura",
+                        ),
+                        Tab(
+                          text: "Juz",
+                        ),
+                      ],
                     ),
-                    onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const MushafPage())),
                   ),
                 ),
-              ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Container(
+                  padding: const EdgeInsets.only(left: 50),
+                  height: 650,
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      CustomScrollView(
+                        shrinkWrap: true,
+                        primary: false,
+                        slivers: <Widget>[
+                          SliverPadding(
+                            padding: const EdgeInsets.all(20),
+                            sliver: SliverGrid.count(
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                              crossAxisCount: 3,
+                              childAspectRatio:
+                                  MediaQuery.of(context).size.width /
+                                      (MediaQuery.of(context).size.height / 4),
+                              children: <Widget>[
+                                GestureDetector(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      border: Border.all(color: Colors.orange),
+                                    ),
+                                    padding: const EdgeInsets.all(8),
+                                    child: const ListTile(
+                                      title: Text("Al Fatihah"),
+                                      subtitle: Text("The opener"),
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const MushafPage()));
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      CustomScrollView(
+                        shrinkWrap: true,
+                        primary: false,
+                        slivers: <Widget>[
+                          SliverPadding(
+                            padding: const EdgeInsets.all(20),
+                            sliver: SliverGrid.count(
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                              crossAxisCount: 3,
+                              childAspectRatio:
+                                  MediaQuery.of(context).size.width /
+                                      (MediaQuery.of(context).size.height / 4),
+                              children: <Widget>[
+                                GestureDetector(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      border: Border.all(color: Colors.orange),
+                                    ),
+                                    padding: const EdgeInsets.all(8),
+                                    child: const ListTile(
+                                      title: Text("The cow"),
+                                      subtitle: Text("The cow"),
+                                    ),
+                                  ),
+                                  onTap: null,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+              ],
             ),
-            ElevatedButton(
-                onPressed: () async {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const DataFromFirestore()));
-                },
-                child: const Text('Data from firestore')),
-            const SizedBox(
-              height: 30,
-            ),
-            ElevatedButton(
-                onPressed: () async {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const Split()));
-                },
-                child: const Text('Test'))
           ],
         ),
       );
@@ -180,7 +246,9 @@ class _HomePageState extends State<HomePage> {
     if (_search.text.isNotEmpty) {
       listToShow = _suraList
           .map((e) => e["tname"])
-          .where((e) => e.toLowerCase().contains(_search.text))
+          .where((e) =>
+              e.toLowerCase().contains(_search.text) ||
+              e.toUpperCase().contains(_search.text))
           .toList();
     } else {
       listToShow = _suraList.map((e) => e["tname"]).toList();
@@ -188,35 +256,95 @@ class _HomePageState extends State<HomePage> {
 
     return Visibility(
       visible: isSearch,
-      child: Align(
-        alignment: Alignment.topRight,
-        child: Container(
-          height: 300,
-          width: 300,
-          margin: const EdgeInsets.all(30.0),
-          padding: const EdgeInsets.all(10.0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            border: Border.all(color: Colors.orange),
-          ),
-          child: ListView.builder(
-            itemCount: listToShow.length,
-            itemBuilder: (_, i) {
-              var surahs = listToShow[i];
-              return GestureDetector(
-                child: ListTile(
-                  title: Text(surahs),
+      child: Positioned(
+        right: 100,
+        child: Align(
+          alignment: Alignment.topRight,
+          child: Container(
+            height: 300,
+            width: 200,
+            margin: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              border: Border.all(color: Colors.orange),
+            ),
+            child: Stack(children: [
+              Positioned(
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: SizedBox(
+                    child: TextField(
+                      controller: _search,
+                      onChanged: (v) async {
+                        setState(() {
+                          if (v.isEmpty) {
+                            isSearch = false;
+                          }
+                          isSearch = true;
+                        });
+                      },
+                      decoration: InputDecoration(
+                          enabledBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.orange),
+                          ),
+                          focusedBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.orange),
+                          ),
+                          border: const UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.orange),
+                          ),
+                          label: Text(
+                            "Search",
+                            style: TextStyle(
+                                color: Theme.of(context).iconTheme.color),
+                          ),
+                          suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _search.clear();
+                                  isSearch = false;
+                                });
+                              },
+                              icon: Icon(
+                                Icons.cancel,
+                                color: Theme.of(context).iconTheme.color,
+                              ))),
+                    ),
+                  ),
                 ),
-                onTap: () {
-                  getDetails(surahs);
-                  setState(() {
-                    isSearch = false;
-                    surah = surahs;
-                    _search.clear();
-                  });
-                },
-              );
-            },
+              ),
+              Positioned(
+                top: 55,
+                left: 5,
+                child: Align(
+                  alignment: Alignment.center,
+                  child: SizedBox(
+                    width: 200,
+                    height: 310,
+                    child: ListView.builder(
+                      itemCount: listToShow.length,
+                      itemBuilder: (_, i) {
+                        var surahs = listToShow[i];
+                        return GestureDetector(
+                          child: ListTile(
+                            title: Text(surahs),
+                          ),
+                          onTap: () {
+                            getDetails(surahs);
+                            setState(() {
+                              isSearch = false;
+                              surah = surahs;
+                              _search.clear();
+                            });
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ]),
           ),
         ),
       ),

@@ -120,6 +120,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
+  cool_dropdown:
+    dependency: "direct main"
+    description:
+      name: cool_dropdown
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.4.1"
   crypto:
     dependency: transitive
     description:

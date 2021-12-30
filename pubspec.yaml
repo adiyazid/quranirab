@@ -51,6 +51,8 @@ dependencies:
   cloud_firestore: ^2.5.0
   top_snackbar_flutter: 1.0.0
   flutter_search_bar: ^2.1.0
+  cool_dropdown: ^1.4.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
