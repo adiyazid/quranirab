@@ -136,73 +136,79 @@ class _SurahGridState extends State<SurahGrid> {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Consumer(builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
-        body: GridView.count(
-            controller: _scrollController,
-            childAspectRatio: 3,
-            crossAxisCount: 3,
-            children: List.generate(114, (index) {
-              return InkWell(
-                child: Card(
-                  color: (themeProvider.isDarkMode)
-                      ? const Color(0xFFD2D6DA)
-                      : const Color(0xFFFFFFFF),
-                  shape: RoundedRectangleBorder(
-                    side: const BorderSide(color: Colors.orange, width: 1),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  margin: const EdgeInsets.all(15),
-                  child: Center(
-                    child: ListTile(
-                      leading: Container(
-                          decoration: BoxDecoration(
-                              color: (themeProvider.isDarkMode)
-                                  ? const Color(0xff808BA1)
-                                  : const Color(0xffFFB55F),
-                              borderRadius: BorderRadius.circular(5)),
-                          height: 30,
-                          width: 30,
-                          child: Center(
-                              child: Text(
-                            '${index + 1}',
-                            style: const TextStyle(
-                                color: Colors.black, fontSize: 20),
-                          ))),
-                      title: Padding(
-                        padding: const EdgeInsets.only(right: 30.0),
-                        child: RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: "${surah[index]['name']}",
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
+        body: Padding(
+          padding: const EdgeInsets.only(right: 38.0),
+          child: GridView.count(
+              controller: _scrollController,
+              childAspectRatio:  MediaQuery.of(context).size.width /
+                  (MediaQuery.of(context).size.height / 3),
+              crossAxisCount: 3,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              children: List.generate(114, (index) {
+                return InkWell(
+                  child: Card(
+                    color: (themeProvider.isDarkMode)
+                        ? const Color(0xFFD2D6DA)
+                        : const Color(0xFFFFFFFF),
+                    shape: RoundedRectangleBorder(
+                      side: const BorderSide(color: Colors.orange, width: 1),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+
+                    child: Center(
+                      child: ListTile(
+                        leading: Container(
+                            decoration: BoxDecoration(
+                                color: (themeProvider.isDarkMode)
+                                    ? const Color(0xff808BA1)
+                                    : const Color(0xffFFB55F),
+                                borderRadius: BorderRadius.circular(5)),
+                            height: 30,
+                            width: 30,
+                            child: Center(
+                                child: Text(
+                              '${index + 1}',
+                              style: const TextStyle(
+                                  color: Colors.black, fontSize: 20),
+                            ))),
+                        title: Padding(
+                          padding: const EdgeInsets.only(right: 30.0),
+                          child: RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: "${surah[index]['name']}",
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
                                   ),
-                                ),
-                                TextSpan(
-                                  text: "\n${surah[index]['sname']}",
-                                  style: const TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 20,
-                                  ),
-                                )
-                              ]
+                                  TextSpan(
+                                    text: "\n${surah[index]['sname']}",
+                                    style: const TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 20,
+                                    ),
+                                  )
+                                ]
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const MushafPage()));
-                },
-              );
-            })),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MushafPage()));
+                  },
+                );
+              })),
+        ),
       );
     });
   }
