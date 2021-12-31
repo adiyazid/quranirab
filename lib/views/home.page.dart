@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
         drawer: Menu(),
-        endDrawer: const Setting(),
+        endDrawer: Setting(),
         appBar: AppBar(
           iconTheme: Theme.of(context).iconTheme,
           title: Row(

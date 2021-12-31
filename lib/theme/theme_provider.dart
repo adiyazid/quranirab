@@ -21,6 +21,11 @@ class ThemeProvider extends ChangeNotifier {
 
 class QuranThemes {
   static final darkTheme = ThemeData(
+    textTheme: const TextTheme(
+      headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+      headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+      bodyText2: TextStyle(fontSize: 20.0),
+    ),
     indicatorColor: Colors.orange,
     primarySwatch: Colors.orange,
     bottomAppBarColor: Colors.orange,

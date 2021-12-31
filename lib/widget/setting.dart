@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
+import 'package:quranirab/models/font.size.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 
 class Setting extends StatefulWidget {
@@ -140,9 +141,7 @@ class _SettingState extends State<Setting> with SingleTickerProviderStateMixin {
             const Padding(
               padding: EdgeInsets.fromLTRB(10, 16, 0, 15),
               child: Text('Font Size',
-                  style: TextStyle(
-                    color: Colors.black,
-                  )),
+                  style: TextStyle(color: Colors.black, fontSize: 20)),
             ),
             const SizedBox(height: 15),
             Center(
@@ -162,10 +161,14 @@ class _SettingState extends State<Setting> with SingleTickerProviderStateMixin {
                 onPressed: (int newIndex) {
                   if (newIndex == 0) {
                     setState(() {
+                      fontData.index = 0;
+                      fontData.size = 30;
                       no--;
                     });
                   } else if (newIndex == 2) {
                     setState(() {
+                      fontData.index = 2;
+                      fontData.size = 60;
                       no++;
                     });
                   }

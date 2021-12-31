@@ -18,7 +18,7 @@ class _AllBarState extends State<AllBar> {
     return Scaffold(
       backgroundColor: Colors.white,
       drawer: Menu(),
-      endDrawer: const Setting(),
+      endDrawer: Setting(),
       appBar: AppBar(
         iconTheme: Theme.of(context).iconTheme,
         title: Row(

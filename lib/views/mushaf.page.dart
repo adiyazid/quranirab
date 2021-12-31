@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:quranirab/models/font.size.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/surah_model.dart';
 import 'package:quranirab/widget/language.dart';
@@ -67,7 +68,6 @@ class _MushafPageState extends State<MushafPage> {
 
   bool isSearch = false;
 
-
   @override
   void initState() {
     // TODO: implement initState
@@ -109,6 +109,9 @@ class _MushafPageState extends State<MushafPage> {
     }
   }
 
+  var f = 50.0;
+  Setting s = Setting();
+
   @override
   Widget build(BuildContext context) {
     final PageController controller = PageController();
@@ -116,7 +119,7 @@ class _MushafPageState extends State<MushafPage> {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
         drawer: Menu(),
-        endDrawer: const Setting(),
+        endDrawer: Setting(),
         appBar: AppBar(
           iconTheme: Theme.of(context).iconTheme,
           title: Row(
@@ -171,9 +174,9 @@ class _MushafPageState extends State<MushafPage> {
                       Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: InkWell(
-                          child: const Text(
+                          child: Text(
                             'The Straight',
-                            style: TextStyle(fontSize: 20),
+                            style: Theme.of(context).textTheme.bodyText2,
                           ),
                           onTap: () {},
                         ),
@@ -181,9 +184,9 @@ class _MushafPageState extends State<MushafPage> {
                       Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: InkWell(
-                          child: const Text(
+                          child: Text(
                             'Nu\' al-kalimah',
-                            style: TextStyle(fontSize: 20),
+                            style: Theme.of(context).textTheme.bodyText2,
                           ),
                           onTap: () {},
                         ),
@@ -191,9 +194,9 @@ class _MushafPageState extends State<MushafPage> {
                       Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: InkWell(
-                          child: const Text(
+                          child: Text(
                             'Isim',
-                            style: TextStyle(fontSize: 20),
+                            style: Theme.of(context).textTheme.bodyText2,
                           ),
                           onTap: () {},
                         ),
@@ -201,9 +204,9 @@ class _MushafPageState extends State<MushafPage> {
                       Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: InkWell(
-                          child: const Text(
+                          child: Text(
                             'Sorof',
-                            style: TextStyle(fontSize: 20),
+                            style: Theme.of(context).textTheme.bodyText2,
                           ),
                           onTap: () {},
                         ),
@@ -211,9 +214,9 @@ class _MushafPageState extends State<MushafPage> {
                       Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: InkWell(
-                          child: const Text(
+                          child: Text(
                             'Nahu',
-                            style: TextStyle(fontSize: 20),
+                            style: Theme.of(context).textTheme.bodyText2,
                           ),
                           onTap: () {},
                         ),
@@ -322,7 +325,7 @@ class _MushafPageState extends State<MushafPage> {
                                           text: data,
                                           style: TextStyle(
                                             fontFamily: 'Meor',
-                                            fontSize: 50,
+                                            fontSize: fontData.size,
                                             color: (themeProvider.isDarkMode)
                                                 ? Colors.white
                                                 : Colors.black,
@@ -365,9 +368,9 @@ class _MushafPageState extends State<MushafPage> {
                                             textDirection: TextDirection.rtl,
                                             child: Text(
                                               sur![index],
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   fontFamily: 'Meor',
-                                                  fontSize: 40,
+                                                  fontSize: f,
                                                   color: Colors.black),
                                             ),
                                           ),
@@ -426,5 +429,15 @@ class _MushafPageState extends State<MushafPage> {
             ),
           ],
         ));
+  }
+
+  getFontSize() {
+    if (fontData.index == 0) {
+      fontData.size = 40;
+      return fontData.size;
+    } else if (fontData.index == 2) {
+      fontData.size = 60;
+      return fontData.size;
+    }
   }
 }
