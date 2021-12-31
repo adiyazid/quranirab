@@ -2,11 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/themes/theme_model.dart';
-import 'package:quranirab/views/mushaf.page.dart';
 import 'package:quranirab/widget/language.dart';
 import 'package:quranirab/widget/menu.dart';
 import 'package:quranirab/widget/setting.dart';
+
+import 'Juz.dart';
+import 'Surah.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -48,6 +51,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     TabController _tabController = TabController(length: 2, vsync: this);
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
@@ -95,51 +99,61 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         body: Stack(
           children: [
             isSearch ? buildSuggestions(context) : Container(),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 89,
-                ),
-                Container(
-                    padding: const EdgeInsets.only(left: 69),
-                    child: RichText(
-                      text: TextSpan(children: [
-                        const TextSpan(
-                          text: "Bookmark",
-                          style: TextStyle(
-                            shadows: [
-                              Shadow(
-                                  color: Colors.black, offset: Offset(0, -10))
-                            ],
-                            fontSize: 20.0,
-                            color: Colors.transparent,
-                            decoration: TextDecoration.underline,
-                            decorationColor: Colors.grey,
-                            decorationThickness: 2,
-                          ),
-                        ),
-                        TextSpan(
-                            text: "\nYou do not have any bookmark yet.",
+            SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 89,
+                  ),
+                  Container(
+                      padding: const EdgeInsets.only(left: 50),
+                      child: RichText(
+                        text: TextSpan(children: [
+                          TextSpan(
+                            text: "Bookmark",
                             style: TextStyle(
-                                fontSize: 20,
-                                color: Theme.of(context).iconTheme.color)),
-                      ]),
-                    )),
-                const SizedBox(
-                  height: 100,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 19.0),
-                  child: Align(
+                              shadows: [
+                                Shadow(
+                                    color: (themeProvider.isDarkMode)
+                                        ? const Color(0xFFFFFFFF)
+                                        : const Color(0xFF000000),
+                                    offset: const Offset(0, -10))
+                              ],
+                              color: Colors.transparent,
+                              fontSize: 20,
+                              decoration: TextDecoration.underline,
+                              // decorationColor: Colors.grey,
+                              decorationThickness: 2,
+                            ),
+                          ),
+                          TextSpan(
+                              text: "\nYou do not have any bookmark yet.",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: (themeProvider.isDarkMode)
+                                      ? const Color(0xFFFFFFFF)
+                                      : const Color(0xFF000000))),
+                        ]),
+                      )),
+                  const SizedBox(
+                    height: 100,
+                  ),
+                  Align(
                     alignment: Alignment.centerLeft,
                     child: TabBar(
-                      labelColor: Colors.black,
-                      unselectedLabelColor: Colors.grey,
+                      labelColor: (themeProvider.isDarkMode)
+                          ? const Color(0xFFFFFFFF)
+                          : const Color(0xFF000000),
+                      unselectedLabelColor: (themeProvider.isDarkMode)
+                          ? const Color(0xFFFFFFFF)
+                          : const Color(0xFF000000),
                       isScrollable: true,
                       labelPadding: const EdgeInsets.only(left: 50, right: 50),
                       indicatorSize: TabBarIndicatorSize.label,
-                      indicatorColor: Colors.orange,
+                      indicatorColor: (themeProvider.isDarkMode)
+                          ? const Color(0xFF263D4A)
+                          : const Color(0xFFE86F00),
                       controller: _tabController,
                       tabs: const [
                         Tab(
@@ -151,92 +165,22 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       ],
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 50),
-                  height: 650,
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: [
-                      CustomScrollView(
-                        shrinkWrap: true,
-                        primary: false,
-                        slivers: <Widget>[
-                          SliverPadding(
-                            padding: const EdgeInsets.all(20),
-                            sliver: SliverGrid.count(
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 10,
-                              crossAxisCount: 3,
-                              childAspectRatio:
-                                  MediaQuery.of(context).size.width /
-                                      (MediaQuery.of(context).size.height / 4),
-                              children: <Widget>[
-                                GestureDetector(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15),
-                                      border: Border.all(color: Colors.orange),
-                                    ),
-                                    padding: const EdgeInsets.all(8),
-                                    child: const ListTile(
-                                      title: Text("Al Fatihah"),
-                                      subtitle: Text("The opener"),
-                                    ),
-                                  ),
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const MushafPage()));
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      CustomScrollView(
-                        shrinkWrap: true,
-                        primary: false,
-                        slivers: <Widget>[
-                          SliverPadding(
-                            padding: const EdgeInsets.all(20),
-                            sliver: SliverGrid.count(
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 10,
-                              crossAxisCount: 3,
-                              childAspectRatio:
-                                  MediaQuery.of(context).size.width /
-                                      (MediaQuery.of(context).size.height / 4),
-                              children: <Widget>[
-                                GestureDetector(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15),
-                                      border: Border.all(color: Colors.orange),
-                                    ),
-                                    padding: const EdgeInsets.all(8),
-                                    child: const ListTile(
-                                      title: Text("The cow"),
-                                      subtitle: Text("The cow"),
-                                    ),
-                                  ),
-                                  onTap: null,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                  const SizedBox(
+                    height: 30,
                   ),
-                )
-              ],
+                  Container(
+                    padding: const EdgeInsets.only(left: 50),
+                    height: 650,
+                    child: TabBarView(
+                      controller: _tabController,
+                      children: const [
+                        SurahGrid(),
+                        JuzGrid(),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ],
         ),

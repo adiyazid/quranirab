@@ -147,21 +147,13 @@ class _SettingState extends State<Setting> with SingleTickerProviderStateMixin {
             Center(
               child: ToggleButtons(
                 children: [
-                  const Center(
-                      child: Text(
-                    '-5',
-                    style: TextStyle(fontSize: 30),
-                  )),
+                  const Icon(Icons.exposure_minus_1, size: 20),
                   Center(
                       child: Text(
-                    '${fontData.size}',
+                    '$no',
                     style: const TextStyle(fontSize: 30),
                   )),
-                  const Center(
-                      child: Text(
-                    '+5',
-                    style: TextStyle(fontSize: 30),
-                  )),
+                  const Icon(Icons.plus_one, size: 20),
                 ],
                 splashColor: Colors.grey.withAlpha(66),
                 borderRadius: BorderRadius.circular(10),
@@ -170,12 +162,15 @@ class _SettingState extends State<Setting> with SingleTickerProviderStateMixin {
                   if (newIndex == 0) {
                     setState(() {
                       fontData.index = 0;
-                      fontData.size = fontData.size - 5;
+                      fontData.size = fontData.size - 1;
+
+                      no--;
                     });
                   } else if (newIndex == 2) {
                     setState(() {
                       fontData.index = 2;
-                      fontData.size = fontData.size + 5;
+                      fontData.size = fontData.size + 1;
+                      no++;
                     });
                   }
                 },
