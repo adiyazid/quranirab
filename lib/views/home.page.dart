@@ -41,7 +41,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     super.initState();
   }
 
-
   final TextEditingController _search = TextEditingController();
   String surah = 'Surah Name';
   String detail = 'Surah Detail';
