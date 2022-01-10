@@ -135,7 +135,8 @@ class _JuzGridState extends State<JuzGrid> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    return Scaffold(
+    return
+      Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(right: 38.0),
         child: GridView.count(

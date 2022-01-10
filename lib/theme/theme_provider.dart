@@ -20,6 +20,7 @@ class ThemeProvider extends ChangeNotifier {
 }
 
 class QuranThemes {
+
   static final darkTheme = ThemeData(
     indicatorColor: Colors.orange,
     primarySwatch: Colors.orange,
@@ -33,21 +34,28 @@ class QuranThemes {
     iconTheme: const IconThemeData(color: Colors.white),
     textSelectionTheme:
         const TextSelectionThemeData(cursorColor: Colors.orange),
-    colorScheme: const ColorScheme.dark(),
+    colorScheme: const ColorScheme.dark(
+      background: Color(0xFF666666),
+      surface: Colors.white,
+    ),
   );
   static final lightTheme = ThemeData(
     canvasColor: Colors.orange,
     focusColor: Colors.orange,
     scaffoldBackgroundColor: Colors.white,
     primaryColor: Colors.white,
-    colorScheme: const ColorScheme.light(),
+    colorScheme: const ColorScheme.light(
+      background: Colors.white,
+      surface: Colors.black,
+    ),
     iconTheme: const IconThemeData(color: Colors.black),
     indicatorColor: Colors.orange,
     primarySwatch: Colors.orange,
     bottomAppBarColor: Colors.orange,
     dividerColor: Colors.orange,
     cardColor: Colors.orange,
-    textSelectionTheme:
-        const TextSelectionThemeData(cursorColor: Colors.orange),
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: Colors.orange,
+    ),
   );
 }

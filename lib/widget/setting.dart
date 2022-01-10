@@ -30,9 +30,11 @@ class _SettingState extends State<Setting> with SingleTickerProviderStateMixin {
         ),
         icon: Icon(Icons.brightness_auto)),
     const Tab(
-        child: Text(
-          'Light Mode',
-          style: TextStyle(fontSize: 12),
+        child: Center(
+          child: Text(
+            'Light Mode',textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 12),
+          ),
         ),
         icon: Icon(Icons.light_mode)),
     const Tab(

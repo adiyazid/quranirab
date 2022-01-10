@@ -21,13 +21,9 @@ class _AllBarState extends State<AllBar> {
       endDrawer: Setting(),
       appBar: AppBar(
         iconTheme: Theme.of(context).iconTheme,
-        title: Row(
-          children: const [
-            CircleAvatar(
-              backgroundImage: AssetImage('assets/logo.png'),
-              radius: 18.0,
-            ),
-          ],
+        title: const CircleAvatar(
+          backgroundImage: AssetImage('assets/logo.png'),
+          radius: 18.0,
         ),
         elevation: 0,
         centerTitle: false,

@@ -4,6 +4,8 @@ import 'package:quranirab/views/home.page.dart';
 class Menu extends StatelessWidget {
   final padding = const EdgeInsets.symmetric(horizontal: 10);
 
+  const Menu({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -13,11 +15,28 @@ class Menu extends StatelessWidget {
           padding: padding,
           children: <Widget>[
             const SizedBox(height: 10),
-            const Center(
-              child: CircleAvatar(
-                backgroundImage: AssetImage('assets/quranirab.png'),
-                radius: 30.0,
-              ),
+            Stack(
+              children: <Widget>[
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(30, 16,0, 15),
+                  child: CircleAvatar(
+                    backgroundImage: AssetImage('assets/quranirab.png'),
+                    radius: 20.0,
+                  ),
+
+                  // child: Text(
+                  //   'Settings',
+                  //   style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(255, 0, 0, 0),
+                  child: IconButton(
+                    onPressed: () { Navigator.of(context).pop(); }, icon: const Icon(Icons.close),color: Colors.black,
+                    iconSize: 20,
+                    splashRadius: 15,
+                  ),
+                ),
+              ],
             ),
             Divider(color: Colors.grey[300]),
             const SizedBox(height: 18),

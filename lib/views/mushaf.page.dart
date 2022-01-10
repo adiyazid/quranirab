@@ -1,13 +1,9 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/models/font.size.dart';
 import 'package:quranirab/theme/theme_provider.dart';
-import 'package:quranirab/views/surah_model.dart';
 import 'package:quranirab/widget/language.dart';
 import 'package:quranirab/widget/menu.dart';
 import 'package:quranirab/widget/setting.dart';
@@ -21,10 +17,6 @@ class MushafPage extends StatefulWidget {
 
 class _MushafPageState extends State<MushafPage> {
   ScrollController? _controller;
-  SurahModel? surahModel;
-  SurahModel? surahModel1;
-  List<String>? surah = [];
-  List<String>? sur = [];
 
   List _suraList = [];
   final CollectionReference _collectionRefs =
@@ -45,21 +37,6 @@ class _MushafPageState extends State<MushafPage> {
   bool a = false;
   bool b = true;
   bool isSearch = false;
-
-  readJsonData() async {
-    String jsonData = await rootBundle.loadString("assets/data/page.json");
-    String jsonData1 = await rootBundle.loadString("assets/data/page.json");
-    jsonData = jsonData.replaceAll("&lt;br /&gt;", "\\n");
-    jsonData1 = jsonData1.replaceAll("&lt;br /&gt;", "");
-    surahModel = SurahModel.fromJson(json.decode(jsonData));
-    surahModel1 = SurahModel.fromJson(json.decode(jsonData1));
-    setState(() {
-      surah = surahModel
-          ?.plist?.dictparent?.arrayparent?.dictchild?.ayahArray?[1].ayah;
-      sur = surahModel1
-          ?.plist?.dictparent?.arrayparent?.dictchild?.ayahArray?[1].ayah;
-    });
-  }
 
   List _list = [];
   final CollectionReference _collectionRef =
@@ -89,7 +66,6 @@ class _MushafPageState extends State<MushafPage> {
     // TODO: implement initState
     _controller = ScrollController();
     super.initState();
-    readJsonData();
     getData();
     getDatas();
   }
@@ -131,6 +107,9 @@ class _MushafPageState extends State<MushafPage> {
 
   @override
   Widget build(BuildContext context) {
+    var alfatihah =
+        ' بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ ﴾١﴿ bٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَـٰلَمِينَ ﴾٢﴿ bٱلرَّحْمَـٰنِ ٱلرَّحِيمِ ﴾٣﴿ مَـٰلِكِ يَوْمِ ٱلدِّينِ ﴾٤﴿b إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ ﴾٥﴿ ٱهْدِنَاbٱلصِّرَ ٰطَ ٱلْمُسْتَقِيمَ ﴾٦﴿ صِرَ ٰطَ ٱلَّذِينَ أَنْعَمْتَbعَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْbوَلَا ٱلضَّآلِّينَ ﴾٧﴿b';
+
     final PageController controller = PageController();
     var screenSize = MediaQuery.of(context).size;
     final themeProvider = Provider.of<ThemeProvider>(context);
@@ -140,7 +119,7 @@ class _MushafPageState extends State<MushafPage> {
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             return Scaffold(
-                drawer: Menu(),
+                drawer: const Menu(),
                 endDrawer: const Setting(),
                 appBar: AppBar(
                   iconTheme: Theme.of(context).iconTheme,
@@ -202,8 +181,7 @@ class _MushafPageState extends State<MushafPage> {
                                 child: InkWell(
                                   child: const Text(
                                     'The Straight',
-                                    style:
-                                        TextStyle(fontSize: 20),
+                                    style: TextStyle(fontSize: 20),
                                   ),
                                   onTap: () {},
                                 ),
@@ -213,8 +191,7 @@ class _MushafPageState extends State<MushafPage> {
                                 child: InkWell(
                                   child: const Text(
                                     'Nu\' al-kalimah',
-                                    style:
-                                    TextStyle(fontSize: 20),
+                                    style: TextStyle(fontSize: 20),
                                   ),
                                   onTap: () {},
                                 ),
@@ -224,8 +201,7 @@ class _MushafPageState extends State<MushafPage> {
                                 child: InkWell(
                                   child: const Text(
                                     'Isim',
-                                    style:
-                                    TextStyle(fontSize: 20),
+                                    style: TextStyle(fontSize: 20),
                                   ),
                                   onTap: () {},
                                 ),
@@ -235,8 +211,7 @@ class _MushafPageState extends State<MushafPage> {
                                 child: InkWell(
                                   child: const Text(
                                     'Sorof',
-                                    style:
-                                    TextStyle(fontSize: 20),
+                                    style: TextStyle(fontSize: 20),
                                   ),
                                   onTap: () {},
                                 ),
@@ -246,8 +221,7 @@ class _MushafPageState extends State<MushafPage> {
                                 child: InkWell(
                                   child: const Text(
                                     'Nahu',
-                                    style:
-                                    TextStyle(fontSize: 20),
+                                    style: TextStyle(fontSize: 20),
                                   ),
                                   onTap: () {},
                                 ),
@@ -336,48 +310,33 @@ class _MushafPageState extends State<MushafPage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 250.0),
+                      padding: const EdgeInsets.only(top: 128, left: 250.0),
                       child: Align(
-                        alignment: Alignment.center,
                         child: SizedBox(
+                          height: screenSize.height,
                           width: screenSize.width * 0.5,
-                          height: 850,
                           child: PageView(
                             controller: controller,
                             children: [
                               Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                  const Spacer(),
                                   Directionality(
-                                    textDirection: TextDirection.rtl,
-                                    child: RichText(
-                                      textAlign: TextAlign.center,
-                                      text: TextSpan(
-                                        children: surah!
-                                            .map((data) => TextSpan(
-                                                  text: data,
-                                                  style: TextStyle(
-                                                    fontFamily: 'Meor',
-                                                    fontSize: snapshot.data,
-                                                    color: (themeProvider
-                                                            .isDarkMode)
-                                                        ? Colors.white
-                                                        : Colors.black,
-                                                  ),
-                                                ))
-                                            .toList(),
-                                      ),
-                                    ),
-                                  ),
-                                  const Spacer(),
+                                      textDirection: TextDirection.rtl,
+                                      child: Text(
+                                        alfatihah.replaceAll('b', '\n'),
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                            fontFamily: 'MeQuran2',
+                                            fontSize: 40),
+                                      )),
                                 ],
                               ),
                               Column(
                                 children: [
                                   Expanded(
                                     child: ListView.builder(
-                                      itemCount: sur!.length,
+                                      itemCount: _list.length,
                                       controller: _controller,
                                       itemBuilder:
                                           (BuildContext context, int index) {
@@ -400,20 +359,6 @@ class _MushafPageState extends State<MushafPage> {
                                                         fontSize: 18),
                                                   ),
                                                 ),
-                                                Expanded(
-                                                  child: Directionality(
-                                                    textDirection:
-                                                        TextDirection.rtl,
-                                                    child: Text(
-                                                      sur![index],
-                                                      style: TextStyle(
-                                                          fontFamily: 'Meor',
-                                                          fontSize:
-                                                              snapshot.data,
-                                                          color: Colors.black),
-                                                    ),
-                                                  ),
-                                                )
                                               ],
                                             ),
                                           ),

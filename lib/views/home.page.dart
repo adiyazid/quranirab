@@ -61,13 +61,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         endDrawer: Setting(),
         appBar: AppBar(
           iconTheme: Theme.of(context).iconTheme,
-          title: Row(
-            children: const [
-              CircleAvatar(
-                backgroundImage: AssetImage('assets/quranirab.png'),
-                radius: 18.0,
-              ),
-            ],
+          title: const CircleAvatar(
+            backgroundImage: AssetImage('assets/quranirab.png'),
+            radius: 18.0,
           ),
           elevation: 0,
           centerTitle: false,
@@ -139,30 +135,33 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 const SizedBox(
                   height: 100,
                 ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: TabBar(
-                    labelColor: (themeProvider.isDarkMode)
-                        ? const Color(0xFFFFFFFF)
-                        : const Color(0xFF000000),
-                    unselectedLabelColor: (themeProvider.isDarkMode)
-                        ? const Color(0xFFFFFFFF)
-                        : const Color(0xFF000000),
-                    isScrollable: true,
-                    labelPadding: const EdgeInsets.only(left: 50, right: 50),
-                    indicatorSize: TabBarIndicatorSize.label,
-                    indicatorColor: (themeProvider.isDarkMode)
-                        ? const Color(0xFF263D4A)
-                        : const Color(0xFFE86F00),
-                    controller: _tabController,
-                    tabs: const [
-                      Tab(
-                        text: "Sura",
-                      ),
-                      Tab(
-                        text: "Juz",
-                      ),
-                    ],
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 48.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: TabBar(
+                      labelColor: (themeProvider.isDarkMode)
+                          ? const Color(0xFFFFFFFF)
+                          : const Color(0xFF000000),
+                      unselectedLabelColor: (themeProvider.isDarkMode)
+                          ? const Color(0xFFFFFFFF)
+                          : const Color(0xFF000000),
+                      isScrollable: true,
+                      labelPadding: const EdgeInsets.only(left: 50, right: 50),
+                      indicatorSize: TabBarIndicatorSize.label,
+                      indicatorColor: (themeProvider.isDarkMode)
+                          ? const Color(0xFF263D4A)
+                          : const Color(0xFFE86F00),
+                      controller: _tabController,
+                      tabs: const [
+                        Tab(
+                          text: "Sura",
+                        ),
+                        Tab(
+                          text: "Juz",
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(
