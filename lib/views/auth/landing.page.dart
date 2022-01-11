@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quranirab/facebook/screens/home_screen.dart';
 import 'package:quranirab/provider/user.provider.dart';
-import 'package:quranirab/views/home.page.dart';
 import 'package:quranirab/views/auth/login.dart';
 
 class LandingPage extends StatelessWidget {
@@ -13,7 +13,7 @@ class LandingPage extends StatelessWidget {
 
     if (appUser.user != null) {
       print('Logged in');
-      return HomePage();
+      return const FacebookHomeScreen();
     } else {
       print('Not logged in');
       return LoginPage();
