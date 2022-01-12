@@ -235,7 +235,7 @@ class _SurahScreenState extends State<SurahScreen> {
                 .map((data) => Directionality(
                       textDirection: TextDirection.rtl,
                       child: Text(
-                        '${data["text"]}',
+                        '${data["text1"]}',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 40,

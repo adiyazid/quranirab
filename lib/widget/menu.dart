@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quranirab/quiz_module/Quiz.Home.dart';
 import 'package:quranirab/views/home.page.dart';
 
 class Menu extends StatelessWidget {
@@ -18,7 +19,7 @@ class Menu extends StatelessWidget {
             Stack(
               children: <Widget>[
                 const Padding(
-                  padding: EdgeInsets.fromLTRB(30, 16,0, 15),
+                  padding: EdgeInsets.fromLTRB(30, 16, 0, 15),
                   child: CircleAvatar(
                     backgroundImage: AssetImage('assets/quranirab.png'),
                     radius: 20.0,
@@ -31,7 +32,11 @@ class Menu extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(255, 0, 0, 0),
                   child: IconButton(
-                    onPressed: () { Navigator.of(context).pop(); }, icon: const Icon(Icons.close),color: Colors.black,
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: const Icon(Icons.close),
+                    color: Colors.black,
                     iconSize: 20,
                     splashRadius: 15,
                   ),
@@ -72,6 +77,16 @@ class Menu extends StatelessWidget {
               text: 'Help',
               icon: Icons.help_outline,
               onTap: () {},
+            ),
+            const SizedBox(height: 16),
+            buildMenuItem(
+              text: 'Quiz',
+              icon: Icons.menu_book,
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const QuizHome()));
+              },
             ),
           ],
         ),

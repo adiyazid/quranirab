@@ -4,6 +4,7 @@ import 'package:quranirab/facebook/screens/home_screen.dart';
 import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/views/auth/login.dart';
 import 'package:quranirab/views/data.from.firestore.dart';
+import 'package:quranirab/views/home.page.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -14,7 +15,7 @@ class LandingPage extends StatelessWidget {
 
     if (appUser.user != null) {
       print('Logged in');
-      return const DummyPage();
+      return const HomePage();
     } else {
       print('Not logged in');
       return LoginPage();
@@ -49,6 +50,17 @@ class DummyPage extends StatelessWidget {
                       builder: (context) => const DataFromFirestore()));
             },
             child: const Text('Firebase integration')),
+        const SizedBox(
+          height: 8,
+        ),
+        ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const FacebookHomeScreen()));
+            },
+            child: const Text('Facebook template')),
       ]),
     );
   }
