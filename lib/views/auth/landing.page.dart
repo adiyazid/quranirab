@@ -87,6 +87,7 @@ class DummyPage extends StatelessWidget {
                             builder: (context) => const QuizHome()));
                   },
                   child: const Text('Quiz')),
+
             ]),
           )),
     );

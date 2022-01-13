@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quranirab/facebook/screens/Appbar/appbar.dart';
-import 'package:quranirab/quiz_module/widget_template/mai.widget.dart';
+import 'package:quranirab/quiz_module/LeaderBoard.Menu.dart';
 import 'package:quranirab/widget/menu.dart';
 import 'package:quranirab/widget/setting.dart';
 
@@ -34,9 +34,9 @@ class _QuizHomeState extends State<QuizHome> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const ContainerWidget()));
+                            builder: (context) => const LeaderBoardMenu()));
                   },
-                  child: const Text('Widget Template for MAI')),
+                  child: const Text('LeaderBoard')),
             )
           ],
         ),
