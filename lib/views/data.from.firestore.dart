@@ -1,3 +1,4 @@
+import 'package:arabic_numbers/arabic_numbers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -189,29 +190,53 @@ class SurahScreen extends StatefulWidget {
 }
 
 class _SurahScreenState extends State<SurahScreen> {
-  @override
+  final List _list = [];
+  int? a = 0;
+  String? b;
+
   void initState() {
     // TODO: implement initState
-    super.initState();
     getData();
+    getStartAyah();
+    super.initState();
   }
 
-  List _list = [];
   final CollectionReference _collectionRef =
       FirebaseFirestore.instance.collection('quran_texts');
+  final CollectionReference _collectionRefs =
+      FirebaseFirestore.instance.collection('medina_mushaf_pages');
 
   Future<void> getData() async {
     // Get docs from collection reference
-    QuerySnapshot querySnapshot = await _collectionRef
+    await _collectionRef
         .where('medina_mushaf_page_id', isEqualTo: widget.id)
         .where('sura_id', isEqualTo: widget.surah)
         .orderBy('created_at')
-        .get();
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        setState(() {
+          _list.add(doc['text1']);
+        });
+      }
+    });
+    _list.any((e) => e.contains('b'));
+  }
 
-    // Get data from docs and convert map to List
-    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-    setState(() {
-      _list = allData;
+  Future<void> getStartAyah() async {
+    // Get docs from collection reference
+    await _collectionRefs
+        .where('id', isEqualTo: widget.id)
+        .where('sura_id', isEqualTo: widget.surah)
+        .orderBy('created_at')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        setState(() {
+          a = int.parse(doc['aya']);
+        });
+        print(a);
+      }
     });
   }
 
@@ -220,33 +245,43 @@ class _SurahScreenState extends State<SurahScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.orange,
-        centerTitle: true,
-        title: Text(
-          'Page Number ${widget.id}',
-          style: const TextStyle(fontSize: 30),
-        ),
-      ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            children: _list
-                .map((data) => Directionality(
-                      textDirection: TextDirection.rtl,
-                      child: Text(
-                        '${data["text1"]}',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 40,
-                            fontFamily: 'MeQuran2',
-                            color: (isDark) ? Colors.white : Colors.black),
-                      ),
-                    ))
-                .toList(),
+        appBar: AppBar(
+          backgroundColor: Colors.orange,
+          centerTitle: true,
+          title: Text(
+            'Page Number ${widget.id}',
+            style: const TextStyle(fontSize: 30),
           ),
         ),
-      ),
-    );
+        body: Stack(
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: Center(
+                child: ListView.builder(
+                  itemCount: _list.length,
+                  itemBuilder: (BuildContext context, int i) {
+                    if (context.debugDoingBuild) {
+                      return const CircularProgressIndicator();
+                    }
+                    return Text(
+                      _list.isNotEmpty
+                          ? _list[i].replaceAll(
+                              '﴿${ArabicNumbers().convert(i + a!)}﴾',
+                              '﴾${ArabicNumbers().convert(i + a!)}﴿').trim()
+                          : '',
+                      textDirection: TextDirection.rtl,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                          fontSize: 40,
+                          fontFamily: 'MeQuran2',
+                          color: Colors.white),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
+        ));
   }
 }

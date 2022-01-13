@@ -55,6 +55,7 @@ dependencies:
   flutter_svg :
   cached_network_image: 3.0.0
   material_design_icons_flutter: ^5.0.5955-rc.1
+  arabic_numbers: ^1.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
