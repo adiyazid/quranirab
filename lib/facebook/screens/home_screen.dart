@@ -4,14 +4,12 @@ import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:quranirab/facebook/widgets/circle_button.dart';
 import 'package:quranirab/facebook/widgets/more_options_list.dart';
 import 'package:quranirab/facebook/widgets/responsive.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/widget/LanguagePopup.dart';
 import 'package:quranirab/widget/SettingPopup.dart';
 import 'package:quranirab/widget/menu.dart';
-import 'package:quranirab/widget/setting.dart';
 
 import 'Appbar/appbar.dart';
 
@@ -24,7 +22,7 @@ class FacebookHomeScreen extends StatefulWidget {
 
 class _FacebookHomeScreenState extends State<FacebookHomeScreen> {
   final TrackingScrollController _trackingScrollController =
-  TrackingScrollController();
+      TrackingScrollController();
 
   @override
   void dispose() {
@@ -131,17 +129,19 @@ class _HomeScreenDesktopState extends State<_HomeScreenDesktop> {
                 actions: [
                   Padding(
                     padding: const EdgeInsets.only(right: 20.0),
-                    child: IconButton(onPressed: () {  }, icon: const Icon(Icons.search,size: 26.0,)
-                    ),
+                    child: IconButton(
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.search,
+                          size: 26.0,
+                        )),
                   ),
                   const Padding(
                       padding: EdgeInsets.only(right: 20.0),
-                      child: LangPopup()
-                  ),
+                      child: LangPopup()),
                   const Padding(
                       padding: EdgeInsets.only(right: 20.0),
-                      child: SettingPopup()
-                  ),
+                      child: SettingPopup()),
                 ],
                 bottom: PreferredSize(
                   preferredSize: const Size.fromHeight(120),
@@ -275,7 +275,7 @@ class TranslationPage extends StatefulWidget {
 class _TranslationPageState extends State<TranslationPage> {
   List _list = [];
   final CollectionReference _collectionRef =
-  FirebaseFirestore.instance.collection('quran_translations');
+      FirebaseFirestore.instance.collection('quran_translations');
 
   List menuItems = [
     ItemModel('Share', Icons.share),
@@ -374,52 +374,52 @@ class _TranslationPageState extends State<TranslationPage> {
                                         child: IntrinsicWidth(
                                           child: Column(
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.stretch,
+                                                CrossAxisAlignment.stretch,
                                             children: menuItems
                                                 .map(
                                                   (item) => GestureDetector(
-                                                behavior: HitTestBehavior
-                                                    .translucent,
-                                                onTap: _controller.hideMenu,
-                                                child: Container(
-                                                  height: 40,
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 20),
-                                                  child: Row(
-                                                    children: <Widget>[
-                                                      Icon(
-                                                        item.icon,
-                                                        size: 15,
-                                                        color: Colors.white,
-                                                      ),
-                                                      Expanded(
-                                                        child: Container(
-                                                          margin:
-                                                          const EdgeInsets
-                                                              .only(
-                                                              left: 10),
-                                                          padding:
-                                                          const EdgeInsets
+                                                    behavior: HitTestBehavior
+                                                        .translucent,
+                                                    onTap: _controller.hideMenu,
+                                                    child: Container(
+                                                      height: 40,
+                                                      padding: const EdgeInsets
                                                               .symmetric(
-                                                              vertical:
-                                                              10),
-                                                          child: Text(
-                                                            item.text,
-                                                            style:
-                                                            const TextStyle(
-                                                              color: Colors
-                                                                  .white,
-                                                              fontSize: 12,
+                                                          horizontal: 20),
+                                                      child: Row(
+                                                        children: <Widget>[
+                                                          Icon(
+                                                            item.icon,
+                                                            size: 15,
+                                                            color: Colors.white,
+                                                          ),
+                                                          Expanded(
+                                                            child: Container(
+                                                              margin:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      left: 10),
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .symmetric(
+                                                                      vertical:
+                                                                          10),
+                                                              child: Text(
+                                                                item.text,
+                                                                style:
+                                                                    const TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 12,
+                                                                ),
+                                                              ),
                                                             ),
                                                           ),
-                                                        ),
+                                                        ],
                                                       ),
-                                                    ],
+                                                    ),
                                                   ),
-                                                ),
-                                              ),
-                                            )
+                                                )
                                                 .toList(),
                                           ),
                                         ),
@@ -524,9 +524,9 @@ class _SurahPageState extends State<SurahPage> {
   }
 
   final CollectionReference _collectionRef =
-  FirebaseFirestore.instance.collection('quran_texts');
+      FirebaseFirestore.instance.collection('quran_texts');
   final CollectionReference _collectionRefs =
-  FirebaseFirestore.instance.collection('medina_mushaf_pages');
+      FirebaseFirestore.instance.collection('medina_mushaf_pages');
 
   Future<void> getData() async {
     // Get docs from collection reference
@@ -538,7 +538,7 @@ class _SurahPageState extends State<SurahPage> {
         .then((QuerySnapshot querySnapshot) {
       for (var doc in querySnapshot.docs) {
         setState(() {
-          _list.add(doc['text1']);
+          _list.add(doc['text1'].trim().replaceAll('b', '\n'));
         });
       }
     });
@@ -572,45 +572,75 @@ class _SurahPageState extends State<SurahPage> {
         Align(
           alignment: Alignment.center,
           child: Center(
-            child: ListView.builder(
-              itemCount: _list.length,
-              itemBuilder: (BuildContext context, int i) {
-                if (context.debugDoingBuild) {
-                  return const CircularProgressIndicator();
-                }
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      ontap = true;
-                    });
-                  },
-                  onDoubleTap: () {
-                    setState(() {
-                      ontap = false;
-                    });
-                  },
-                  child: Tooltip(
-                    message: 'Click to show details ayah ${i + 1}',
-                    child: Text(
-                      _list.isNotEmpty
-                          ? _list[i]
-                          .replaceAll(
-                          '﴿${ArabicNumbers().convert(i + a!)}﴾',
-                          '﴾${ArabicNumbers().convert(i + a!)}﴿')
-                          .trim()
-                          : '',
-                      textDirection: TextDirection.rtl,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                          fontSize: 40,
-                          fontFamily: 'MeQuran2',
-                          color: Colors.white),
-                    ),
-                  ),
-                );
-              },
+              child: RichText(
+            textDirection: TextDirection.rtl,
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              style: const TextStyle(
+                  fontSize: 40, fontFamily: 'MeQuran2', color: Colors.white),
+              children: <TextSpan>[
+                TextSpan(
+                    text: _list
+                        .join()
+                        .replaceAll('﴾', '')
+                        .replaceAll('﴿', '')
+                        .replaceAll(ArabicNumbers().convert(1),
+                            '﴾${ArabicNumbers().convert(1)}﴿')
+                        .replaceAll(ArabicNumbers().convert(2),
+                            '﴾${ArabicNumbers().convert(2)}﴿')
+                        .replaceAll(' ${ArabicNumbers().convert(3)}',
+                            '﴿${ArabicNumbers().convert(3)}﴾')
+                        .replaceAll(ArabicNumbers().convert(4),
+                            '﴾${ArabicNumbers().convert(4)}﴿')
+                        .replaceAll(' ${ArabicNumbers().convert(5)}',
+                            '﴿${ArabicNumbers().convert(5)}﴾')
+                        .replaceAll(' ${ArabicNumbers().convert(6)}',
+                            '﴿${ArabicNumbers().convert(6)}﴾')
+                        .replaceAll(ArabicNumbers().convert(7),
+                            '﴾${ArabicNumbers().convert(7)}﴿'),
+                    style: const TextStyle(fontWeight: FontWeight.bold)),
+              ],
             ),
-          ),
+          )
+              // ListView.builder(
+              //   itemCount: _list.length,
+              //   itemBuilder: (BuildContext context, int i) {
+              //     if (context.debugDoingBuild) {
+              //       return const CircularProgressIndicator();
+              //     }
+              //     return GestureDetector(
+              //       onTap: () {
+              //         setState(() {
+              //           ontap = true;
+              //         });
+              //       },
+              //       onDoubleTap: () {
+              //         setState(() {
+              //           ontap = false;
+              //         });
+              //       },
+              //       child: Tooltip(
+              //         message: 'Click to show details ayah ${i + 1}',
+              //         child: Text(
+              //           _list.isNotEmpty
+              //               ? _list[i]
+              //                   .replaceAll(
+              //                       '﴿${ArabicNumbers().convert(i + a!)}﴾',
+              //                       '﴾${ArabicNumbers().convert(i + a!)}﴿')
+              //                   .trim()
+              //               : '',
+              //           textDirection: TextDirection.rtl,
+              //           textAlign: TextAlign.center,
+              //           style: const TextStyle(
+              //               fontSize: 40,
+              //               fontFamily: 'MeQuran2',
+              //               color: Colors.white),
+              //         ),
+              //       ),
+              //     );
+              //   },
+              // ),
+              ),
         ),
         Visibility(
           visible: ontap,

@@ -66,7 +66,7 @@ class _DataFromFirestoreState extends State<DataFromFirestore> {
                               },
                               child: Text(
                                 '${data["start_line"]}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 40,
                                     fontFamily: 'MeQuran2',
                                     color: Colors.white
