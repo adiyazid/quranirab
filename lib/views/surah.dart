@@ -140,11 +140,11 @@ class _SurahGridState extends State<SurahGrid> {
           padding: const EdgeInsets.only(right: 38.0),
           child: GridView.count(
               controller: _scrollController,
-              childAspectRatio:  MediaQuery.of(context).size.width /
-                  (MediaQuery.of(context).size.height / 3),
+              childAspectRatio: MediaQuery.of(context).size.width /
+                    (MediaQuery.of(context).size.height / 2),
               crossAxisCount: 3,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
+              mainAxisSpacing: 40,
+              crossAxisSpacing: 50,
               children: List.generate(114, (index) {
                 return InkWell(
                   child: Card(
