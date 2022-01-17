@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/home.page.dart';
 
+import '../quiz_module/Quiz.Home.dart';
+
 class Menu extends StatelessWidget {
   final padding = const EdgeInsets.symmetric(horizontal: 10);
 
@@ -90,7 +92,7 @@ class Menu extends StatelessWidget {
                 Navigator.pop(context);
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const QuizHome()));
-              },
+              }, darkMode: themeProvider.isDarkMode,
             ),
           ],
         ),
