@@ -1,8 +1,6 @@
 import 'package:arabic_numbers/arabic_numbers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:quranirab/themes/theme_model.dart';
 
 import 'nav.draw.dart';
 
@@ -38,28 +36,14 @@ class _DataFromFirestoreState extends State<DataFromFirestore> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Consumer<ThemeModel>(
-        builder: (context, ThemeModel themeNotifier, child) {
+  Widget build(BuildContext context){
       return Scaffold(
         drawer: navDrawer(),
         appBar: AppBar(
           backgroundColor: Colors.orange[700],
           elevation: 0,
           actions: [
-            IconButton(
-                icon: Icon(
-                    themeNotifier.isDark
-                        ? Icons.nightlight_round
-                        : Icons.wb_sunny,
-                    color: themeNotifier.isDark
-                        ? Colors.white
-                        : Colors.grey.shade900),
-                onPressed: () {
-                  themeNotifier.isDark
-                      ? themeNotifier.isDark = false
-                      : themeNotifier.isDark = true;
-                })
+
           ],
         ),
         body: Padding(
@@ -85,9 +69,8 @@ class _DataFromFirestoreState extends State<DataFromFirestore> {
                                 style: TextStyle(
                                     fontSize: 40,
                                     fontFamily: 'MeQuran2',
-                                    color: (themeNotifier.isDark)
-                                        ? Colors.white
-                                        : Colors.black),
+                                    color: Colors.white
+                                        ),
                               ),
                             ))
                         .toList(),
@@ -98,7 +81,7 @@ class _DataFromFirestoreState extends State<DataFromFirestore> {
           ),
         ),
       );
-    });
+
   }
 }
 

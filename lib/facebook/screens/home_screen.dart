@@ -598,7 +598,7 @@ class _SurahPageState extends State<SurahPage> {
                           ? _list[i]
                               .replaceAll(
                                   '﴿${ArabicNumbers().convert(i + a!)}﴾',
-                                  '﴾${ArabicNumbers().convert(i + a!)}﴿')
+                                  '﴾${ArabicNumbers().convert(i + a!)}﴿').replaceAll('b','\n')
                               .trim()
                           : '',
                       textDirection: TextDirection.rtl,

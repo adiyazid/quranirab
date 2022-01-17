@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
-import 'package:quranirab/themes/theme_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/views/auth/landing.page.dart';
@@ -25,22 +24,17 @@ Future<void> main() async {
       ChangeNotifierProvider<AppUser>.value(value: appUser),
     ],
     child: ChangeNotifierProvider(
-        create: (_) => ThemeModel(),
-        child: Consumer<ThemeModel>(
-            builder: (context, ThemeModel themeNotifier, child) {
-          return ChangeNotifierProvider(
-              create: (context) => ThemeProvider(),
-              builder: (context, _) {
-                final themeProvider =
-                    Provider.of<ThemeProvider>(context, listen: true);
-                return MaterialApp(
-                  home: const DummyPage(),
-                  themeMode: themeProvider.themeMode,
-                  theme: QuranThemes.lightTheme,
-                  darkTheme: QuranThemes.darkTheme,
-                  debugShowCheckedModeBanner: false,
-                );
-              });
-        })),
+          create: (context) => ThemeProvider(),
+          builder: (context, _) {
+            final themeProvider =
+                Provider.of<ThemeProvider>(context, listen: true);
+            return MaterialApp(
+              home: const DummyPage(),
+              themeMode: themeProvider.themeMode,
+              theme: QuranThemes.lightTheme,
+              darkTheme: QuranThemes.darkTheme,
+              debugShowCheckedModeBanner: false,
+            );
+          })
   ));
 }
