@@ -572,75 +572,75 @@ class _SurahPageState extends State<SurahPage> {
         Align(
           alignment: Alignment.center,
           child: Center(
-              child: RichText(
-            textDirection: TextDirection.rtl,
-            textAlign: TextAlign.center,
-            text: TextSpan(
-              style: const TextStyle(
-                  fontSize: 40, fontFamily: 'MeQuran2', color: Colors.white),
-              children: <TextSpan>[
-                TextSpan(
-                    text: _list
-                        .join()
-                        .replaceAll('﴾', '')
-                        .replaceAll('﴿', '')
-                        .replaceAll(ArabicNumbers().convert(1),
-                            '﴾${ArabicNumbers().convert(1)}﴿')
-                        .replaceAll(ArabicNumbers().convert(2),
-                            '﴾${ArabicNumbers().convert(2)}﴿')
-                        .replaceAll(' ${ArabicNumbers().convert(3)}',
-                            '﴿${ArabicNumbers().convert(3)}﴾')
-                        .replaceAll(ArabicNumbers().convert(4),
-                            '﴾${ArabicNumbers().convert(4)}﴿')
-                        .replaceAll(' ${ArabicNumbers().convert(5)}',
-                            '﴿${ArabicNumbers().convert(5)}﴾')
-                        .replaceAll(' ${ArabicNumbers().convert(6)}',
-                            '﴿${ArabicNumbers().convert(6)}﴾')
-                        .replaceAll(ArabicNumbers().convert(7),
-                            '﴾${ArabicNumbers().convert(7)}﴿'),
-                    style: const TextStyle(fontWeight: FontWeight.bold)),
-              ],
+            //     child: RichText(
+            //   textDirection: TextDirection.rtl,
+            //   textAlign: TextAlign.center,
+            //   text: TextSpan(
+            //     style: const TextStyle(
+            //         fontSize: 40, fontFamily: 'MeQuran2', color: Colors.white),
+            //     children: <TextSpan>[
+            //       TextSpan(
+            //           text: _list
+            //               .join()
+            //               .replaceAll('﴾', '')
+            //               .replaceAll('﴿', '')
+            //               .replaceAll(ArabicNumbers().convert(1),
+            //                   '﴾${ArabicNumbers().convert(1)}﴿')
+            //               .replaceAll(ArabicNumbers().convert(2),
+            //                   '﴾${ArabicNumbers().convert(2)}﴿')
+            //               .replaceAll(' ${ArabicNumbers().convert(3)}',
+            //                   '﴿${ArabicNumbers().convert(3)}﴾')
+            //               .replaceAll(ArabicNumbers().convert(4),
+            //                   '﴾${ArabicNumbers().convert(4)}﴿')
+            //               .replaceAll(' ${ArabicNumbers().convert(5)}',
+            //                   '﴿${ArabicNumbers().convert(5)}﴾')
+            //               .replaceAll(' ${ArabicNumbers().convert(6)}',
+            //                   '﴿${ArabicNumbers().convert(6)}﴾')
+            //               .replaceAll(ArabicNumbers().convert(7),
+            //                   '﴾${ArabicNumbers().convert(7)}﴿'),
+            //           style: const TextStyle(fontWeight: FontWeight.bold)),
+            //     ],
+            //   ),
+            // )
+            child: ListView.builder(
+              itemCount: _list.length,
+              itemBuilder: (BuildContext context, int i) {
+                if (context.debugDoingBuild) {
+                  return const CircularProgressIndicator();
+                }
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      ontap = true;
+                    });
+                  },
+                  onDoubleTap: () {
+                    setState(() {
+                      ontap = false;
+                    });
+                  },
+                  child: Tooltip(
+                    message: 'Click to show details ayah ${i + 1}',
+                    child: Text(
+                      _list.isNotEmpty
+                          ? _list[i]
+                              .replaceAll(
+                                  '﴿${ArabicNumbers().convert(i + a!)}﴾',
+                                  '﴾${ArabicNumbers().convert(i + a!)}﴿')
+                              .trim()
+                          : '',
+                      textDirection: TextDirection.rtl,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                          fontSize: 40,
+                          fontFamily: 'MeQuran2',
+                          color: Colors.white),
+                    ),
+                  ),
+                );
+              },
             ),
-          )
-              // ListView.builder(
-              //   itemCount: _list.length,
-              //   itemBuilder: (BuildContext context, int i) {
-              //     if (context.debugDoingBuild) {
-              //       return const CircularProgressIndicator();
-              //     }
-              //     return GestureDetector(
-              //       onTap: () {
-              //         setState(() {
-              //           ontap = true;
-              //         });
-              //       },
-              //       onDoubleTap: () {
-              //         setState(() {
-              //           ontap = false;
-              //         });
-              //       },
-              //       child: Tooltip(
-              //         message: 'Click to show details ayah ${i + 1}',
-              //         child: Text(
-              //           _list.isNotEmpty
-              //               ? _list[i]
-              //                   .replaceAll(
-              //                       '﴿${ArabicNumbers().convert(i + a!)}﴾',
-              //                       '﴾${ArabicNumbers().convert(i + a!)}﴿')
-              //                   .trim()
-              //               : '',
-              //           textDirection: TextDirection.rtl,
-              //           textAlign: TextAlign.center,
-              //           style: const TextStyle(
-              //               fontSize: 40,
-              //               fontFamily: 'MeQuran2',
-              //               color: Colors.white),
-              //         ),
-              //       ),
-              //     );
-              //   },
-              // ),
-              ),
+          ),
         ),
         Visibility(
           visible: ontap,
