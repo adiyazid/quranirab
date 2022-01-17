@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:quranirab/facebook/widgets/circle_button.dart';
+import 'package:quranirab/widget/LanguagePopup.dart';
+import 'package:quranirab/widget/SettingPopup.dart';
+import 'package:quranirab/widget/language.dart';
 
 class Appbar extends StatefulWidget {
   const Appbar({Key? key}) : super(key: key);
@@ -12,39 +15,31 @@ class _AppbarState extends State<Appbar> {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      leading: IconButton(
-        icon: Icon(
-          Icons.menu,
-          color: Theme.of(context).colorScheme.onBackground,
-        ),
-        onPressed: () {
-          Scaffold.of(context).openDrawer();
-        },
+      iconTheme: Theme.of(context).iconTheme,
+      title: Row(
+        children: const [
+          CircleAvatar(
+            backgroundImage: AssetImage('assets/quranirab.png'),
+            radius: 18.0,
+          ),
+        ],
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
-      title: const CircleAvatar(
-        backgroundImage: AssetImage('assets/quranirab.png'),
-        radius: 18.0,
-      ),
+      elevation: 0,
       centerTitle: false,
-      floating: true,
-      actions: [
-        CircleButton(
-          icon: Icons.search,
-          iconSize: 30.0,
-          onPressed: () => print('Search'),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      actions: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(right: 20.0),
+          child: IconButton(onPressed: () {  }, icon: const Icon(Icons.search,size: 26.0,)
+          ),
         ),
-        CircleButton(
-          icon: MdiIcons.earth,
-          iconSize: 30.0,
-          onPressed: () => print('Messenger'),
+        const Padding(
+            padding: EdgeInsets.only(right: 20.0),
+            child: LangPopup()
         ),
-        CircleButton(
-          icon: Icons.settings,
-          iconSize: 30.0,
-          onPressed: () {
-            Scaffold.of(context).openEndDrawer();
-          },
+        const Padding(
+            padding: EdgeInsets.only(right: 20.0),
+            child: SettingPopup()
         ),
       ],
     );

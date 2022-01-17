@@ -315,7 +315,7 @@ class _MushafPageState extends State<MushafPage> {
                         child: SizedBox(
                           height: screenSize.height,
                           width: screenSize.width * 0.5,
-                          child: PageView(
+                          child:PageView(
                             controller: controller,
                             children: [
                               Column(

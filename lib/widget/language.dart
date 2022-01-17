@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Language extends StatelessWidget {
+  const Language({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<int>(
@@ -8,22 +10,22 @@ class Language extends StatelessWidget {
         icon: const Icon(Icons.language),
         onSelected: (item) => onSelected(context, item),
         itemBuilder: (context) => [
-              const PopupMenuItem<int>(
+               PopupMenuItem<int>(
                   value: 0,
                   enabled: false,
                   child: Text(
                     'Language',
                     style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.bold),
+                        color: Theme.of(context).textSelectionColor, fontWeight: FontWeight.bold),
                   )),
               const PopupMenuDivider(),
-              const PopupMenuItem<int>(
+               PopupMenuItem<int>(
                   value: 1,
                   child:
-                      Text('English', style: TextStyle(color: Colors.black))),
-              const PopupMenuItem<int>(
+                      Text('English', style: TextStyle(color: Theme.of(context).textSelectionColor))),
+               PopupMenuItem<int>(
                   value: 2,
-                  child: Text('Melayu', style: TextStyle(color: Colors.black))),
+                  child: Text('Melayu', style: TextStyle(color: Theme.of(context).textSelectionColor))),
             ]);
   }
 

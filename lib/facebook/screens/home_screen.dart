@@ -1,11 +1,15 @@
+import 'package:arabic_numbers/arabic_numbers.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:quranirab/facebook/palette.dart';
-import 'package:quranirab/facebook/widgets/create_post_container.dart';
+import 'package:quranirab/facebook/widgets/circle_button.dart';
 import 'package:quranirab/facebook/widgets/more_options_list.dart';
 import 'package:quranirab/facebook/widgets/responsive.dart';
 import 'package:quranirab/theme/theme_provider.dart';
+import 'package:quranirab/widget/LanguagePopup.dart';
+import 'package:quranirab/widget/SettingPopup.dart';
 import 'package:quranirab/widget/menu.dart';
 import 'package:quranirab/widget/setting.dart';
 
@@ -20,7 +24,7 @@ class FacebookHomeScreen extends StatefulWidget {
 
 class _FacebookHomeScreenState extends State<FacebookHomeScreen> {
   final TrackingScrollController _trackingScrollController =
-      TrackingScrollController();
+  TrackingScrollController();
 
   @override
   void dispose() {
@@ -60,7 +64,7 @@ class _HomeScreenMobile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: const Menu(),
-      endDrawer: const Setting(),
+      //endDrawer: const Setting(),
       body: DefaultTabController(
         length: 3,
         child: Column(
@@ -69,7 +73,10 @@ class _HomeScreenMobile extends StatelessWidget {
               height: 115,
               child: CustomScrollView(
                 controller: scrollController,
-                slivers: const [Appbar(), TabBarWidget()],
+                slivers: const [
+                  Appbar(),
+                  // TabBarWidget()
+                ],
               ),
             ),
           ],
@@ -92,35 +99,404 @@ class _HomeScreenDesktop extends StatefulWidget {
 }
 
 class _HomeScreenDesktopState extends State<_HomeScreenDesktop> {
+  @override
+  Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    return Scaffold(
+      backgroundColor: const Color(0xff666666),
+      drawer: const Menu(),
+      //endDrawer: const Setting(),
+      body: DefaultTabController(
+        length: 2,
+        child: NestedScrollView(
+          headerSliverBuilder: (context, value) {
+            return [
+              SliverAppBar(
+                leading: IconButton(
+                  icon: Icon(
+                    Icons.menu,
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                ),
+                backgroundColor: Theme.of(context).colorScheme.background,
+                title: const CircleAvatar(
+                  backgroundImage: AssetImage('assets/quranirab.png'),
+                  radius: 18.0,
+                ),
+                centerTitle: false,
+                floating: true,
+                actions: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20.0),
+                    child: IconButton(onPressed: () {  }, icon: const Icon(Icons.search,size: 26.0,)
+                    ),
+                  ),
+                  const Padding(
+                      padding: EdgeInsets.only(right: 20.0),
+                      child: LangPopup()
+                  ),
+                  const Padding(
+                      padding: EdgeInsets.only(right: 20.0),
+                      child: SettingPopup()
+                  ),
+                ],
+                bottom: PreferredSize(
+                  preferredSize: const Size.fromHeight(120),
+                  child: Column(
+                    children: [
+                      Row(children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          color: const Color(0xff666666),
+                          child: ListTile(
+                            title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: const [
+                                Text(
+                                  'Al-Fatihah',
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                Text(
+                                  'The Opener',
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 16),
+                                ),
+                              ],
+                            ),
+                            trailing: const Icon(Icons.keyboard_arrow_down),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                          height: 40,
+                          child: VerticalDivider(
+                            thickness: 2,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 320,
+                          child: Row(
+                            children: const [
+                              VerticalDivider(
+                                thickness: 2,
+                                color: Colors.grey,
+                              ),
+                              SizedBox(width: 16),
+                              Flexible(
+                                child: Text(
+                                  'Juz 1 / Hizb 1 - Page 1',
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        const Spacer(),
+                        Icon(
+                          MdiIcons.bookOpen,
+                          color: (themeProvider.isDarkMode)
+                              ? const Color(0xffD2D6DA)
+                              : const Color(0xffE86F00),
+                        ),
+                        const Spacer(),
+                      ]),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        color: const Color(0xff67748E),
+                        child: TabBar(
+                            indicatorPadding: const EdgeInsets.all(8),
+                            indicator: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                // Creates border
+                                color: const Color(0xff808BA1)),
+                            tabs: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Tab(
+                                  child: Text(
+                                    'Translation',
+                                    style: TextStyle(
+                                        color: themeProvider.isDarkMode
+                                            ? Colors.white
+                                            : Colors.black),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Tab(
+                                  child: Text(
+                                    'Reading',
+                                    style: TextStyle(
+                                        color: themeProvider.isDarkMode
+                                            ? Colors.white
+                                            : Colors.black),
+                                  ),
+                                ),
+                              )
+                            ]),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ];
+          },
+          body: const TabBarView(
+            children: [
+              TranslationPage(),
+              SurahPage('1', '1'),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ItemModel {
+  String text;
+  IconData icon;
+
+  ItemModel(this.text, this.icon);
+}
+
+class TranslationPage extends StatefulWidget {
+  const TranslationPage({Key? key}) : super(key: key);
+
+  @override
+  _TranslationPageState createState() => _TranslationPageState();
+}
+
+class _TranslationPageState extends State<TranslationPage> {
+  List _list = [];
+  final CollectionReference _collectionRef =
+  FirebaseFirestore.instance.collection('quran_translations');
+
+  List menuItems = [
+    ItemModel('Share', Icons.share),
+    ItemModel('Bookmark', Icons.bookmarks),
+  ];
+  final CustomPopupMenuController _controller = CustomPopupMenuController();
+
+  Future<void> getData() async {
+    // Get docs from collection reference
+    QuerySnapshot querySnapshot = await _collectionRef
+        .where('translation_id', isEqualTo: "2")
+        .where('sura_id', isEqualTo: "1")
+        .get();
+
+    // Get data from docs and convert map to List
+    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+    setState(() {
+      _list = allData;
+    });
+    //convert dynamic map list into string list
+    var data = _list.map((e) => e["text"]).toList();
+    setState(() {
+      _list = data;
+    });
+  }
+
+  ScrollController? _controllers;
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+            color: (themeProvider.isDarkMode)
+                ? const Color(0xffffffff)
+                : const Color(0xffFFB55F)),
+      ),
+      child: Stack(
+        children: [
+          Align(
+            alignment: Alignment.centerRight,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 16.0, top: 16),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.78,
+                child: ListView.builder(
+                  itemCount: _list.length,
+                  controller: _controllers,
+                  itemBuilder: (BuildContext context, int index) {
+                    return SizedBox(
+                      height: 132,
+                      child: Card(
+                        semanticContainer: true,
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        elevation: 5,
+                        margin: const EdgeInsets.all(10),
+                        color: (themeProvider.isDarkMode)
+                            ? const Color(0xffC4C4C4)
+                            : const Color(0xffFFF5EC),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      color: const Color(0xff67748E),
+                                    ),
+                                    width: 40,
+                                    child: Center(
+                                      child: Text(
+                                        '1:${index + 1}',
+                                        style: const TextStyle(
+                                            fontSize: 18, color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  CustomPopupMenu(
+                                    menuBuilder: () => ClipRRect(
+                                      borderRadius: BorderRadius.circular(5),
+                                      child: Container(
+                                        color: const Color(0xFF4C4C4C),
+                                        child: IntrinsicWidth(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.stretch,
+                                            children: menuItems
+                                                .map(
+                                                  (item) => GestureDetector(
+                                                behavior: HitTestBehavior
+                                                    .translucent,
+                                                onTap: _controller.hideMenu,
+                                                child: Container(
+                                                  height: 40,
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 20),
+                                                  child: Row(
+                                                    children: <Widget>[
+                                                      Icon(
+                                                        item.icon,
+                                                        size: 15,
+                                                        color: Colors.white,
+                                                      ),
+                                                      Expanded(
+                                                        child: Container(
+                                                          margin:
+                                                          const EdgeInsets
+                                                              .only(
+                                                              left: 10),
+                                                          padding:
+                                                          const EdgeInsets
+                                                              .symmetric(
+                                                              vertical:
+                                                              10),
+                                                          child: Text(
+                                                            item.text,
+                                                            style:
+                                                            const TextStyle(
+                                                              color: Colors
+                                                                  .white,
+                                                              fontSize: 12,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                                .toList(),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    pressType: PressType.singleClick,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: const Color(0xff67748E),
+                                      ),
+                                      width: 40,
+                                      child: Icon(Icons.more_horiz),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Center(
+                              child: ListTile(
+                                title: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        _list[index],
+                                        style: const TextStyle(fontSize: 18),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.2,
+              decoration: BoxDecoration(
+                border: Border.all(
+                    color: (themeProvider.isDarkMode)
+                        ? const Color(0xffffffff)
+                        : const Color(0xffFFB55F)),
+                color: (themeProvider.isDarkMode)
+                    ? const Color(0xff808ba1)
+                    : const Color(0xfffff3ca),
+              ),
+              child: const MoreOptionsList(
+                surah: 'Straight',
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SurahPage extends StatefulWidget {
+  final String id;
+  final String surah;
+
+  const SurahPage(this.id, this.surah, {Key? key}) : super(key: key);
+
+  @override
+  _SurahPageState createState() => _SurahPageState();
+}
+
+class _SurahPageState extends State<SurahPage> {
   bool onhover = false;
-
-  get ayat1 {
-    return 'بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ ﴿١﴾b';
-  }
-
-  get ayat2 {
-    return 'ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَـٰلَمِينَ ﴿٢﴾b';
-  }
-
-  get ayat3 {
-    return 'ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ ﴿٣﴾';
-  }
-
-  get ayat4 {
-    return 'مَـٰلِكِ يَوْمِ ٱلدِّينِ ﴿٤﴾b';
-  }
-
-  get ayat5 {
-    return 'إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ ﴿٥﴾';
-  }
-
-  get ayat6 {
-    return 'ٱهْدِنَاbٱلصِّرَ ٰطَ ٱلْمُسْتَقِيمَ ﴿٦﴾';
-  }
-
-  get ayat7 {
-    return 'صِرَ ٰطَ ٱلَّذِينَ أَنْعَمْتَbعَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْbوَلَا ٱلضَّآلِّينَ ﴿٧﴾b';
-  }
 
   var ontap = false;
   Color? textColor;
@@ -135,379 +511,129 @@ class _HomeScreenDesktopState extends State<_HomeScreenDesktop> {
     return c;
   }
 
+  final List _list = [];
+  int? a = 0;
+  String? b;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getData();
+    getStartAyah();
+    super.initState();
+  }
+
+  final CollectionReference _collectionRef =
+  FirebaseFirestore.instance.collection('quran_texts');
+  final CollectionReference _collectionRefs =
+  FirebaseFirestore.instance.collection('medina_mushaf_pages');
+
+  Future<void> getData() async {
+    // Get docs from collection reference
+    await _collectionRef
+        .where('medina_mushaf_page_id', isEqualTo: widget.id)
+        .where('sura_id', isEqualTo: widget.surah)
+        .orderBy('created_at')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        setState(() {
+          _list.add(doc['text1']);
+        });
+      }
+    });
+    _list.any((e) => e.contains('b'));
+  }
+
+  Future<void> getStartAyah() async {
+    // Get docs from collection reference
+    await _collectionRefs
+        .where('id', isEqualTo: widget.id)
+        .where('sura_id', isEqualTo: widget.surah)
+        .orderBy('created_at')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        setState(() {
+          a = int.parse(doc['aya']);
+        });
+        print(a);
+      }
+    });
+  }
+
+  bool isDark = false;
+
   @override
   Widget build(BuildContext context) {
-    textColor = Colors.black;
     final themeProvider = Provider.of<ThemeProvider>(context);
-    return Scaffold(
-      drawer: const Menu(),
-      endDrawer: const Setting(),
-      body: DefaultTabController(
-        length: 3,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 115,
-                child: CustomScrollView(
-                  slivers: [
-                    Appbar(),
-                    TabBarWidget(),
-                  ],
-                ),
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.9,
-                child: Stack(
-                  children: [
-                    Align(
-                      child: Column(
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height * 0.9,
-                            color: (themeProvider.isDarkMode)
-                                ? Palette.dark
-                                : const Color(0xffFFF5EC),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Flexible(
-                                  child: Directionality(
-                                      textDirection: TextDirection.rtl,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 96.0),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              ontap = true;
-                                            });
-                                          },
-                                          onDoubleTap: () {
-                                            setState(() {
-                                              ontap = false;
-                                            });
-                                          },
-                                          child: Tooltip(
-                                            message:
-                                                'One click to show details, double click to close',
-                                            child: RichText(
-                                                textAlign: TextAlign.center,
-                                                text: TextSpan(children: [
-                                                  TextSpan(
-                                                    onEnter: (v) async =>
-                                                        setState(() {
-                                                      onhover = true;
-                                                    }),
-                                                    onExit: (v) async =>
-                                                        setState(() {
-                                                      onhover = false;
-                                                    }),
-                                                    text: ayat1.replaceAll(
-                                                      'b',
-                                                      '\n',
-                                                    ),
-                                                    style: TextStyle(
-                                                      fontFamily: 'MeQuran2',
-                                                      fontSize: 40,
-                                                      color: (onhover)
-                                                          ? changeBlue()
-                                                          : Theme.of(context)
-                                                              .colorScheme
-                                                              .onSecondary,
-                                                    ),
-                                                  ),
-                                                  TextSpan(
-                                                    text: ayat2.replaceAll(
-                                                      'b',
-                                                      '\n',
-                                                    ),
-                                                    style: TextStyle(
-                                                      fontFamily: 'MeQuran2',
-                                                      fontSize: 40,
-                                                      color: textColor,
-                                                    ),
-                                                  ),
-                                                  TextSpan(
-                                                    text: ayat3.replaceAll(
-                                                      'b',
-                                                      '\n',
-                                                    ),
-                                                    style: TextStyle(
-                                                      fontFamily: 'MeQuran2',
-                                                      fontSize: 40,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .onSecondary,
-                                                    ),
-                                                  ),
-                                                  TextSpan(
-                                                    text: ayat4.replaceAll(
-                                                      'b',
-                                                      '\n',
-                                                    ),
-                                                    style: TextStyle(
-                                                      fontFamily: 'MeQuran2',
-                                                      fontSize: 40,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .onSecondary,
-                                                    ),
-                                                  ),
-                                                  TextSpan(
-                                                    text: ayat5.replaceAll(
-                                                      'b',
-                                                      '\n',
-                                                    ),
-                                                    style: TextStyle(
-                                                      fontFamily: 'MeQuran2',
-                                                      fontSize: 40,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .onSecondary,
-                                                    ),
-                                                  ),
-                                                  TextSpan(
-                                                    text: ayat6.replaceAll(
-                                                      'b',
-                                                      '\n',
-                                                    ),
-                                                    style: TextStyle(
-                                                      fontFamily: 'MeQuran2',
-                                                      fontSize: 40,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .onSecondary,
-                                                    ),
-                                                  ),
-                                                  TextSpan(
-                                                    text: ayat7.replaceAll(
-                                                      'b',
-                                                      '\n',
-                                                    ),
-                                                    style: TextStyle(
-                                                      fontFamily: 'MeQuran2',
-                                                      fontSize: 40,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .onSecondary,
-                                                    ),
-                                                  ),
-                                                ])),
-                                          ),
-                                        ),
-                                      )),
-                                ),
-                                Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: Container(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.1,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: (themeProvider.isDarkMode)
-                                              ? const Color(0xffffffff)
-                                              : const Color(0xffFFB55F)),
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .background,
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        ElevatedButton(
-                                          onPressed: () {},
-                                          style: ElevatedButton.styleFrom(
-                                              primary: (themeProvider
-                                                      .isDarkMode)
-                                                  ? const Color(0xff808BA1)
-                                                  : const Color(0xfffcd77a)),
-                                          child: const Text(
-                                            'Previous Page',
-                                            style:
-                                                TextStyle(color: Colors.black),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 25),
-                                        ElevatedButton(
-                                            onPressed: () {},
-                                            style: ElevatedButton.styleFrom(
-                                                primary: (themeProvider
-                                                        .isDarkMode)
-                                                    ? const Color(0xff4C6A7A)
-                                                    : const Color(0xffffeeb0)),
-                                            child: const Text(
-                                              'Beginning Surah',
-                                              style: TextStyle(
-                                                  color: Colors.black),
-                                            )),
-                                        const SizedBox(width: 25),
-                                        ElevatedButton(
-                                            onPressed: () {},
-                                            style: ElevatedButton.styleFrom(
-                                                primary: (themeProvider
-                                                        .isDarkMode)
-                                                    ? const Color(0xff808BA1)
-                                                    : const Color(0xfffcd77a)),
-                                            child: const Text(
-                                              'Next Page',
-                                              style: TextStyle(
-                                                  color: Colors.black),
-                                            )),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+    return Stack(
+      children: [
+        Align(
+          alignment: Alignment.center,
+          child: Center(
+            child: ListView.builder(
+              itemCount: _list.length,
+              itemBuilder: (BuildContext context, int i) {
+                if (context.debugDoingBuild) {
+                  return const CircularProgressIndicator();
+                }
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      ontap = true;
+                    });
+                  },
+                  onDoubleTap: () {
+                    setState(() {
+                      ontap = false;
+                    });
+                  },
+                  child: Tooltip(
+                    message: 'Click to show details ayah ${i + 1}',
+                    child: Text(
+                      _list.isNotEmpty
+                          ? _list[i]
+                          .replaceAll(
+                          '﴿${ArabicNumbers().convert(i + a!)}﴾',
+                          '﴾${ArabicNumbers().convert(i + a!)}﴿')
+                          .trim()
+                          : '',
+                      textDirection: TextDirection.rtl,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                          fontSize: 40,
+                          fontFamily: 'MeQuran2',
+                          color: Colors.white),
                     ),
-                    Visibility(
-                      visible: ontap,
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: Container(
-                          width: MediaQuery.of(context).size.width * 0.2,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color: (themeProvider.isDarkMode)
-                                    ? const Color(0xffffffff)
-                                    : const Color(0xffFFB55F)),
-                            color: (themeProvider.isDarkMode)
-                                ? const Color(0xff808ba1)
-                                : const Color(0xfffff3ca),
-                          ),
-                          child: const MoreOptionsList(
-                            surah: 'Straight',
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+                  ),
+                );
+              },
+            ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class TabBarWidget extends StatelessWidget {
-  const TabBarWidget({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
-    final bool isDesktop = Responsive.isDesktop(context);
-    return SliverPersistentHeader(
-      floating: true,
-      delegate: _SliverAppBarDelegate(
-        TabBar(
-          mouseCursor: SystemMouseCursors.basic,
-          overlayColor: MaterialStateProperty.all(Colors.transparent),
-          physics: const NeverScrollableScrollPhysics(),
-          indicatorColor: Colors.transparent,
-          tabs: [
-            Padding(
-              padding: isDesktop
-                  ? const EdgeInsets.only(right: 110.0)
-                  : const EdgeInsets.all(1),
-              child: ListTile(
-                title: InkWell(
-                  onTap: () {},
-                  child: SizedBox(
-                    width: 240,
-                    child: Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Al-Fatihah',
-                              style: TextStyle(fontSize: isDesktop ? 18 : 14),
-                            ),
-                            Text(
-                              'The Opener',
-                              style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: isDesktop ? 16 : 14),
-                            ),
-                          ],
-                        ),
-                        const Spacer(),
-                        const Icon(
-                          Icons.keyboard_arrow_down,
-                          color: Colors.grey,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                trailing: SizedBox(
-                  width: isDesktop ? 320 : 100,
-                  child: Row(
-                    children: [
-                      const VerticalDivider(
-                        thickness: 2,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(width: isDesktop ? 16 : 0),
-                      Flexible(
-                        child: Text(
-                          'Juz 1 / Hizb 1 - Page 1',
-                          style: TextStyle(fontSize: isDesktop ? 16 : 12),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+        Visibility(
+          visible: ontap,
+          child: Align(
+            alignment: Alignment.topLeft,
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.2,
+              decoration: BoxDecoration(
+                border: Border.all(
+                    color: (themeProvider.isDarkMode)
+                        ? const Color(0xffffffff)
+                        : const Color(0xffFFB55F)),
+                color: (themeProvider.isDarkMode)
+                    ? const Color(0xff808ba1)
+                    : const Color(0xfffff3ca),
+              ),
+              child: const MoreOptionsList(
+                surah: 'Straight',
               ),
             ),
-            const CenterTabBar(),
-            Icon(
-              MdiIcons.bookOpen,
-              color: (themeProvider.isDarkMode)
-                  ? const Color(0xffD2D6DA)
-                  : const Color(0xffE86F00),
-            )
-          ],
+          ),
         ),
-      ),
-      pinned: true,
+      ],
     );
-  }
-}
-
-class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate(this._tabBar);
-
-  final TabBar _tabBar;
-
-  @override
-  double get minExtent => _tabBar.preferredSize.height;
-
-  @override
-  double get maxExtent => _tabBar.preferredSize.height;
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-      child: _tabBar,
-    );
-  }
-
-  @override
-  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
-    return false;
   }
 }
