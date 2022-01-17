@@ -219,7 +219,7 @@ class _HomeScreenDesktopState extends State<_HomeScreenDesktop> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Tab(
                                   child: Text(
-                                    'Translation',
+                                    'Translations',
                                     style: TextStyle(
                                         color: themeProvider.isDarkMode
                                             ? Colors.white

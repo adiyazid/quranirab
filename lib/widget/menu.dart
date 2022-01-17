@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quranirab/quiz_module/Quiz.Home.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/home.page.dart';
+
+import '../quiz_module/Quiz.Home.dart';
 
 class Menu extends StatelessWidget {
   final padding = const EdgeInsets.symmetric(horizontal: 10);
@@ -35,11 +36,8 @@ class Menu extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(255, 0, 0, 0),
                   child: IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: const Icon(Icons.close),
-                    color: Theme.of(context).textSelectionColor,
+
+                    onPressed: () { Navigator.of(context).pop(); }, icon: const Icon(Icons.close),color: Theme.of(context).textSelectionColor,
                     iconSize: 20,
                     splashRadius: 15,
                   ),
@@ -49,34 +47,36 @@ class Menu extends StatelessWidget {
             Divider(color: Colors.grey[300]),
             const SizedBox(height: 18),
             buildMenuItem(
-                text: 'Home',
-                icon: Icons.home_outlined,
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const HomePage()));
-                },
-                darkMode: themeProvider.isDarkMode),
+              text: 'Home',
+              icon: Icons.home_outlined,
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const HomePage()));
+              },
+                darkMode: themeProvider.isDarkMode
+            ),
             const SizedBox(height: 16),
             buildMenuItem(
-                text: 'About us',
-                icon: Icons.info_outline,
-                onTap: () {},
-                darkMode: themeProvider.isDarkMode),
+              text: 'About us',
+              icon: Icons.info_outline,
+              onTap: () {},
+                darkMode: themeProvider.isDarkMode
+            ),
             const SizedBox(height: 16),
             buildMenuItem(
-                text: 'Privacy',
-                icon: Icons.privacy_tip_outlined,
-                onTap: () {},
-                darkMode: themeProvider.isDarkMode),
+              text: 'Privacy',
+              icon: Icons.privacy_tip_outlined,
+              onTap: () {},
+                darkMode: themeProvider.isDarkMode
+            ),
             const SizedBox(height: 16),
             buildMenuItem(
-                text: 'Feedback',
-                icon: Icons.feedback_outlined,
-                onTap: () {},
-                darkMode: themeProvider.isDarkMode),
+              text: 'Feedback',
+              icon: Icons.feedback_outlined,
+              onTap: () {},
+                darkMode: themeProvider.isDarkMode
+            ),
             const SizedBox(height: 16),
             buildMenuItem(
               text: 'Help',
@@ -92,8 +92,7 @@ class Menu extends StatelessWidget {
                 Navigator.pop(context);
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const QuizHome()));
-              },
-              darkMode: themeProvider.isDarkMode,
+              }, darkMode: themeProvider.isDarkMode,
             ),
           ],
         ),
@@ -107,12 +106,11 @@ class Menu extends StatelessWidget {
     required bool darkMode,
     required var onTap,
   }) {
+
+
     return ListTile(
-      leading: Icon(icon, color: (darkMode) ? Colors.white : Colors.black),
-      title: Text(text,
-          style: TextStyle(
-            color: (darkMode) ? Colors.white : Colors.black,
-          )),
+      leading: Icon(icon, color: (darkMode)? Colors.white : Colors.black),
+      title: Text(text,style: TextStyle(color: (darkMode)? Colors.white : Colors.black,)),
       onTap: onTap,
     );
   }
