@@ -1,5 +1,4 @@
 import 'package:quranirab/provider/user.provider.dart';
-import 'package:quranirab/themes/theme_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/views/auth/signup.dart';
@@ -20,26 +19,12 @@ class _LoginPageState extends State<LoginPage> {
     final Size size = MediaQuery.of(context).size;
     final appUser = Provider.of<AppUser>(context);
 
-    return Consumer<ThemeModel>(
-        builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.orange[700],
           elevation: 0,
           actions: [
-            IconButton(
-                icon: Icon(
-                    themeNotifier.isDark
-                        ? Icons.nightlight_round
-                        : Icons.wb_sunny,
-                    color: themeNotifier.isDark
-                        ? Colors.white
-                        : Colors.grey.shade50),
-                onPressed: () {
-                  themeNotifier.isDark
-                      ? themeNotifier.isDark = false
-                      : themeNotifier.isDark = true;
-                })
+
           ],
         ),
         body: SingleChildScrollView(
@@ -165,6 +150,5 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       );
-    });
   }
 }

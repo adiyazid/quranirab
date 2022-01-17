@@ -21,7 +21,7 @@ class Menu extends StatelessWidget {
             Stack(
               children: <Widget>[
                 const Padding(
-                  padding: EdgeInsets.fromLTRB(30, 16,0, 15),
+                  padding: EdgeInsets.fromLTRB(30, 16, 0, 15),
                   child: CircleAvatar(
                     backgroundImage: AssetImage('assets/quranirab.png'),
                     radius: 20.0,
@@ -34,6 +34,7 @@ class Menu extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(255, 0, 0, 0),
                   child: IconButton(
+
                     onPressed: () { Navigator.of(context).pop(); }, icon: const Icon(Icons.close),color: Theme.of(context).textSelectionColor,
                     iconSize: 20,
                     splashRadius: 15,
@@ -80,6 +81,16 @@ class Menu extends StatelessWidget {
               icon: Icons.help_outline,
               onTap: () {},
               darkMode: themeProvider.isDarkMode,
+            ),
+            const SizedBox(height: 16),
+            buildMenuItem(
+              text: 'Quiz',
+              icon: Icons.menu_book,
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const QuizHome()));
+              },
             ),
           ],
         ),

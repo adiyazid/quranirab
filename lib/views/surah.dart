@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
-import 'package:quranirab/themes/theme_model.dart';
 import 'package:quranirab/views/mushaf.page.dart';
 
 class SurahGrid extends StatefulWidget {
@@ -134,7 +133,7 @@ class _SurahGridState extends State<SurahGrid> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    return Consumer(builder: (context, ThemeModel themeNotifier, child) {
+
       return Scaffold(
         body: Padding(
           padding: const EdgeInsets.only(right: 38.0),
@@ -210,6 +209,5 @@ class _SurahGridState extends State<SurahGrid> {
               })),
         ),
       );
-    });
   }
 }
