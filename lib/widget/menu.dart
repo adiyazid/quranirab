@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:quranirab/quiz_module/Quiz.Home.dart';
+import 'package:provider/provider.dart';
+import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/home.page.dart';
 
 class Menu extends StatelessWidget {
@@ -9,6 +10,7 @@ class Menu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Drawer(
       child: Material(
         color: Theme.of(context).primaryColor,
@@ -32,11 +34,8 @@ class Menu extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(255, 0, 0, 0),
                   child: IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: const Icon(Icons.close),
-                    color: Colors.black,
+
+                    onPressed: () { Navigator.of(context).pop(); }, icon: const Icon(Icons.close),color: Theme.of(context).textSelectionColor,
                     iconSize: 20,
                     splashRadius: 15,
                   ),
@@ -53,30 +52,35 @@ class Menu extends StatelessWidget {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const HomePage()));
               },
+                darkMode: themeProvider.isDarkMode
             ),
             const SizedBox(height: 16),
             buildMenuItem(
               text: 'About us',
               icon: Icons.info_outline,
               onTap: () {},
+                darkMode: themeProvider.isDarkMode
             ),
             const SizedBox(height: 16),
             buildMenuItem(
               text: 'Privacy',
               icon: Icons.privacy_tip_outlined,
               onTap: () {},
+                darkMode: themeProvider.isDarkMode
             ),
             const SizedBox(height: 16),
             buildMenuItem(
               text: 'Feedback',
               icon: Icons.feedback_outlined,
               onTap: () {},
+                darkMode: themeProvider.isDarkMode
             ),
             const SizedBox(height: 16),
             buildMenuItem(
               text: 'Help',
               icon: Icons.help_outline,
               onTap: () {},
+              darkMode: themeProvider.isDarkMode,
             ),
             const SizedBox(height: 16),
             buildMenuItem(
@@ -97,13 +101,14 @@ class Menu extends StatelessWidget {
   Widget buildMenuItem({
     required String text,
     required IconData icon,
+    required bool darkMode,
     required var onTap,
   }) {
-    final color = Colors.black;
+
 
     return ListTile(
-      leading: Icon(icon, color: color),
-      title: Text(text, style: TextStyle(color: color)),
+      leading: Icon(icon, color: (darkMode)? Colors.white : Colors.black),
+      title: Text(text,style: TextStyle(color: (darkMode)? Colors.white : Colors.black,)),
       onTap: onTap,
     );
   }

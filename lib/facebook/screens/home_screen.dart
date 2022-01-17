@@ -8,6 +8,8 @@ import 'package:quranirab/facebook/widgets/circle_button.dart';
 import 'package:quranirab/facebook/widgets/more_options_list.dart';
 import 'package:quranirab/facebook/widgets/responsive.dart';
 import 'package:quranirab/theme/theme_provider.dart';
+import 'package:quranirab/widget/LanguagePopup.dart';
+import 'package:quranirab/widget/SettingPopup.dart';
 import 'package:quranirab/widget/menu.dart';
 import 'package:quranirab/widget/setting.dart';
 
@@ -22,7 +24,7 @@ class FacebookHomeScreen extends StatefulWidget {
 
 class _FacebookHomeScreenState extends State<FacebookHomeScreen> {
   final TrackingScrollController _trackingScrollController =
-      TrackingScrollController();
+  TrackingScrollController();
 
   @override
   void dispose() {
@@ -62,7 +64,7 @@ class _HomeScreenMobile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: const Menu(),
-      endDrawer: const Setting(),
+      //endDrawer: const Setting(),
       body: DefaultTabController(
         length: 3,
         child: Column(
@@ -103,7 +105,7 @@ class _HomeScreenDesktopState extends State<_HomeScreenDesktop> {
     return Scaffold(
       backgroundColor: const Color(0xff666666),
       drawer: const Menu(),
-      endDrawer: const Setting(),
+      //endDrawer: const Setting(),
       body: DefaultTabController(
         length: 2,
         child: NestedScrollView(
@@ -127,22 +129,18 @@ class _HomeScreenDesktopState extends State<_HomeScreenDesktop> {
                 centerTitle: false,
                 floating: true,
                 actions: [
-                  CircleButton(
-                    icon: Icons.search,
-                    iconSize: 30.0,
-                    onPressed: () => print('Search'),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20.0),
+                    child: IconButton(onPressed: () {  }, icon: const Icon(Icons.search,size: 26.0,)
+                    ),
                   ),
-                  CircleButton(
-                    icon: MdiIcons.earth,
-                    iconSize: 30.0,
-                    onPressed: () => print('Messenger'),
+                  const Padding(
+                      padding: EdgeInsets.only(right: 20.0),
+                      child: LangPopup()
                   ),
-                  CircleButton(
-                    icon: Icons.settings,
-                    iconSize: 30.0,
-                    onPressed: () {
-                      Scaffold.of(context).openEndDrawer();
-                    },
+                  const Padding(
+                      padding: EdgeInsets.only(right: 20.0),
+                      child: SettingPopup()
                   ),
                 ],
                 bottom: PreferredSize(
@@ -277,7 +275,7 @@ class TranslationPage extends StatefulWidget {
 class _TranslationPageState extends State<TranslationPage> {
   List _list = [];
   final CollectionReference _collectionRef =
-      FirebaseFirestore.instance.collection('quran_translations');
+  FirebaseFirestore.instance.collection('quran_translations');
 
   List menuItems = [
     ItemModel('Share', Icons.share),
@@ -376,52 +374,52 @@ class _TranslationPageState extends State<TranslationPage> {
                                         child: IntrinsicWidth(
                                           child: Column(
                                             crossAxisAlignment:
-                                                CrossAxisAlignment.stretch,
+                                            CrossAxisAlignment.stretch,
                                             children: menuItems
                                                 .map(
                                                   (item) => GestureDetector(
-                                                    behavior: HitTestBehavior
-                                                        .translucent,
-                                                    onTap: _controller.hideMenu,
-                                                    child: Container(
-                                                      height: 40,
-                                                      padding: const EdgeInsets
+                                                behavior: HitTestBehavior
+                                                    .translucent,
+                                                onTap: _controller.hideMenu,
+                                                child: Container(
+                                                  height: 40,
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 20),
+                                                  child: Row(
+                                                    children: <Widget>[
+                                                      Icon(
+                                                        item.icon,
+                                                        size: 15,
+                                                        color: Colors.white,
+                                                      ),
+                                                      Expanded(
+                                                        child: Container(
+                                                          margin:
+                                                          const EdgeInsets
+                                                              .only(
+                                                              left: 10),
+                                                          padding:
+                                                          const EdgeInsets
                                                               .symmetric(
-                                                          horizontal: 20),
-                                                      child: Row(
-                                                        children: <Widget>[
-                                                          Icon(
-                                                            item.icon,
-                                                            size: 15,
-                                                            color: Colors.white,
-                                                          ),
-                                                          Expanded(
-                                                            child: Container(
-                                                              margin:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      left: 10),
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .symmetric(
-                                                                      vertical:
-                                                                          10),
-                                                              child: Text(
-                                                                item.text,
-                                                                style:
-                                                                    const TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 12,
-                                                                ),
-                                                              ),
+                                                              vertical:
+                                                              10),
+                                                          child: Text(
+                                                            item.text,
+                                                            style:
+                                                            const TextStyle(
+                                                              color: Colors
+                                                                  .white,
+                                                              fontSize: 12,
                                                             ),
                                                           ),
-                                                        ],
+                                                        ),
                                                       ),
-                                                    ),
+                                                    ],
                                                   ),
-                                                )
+                                                ),
+                                              ),
+                                            )
                                                 .toList(),
                                           ),
                                         ),
@@ -526,9 +524,9 @@ class _SurahPageState extends State<SurahPage> {
   }
 
   final CollectionReference _collectionRef =
-      FirebaseFirestore.instance.collection('quran_texts');
+  FirebaseFirestore.instance.collection('quran_texts');
   final CollectionReference _collectionRefs =
-      FirebaseFirestore.instance.collection('medina_mushaf_pages');
+  FirebaseFirestore.instance.collection('medina_mushaf_pages');
 
   Future<void> getData() async {
     // Get docs from collection reference
@@ -596,10 +594,10 @@ class _SurahPageState extends State<SurahPage> {
                     child: Text(
                       _list.isNotEmpty
                           ? _list[i]
-                              .replaceAll(
-                                  '﴿${ArabicNumbers().convert(i + a!)}﴾',
-                                  '﴾${ArabicNumbers().convert(i + a!)}﴿').replaceAll('b','\n')
-                              .trim()
+                          .replaceAll(
+                          '﴿${ArabicNumbers().convert(i + a!)}﴾',
+                          '﴾${ArabicNumbers().convert(i + a!)}﴿')
+                          .trim()
                           : '',
                       textDirection: TextDirection.rtl,
                       textAlign: TextAlign.center,

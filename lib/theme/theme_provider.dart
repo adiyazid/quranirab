@@ -20,42 +20,38 @@ class ThemeProvider extends ChangeNotifier {
 }
 
 class QuranThemes {
-
   static final darkTheme = ThemeData(
+    textSelectionColor: Colors.white,//text color  white black
     indicatorColor: Colors.orange,
     primarySwatch: Colors.orange,
     bottomAppBarColor: Colors.orange,
-    dividerColor: Colors.orange,
+    dividerColor: const Color(0xFFD2D6DA), // stroke color = white orange
     cardColor: Colors.orange,
     canvasColor: Colors.orange,
-    focusColor: Colors.orange,
+    focusColor: const Color(0xFF808BA1),
+    secondaryHeaderColor: const Color(0xFFD2D6DA),//white(d2d6da) black color
     scaffoldBackgroundColor: const Color(0xFF666666),
-    primaryColor: const Color(0xFFD2D6DA),
-    iconTheme: const IconThemeData(color: Colors.white),
-    textSelectionTheme:
-        const TextSelectionThemeData(cursorColor: Colors.orange),
-    colorScheme: const ColorScheme.dark(
-      background: Color(0xFF666666),
-      surface: Colors.white,
-    ),
+    primaryColor: const Color(0xFF67748E),
+    iconTheme: const IconThemeData(color: Colors.white), // icon color white and orange
+    // textSelectionTheme:
+    // const TextSelectionThemeData(cursorColor: Colors.orange),
+    colorScheme: const ColorScheme.dark(),
   );
   static final lightTheme = ThemeData(
+    textSelectionColor: Colors.black,
     canvasColor: Colors.orange,
-    focusColor: Colors.orange,
+    focusColor: Colors.white,
+    secondaryHeaderColor:Colors.black,
     scaffoldBackgroundColor: Colors.white,
-    primaryColor: Colors.white,
-    colorScheme: const ColorScheme.light(
-      background: Colors.white,
-      surface: Colors.black,
-    ),
-    iconTheme: const IconThemeData(color: Colors.black),
+    primaryColor: const Color(0xFFFFC896),
+    colorScheme: const ColorScheme.light(),
+    iconTheme: const IconThemeData(color: Color(0xFFE86F00)),
     indicatorColor: Colors.orange,
     primarySwatch: Colors.orange,
     bottomAppBarColor: Colors.orange,
-    dividerColor: Colors.orange,
+    dividerColor: const Color(0xFFE86F00),
     cardColor: Colors.orange,
-    textSelectionTheme: const TextSelectionThemeData(
-      cursorColor: Colors.orange,
-    ),
+    // textSelectionTheme:
+    // const TextSelectionThemeData(cursorColor: Colors.orange),
   );
 }
