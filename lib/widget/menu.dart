@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quranirab/quiz_module/Quiz.Home.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/home.page.dart';
 
@@ -34,7 +35,6 @@ class Menu extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(255, 0, 0, 0),
                   child: IconButton(
-
                     onPressed: () { Navigator.of(context).pop(); }, icon: const Icon(Icons.close),color: Theme.of(context).textSelectionColor,
                     iconSize: 20,
                     splashRadius: 15,
@@ -84,6 +84,7 @@ class Menu extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             buildMenuItem(
+              darkMode: themeProvider.isDarkMode,
               text: 'Quiz',
               icon: Icons.menu_book,
               onTap: () {

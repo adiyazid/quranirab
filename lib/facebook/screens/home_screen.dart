@@ -4,14 +4,12 @@ import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:quranirab/facebook/widgets/circle_button.dart';
 import 'package:quranirab/facebook/widgets/more_options_list.dart';
 import 'package:quranirab/facebook/widgets/responsive.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/widget/LanguagePopup.dart';
 import 'package:quranirab/widget/SettingPopup.dart';
 import 'package:quranirab/widget/menu.dart';
-import 'package:quranirab/widget/setting.dart';
 
 import 'Appbar/appbar.dart';
 
@@ -112,16 +110,14 @@ class _HomeScreenDesktopState extends State<_HomeScreenDesktop> {
           headerSliverBuilder: (context, value) {
             return [
               SliverAppBar(
+                iconTheme: Theme.of(context).iconTheme,
                 leading: IconButton(
-                  icon: Icon(
-                    Icons.menu,
-                    color: Theme.of(context).colorScheme.onBackground,
-                  ),
+                  icon: const Icon(Icons.menu,),
                   onPressed: () {
                     Scaffold.of(context).openDrawer();
                   },
                 ),
-                backgroundColor: Theme.of(context).colorScheme.background,
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 title: const CircleAvatar(
                   backgroundImage: AssetImage('assets/quranirab.png'),
                   radius: 18.0,
@@ -150,7 +146,6 @@ class _HomeScreenDesktopState extends State<_HomeScreenDesktop> {
                       Row(children: [
                         Container(
                           width: MediaQuery.of(context).size.width * 0.3,
-                          color: const Color(0xff666666),
                           child: ListTile(
                             title: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -195,24 +190,19 @@ class _HomeScreenDesktopState extends State<_HomeScreenDesktop> {
                             ],
                           ),
                         ),
-                        const Spacer(),
-                        Icon(
-                          MdiIcons.bookOpen,
-                          color: (themeProvider.isDarkMode)
-                              ? const Color(0xffD2D6DA)
-                              : const Color(0xffE86F00),
-                        ),
+                        const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),
+
+                        const Icon(MdiIcons.bookOpen,),
                         const Spacer(),
                       ]),
                       Container(
                         width: MediaQuery.of(context).size.width,
-                        color: const Color(0xff67748E),
                         child: TabBar(
                             indicatorPadding: const EdgeInsets.all(8),
                             indicator: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
                                 // Creates border
-                                color: const Color(0xff808BA1)),
+                                color:Theme.of(context).primaryColor),
                             tabs: [
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -314,172 +304,180 @@ class _TranslationPageState extends State<TranslationPage> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Container(
-      decoration: BoxDecoration(
-        border: Border.all(
-            color: (themeProvider.isDarkMode)
-                ? const Color(0xffffffff)
-                : const Color(0xffFFB55F)),
-      ),
-      child: Stack(
-        children: [
-          Align(
-            alignment: Alignment.centerRight,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 16.0, top: 16),
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.78,
-                child: ListView.builder(
-                  itemCount: _list.length,
-                  controller: _controllers,
-                  itemBuilder: (BuildContext context, int index) {
-                    return SizedBox(
-                      height: 132,
-                      child: Card(
-                        semanticContainer: true,
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        elevation: 5,
-                        margin: const EdgeInsets.all(10),
-                        color: (themeProvider.isDarkMode)
-                            ? const Color(0xffC4C4C4)
-                            : const Color(0xffFFF5EC),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
-                                      color: const Color(0xff67748E),
-                                    ),
-                                    width: 40,
-                                    child: Center(
-                                      child: Text(
-                                        '1:${index + 1}',
-                                        style: const TextStyle(
-                                            fontSize: 18, color: Colors.white),
+        color: (themeProvider.isDarkMode)
+            ? const Color(0xff666666)
+            : const Color(0xFFffffff),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+              color: (themeProvider.isDarkMode)
+                  ? const Color(0xffD2D6DA)
+                  : const Color(0xFFF75A38)),
+        ),
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.centerRight,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 16.0, top: 16),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.78,
+                  child: ListView.builder(
+                    itemCount: _list.length,
+                    controller: _controllers,
+                    itemBuilder: (BuildContext context, int index) {
+                      return SizedBox(
+                        height: 132,
+                        child: Card(
+                          semanticContainer: true,
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          elevation: 5,
+                          margin: const EdgeInsets.all(10),
+                          color: (themeProvider.isDarkMode)
+                              ? const Color(0xffC4C4C4)
+                              : const Color(0xffFFF5EC),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: (themeProvider.isDarkMode)
+                                            ? const Color(0xff67748E)
+                                            : const Color(0xffFFEEB0),
                                       ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  CustomPopupMenu(
-                                    menuBuilder: () => ClipRRect(
-                                      borderRadius: BorderRadius.circular(5),
-                                      child: Container(
-                                        color: const Color(0xFF4C4C4C),
-                                        child: IntrinsicWidth(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.stretch,
-                                            children: menuItems
-                                                .map(
-                                                  (item) => GestureDetector(
-                                                behavior: HitTestBehavior
-                                                    .translucent,
-                                                onTap: _controller.hideMenu,
-                                                child: Container(
-                                                  height: 40,
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 20),
-                                                  child: Row(
-                                                    children: <Widget>[
-                                                      Icon(
-                                                        item.icon,
-                                                        size: 15,
-                                                        color: Colors.white,
-                                                      ),
-                                                      Expanded(
-                                                        child: Container(
-                                                          margin:
-                                                          const EdgeInsets
-                                                              .only(
-                                                              left: 10),
-                                                          padding:
-                                                          const EdgeInsets
-                                                              .symmetric(
-                                                              vertical:
-                                                              10),
-                                                          child: Text(
-                                                            item.text,
-                                                            style:
-                                                            const TextStyle(
-                                                              color: Colors
-                                                                  .white,
-                                                              fontSize: 12,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            )
-                                                .toList(),
-                                          ),
+                                      width: 40,
+                                      child: Center(
+                                        child: Text(
+                                          '1:${index + 1}',
+                                          style:  TextStyle(
+                                              fontSize: 18, color: Theme.of(context).textSelectionColor),
                                         ),
                                       ),
                                     ),
-                                    pressType: PressType.singleClick,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        color: const Color(0xff67748E),
+                                    const SizedBox(width: 8),
+                                    CustomPopupMenu(
+                                      menuBuilder: () => ClipRRect(
+                                        borderRadius: BorderRadius.circular(5),
+                                        child: Container(
+                                          color: Theme.of(context).primaryColor,
+                                          child: IntrinsicWidth(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                              children: menuItems
+                                                  .map(
+                                                    (item) => GestureDetector(
+                                                  behavior: HitTestBehavior
+                                                      .translucent,
+                                                  onTap: _controller.hideMenu,
+                                                  child: Container(
+                                                    height: 40,
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 20),
+                                                    child: Row(
+                                                      children: <Widget>[
+                                                        Icon(
+                                                          item.icon,
+                                                          size: 15,
+                                                          color: Theme.of(context).textSelectionColor,
+                                                        ),
+                                                        Expanded(
+                                                          child: Container(
+                                                            margin:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                left: 10),
+                                                            padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                                vertical:
+                                                                10),
+                                                            child: Text(
+                                                              item.text,
+                                                              style:
+                                                              TextStyle(
+                                                                color: Theme.of(context).textSelectionColor,
+                                                                fontSize: 12,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                                  .toList(),
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                      width: 40,
-                                      child: Icon(Icons.more_horiz),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Center(
-                              child: ListTile(
-                                title: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        _list[index],
-                                        style: const TextStyle(fontSize: 18),
+                                      pressType: PressType.singleClick,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(8),
+                                            color:(themeProvider.isDarkMode)
+                                                ? const Color(0xff67748E)
+                                                : const Color(0xffFFEEB0),
+                                        ),
+                                        width: 40,
+                                        child:  Icon(Icons.more_horiz,color: Theme.of(context).textSelectionColor,),
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                            ),
-                          ],
+                              Center(
+                                child: ListTile(
+                                  title: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          _list[index],
+                                          style: const TextStyle(fontSize: 18),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.2,
-              decoration: BoxDecoration(
-                border: Border.all(
-                    color: (themeProvider.isDarkMode)
-                        ? const Color(0xffffffff)
-                        : const Color(0xffFFB55F)),
-                color: (themeProvider.isDarkMode)
-                    ? const Color(0xff808ba1)
-                    : const Color(0xfffff3ca),
-              ),
-              child: const MoreOptionsList(
-                surah: 'Straight',
+            Align(
+              alignment: Alignment.topLeft,
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.2,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                      color: (themeProvider.isDarkMode)
+                          ? const Color(0xffD2D6DA)
+                          : const Color(0xffFFB55F)),
+                  color: (themeProvider.isDarkMode)
+                      ? const Color(0xff808ba1)
+                      : const Color(0xffFFF3CA),
+                ),
+                child: const MoreOptionsList(
+                  surah: 'Straight',
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -567,73 +565,78 @@ class _SurahPageState extends State<SurahPage> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    return Stack(
-      children: [
-        Align(
-          alignment: Alignment.center,
-          child: Center(
-            child: ListView.builder(
-              itemCount: _list.length,
-              itemBuilder: (BuildContext context, int i) {
-                if (context.debugDoingBuild) {
-                  return const CircularProgressIndicator();
-                }
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      ontap = true;
-                    });
-                  },
-                  onDoubleTap: () {
-                    setState(() {
-                      ontap = false;
-                    });
-                  },
-                  child: Tooltip(
-                    message: 'Click to show details ayah ${i + 1}',
-                    child: Text(
-                      _list.isNotEmpty
-                          ? _list[i]
-                          .replaceAll(
-                          '﴿${ArabicNumbers().convert(i + a!)}﴾',
-                          '﴾${ArabicNumbers().convert(i + a!)}﴿')
-                          .trim()
-                          : '',
-                      textDirection: TextDirection.rtl,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                          fontSize: 40,
-                          fontFamily: 'MeQuran2',
-                          color: Colors.white),
+    return Container(
+      color: themeProvider.isDarkMode
+          ? const Color(0xff9A9A9A)
+          : const Color(0xffFFF5EC),
+      child: Stack(
+        children: [
+          Align(
+            alignment: Alignment.center,
+            child: Center(
+              child: ListView.builder(
+                itemCount: _list.length,
+                itemBuilder: (BuildContext context, int i) {
+                  if (context.debugDoingBuild) {
+                    return const CircularProgressIndicator();
+                  }
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        ontap = true;
+                      });
+                    },
+                    onDoubleTap: () {
+                      setState(() {
+                        ontap = false;
+                      });
+                    },
+                    child: Tooltip(
+                      message: 'Click to show details ayah ${i + 1}',
+                      child: Text(
+                        _list.isNotEmpty
+                            ? _list[i]
+                            .replaceAll(
+                            '﴿${ArabicNumbers().convert(i + a!)}﴾',
+                            '﴾${ArabicNumbers().convert(i + a!)}﴿')
+                            .trim()
+                            : '',
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            fontSize: 40,
+                            fontFamily: 'MeQuran2',
+                            color: Colors.black),
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
-        Visibility(
-          visible: ontap,
-          child: Align(
-            alignment: Alignment.topLeft,
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.2,
-              decoration: BoxDecoration(
-                border: Border.all(
-                    color: (themeProvider.isDarkMode)
-                        ? const Color(0xffffffff)
-                        : const Color(0xffFFB55F)),
-                color: (themeProvider.isDarkMode)
-                    ? const Color(0xff808ba1)
-                    : const Color(0xfffff3ca),
-              ),
-              child: const MoreOptionsList(
-                surah: 'Straight',
+                  );
+                },
               ),
             ),
           ),
-        ),
-      ],
+          Visibility(
+            visible: ontap,
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.2,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                      color: (themeProvider.isDarkMode)
+                          ? const Color(0xffffffff)
+                          : const Color(0xffFFB55F)),
+                  color: (themeProvider.isDarkMode)
+                      ? const Color(0xff808ba1)
+                      : const Color(0xfffff3ca),
+                ),
+                child: const MoreOptionsList(
+                  surah: 'Straight',
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

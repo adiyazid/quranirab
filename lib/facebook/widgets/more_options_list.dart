@@ -180,9 +180,7 @@ class _Option extends StatelessWidget {
               style: TextStyle(
                 fontFamily: 'MeQuran2',
                 fontSize: 24,
-                color: Theme.of(context)
-                    .colorScheme
-                    .surface, // Text colour here
+                color: Theme.of(context).colorScheme.surface, // Text colour here
               ),
             ),
           ),
