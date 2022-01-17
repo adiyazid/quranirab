@@ -97,13 +97,14 @@ class _HomeScreenDesktop extends StatefulWidget {
 }
 
 class _HomeScreenDesktopState extends State<_HomeScreenDesktop> {
+  var ontap = true;
+
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       backgroundColor: const Color(0xff666666),
       drawer: const Menu(),
-      //endDrawer: const Setting(),
       body: DefaultTabController(
         length: 2,
         child: NestedScrollView(
@@ -246,12 +247,87 @@ class _HomeScreenDesktopState extends State<_HomeScreenDesktop> {
               ),
             ];
           },
-          body: const TabBarView(
-            children: [
-              TranslationPage(),
-              SurahPage('1', '1'),
-            ],
-          ),
+          body: Stack(children: [
+            const TabBarView(
+              children: [
+                TranslationPage(),
+                SurahPage('1', '1'),
+              ],
+            ),
+            Visibility(
+              visible: ontap,
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.2,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: (themeProvider.isDarkMode)
+                            ? const Color(0xffffffff)
+                            : const Color(0xffFFB55F)),
+                    color: (themeProvider.isDarkMode)
+                        ? const Color(0xff808ba1)
+                        : const Color(0xfffff3ca),
+                  ),
+                  child: const MoreOptionsList(
+                    surah: 'Straight',
+                  ),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.1,
+                width: MediaQuery.of(context).size.width * 0.8,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                      color: (themeProvider.isDarkMode)
+                          ? const Color(0xffffffff)
+                          : const Color(0xffFFB55F)),
+                  color: Theme.of(context).colorScheme.background,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                          primary: (themeProvider.isDarkMode)
+                              ? const Color(0xff808BA1)
+                              : const Color(0xfffcd77a)),
+                      child: const Text(
+                        'Previous Page',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    const SizedBox(width: 25),
+                    ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                            primary: (themeProvider.isDarkMode)
+                                ? const Color(0xff4C6A7A)
+                                : const Color(0xffffeeb0)),
+                        child: const Text(
+                          'Beginning Surah',
+                          style: TextStyle(color: Colors.black),
+                        )),
+                    const SizedBox(width: 25),
+                    ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                            primary: (themeProvider.isDarkMode)
+                                ? const Color(0xff808BA1)
+                                : const Color(0xfffcd77a)),
+                        child: const Text(
+                          'Next Page',
+                          style: TextStyle(color: Colors.black),
+                        )),
+                  ],
+                ),
+              ),
+            )
+          ]),
         ),
       ),
     );
@@ -566,42 +642,12 @@ class _SurahPageState extends State<SurahPage> {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
     return Stack(
       children: [
-        Align(
-          alignment: Alignment.center,
-          child: Center(
-            //     child: RichText(
-            //   textDirection: TextDirection.rtl,
-            //   textAlign: TextAlign.center,
-            //   text: TextSpan(
-            //     style: const TextStyle(
-            //         fontSize: 40, fontFamily: 'MeQuran2', color: Colors.white),
-            //     children: <TextSpan>[
-            //       TextSpan(
-            //           text: _list
-            //               .join()
-            //               .replaceAll('﴾', '')
-            //               .replaceAll('﴿', '')
-            //               .replaceAll(ArabicNumbers().convert(1),
-            //                   '﴾${ArabicNumbers().convert(1)}﴿')
-            //               .replaceAll(ArabicNumbers().convert(2),
-            //                   '﴾${ArabicNumbers().convert(2)}﴿')
-            //               .replaceAll(' ${ArabicNumbers().convert(3)}',
-            //                   '﴿${ArabicNumbers().convert(3)}﴾')
-            //               .replaceAll(ArabicNumbers().convert(4),
-            //                   '﴾${ArabicNumbers().convert(4)}﴿')
-            //               .replaceAll(' ${ArabicNumbers().convert(5)}',
-            //                   '﴿${ArabicNumbers().convert(5)}﴾')
-            //               .replaceAll(' ${ArabicNumbers().convert(6)}',
-            //                   '﴿${ArabicNumbers().convert(6)}﴾')
-            //               .replaceAll(ArabicNumbers().convert(7),
-            //                   '﴾${ArabicNumbers().convert(7)}﴿'),
-            //           style: const TextStyle(fontWeight: FontWeight.bold)),
-            //     ],
-            //   ),
-            // )
+        Padding(
+          padding: const EdgeInsets.only(left: 342.0),
+          child: Align(
+            alignment: Alignment.centerRight,
             child: ListView.builder(
               itemCount: _list.length,
               itemBuilder: (BuildContext context, int i) {
@@ -639,27 +685,6 @@ class _SurahPageState extends State<SurahPage> {
                   ),
                 );
               },
-            ),
-          ),
-        ),
-        Visibility(
-          visible: ontap,
-          child: Align(
-            alignment: Alignment.topLeft,
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.2,
-              decoration: BoxDecoration(
-                border: Border.all(
-                    color: (themeProvider.isDarkMode)
-                        ? const Color(0xffffffff)
-                        : const Color(0xffFFB55F)),
-                color: (themeProvider.isDarkMode)
-                    ? const Color(0xff808ba1)
-                    : const Color(0xfffff3ca),
-              ),
-              child: const MoreOptionsList(
-                surah: 'Straight',
-              ),
             ),
           ),
         ),
