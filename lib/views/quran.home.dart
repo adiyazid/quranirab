@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:quranirab/themes/theme_model.dart';
-import 'package:quranirab/views/test.dart';
 import 'nav.draw.dart';
 
 class QuranHome extends StatefulWidget {
@@ -132,27 +129,13 @@ class _QuranHomeState extends State<QuranHome> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeModel>(
-        builder: (context, ThemeModel themeNotifier, child) {
+
       return Scaffold(
         drawer: navDrawer(),
         appBar: AppBar(
           backgroundColor: Colors.orange[700],
           elevation: 0,
           actions: [
-            IconButton(
-                icon: Icon(
-                    themeNotifier.isDark
-                        ? Icons.nightlight_round
-                        : Icons.wb_sunny,
-                    color: themeNotifier.isDark
-                        ? Colors.white
-                        : Colors.grey.shade900),
-                onPressed: () {
-                  themeNotifier.isDark
-                      ? themeNotifier.isDark = false
-                      : themeNotifier.isDark = true;
-                })
           ],
         ),
         // body: GridView.builder(
@@ -186,7 +169,6 @@ class _QuranHomeState extends State<QuranHome> {
         //       );
         //     }),
       );
-    });
   }
 }
 

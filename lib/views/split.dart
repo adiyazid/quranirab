@@ -2,9 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 import 'package:quranirab/models/surah.model.dart';
-import 'package:quranirab/themes/theme_model.dart';
+
 
 import 'nav.draw.dart';
 
@@ -51,27 +50,14 @@ class _SplitState extends State<Split> {
         future: loadData(),
         builder: (context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData) {
-            return Consumer<ThemeModel>(
-                builder: (context, ThemeModel themeNotifier, child) {
+
                 return Scaffold(
                   drawer: navDrawer(),
                   appBar: AppBar(
                     backgroundColor: Colors.orange[700],
                     elevation: 0,
                     actions: [
-                      IconButton(
-                          icon: Icon(
-                              themeNotifier.isDark
-                                  ? Icons.nightlight_round
-                                  : Icons.wb_sunny,
-                              color: themeNotifier.isDark
-                                  ? Colors.white
-                                  : Colors.grey.shade900),
-                          onPressed: () {
-                            themeNotifier.isDark
-                                ? themeNotifier.isDark = false
-                                : themeNotifier.isDark = true;
-                          })
+
                     ],
                   ),
                   body: Center(
@@ -88,8 +74,7 @@ class _SplitState extends State<Split> {
                     ),
                   ),
                 );
-              }
-            );
+
           } else {
             return Container();
           }

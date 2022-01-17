@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
-import 'package:quranirab/themes/theme_model.dart';
 import 'package:quranirab/widget/language.dart';
 import 'package:quranirab/widget/menu.dart';
 import 'package:quranirab/widget/setting.dart';
@@ -53,8 +52,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     TabController _tabController = TabController(length: 2, vsync: this);
-    return Consumer<ThemeModel>(
-        builder: (context, ThemeModel themeNotifier, child) {
+
       return Scaffold(
         resizeToAvoidBottomInset: false,
         drawer: Menu(),
@@ -183,7 +181,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           ],
         ),
       );
-    });
+
   }
 
   buildSuggestions(BuildContext context) {
