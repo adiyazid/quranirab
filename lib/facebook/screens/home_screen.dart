@@ -192,7 +192,11 @@ class _HomeScreenDesktopState extends State<_HomeScreenDesktop> {
                         ),
                         const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),
 
-                        const Icon(MdiIcons.bookOpen,),
+                        ImageIcon(
+                          const AssetImage("translation_icon.png"),
+                          color: Theme.of(context).iconTheme.color,
+                          size: 48,
+                        ),
                         const Spacer(),
                       ]),
                       Container(
