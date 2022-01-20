@@ -1,18 +1,17 @@
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 
 
-class LangPopup extends StatefulWidget {
-  const LangPopup({Key? key}) : super(key: key);
+class TransPopup extends StatefulWidget {
+  const TransPopup({Key? key}) : super(key: key);
 
   @override
-  State<LangPopup> createState() => _LangPopupState();
+  State<TransPopup> createState() => _TransPopupState();
 }
 
-class _LangPopupState extends State<LangPopup>{
+class _TransPopupState extends State<TransPopup>{
   final padding = const EdgeInsets.symmetric(horizontal: 10);
 
 
@@ -23,12 +22,15 @@ class _LangPopupState extends State<LangPopup>{
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return CustomPopupMenu(
-      child: const Icon(Icons.language),
+      child: const ImageIcon(
+        AssetImage("translation_icon.png"),
+        size: 50,
+      ),
 
       pressType: PressType.singleClick,
       showArrow: false,
-      verticalMargin: 1,
-      horizontalMargin: 50,
+      verticalMargin: 0,
+      horizontalMargin: 0,
       menuBuilder: () {
         return ClipRRect(
           borderRadius: BorderRadius.circular(5),
@@ -38,7 +40,7 @@ class _LangPopupState extends State<LangPopup>{
                 Container(
                   margin: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: themeProvider.isDarkMode?const Color(0xFF67748E):const Color(0xFFFFC692),
+                      color: themeProvider.isDarkMode?const Color(0xFF67748E):const Color(0xFFFFC692),
                       borderRadius: const BorderRadius.all(
                         Radius.circular(12.0),
                       ),
@@ -54,13 +56,13 @@ class _LangPopupState extends State<LangPopup>{
                         padding: padding,
                         children: <Widget>[
                           buildMenuItem(
-                              text: 'Language',
+                              text: 'Translation',
                               enable: false,
                               darkMode: themeProvider.isDarkMode,
                               align: TextAlign.left,
                               onTap: (){}
                           ),
-                           const Divider(
+                          const Divider(
                               color: Color(0xFFC4C4C4),thickness: 1.0,),
                           buildMenuItem(
                               text: 'English',
