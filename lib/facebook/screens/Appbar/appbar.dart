@@ -30,7 +30,7 @@ class _AppbarState extends State<Appbar> {
       actions: <Widget>[
         Padding(
           padding: const EdgeInsets.only(right: 20.0),
-          child: IconButton(onPressed: () {  }, icon: const Icon(Icons.search,size: 26.0,)
+          child: IconButton(onPressed: () {  }, icon:Icon(Icons.search,size: 26.0)
           ),
         ),
         const Padding(

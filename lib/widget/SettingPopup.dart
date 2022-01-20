@@ -84,7 +84,7 @@ class _SettingPopupState extends State<SettingPopup> with TickerProviderStateMix
     final themeProvider = Provider.of<ThemeProvider>(context);
     final brightness = SchedulerBinding.instance!.window.platformBrightness;
     return CustomPopupMenu(
-            child: const Icon(Icons.settings,),
+            child: const Icon(Icons.settings),
             pressType: PressType.singleClick,
             showArrow: false,
             horizontalMargin: 10,
@@ -94,7 +94,7 @@ class _SettingPopupState extends State<SettingPopup> with TickerProviderStateMix
                 child: Container(
                   margin: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                      color: themeProvider.isDarkMode?Color(0xFF67748E):Color(0xFFFFC692),
+                      color: themeProvider.isDarkMode?const Color(0xFF67748E):const Color(0xFFFFC692),
                       borderRadius: const BorderRadius.all(
                         Radius.circular(12.0),
                       ),
@@ -208,7 +208,7 @@ class _SettingPopupState extends State<SettingPopup> with TickerProviderStateMix
                                 child: Column(
                                   children: [
                                     Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 10, 370, 16),
+                                      padding: const EdgeInsets.fromLTRB(0, 10, 370, 16),
                                       child: Text('Font Size',
                                           style: TextStyle(color: Theme.of(context).textSelectionColor,fontSize: 16)),
                                     ),

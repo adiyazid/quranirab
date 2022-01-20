@@ -121,28 +121,28 @@ class _BasicsContainerScreenState extends State<BasicsContainerScreen> {
       height: windowSize/4,
       decoration: BoxDecoration(
         color: Colors.orange.shade900,
-        borderRadius: BorderRadius.only(topRight: Radius.circular(50)),
+        borderRadius: const BorderRadius.only(topRight: Radius.circular(50)),
       ),
-      child: Center(child: Text("8"),),
+      child: const Center(child: Text("8"),),
     )));
 
-    list.add(SizedBox(height: 10,));
+    list.add(const SizedBox(height: 10,));
 
     list.add(UnconstrainedBox(child: Container(
       width: windowSize/2,
       height: windowSize/4,
       decoration: BoxDecoration(
         color: Colors.orange.shade900,
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(50)),
+        borderRadius: const BorderRadius.only(topLeft: Radius.circular(50)),
       ),
-      child: Center(child: Text("9"),),
+      child: const Center(child: Text("9"),),
     )));
 
-    list.add(SizedBox(height: 20,));
+    list.add(const SizedBox(height: 20,));
 
     // list.add(Container10(windowSize: windowSize));
 
-    list.add(SizedBox(height: 20,));
+    list.add(const SizedBox(height: 20,));
 
     list.add(UnconstrainedBox(child: Container(
       width: windowSize/3,
@@ -151,7 +151,7 @@ class _BasicsContainerScreenState extends State<BasicsContainerScreen> {
         color: Colors.blueAccent,
         borderRadius: new BorderRadius.circular(10),
         boxShadow: [
-          BoxShadow(
+          const BoxShadow(
             color: Colors.greenAccent,
             spreadRadius: 3,
             blurRadius: 9,
@@ -159,10 +159,10 @@ class _BasicsContainerScreenState extends State<BasicsContainerScreen> {
           ),
         ],
       ),
-      child: Center(child: Text("11"),),
+      child: const Center(child: Text("11"),),
     )));
 
-    list.add(SizedBox(height: 20,));
+    list.add(const SizedBox(height: 20,));
 
     list.add(UnconstrainedBox(child: Container(
       width: windowSize/3,
@@ -171,7 +171,7 @@ class _BasicsContainerScreenState extends State<BasicsContainerScreen> {
         color: Colors.brown,
         borderRadius: new BorderRadius.circular(10),
         boxShadow: [
-          BoxShadow(
+          const BoxShadow(
             color: Colors.red,
             spreadRadius: 3,
             blurRadius: 9,
@@ -179,10 +179,10 @@ class _BasicsContainerScreenState extends State<BasicsContainerScreen> {
           ),
         ],
       ),
-      child: Center(child: Text("12"),),
+      child: const Center(child: Text("12"),),
     )));
 
-    list.add(SizedBox(height: 20,));
+    list.add(const SizedBox(height: 20,));
 
     list.add(UnconstrainedBox(child: ClipPath(
         clipper: ClipPathClass1(),
@@ -190,10 +190,10 @@ class _BasicsContainerScreenState extends State<BasicsContainerScreen> {
       width: windowSize/3,
       height: windowSize/3,
       color: Colors.lightGreen,
-      child: Center(child: Text("13"),),
+      child: const Center(child: Text("13"),),
     ))));
 
-    list.add(SizedBox(height: 20,));
+    list.add(const SizedBox(height: 20,));
 
     list.add(UnconstrainedBox(child: ClipPath(
         clipper: ClipPathClass2(),
@@ -201,12 +201,12 @@ class _BasicsContainerScreenState extends State<BasicsContainerScreen> {
           width: windowSize/3,
           height: windowSize/3,
           color: Colors.lightGreen,
-          child: Align(
+          child: const Align(
             alignment: Alignment.bottomRight,
             child: Text("14"),),
         ))));
 
-    list.add(SizedBox(height: 20,));
+    list.add(const SizedBox(height: 20,));
 
     list.add(UnconstrainedBox(child: ClipPath(
         clipper: ClipPathClass3(),
@@ -214,12 +214,12 @@ class _BasicsContainerScreenState extends State<BasicsContainerScreen> {
           width: windowSize/3,
           height: windowSize/3,
           color: Colors.red,
-          child: Align(
+          child: const Align(
             alignment: Alignment.topLeft,
             child: Text("15"),),
         ))));
 
-    list.add(SizedBox(height: 20,));
+    list.add(const SizedBox(height: 20,));
 
     list.add(UnconstrainedBox(child: ClipPath(
         clipper: ClipPathClass22(),
@@ -227,34 +227,34 @@ class _BasicsContainerScreenState extends State<BasicsContainerScreen> {
           width: windowSize/3,
           height: windowSize/3,
           color: Colors.blue,
-          child: Align(
+          child: const Align(
             alignment: Alignment.topLeft,
             child: Text("22"),),
         ))));
 
     list.add(UnconstrainedBox(
         child: RotationTransition(
-            turns: new AlwaysStoppedAnimation(45/360),
+            turns: const AlwaysStoppedAnimation(45/360),
             child: Container(
       width: windowSize/3,
       height: windowSize/3,
       color: Colors.orange,
-      child: Center(child: Text("16"),),
+      child: const Center(child: Text("16"),),
     ))));
 
-    list.add(SizedBox(height: 20,));
+    list.add(const SizedBox(height: 20,));
 
     list.add(UnconstrainedBox(
         child: RotationTransition(
-            turns: new AlwaysStoppedAnimation((360-45)/360),
+            turns: const AlwaysStoppedAnimation((360-45)/360),
             child: Container(
               width: windowSize/3,
               height: windowSize/3,
               color: Colors.yellowAccent,
-              child: Center(child: Text("17"),),
+              child: const Center(child: Text("17"),),
             ))));
 
-    list.add(SizedBox(height: 50,));
+    list.add(const SizedBox(height: 50,));
 
     list.add(UnconstrainedBox(child: ClipPath(
         clipper: ClipPathClass4(),
@@ -262,10 +262,10 @@ class _BasicsContainerScreenState extends State<BasicsContainerScreen> {
           width: windowSize/3,
           height: windowSize/4,
           color: Colors.lightGreen,
-          child: Center(child: Text("18"),),
+          child: const Center(child: Text("18"),),
         ))));
 
-    list.add(SizedBox(height: 20,));
+    list.add(const SizedBox(height: 20,));
 
     list.add(UnconstrainedBox(child: ClipPath(
         clipper: ClipPathClass5(),
@@ -273,10 +273,10 @@ class _BasicsContainerScreenState extends State<BasicsContainerScreen> {
           width: windowSize/3,
           height: windowSize/4,
           color: Colors.red,
-          child: Center(child: Text("19"),),
+          child: const Center(child: Text("19"),),
         ))));
 
-    list.add(SizedBox(height: 40,));
+    list.add(const SizedBox(height: 40,));
 
     list.add(UnconstrainedBox(child: ClipPath(
         clipper: ClipPathClass6(),
@@ -284,10 +284,10 @@ class _BasicsContainerScreenState extends State<BasicsContainerScreen> {
           width: windowSize/2,
           height: windowSize/3,
           color: Colors.blue,
-          child: Center(child: Text("20"),),
+          child: const Center(child: Text("20"),),
         ))));
 
-    list.add(SizedBox(height: 40,));
+    list.add(const SizedBox(height: 40,));
 
     list.add(UnconstrainedBox(child: ClipPath(
         clipper: ClipPathClass21(),
@@ -295,10 +295,10 @@ class _BasicsContainerScreenState extends State<BasicsContainerScreen> {
           width: windowSize/2,
           height: windowSize/3,
           color: Colors.black,
-          child: Center(child: Text("21", style: TextStyle(color: Colors.white),),),
+          child: const Center(child: Text("21", style: TextStyle(color: Colors.white),),),
         ))));
 
-    list.add(SizedBox(height: 40,));
+    list.add(const SizedBox(height: 40,));
 
     list.add(UnconstrainedBox(child: ClipPath(
         // clipper: ClipPathClass23(30),
@@ -306,12 +306,12 @@ class _BasicsContainerScreenState extends State<BasicsContainerScreen> {
           width: windowSize/2,
           height: windowSize/3,
           color: Colors.greenAccent,
-          child: Center(child: Text("23", style: TextStyle(color: Colors.white),),),
+          child: const Center(child: Text("23", style: TextStyle(color: Colors.white),),),
         ))));
 
-    list.add(SizedBox(height: 40,));
+    list.add(const SizedBox(height: 40,));
 
-    list.add(SizedBox(height: 100,));
+    list.add(const SizedBox(height: 100,));
 
     return list;
   }
