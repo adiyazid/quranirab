@@ -9,6 +9,7 @@ import 'package:quranirab/facebook/widgets/responsive.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/widget/LanguagePopup.dart';
 import 'package:quranirab/widget/SettingPopup.dart';
+import 'package:quranirab/widget/TranslationPopup.dart';
 import 'package:quranirab/widget/menu.dart';
 
 import 'Appbar/appbar.dart';
@@ -192,11 +193,11 @@ class _HomeScreenDesktopState extends State<_HomeScreenDesktop> {
                         ),
                         const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),
 
-                        ImageIcon(
-                          const AssetImage("translation_icon.png"),
-                          color: Theme.of(context).iconTheme.color,
-                          size: 48,
-                        ),
+                        ElevatedButton(onPressed: ()
+                        {
+                          const TransPopup();
+                        }, child: Container()),
+
                         const Spacer(),
                       ]),
                       Container(
