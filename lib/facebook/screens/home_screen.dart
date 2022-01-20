@@ -8,6 +8,7 @@ import 'package:quranirab/facebook/widgets/responsive.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/widget/LanguagePopup.dart';
 import 'package:quranirab/widget/SettingPopup.dart';
+import 'package:quranirab/widget/TranslationPopup.dart';
 import 'package:quranirab/widget/menu.dart';
 
 import 'Appbar/appbar.dart';
@@ -111,9 +112,7 @@ class _HomeScreenDesktopState extends State<_HomeScreenDesktop> {
               SliverAppBar(
                 iconTheme: Theme.of(context).iconTheme,
                 leading: IconButton(
-                  icon: const Icon(
-                    Icons.menu,
-                  ),
+                  icon: const Icon(Icons.menu,),
                   onPressed: () {
                     Scaffold.of(context).openDrawer();
                   },
@@ -128,19 +127,17 @@ class _HomeScreenDesktopState extends State<_HomeScreenDesktop> {
                 actions: [
                   Padding(
                     padding: const EdgeInsets.only(right: 20.0),
-                    child: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.search,
-                          size: 26.0,
-                        )),
+                    child: IconButton(onPressed: () {  }, icon: const Icon(Icons.search,size: 26.0,)
+                    ),
                   ),
                   const Padding(
                       padding: EdgeInsets.only(right: 20.0),
-                      child: LangPopup()),
+                      child: LangPopup()
+                  ),
                   const Padding(
                       padding: EdgeInsets.only(right: 20.0),
-                      child: SettingPopup()),
+                      child: SettingPopup()
+                  ),
                 ],
                 bottom: PreferredSize(
                   preferredSize: const Size.fromHeight(120),
@@ -193,6 +190,13 @@ class _HomeScreenDesktopState extends State<_HomeScreenDesktop> {
                             ],
                           ),
                         ),
+                        const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),
+
+                        ElevatedButton(onPressed: ()
+                        {
+                          const TransPopup();
+                        }, child: Container()),
+
                         const Spacer(),
                         ElevatedButton(
                             onPressed: () {
@@ -270,7 +274,7 @@ class TranslationPage extends StatefulWidget {
 class _TranslationPageState extends State<TranslationPage> {
   List _list = [];
   final CollectionReference _collectionRef =
-      FirebaseFirestore.instance.collection('quran_translations');
+  FirebaseFirestore.instance.collection('quran_translations');
 
   List menuItems = [
     ItemModel('Share', Icons.share),
@@ -309,9 +313,9 @@ class _TranslationPageState extends State<TranslationPage> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Container(
-      color: (themeProvider.isDarkMode)
-          ? const Color(0xff666666)
-          : const Color(0xFFffffff),
+        color: (themeProvider.isDarkMode)
+            ? const Color(0xff666666)
+            : const Color(0xFFffffff),
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(
@@ -361,10 +365,8 @@ class _TranslationPageState extends State<TranslationPage> {
                                       child: Center(
                                         child: Text(
                                           '1:${index + 1}',
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              color: Theme.of(context)
-                                                  .textSelectionColor),
+                                          style:  TextStyle(
+                                              fontSize: 18, color: Theme.of(context).textSelectionColor),
                                         ),
                                       ),
                                     ),
@@ -437,18 +439,13 @@ class _TranslationPageState extends State<TranslationPage> {
                                       pressType: PressType.singleClick,
                                       child: Container(
                                         decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          color: (themeProvider.isDarkMode)
-                                              ? const Color(0xff67748E)
-                                              : const Color(0xffFFEEB0),
+                                          borderRadius: BorderRadius.circular(8),
+                                            color:(themeProvider.isDarkMode)
+                                                ? const Color(0xff67748E)
+                                                : const Color(0xffFFEEB0),
                                         ),
                                         width: 40,
-                                        child: Icon(
-                                          Icons.more_horiz,
-                                          color: Theme.of(context)
-                                              .textSelectionColor,
-                                        ),
+                                        child:  Icon(Icons.more_horiz,color: Theme.of(context).textSelectionColor,),
                                       ),
                                     ),
                                   ],
