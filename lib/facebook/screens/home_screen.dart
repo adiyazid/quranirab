@@ -191,14 +191,11 @@ class _HomeScreenDesktopState extends State<_HomeScreenDesktop> {
                             ],
                           ),
                         ),
-                        const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(), const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),const Spacer(),
-
-                        ElevatedButton(onPressed: ()
-                        {
-                          const TransPopup();
-                        }, child: Container()),
-
                         const Spacer(),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 20,right:8),
+                          child: TransPopup(),
+                        ),
                       ]),
                       Container(
                         width: MediaQuery.of(context).size.width,
