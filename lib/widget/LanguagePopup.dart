@@ -23,7 +23,8 @@ class _LangPopupState extends State<LangPopup>{
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return CustomPopupMenu(
-      child: const Icon(Icons.language,),
+      child: const Icon(Icons.language),
+
       pressType: PressType.singleClick,
       showArrow: false,
       verticalMargin: 1,
@@ -37,7 +38,7 @@ class _LangPopupState extends State<LangPopup>{
                 Container(
                   margin: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: themeProvider.isDarkMode?Color(0xFF67748E):Color(0xFFFFC692),
+                    color: themeProvider.isDarkMode?const Color(0xFF67748E):const Color(0xFFFFC692),
                       borderRadius: const BorderRadius.all(
                         Radius.circular(12.0),
                       ),

@@ -31,7 +31,7 @@ class QuranThemes {
     focusColor: const Color(0xFF808BA1),
     secondaryHeaderColor: const Color(0xFFD2D6DA),//white(d2d6da) black color
     scaffoldBackgroundColor: const Color(0xFF666666),
-    primaryColor: const Color(0xFF67748E),
+    primaryColor: const Color(0xFF67748E), //blue 6778e combo , peach
     iconTheme: const IconThemeData(color: Colors.white), // icon color white and orange
     // textSelectionTheme:
     // const TextSelectionThemeData(cursorColor: Colors.orange),

@@ -172,7 +172,7 @@ class _Option extends StatelessWidget {
                 border: Border(
                     bottom: BorderSide(
               color:
-                  Theme.of(context).colorScheme.surface, // Text colour here
+                  Theme.of(context).textSelectionColor, // Text colour here
               width: 1, // Underline width
             ))),
             child: Text(
@@ -180,9 +180,7 @@ class _Option extends StatelessWidget {
               style: TextStyle(
                 fontFamily: 'MeQuran2',
                 fontSize: 24,
-                color: Theme.of(context)
-                    .colorScheme
-                    .surface, // Text colour here
+                color: Theme.of(context).textSelectionColor, // Text colour here
               ),
             ),
           ),
@@ -196,7 +194,7 @@ class _Option extends StatelessWidget {
                   fontSize: 24,
                   color: (hasColor)
                       ? color
-                      : Theme.of(context).colorScheme.onSecondary,
+                      : Theme.of(context).textSelectionColor,
                 ),
               )),
         ],
