@@ -29,7 +29,7 @@ class _TransPopupState extends State<TransPopup>{
         color: Theme.of(context).iconTheme.color,
         iconSize: 48,
         splashRadius: 30,
-        tooltip: 'Translation  meenu',
+        tooltip: 'Translation  menu',
       ),
       pressType: PressType.singleClick,
       showArrow: false,
