@@ -93,7 +93,7 @@ class Menu extends StatelessWidget {
                 Navigator.pop(context);
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const QuizHome()));
-              }, darkMode: themeProvider.isDarkMode,
+              },
             ),
           ],
         ),
