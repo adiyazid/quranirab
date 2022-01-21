@@ -1,5 +1,4 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:quranirab/facebook/screens/home_screen.dart';
 import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +29,7 @@ Future<void> main() async {
             final themeProvider =
                 Provider.of<ThemeProvider>(context, listen: true);
             return MaterialApp(
-              home: const FacebookHomeScreen(),
+              home: const DummyPage(),
               themeMode: themeProvider.themeMode,
               theme: QuranThemes.lightTheme,
               darkTheme: QuranThemes.darkTheme,

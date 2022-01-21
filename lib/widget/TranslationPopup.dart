@@ -1,6 +1,5 @@
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 
@@ -29,7 +28,7 @@ class _TransPopupState extends State<TransPopup>{
         color: Theme.of(context).iconTheme.color,
         iconSize: 48,
         splashRadius: 30,
-        tooltip: 'Translation  meenu',
+        tooltip: 'Translation menu',
       ),
       pressType: PressType.singleClick,
       showArrow: false,

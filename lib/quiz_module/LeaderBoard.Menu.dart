@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:quranirab/quiz_module/LeaderBoard.Table.dart';
+import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/widget/LanguagePopup.dart';
 import 'package:quranirab/widget/SettingPopup.dart';
 import 'package:quranirab/widget/menu.dart';
@@ -20,16 +22,16 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
         headerSliverBuilder: (context, value) {
           return [
             SliverAppBar(
+              iconTheme: Theme.of(context).iconTheme,
               leading: IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.menu,
-                  color: Theme.of(context).colorScheme.onBackground,
                 ),
                 onPressed: () {
                   Scaffold.of(context).openDrawer();
                 },
               ),
-              backgroundColor: Theme.of(context).colorScheme.background,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               title: const CircleAvatar(
                 backgroundImage: AssetImage('assets/quranirab.png'),
                 radius: 18.0,

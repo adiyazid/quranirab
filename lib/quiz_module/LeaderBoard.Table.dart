@@ -44,16 +44,16 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
               headerSliverBuilder: (context, value) {
                 return [
                   SliverAppBar(
+                    iconTheme: Theme.of(context).iconTheme,
                     leading: IconButton(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.menu,
-                        color: Theme.of(context).colorScheme.onBackground,
                       ),
                       onPressed: () {
                         Scaffold.of(context).openDrawer();
                       },
                     ),
-                    backgroundColor: Theme.of(context).colorScheme.background,
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                     title: const CircleAvatar(
                       backgroundImage: AssetImage('assets/quranirab.png'),
                       radius: 18.0,
@@ -71,8 +71,7 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                             )),
                       ),
                       const Padding(
-                          padding: EdgeInsets.only(right: 20.0),
-                          child: LangPopup()),
+                          padding: EdgeInsets.only(right: 20.0), child: LangPopup()),
                       const Padding(
                           padding: EdgeInsets.only(right: 20.0),
                           child: SettingPopup()),
