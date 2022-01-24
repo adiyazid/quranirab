@@ -16,9 +16,11 @@ class LeaderBoardMenu extends StatefulWidget {
 class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       drawer: const Menu(),
       body: NestedScrollView(
+        physics: const NeverScrollableScrollPhysics(),
         headerSliverBuilder: (context, value) {
           return [
             SliverAppBar(
@@ -60,51 +62,92 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
         body: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            decoration: const BoxDecoration(
-              color: Color.fromRGBO(255, 237, 173, 1),
-            ),
+            decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(
+                      width: 2.0,
+                      color: themeProvider.isDarkMode
+                          ? Colors.white
+                          : const Color(0xffE86F00)),
+                ),
+                color: themeProvider.isDarkMode
+                    ? const Color(0xff808BA1)
+                    : const Color.fromRGBO(255, 237, 173, 1)),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  const Align(
+                  Align(
                     alignment: Alignment.topCenter,
-                    child: Text(
-                      'Leaderboards',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Color.fromRGBO(0, 0, 0, 1),
-                          fontFamily: 'Source Serif Pro',
-                          fontSize: 72,
-                          letterSpacing:
-                              0 /*percentages not used in flutter. defaulting to zero*/,
-                          fontWeight: FontWeight.normal,
-                          height: 1),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        themeProvider.isDarkMode
+                            ? Image.asset(
+                                'assets/Image2.png',
+                                scale: 2.5,
+                              )
+                            : Image.asset(
+                                'assets/Image1.png',
+                                scale: 2.5,
+                              ),
+                        const SizedBox(width: 32),
+                        Text(
+                          'Leaderboards',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: themeProvider.isDarkMode
+                                  ? Colors.white
+                                  : const Color.fromRGBO(0, 0, 0, 1),
+                              fontFamily: 'Source Serif Pro',
+                              fontSize: 72,
+                              letterSpacing:
+                                  0 /*percentages not used in flutter. defaulting to zero*/,
+                              fontWeight: FontWeight.normal,
+                              height: 1),
+                        ),
+                      ],
                     ),
                   ),
                   Container(
-                    width: 500,
+                    width: 600,
                     height: 130,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(30),
                         topRight: Radius.circular(30),
                         bottomLeft: Radius.circular(30),
                         bottomRight: Radius.circular(30),
                       ),
-                      color: Color.fromRGBO(255, 250, 208, 1),
+                      color: themeProvider.isDarkMode
+                          ? const Color(0xffD2D6DA)
+                          : const Color.fromRGBO(255, 250, 208, 1),
                     ),
-                    child: const Center(
-                      child: Text(
-                        'Overall',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Color.fromRGBO(0, 0, 0, 1),
-                            fontFamily: 'Source Serif Pro',
-                            fontSize: 64,
-                            letterSpacing:
-                                0 /*percentages not used in flutter. defaulting to zero*/,
-                            fontWeight: FontWeight.normal,
-                            height: 1),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            'assets/Image7.png',
+                            scale: 4,
+                          ),
+                          const SizedBox(
+                            width: 104,
+                          ),
+                          const Flexible(
+                            child: Text(
+                              'Overall',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Color.fromRGBO(0, 0, 0, 1),
+                                  fontFamily: 'Source Serif Pro',
+                                  fontSize: 56,
+                                  letterSpacing:
+                                      0 /*percentages not used in flutter. defaulting to zero*/,
+                                  fontWeight: FontWeight.normal,
+                                  height: 1),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -113,90 +156,150 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => LeaderBoardTable()));
+                              builder: (context) => const LeaderBoardTable()));
                     },
                     child: Container(
-                      width: 500,
+                      width: 600,
                       height: 130,
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(30),
                           topRight: Radius.circular(30),
                           bottomLeft: Radius.circular(30),
                           bottomRight: Radius.circular(30),
                         ),
-                        color: Color.fromRGBO(255, 250, 208, 1),
+                        color: themeProvider.isDarkMode
+                            ? const Color(0xffD2D6DA)
+                            : const Color.fromRGBO(255, 250, 208, 1),
                       ),
-                      child: const Center(
-                        child: Text(
-                          'Page 1 - 201',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Color.fromRGBO(0, 0, 0, 1),
-                              fontFamily: 'Source Serif Pro',
-                              fontSize: 64,
-                              letterSpacing:
-                                  0 /*percentages not used in flutter. defaulting to zero*/,
-                              fontWeight: FontWeight.normal,
-                              height: 1),
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                          child: Row(
+                            children: [
+                              Image.asset(
+                                'assets/Image7.png',
+                                scale: 4,
+                              ),
+                              const SizedBox(
+                                width: 56,
+                              ),
+                              const Flexible(
+                                child: Text(
+                                  'Page 1 - 201',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Color.fromRGBO(0, 0, 0, 1),
+                                      fontFamily: 'Source Serif Pro',
+                                      fontSize: 56,
+                                      letterSpacing:
+                                          0 /*percentages not used in flutter. defaulting to zero*/,
+                                      fontWeight: FontWeight.normal,
+                                      height: 1),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                  Container(
-                    width: 500,
-                    height: 130,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30),
-                        bottomLeft: Radius.circular(30),
-                        bottomRight: Radius.circular(30),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LeaderBoardTable()));
+                    },
+                    child: Container(
+                      width: 600,
+                      height: 130,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30),
+                          bottomLeft: Radius.circular(30),
+                          bottomRight: Radius.circular(30),
+                        ),
+                        color: themeProvider.isDarkMode
+                            ? const Color(0xffD2D6DA)
+                            : const Color.fromRGBO(255, 250, 208, 1),
                       ),
-                      color: Color.fromRGBO(255, 250, 208, 1),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'Page 202 - 402',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Color.fromRGBO(0, 0, 0, 1),
-                            fontFamily: 'Source Serif Pro',
-                            fontSize: 64,
-                            letterSpacing:
-                                0 /*percentages not used in flutter. defaulting to zero*/,
-                            fontWeight: FontWeight.normal,
-                            height: 1),
+                      child: Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Image.asset(
+                              'assets/Image7.png',
+                              scale: 4,
+                            ),
+                            const Flexible(
+                              child: Text(
+                                'Page 202 - 402',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Color.fromRGBO(0, 0, 0, 1),
+                                    fontFamily: 'Source Serif Pro',
+                                    fontSize: 56,
+                                    letterSpacing:
+                                        0 /*percentages not used in flutter. defaulting to zero*/,
+                                    fontWeight: FontWeight.normal,
+                                    height: 1),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                  Container(
-                    width: 500,
-                    height: 130,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30),
-                        bottomLeft: Radius.circular(30),
-                        bottomRight: Radius.circular(30),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LeaderBoardTable()));
+                    },
+                    child: Container(
+                      width: 600,
+                      height: 130,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30),
+                          bottomLeft: Radius.circular(30),
+                          bottomRight: Radius.circular(30),
+                        ),
+                        color: themeProvider.isDarkMode
+                            ? const Color(0xffD2D6DA)
+                            : const Color.fromRGBO(255, 250, 208, 1),
                       ),
-                      color: Color.fromRGBO(255, 250, 208, 1),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'Page 403 - 604',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Color.fromRGBO(0, 0, 0, 1),
-                            fontFamily: 'Source Serif Pro',
-                            fontSize: 64,
-                            letterSpacing:
-                                0 /*percentages not used in flutter. defaulting to zero*/,
-                            fontWeight: FontWeight.normal,
-                            height: 1),
+                      child: Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Image.asset(
+                              'assets/Image7.png',
+                              scale: 4,
+                            ),
+                            const Flexible(
+                              child: Text(
+                                'Page 403 - 604',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Color.fromRGBO(0, 0, 0, 1),
+                                    fontFamily: 'Source Serif Pro',
+                                    fontSize: 56,
+                                    letterSpacing:
+                                        0 /*percentages not used in flutter. defaulting to zero*/,
+                                    fontWeight: FontWeight.normal,
+                                    height: 1),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  )
+                  ),
                 ])),
       ),
     );
