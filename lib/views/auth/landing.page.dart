@@ -6,6 +6,8 @@ import 'package:quranirab/quiz_module/Quiz.Home.dart';
 import 'package:quranirab/views/auth/login.dart';
 import 'package:quranirab/views/data.from.firestore.dart';
 import 'package:quranirab/views/home.page.dart';
+import 'package:quranirab/views/page1.dart';
+import 'package:quranirab/views/quran.words.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -76,9 +78,9 @@ class DummyPage extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const HomePage()));
+                                builder: (context) => const Words()));
                       },
-                      child: const Text('Home')),
+                      child: const Text('Alfatihah slice')),
                   const SizedBox(
                     height: 8,
                   ),
