@@ -60,7 +60,6 @@ class _SurahPageState extends State<SurahPage> {
     super.initState();
   }
 
-
   final CollectionReference _collectionRef =
       FirebaseFirestore.instance.collection('quran_texts');
   final CollectionReference _collectionRefs =
