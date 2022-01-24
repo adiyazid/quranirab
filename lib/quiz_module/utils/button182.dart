@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+//for button in score screen
 button182(String text, TextStyle style, Color color, double _radius, Function _callback, bool enable){
   return Stack(
     children: <Widget>[
