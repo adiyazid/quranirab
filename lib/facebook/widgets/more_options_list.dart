@@ -125,7 +125,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                       widget.surah,
                       style: TextStyle(
                         fontSize: 30,
-                        color: Theme.of(context).colorScheme.onSecondary,
+                        color: Theme.of(context).textSelectionColor,
                       ),
                     )),
               ),
@@ -171,10 +171,10 @@ class _Option extends StatelessWidget {
             decoration: BoxDecoration(
                 border: Border(
                     bottom: BorderSide(
-              color:
-                  Theme.of(context).textSelectionColor, // Text colour here
-              width: 1, // Underline width
-            ))),
+                      color:
+                      Theme.of(context).textSelectionColor, // Text colour here
+                      width: 1, // Underline width
+                    ))),
             child: Text(
               answer,
               style: TextStyle(

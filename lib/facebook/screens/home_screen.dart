@@ -1,8 +1,6 @@
-import 'package:arabic_numbers/arabic_numbers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/facebook/widgets/more_options_list.dart';
 import 'package:quranirab/facebook/widgets/responsive.dart';
@@ -23,7 +21,7 @@ class FacebookHomeScreen extends StatefulWidget {
 
 class _FacebookHomeScreenState extends State<FacebookHomeScreen> {
   final TrackingScrollController _trackingScrollController =
-  TrackingScrollController();
+      TrackingScrollController();
 
   @override
   void dispose() {
@@ -113,7 +111,9 @@ class _HomeScreenDesktopState extends State<_HomeScreenDesktop> {
               SliverAppBar(
                 iconTheme: Theme.of(context).iconTheme,
                 leading: IconButton(
-                  icon: const Icon(Icons.menu,),
+                  icon: const Icon(
+                    Icons.menu,
+                  ),
                   onPressed: () {
                     Scaffold.of(context).openDrawer();
                   },
@@ -128,17 +128,19 @@ class _HomeScreenDesktopState extends State<_HomeScreenDesktop> {
                 actions: [
                   Padding(
                     padding: const EdgeInsets.only(right: 20.0),
-                    child: IconButton(onPressed: () {  }, icon: const Icon(Icons.search,size: 26.0,)
-                    ),
+                    child: IconButton(
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.search,
+                          size: 26.0,
+                        )),
                   ),
                   const Padding(
                       padding: EdgeInsets.only(right: 20.0),
-                      child: LangPopup()
-                  ),
+                      child: LangPopup()),
                   const Padding(
                       padding: EdgeInsets.only(right: 20.0),
-                      child: SettingPopup()
-                  ),
+                      child: SettingPopup()),
                 ],
                 bottom: PreferredSize(
                   preferredSize: const Size.fromHeight(120),
@@ -192,9 +194,13 @@ class _HomeScreenDesktopState extends State<_HomeScreenDesktop> {
                           ),
                         ),
                         const Spacer(),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 20,right:8),
-                          child: TransPopup(),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 16.0),
+                          child: ElevatedButton(
+                              onPressed: () {
+                                const TransPopup();
+                              },
+                              child: Container()),
                         ),
                       ]),
                       Container(
@@ -204,7 +210,7 @@ class _HomeScreenDesktopState extends State<_HomeScreenDesktop> {
                             indicator: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
                                 // Creates border
-                                color:Theme.of(context).primaryColor),
+                                color: Theme.of(context).primaryColor),
                             tabs: [
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -266,8 +272,9 @@ class TranslationPage extends StatefulWidget {
 
 class _TranslationPageState extends State<TranslationPage> {
   List _list = [];
+  List _lists = [];
   final CollectionReference _collectionRef =
-  FirebaseFirestore.instance.collection('quran_translations');
+      FirebaseFirestore.instance.collection('quran_translations');
 
   List menuItems = [
     ItemModel('Share', Icons.share),
@@ -294,11 +301,32 @@ class _TranslationPageState extends State<TranslationPage> {
     });
   }
 
+  final CollectionReference _collectionRefs =
+      FirebaseFirestore.instance.collection('quran_texts');
+
+  Future<void> getDatas() async {
+    // Get docs from collection reference
+    await _collectionRefs
+        .where('medina_mushaf_page_id', isEqualTo: '1')
+        .where('sura_id', isEqualTo: '1')
+        .orderBy('created_at')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        setState(() {
+          _lists.add(doc['text1']);
+        });
+      }
+    });
+    _lists.any((e) => e.contains('b'));
+  }
+
   ScrollController? _controllers;
 
   @override
   void initState() {
     getData();
+    getDatas();
     super.initState();
   }
 
@@ -306,9 +334,9 @@ class _TranslationPageState extends State<TranslationPage> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Container(
-        color: (themeProvider.isDarkMode)
-            ? const Color(0xff666666)
-            : const Color(0xFFffffff),
+      color: (themeProvider.isDarkMode)
+          ? const Color(0xff666666)
+          : const Color(0xFFffffff),
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(
@@ -324,139 +352,184 @@ class _TranslationPageState extends State<TranslationPage> {
                 padding: const EdgeInsets.only(right: 16.0, top: 16),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.78,
-                  child: ListView.builder(
-                    itemCount: _list.length,
-                    controller: _controllers,
-                    itemBuilder: (BuildContext context, int index) {
-                      return SizedBox(
-                        height: 132,
-                        child: Card(
-                          semanticContainer: true,
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          elevation: 5,
-                          margin: const EdgeInsets.all(10),
-                          color: (themeProvider.isDarkMode)
-                              ? const Color(0xffC4C4C4)
-                              : const Color(0xffFFF5EC),
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Row(
+                  child: _list.isNotEmpty && _lists.isNotEmpty
+                      ? ListView.builder(
+                          itemCount: _list.length,
+                          controller: _controllers,
+                          itemBuilder: (BuildContext context, int index) {
+                            return SizedBox(
+                              height: 172,
+                              child: Card(
+                                semanticContainer: true,
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                elevation: 5,
+                                margin: const EdgeInsets.all(10),
+                                color: (themeProvider.isDarkMode)
+                                    ? const Color(0xffC4C4C4)
+                                    : const Color(0xffFFF5EC),
+                                child: Column(
                                   children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        color: (themeProvider.isDarkMode)
-                                            ? const Color(0xff67748E)
-                                            : const Color(0xffFFEEB0),
-                                      ),
-                                      width: 40,
-                                      child: Center(
-                                        child: Text(
-                                          '1:${index + 1}',
-                                          style:  TextStyle(
-                                              fontSize: 18, color: Theme.of(context).textSelectionColor),
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    CustomPopupMenu(
-                                      menuBuilder: () => ClipRRect(
-                                        borderRadius: BorderRadius.circular(5),
-                                        child: Container(
-                                          color: Theme.of(context).primaryColor,
-                                          child: IntrinsicWidth(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                              CrossAxisAlignment.stretch,
-                                              children: menuItems
-                                                  .map(
-                                                    (item) => GestureDetector(
-                                                  behavior: HitTestBehavior
-                                                      .translucent,
-                                                  onTap: _controller.hideMenu,
-                                                  child: Container(
-                                                    height: 40,
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 20),
-                                                    child: Row(
-                                                      children: <Widget>[
-                                                        Icon(
-                                                          item.icon,
-                                                          size: 15,
-                                                          color: Theme.of(context).textSelectionColor,
-                                                        ),
-                                                        Expanded(
-                                                          child: Container(
-                                                            margin:
-                                                            const EdgeInsets
-                                                                .only(
-                                                                left: 10),
-                                                            padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                                vertical:
-                                                                10),
-                                                            child: Text(
-                                                              item.text,
-                                                              style:
-                                                              TextStyle(
-                                                                color: Theme.of(context).textSelectionColor,
-                                                                fontSize: 12,
+                                    Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              color: (themeProvider.isDarkMode)
+                                                  ? const Color(0xff67748E)
+                                                  : const Color(0xffFFEEB0),
+                                            ),
+                                            width: 40,
+                                            child: Center(
+                                              child: Text(
+                                                '1:${index + 1}',
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    color: Theme.of(context)
+                                                        .textSelectionColor),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 8),
+                                          CustomPopupMenu(
+                                            menuBuilder: () => ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              child: Container(
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                child: IntrinsicWidth(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .stretch,
+                                                    children: menuItems
+                                                        .map(
+                                                          (item) =>
+                                                              GestureDetector(
+                                                            behavior:
+                                                                HitTestBehavior
+                                                                    .translucent,
+                                                            onTap: _controller
+                                                                .hideMenu,
+                                                            child: Container(
+                                                              height: 40,
+                                                              padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      20),
+                                                              child: Row(
+                                                                children: <
+                                                                    Widget>[
+                                                                  Icon(
+                                                                    item.icon,
+                                                                    size: 15,
+                                                                    color: Theme.of(
+                                                                            context)
+                                                                        .textSelectionColor,
+                                                                  ),
+                                                                  Expanded(
+                                                                    child:
+                                                                        Container(
+                                                                      margin: const EdgeInsets
+                                                                              .only(
+                                                                          left:
+                                                                              10),
+                                                                      padding: const EdgeInsets
+                                                                              .symmetric(
+                                                                          vertical:
+                                                                              10),
+                                                                      child:
+                                                                          Text(
+                                                                        item.text,
+                                                                        style:
+                                                                            TextStyle(
+                                                                          color:
+                                                                              Theme.of(context).textSelectionColor,
+                                                                          fontSize:
+                                                                              12,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
                                                               ),
                                                             ),
                                                           ),
-                                                        ),
-                                                      ],
-                                                    ),
+                                                        )
+                                                        .toList(),
                                                   ),
                                                 ),
-                                              )
-                                                  .toList(),
+                                              ),
+                                            ),
+                                            pressType: PressType.singleClick,
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                color: (themeProvider
+                                                        .isDarkMode)
+                                                    ? const Color(0xff67748E)
+                                                    : const Color(0xffFFEEB0),
+                                              ),
+                                              width: 40,
+                                              child: Icon(
+                                                Icons.more_horiz,
+                                                color: Theme.of(context)
+                                                    .textSelectionColor,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                      pressType: PressType.singleClick,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(8),
-                                            color:(themeProvider.isDarkMode)
-                                                ? const Color(0xff67748E)
-                                                : const Color(0xffFFEEB0),
-                                        ),
-                                        width: 40,
-                                        child:  Icon(Icons.more_horiz,color: Theme.of(context).textSelectionColor,),
+                                        ],
                                       ),
                                     ),
+                                    Center(
+                                        child: ListTile(
+                                      title: Container(
+                                        color: themeProvider.isDarkMode
+                                            ? const Color(0xffC4C4C4)
+                                            : const Color(0xffFFF5EC),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: Text(
+                                                _list[index],
+                                                style:
+                                                    const TextStyle(fontSize: 18),
+                                              ),
+                                            ),
+                                            const Spacer(),
+                                            Padding(
+                                              padding: const EdgeInsets.only(right: 8.0),
+                                              child: Directionality(
+                                                textDirection: TextDirection.rtl,
+                                                child: Text(
+                                                  _lists[index]
+                                                      .trim()
+                                                      .replaceAll('b', ''),
+                                                  style: const TextStyle(
+                                                      fontSize: 26,
+                                                      fontFamily: 'MeQuran2',
+                                                      color: Colors.black),
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    )),
                                   ],
                                 ),
                               ),
-                              Center(
-                                child: ListTile(
-                                  title: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          _list[index],
-                                          style: const TextStyle(fontSize: 18),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                            );
+                          },
+                        )
+                      : const Center(child: Text('Loading...')),
                 ),
               ),
             ),
@@ -501,6 +574,8 @@ class _SurahPageState extends State<SurahPage> {
   var ontap = false;
   Color? textColor;
 
+  bool visible = false;
+
   Color changeBlue() {
     var c = Colors.blueAccent;
     return c;
@@ -524,9 +599,9 @@ class _SurahPageState extends State<SurahPage> {
   }
 
   final CollectionReference _collectionRef =
-  FirebaseFirestore.instance.collection('quran_texts');
+      FirebaseFirestore.instance.collection('quran_texts');
   final CollectionReference _collectionRefs =
-  FirebaseFirestore.instance.collection('medina_mushaf_pages');
+      FirebaseFirestore.instance.collection('medina_mushaf_pages');
 
   Future<void> getData() async {
     // Get docs from collection reference
@@ -576,48 +651,34 @@ class _SurahPageState extends State<SurahPage> {
           Align(
             alignment: Alignment.center,
             child: Center(
-              child: ListView.builder(
-                itemCount: _list.length,
-                itemBuilder: (BuildContext context, int i) {
-                  if (context.debugDoingBuild) {
-                    return const CircularProgressIndicator();
-                  }
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        ontap = true;
-                      });
-                    },
-                    onDoubleTap: () {
-                      setState(() {
-                        ontap = false;
-                      });
-                    },
-                    child: Tooltip(
-                      message: 'Click to show details ayah ${i + 1}',
-                      child: Text(
-                        _list.isNotEmpty
-                            ? _list[i]
-                            .replaceAll(
-                            '﴿${ArabicNumbers().convert(i + a!)}﴾',
-                            '﴾${ArabicNumbers().convert(i + a!)}﴿')
-                            .trim()
-                            : '',
-                        textDirection: TextDirection.rtl,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                            fontSize: 40,
-                            fontFamily: 'MeQuran2',
-                            color: Colors.black),
+              child: _list.isNotEmpty
+                  ? Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: GestureDetector(
+                        onTap: () => setState(() {
+                          visible = true;
+                        }),
+                        child: RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                                children: _list
+                                    .map(
+                                      (e) => TextSpan(
+                                        text: e.trim().replaceAll('b', '\n'),
+                                        style: const TextStyle(
+                                            fontSize: 40,
+                                            fontFamily: 'MeQuran2',
+                                            color: Colors.black),
+                                      ),
+                                    )
+                                    .toList())),
                       ),
-                    ),
-                  );
-                },
-              ),
+                    )
+                  : const Text('Loading...'),
             ),
           ),
           Visibility(
-            visible: ontap,
+            visible: visible,
             child: Align(
               alignment: Alignment.topLeft,
               child: Container(

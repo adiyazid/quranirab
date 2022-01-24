@@ -1,6 +1,7 @@
-import 'package:arabic_numbers/arabic_numbers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:quranirab/theme/theme_provider.dart';
 
 import 'nav.draw.dart';
 
@@ -36,52 +37,48 @@ class _DataFromFirestoreState extends State<DataFromFirestore> {
   }
 
   @override
-  Widget build(BuildContext context){
-      return Scaffold(
-        drawer: navDrawer(),
-        appBar: AppBar(
-          backgroundColor: Colors.orange[700],
-          elevation: 0,
-          actions: [
-
-          ],
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(28.0),
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Wrap(
-                    spacing: 8.0, // gap between adjacent chips
-                    runSpacing: 4.0, // gap between lines
-                    children: _list
-                        .map((data) => ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => PageScreen(
-                                            data["id"], data["start_line"])));
-                              },
-                              child: Text(
-                                '${data["start_line"]}',
-                                style: TextStyle(
-                                    fontSize: 40,
-                                    fontFamily: 'MeQuran2',
-                                    color: Colors.white
-                                        ),
-                              ),
-                            ))
-                        .toList(),
-                  )
-                ],
-              ),
+  Widget build(BuildContext context) {
+    return Scaffold(
+      drawer: navDrawer(),
+      appBar: AppBar(
+        backgroundColor: Colors.orange[700],
+        elevation: 0,
+        actions: [],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(28.0),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Wrap(
+                  spacing: 8.0, // gap between adjacent chips
+                  runSpacing: 4.0, // gap between lines
+                  children: _list
+                      .map((data) => ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => PageScreen(
+                                          data["id"], data["start_line"])));
+                            },
+                            child: Text(
+                              '${data["start_line"]}',
+                              style: const TextStyle(
+                                  fontSize: 40,
+                                  fontFamily: 'MeQuran2',
+                                  color: Colors.white),
+                            ),
+                          ))
+                      .toList(),
+                )
+              ],
             ),
           ),
         ),
-      );
-
+      ),
+    );
   }
 }
 
@@ -177,6 +174,8 @@ class _SurahScreenState extends State<SurahScreen> {
   int? a = 0;
   String? b;
 
+  bool visible = false;
+
   void initState() {
     // TODO: implement initState
     getData();
@@ -227,6 +226,7 @@ class _SurahScreenState extends State<SurahScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.orange,
@@ -236,35 +236,35 @@ class _SurahScreenState extends State<SurahScreen> {
             style: const TextStyle(fontSize: 30),
           ),
         ),
-        body: Stack(
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Center(
-                child: ListView.builder(
-                  itemCount: _list.length,
-                  itemBuilder: (BuildContext context, int i) {
-                    if (context.debugDoingBuild) {
-                      return const CircularProgressIndicator();
-                    }
-                    return Text(
-                      _list.isNotEmpty
-                          ? _list[i].replaceAll(
-                              '﴿${ArabicNumbers().convert(i + a!)}﴾',
-                              '﴾${ArabicNumbers().convert(i + a!)}﴿').trim()
-                          : '',
-                      textDirection: TextDirection.rtl,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                          fontSize: 40,
-                          fontFamily: 'MeQuran2',
-                          color: Colors.white),
-                    );
-                  },
-                ),
+        body: Container(
+          color: themeProvider.isDarkMode
+              ? const Color(0xff9A9A9A)
+              : const Color(0xffFFF5EC),
+          child: Stack(
+            children: [
+              Center(
+                child: _list.isNotEmpty
+                    ? Directionality(
+                        textDirection: TextDirection.rtl,
+                        child: RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                                children: _list
+                                    .map(
+                                      (e) => TextSpan(
+                                        text: e.trim().replaceAll('b', '\n'),
+                                        style: const TextStyle(
+                                            fontSize: 26,
+                                            fontFamily: 'MeQuran2',
+                                            color: Colors.black),
+                                      ),
+                                    )
+                                    .toList())),
+                      )
+                    : const Text('Loading...'),
               ),
-            ),
-          ],
+            ],
+          ),
         ));
   }
 }

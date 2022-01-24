@@ -44,7 +44,7 @@ class Menu extends StatelessWidget {
                 ),
               ],
             ),
-            Divider(color: Colors.grey[300],thickness: 1.0,),
+            Divider(color: Colors.grey[300]),
             const SizedBox(height: 18),
             buildMenuItem(
               text: 'Home',
@@ -86,15 +86,14 @@ class Menu extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             buildMenuItem(
-              //darkMode: themeProvider.isDarkMode,
+              darkMode: themeProvider.isDarkMode,
               text: 'Quiz',
               icon: Icons.menu_book,
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const QuizHome()));
-              },
-                darkMode: themeProvider.isDarkMode,
+              }, darkMode: themeProvider.isDarkMode,
             ),
           ],
         ),

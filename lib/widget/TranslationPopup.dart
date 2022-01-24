@@ -1,5 +1,6 @@
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 
@@ -22,15 +23,18 @@ class _TransPopupState extends State<TransPopup>{
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return CustomPopupMenu(
-      child: const ImageIcon(
-        AssetImage("translation_icon.png"),
-        size: 50,
+      child: IconButton(
+        icon: Image.asset("translation_icon.png"),
+        onPressed: () => const TransPopup(),
+        color: Theme.of(context).iconTheme.color,
+        iconSize: 48,
+        splashRadius: 30,
+        tooltip: 'Translation  meenu',
       ),
-
       pressType: PressType.singleClick,
       showArrow: false,
-      verticalMargin: 0,
-      horizontalMargin: 0,
+      verticalMargin: 1,
+      horizontalMargin: 50,
       menuBuilder: () {
         return ClipRRect(
           borderRadius: BorderRadius.circular(5),
@@ -63,7 +67,7 @@ class _TransPopupState extends State<TransPopup>{
                               onTap: (){}
                           ),
                           const Divider(
-                              color: Color(0xFFC4C4C4),thickness: 1.0,),
+                              color: Color(0xFFC4C4C4)),
                           buildMenuItem(
                               text: 'English',
                               enable: true,
