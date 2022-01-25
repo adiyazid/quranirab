@@ -88,7 +88,7 @@ class _TranslationPageState extends State<TranslationPage> {
             child: Align(
               alignment: Alignment.topLeft,
               child: Container(
-                width: MediaQuery.of(context).size.width * 0.2,
+                width: MediaQuery.of(context).size.width * 0.25,
                 decoration: BoxDecoration(
                   border: Border.all(
                       color: (themeProvider.isDarkMode)

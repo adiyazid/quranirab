@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:quranirab/facebook/palette.dart';
 
 class MoreOptionsList extends StatefulWidget {
   final String surah;
@@ -167,7 +166,7 @@ class _Option extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.3,
+      width: MediaQuery.of(context).size.width * 0.25,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(

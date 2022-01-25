@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/facebook/widgets/more_options_list.dart';
 import 'package:quranirab/theme/theme_provider.dart';
@@ -41,7 +40,11 @@ class _SurahPageState extends State<SurahPage> {
     return c;
   }
 
+  final List _start = [1, 2, 3, 6, 7, 14, 15, 28, 29, 39, 41, 46, 54, 55];
+  final List _end = [2, 3, 6, 7, 14, 15, 28, 29, 39, 40, 45, 54, 55, 62];
+
   final List _list = [];
+  final List _sliceWord = [];
   List _slice = [];
   final List _raw = [];
   final List _words = [];
@@ -49,14 +52,17 @@ class _SurahPageState extends State<SurahPage> {
   var word;
   String? b;
   var c = '';
+  var s = '';
 
   @override
   void initState() {
     // TODO: implement
-    getSlice();
+
     getData();
-    getStartAyah();
     getRaw();
+    getSlice();
+    getStartAyah();
+
     super.initState();
   }
 
@@ -145,10 +151,16 @@ class _SurahPageState extends State<SurahPage> {
         .then((QuerySnapshot querySnapshot) {
       for (var doc in querySnapshot.docs) {
         setState(() {
+          s = _list.join('');
+          print(s.length);
           b = doc['slicing_data'];
           _slice = json.decode(b!);
         });
         for (int i = 0; i < _slice.length; i++) {
+          var start = _start[i];
+          var end = _end[i];
+          var slice = s.substring(start, end);
+          _sliceWord.add(slice);
           _id.add(_slice[i]['word_id']);
           getWordId(_slice[i]['word_id'].toString());
         }
@@ -172,7 +184,7 @@ class _SurahPageState extends State<SurahPage> {
             child: Visibility(
               visible: visible,
               child: Container(
-                width: MediaQuery.of(context).size.width * 0.3,
+                width: MediaQuery.of(context).size.width * 0.25,
                 decoration: BoxDecoration(
                   border: Border.all(
                       color: (themeProvider.isDarkMode)
@@ -193,56 +205,109 @@ class _SurahPageState extends State<SurahPage> {
             alignment: Alignment.center,
             child: Center(
               child: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.7,
+                width: MediaQuery.of(context).size.width * 0.5,
                 child: SingleChildScrollView(
                   controller: suraScrollController,
                   child: Column(
                     children: [
-                      for (int i = 0; i < _words.length; i++)
-                        Align(
-                          alignment: Alignment.center,
-                          child: Center(
-                            child: _words.isNotEmpty
-                                ? Directionality(
-                                    textDirection: TextDirection.rtl,
-                                    child: InkWell(
-                                        onTap: () async {
-                                          var k = await getNukKalimah(_id[i]);
-                                          setState(() {
-                                            c = k;
+                      // for (int i = 0; i < _words.length; i++)
+                      //   Align(
+                      //     alignment: Alignment.center,
+                      //     child: Center(
+                      //       child: _words.isNotEmpty
+                      //           ? Directionality(
+                      //               textDirection: TextDirection.rtl,
+                      //               child: InkWell(
+                      //                   onTap: () async {
+                      //                     var k = await getNukKalimah(_id[i]);
+                      //                     setState(() {
+                      //                       c = k;
+                      //                       visible = true;
+                      //                     });
+                      //                   },
+                      //                   child: Text(
+                      //                     '${_words[i]}',
+                      //                     style: const TextStyle(
+                      //                         fontSize: 40,
+                      //                         fontFamily: 'MeQuran2',
+                      //                         color: Colors.black),
+                      //                   )),
+                      //             )
+                      //           : const Text('Loading...'),
+                      //     ),
+                      //   ),
+                          Container(
+                      color: themeProvider.isDarkMode
+                                ? const Color(0xff9A9A9A)
+                                : const Color(0xffFFF5EC),
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Center(
+                                child: _list.isNotEmpty
+                                    ? Directionality(
+                                        textDirection: TextDirection.rtl,
+                                        child: GestureDetector(
+                                          onTap: () => setState(() {
                                             visible = true;
-                                          });
-                                        },
-                                        child: Text(
-                                          '${_words[i]}',
-                                          style: const TextStyle(
-                                              fontSize: 40,
-                                              fontFamily: 'MeQuran2',
-                                              color: Colors.black),
-                                        )),
-                                  )
-                                : const Text('Loading...'),
+                                          }),
+                                          child: RichText(
+                                              textAlign: TextAlign.center,
+                                              text: TextSpan(
+                                                  children: _list
+                                                      .map(
+                                                        (e) => TextSpan(
+                                                          text: e
+                                                              .trim()
+                                                              .replaceAll('b', '\n'),
+                                                          style: const TextStyle(
+                                                              fontSize: 40,
+                                                              fontFamily: 'MeQuran2',
+                                                              color: Colors.black),
+                                                        ),
+                                                      )
+                                                      .toList())),
+                                        ),
+                                      )
+                                    : const Text('Loading...'),
+                              ),
+                            ),
                           ),
-                        ),
-                      // Align(
-                      //   alignment: Alignment.center,
-                      //   child: Center(
-                      //     child: _list.isNotEmpty
-                      //         ? Directionality(
-                      //             textDirection: TextDirection.rtl,
-                      //             child: GestureDetector(
-                      //               onTap: () => setState(() {
-                      //                 visible = true;
-                      //               }),
+                      // Container(
+                      //   color: themeProvider.isDarkMode
+                      //       ? const Color(0xff9A9A9A)
+                      //       : const Color(0xffFFF5EC),
+                      //   child: Align(
+                      //     alignment: Alignment.center,
+                      //     child: Center(
+                      //       child: _sliceWord.isNotEmpty
+                      //           ? Directionality(
+                      //               textDirection: TextDirection.rtl,
                       //               child: RichText(
                       //                   textAlign: TextAlign.center,
                       //                   text: TextSpan(
-                      //                       children: _list
+                      //                       children: _sliceWord
                       //                           .map(
                       //                             (e) => TextSpan(
-                      //                               text: e
-                      //                                   .trim()
-                      //                                   .replaceAll('b', '\n'),
+                      //                               recognizer:
+                      //                                   TapGestureRecognizer()
+                      //                                     ..onTap = () async {
+                      //                                       print(e.trim());
+                      //
+                      //                                       setState(() {
+                      //                                         if (e.contains('b') == false ||
+                      //                                             e.contains(
+                      //                                                     '﴿') ==
+                      //                                                 false ||
+                      //                                             e.contains(
+                      //                                                     '﴾') ==
+                      //                                                 false) {
+                      //                                           c = e.trim();
+                      //                                           visible = true;
+                      //                                         }
+                      //                                       });
+                      //                                     },
+                      //                               text:
+                      //                                   e.replaceAll('b', '\n'),
                       //                               style: const TextStyle(
                       //                                   fontSize: 40,
                       //                                   fontFamily: 'MeQuran2',
@@ -250,9 +315,9 @@ class _SurahPageState extends State<SurahPage> {
                       //                             ),
                       //                           )
                       //                           .toList())),
-                      //             ),
-                      //           )
-                      //         : const Text('Loading...'),
+                      //             )
+                      //           : const Text('Loading...'),
+                      //     ),
                       //   ),
                       // ),
                     ],
