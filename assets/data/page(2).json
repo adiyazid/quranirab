@@ -1,0 +1,60 @@
+{
+  "plist": {
+    "dictparent": {
+      "type": "suras",
+      "arrayparent": {
+        "dictchild": {
+          "keychild": [
+            "name",
+            "aname",
+            "tname",
+            "ename",
+            "ayaNumbers",
+            "translations",
+            "texts",
+            "juz"
+          ],
+          "ayah_name": [
+            "البقرة",
+            "ﮎ",
+            "Al-Baqara",
+            "The Cow",
+            "ﰸﰹ"
+          ],
+          "ayah_array": [
+            {
+              "integer": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            },
+            {
+              "ayah": [
+                "ﭑﭒ",
+                "ﭓﭔﭕﭖﭗﭘﭙﭚ&lt;br /&gt;ﭛﭜ",
+                "ﭝﭞﭟﭠﭡ&lt;br /&gt;ﭢﭣﭤﭥ",
+                "ﭦﭧﭨﭩ&lt;br /&gt;ﭪﭫﭬﭭﭮﭯﭰﭱﭲ&lt;br /&gt;",
+                "ﭳﭴﭵﭶﭷﭸﭹ&lt;br /&gt;ﭺﭻﭼ"
+              ]
+            }
+          ],
+          "translations": {
+            "language": "english",
+            "translation_list": {
+              "translation": [
+                "Alif, Lam, Meem.",
+                "This is the Book about which there is no doubt, a guidance for those conscious of Allah -",
+                "Who believe in the unseen, establish prayer, and spend out of what We have provided for them,",
+                "And who believe in what has been revealed to you, [O Muhammad], and what was revealed before you, and of the Hereafter they are certain [in faith].",
+                "Those are upon [right] guidance from their Lord, and it is those who are the successful."
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>suras</key>
+    <array>
+      <dict>
+        <key>name</key>
+        <string>الفاتحة</string>
+        <key>aname</key>
+        <string>﻿ﮍ</string>
+        <key>tname</key>
+        <string>Al-Faatiha</string>
+        <key>ename</key>
+        <string>The Opening</string>
+        <key>ayaNumbers</key>
+        <array>
+          <integer>1</integer>
+          <integer>2</integer>
+          <integer>3</integer>
+          <integer>4</integer>
+          <integer>5</integer>
+          <integer>6</integer>
+          <integer>7</integer>
+        </array>
+        <key>translations</key>
+        <dict>
+          <key>english</key>
+          <array>
+            <string>In the name of Allah, the Entirely Merciful, the Especially Merciful.</string>
+            <string>[All] praise is [due] to Allah, Lord of the worlds -</string>
+            <string>The Entirely Merciful, the Especially Merciful,</string>
+            <string>Sovereign of the Day of Recompense.</string>
+            <string>It is You we worship and You we ask for help.</string>
+            <string>Guide us to the straight path -</string>
+            <string>The path of those upon whom You have bestowed favor, not of those who have evoked [Your] anger or of those who are astray.</string>
+          </array>
+        </dict>
+        <key>texts</key>
+        <array>
+          <string>ﭑﭒﭓﭔﭕ&lt;br /&gt;</string>
+          <string>ﭖﭗﭘﭙﭚ&lt;br /&gt;</string>
+          <string>ﭛﭜﭝ</string>
+          <string>ﭞﭟﭠﭡ&lt;br /&gt;</string>
+          <string>ﭢﭣﭤﭥﭦ</string>
+          <string>ﭧ&lt;br /&gt;ﭨﭩﭪ</string>
+          <string>ﭫﭬﭭ&lt;br /&gt;ﭮﭯﭰﭱ&lt;br /&gt;ﭲﭳﭴ</string>
+        </array>
+        <key>juz</key>
+        <string>ﰸﰹ</string>
+      </dict>
+    </array>
+  </dict>
+</plist>

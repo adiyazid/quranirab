@@ -1,0 +1,69 @@
+{
+  "plist": {
+    "dictparent": {
+      "type": "suras",
+      "arrayparent": {
+        "dictparent": {
+          "keychild": [
+            "name",
+            "aname",
+            "tname",
+            "ename",
+            "ayaNumbers",
+            "translations",
+            "texts",
+            "juz"
+          ],
+          "ayah_name": [
+            "البقرة",
+            "ﮎ",
+            "Al-Baqara",
+            "The Cow",
+            "ﰸﰹ"
+          ],
+          "ayah_array": [
+            {
+              "integer": [
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23,
+                24
+              ]
+            },
+            {
+              "ayah": [
+                "ﭑﭒﭓﭔﭕﭖﭗﭘﭙ&lt;br /&gt;ﭚﭛﭜﭝﭞﭟﭠﭡﭢ",
+                "ﭣ&lt;br /&gt;ﭤﭥﭦﭧﭨﭩ",
+                "ﭪﭫﭬﭭﭮ&lt;br /&gt;ﭯﭰﭱﭲﭳﭴﭵﭶﭷ&lt;br /&gt;ﭸﭹﭺﭻﭼﭽﭾ",
+                "ﭿﮀﮁ&lt;br /&gt;ﮂﮃﮄﮅﮆﮇﮈﮉﮊﮋﮌﮍ&lt;br /&gt;ﮎﮏﮐﮑﮒﮓﮔﮕﮖﮗﮘ&lt;br /&gt;ﮙﮚﮛ",
+                "ﮜﮝﮞﮟﮠﮡ&lt;br /&gt;ﮢﮣﮤﮥﮦﮧ",
+                "ﮨﮩﮪ&lt;br /&gt;ﮫﮬﮭﮮﮯﮰﮱﯓﯔ&lt;br /&gt;ﯕﯖﯗﯘﯙﯚﯛﯜﯝﯞﯟ&lt;br /&gt;ﯠﯡ",
+                "ﯢﯣﯤﯥﯦﯧﯨﯩ&lt;br /&gt;ﯪﯫﯬﯭﯮﯯﯰﯱﯲ&lt;br /&gt;ﯳﯴﯵﯶ",
+                "ﯷﯸﯹﯺﯻﯼ&lt;br /&gt;ﯽﯾﯿﰀﰁﰂﰃﰄﰅ"
+              ]
+            }
+          ],
+          "translations": {
+            "language": "english",
+            "translation_list": {
+              "translation": [
+                "Their example is that of one who kindled a fire, but when it illuminated what was around him, Allah took away their light and left them in darkness [so] they could not see.",
+                "Deaf, dumb and blind - so they will not return [to the right path].",
+                "Or [it is] like a rainstorm from the sky within which is darkness, thunder and lightning. They put their fingers in their ears against the thunderclaps in dread of death. But Allah is encompassing of the disbelievers.",
+                "The lightning almost snatches away their sight. Every time it lights [the way] for them, they walk therein; but when darkness comes over them, they stand [still]. And if Allah had willed, He could have taken away their hearing and their sight. Indeed, Allah is over all things competent.",
+                "O mankind, worship your Lord, who created you and those before you, that you may become righteous -",
+                "[He] who made for you the earth a bed [spread out] and the sky a ceiling and sent down from the sky, rain and brought forth thereby fruits as provision for you. So do not attribute to Allah equals while you know [that there is nothing similar to Him].",
+                "And if you are in doubt about what We have sent down upon Our Servant [Muhammad], then produce a surah the like thereof and call upon your witnesses other than Allah, if you should be truthful.",
+                "But if you do not - and you will never be able to - then fear the Fire, whose fuel is men and stones, prepared for the disbelievers."
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

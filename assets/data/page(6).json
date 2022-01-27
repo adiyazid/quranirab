@@ -1,0 +1,69 @@
+{
+  "plist": {
+    "dictparent": {
+      "type": "suras",
+      "arrayparent": {
+        "dictchild": {
+          "keychild": [
+            "name",
+            "aname",
+            "tname",
+            "ename",
+            "ayaNumbers",
+            "translations",
+            "texts",
+            "juz"
+          ],
+          "ayah_name": [
+            "البقرة",
+            "ﮎ",
+            "Al-Baqara",
+            "The Cow",
+            "ﰸﰹ"
+          ],
+          "ayah_array": [
+            {
+              "integer": [
+                30,
+                31,
+                32,
+                33,
+                34,
+                35,
+                36,
+                37
+              ]
+            },
+            {
+              "ayah": [
+                "ﭑﭒﭓﭔﭕﭖﭗﭘﭙﭚ&lt;br /&gt;ﭛﭜﭝﭞﭟﭠﭡﭢﭣ&lt;br /&gt;ﭤﭥﭦﭧﭨﭩﭪﭫﭬﭭﭮ&lt;br /&gt;ﭯ",
+                "ﭰﭱﭲﭳﭴﭵﭶﭷ&lt;br /&gt;ﭸﭹﭺﭻﭼﭽﭾﭿ",
+                "ﮀ&lt;br /&gt;ﮁﮂﮃﮄﮅﮆﮇﮈﮉﮊﮋﮌ&lt;br /&gt;ﮍ",
+                "ﮎﮏﮐﮑﮒﮓﮔﮕﮖ&lt;br /&gt;ﮗﮘﮙﮚﮛﮜﮝﮞﮟﮠ&lt;br /&gt;ﮡﮢﮣﮤﮥ",
+                "ﮦﮧﮨﮩ&lt;br /&gt;ﮪﮫﮬﮭﮮﮯﮰﮱﯓ&lt;br /&gt;ﯔ",
+                "ﯕﯖﯗﯘﯙﯚﯛﯜﯝ&lt;br /&gt;ﯞﯟﯠﯡﯢﯣﯤﯥﯦﯧ&lt;br /&gt;",
+                "ﯨﯩﯪﯫﯬﯭﯮﯯﯰﯱ&lt;br /&gt;ﯲﯳﯴﯵﯶﯷﯸﯹﯺﯻﯼﯽ&lt;br /&gt;",
+                "ﯾﯿﰀﰁﰂﰃﰄﰅﰆﰇﰈﰉﰊ"
+              ]
+            }
+          ],
+          "translations": {
+            "language": "english",
+            "translation_list": {
+              "translation": [
+                "And [mention, O Muhammad], when your Lord said to the angels, &quot;Indeed, I will make upon the earth a successive authority.&quot; They said, &quot;Will You place upon it one who causes corruption therein and sheds blood, while we declare Your praise and sanctify You?&quot; Allah said, &quot;Indeed, I know that which you do not know.&quot;",
+                "And He taught Adam the names - all of them. Then He showed them to the angels and said, &quot;Inform Me of the names of these, if you are truthful.&quot;",
+                "They said, &quot;Exalted are You; we have no knowledge except what You have taught us. Indeed, it is You who is the Knowing, the Wise.&quot;",
+                "He said, &quot;O Adam, inform them of their names.&quot; And when he had informed them of their names, He said, &quot;Did I not tell you that I know the unseen [aspects] of the heavens and the earth? And I know what you reveal and what you have concealed.&quot;",
+                "And [mention] when We said to the angels, &quot;Prostrate before Adam&quot;; so they prostrated, except for Iblees. He refused and was arrogant and became of the disbelievers.",
+                "And We said, &quot;O Adam, dwell, you and your wife, in Paradise and eat therefrom in [ease and] abundance from wherever you will. But do not approach this tree, lest you be among the wrongdoers.&quot;",
+                "But Satan caused them to slip out of it and removed them from that [condition] in which they had been. And We said, &quot;Go down, [all of you], as enemies to one another, and you will have upon the earth a place of settlement and provision for a time.&quot;",
+                "Then Adam received from his Lord [some] words, and He accepted his repentance. Indeed, it is He who is the Accepting of repentance, the Merciful."
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

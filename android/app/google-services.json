@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "272557919792",
+    "project_id": "quranirab-5ba6f",
+    "storage_bucket": "quranirab-5ba6f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:272557919792:android:9945d72b0bc6c1da4767f5",
+        "android_client_info": {
+          "package_name": "com.example.quranirab"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "272557919792-l5bmi2utuuiscb3okto3tg1pfk51ebna.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChLg8xkqqv-ngi9RcR4iGRw5rwC4UrBBw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "272557919792-l5bmi2utuuiscb3okto3tg1pfk51ebna.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
