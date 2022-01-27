@@ -28,7 +28,7 @@ List<String> question_quran=[
 
 
 ];
-
+/**
 List<QuestionModel> questions = [
   QuestionModel(
     "Questions: Type of Word?",
@@ -61,3 +61,4 @@ List<QuestionModel> questions = [
   }),
 
 ];
+    **/

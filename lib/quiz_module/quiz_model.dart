@@ -1,5 +1,5 @@
 class QuestionModel {
-  String question;
-  Map<String, bool>? answers;
-  QuestionModel(this.question, this.answers);
+  String question, translation;
+  //Map<String, bool>? answers;
+  QuestionModel({required this.question, required this.translation});
 }

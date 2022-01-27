@@ -69,7 +69,8 @@ class _QuizScoreState extends State<QuizScore> {
                               height: 50,
                             ),
                             Text(
-                              "${widget.score}""/" "${questions.length}",
+                              "${widget.score}""/" ,
+                                  //"${questions.length}",
                               style: const TextStyle(
                                   fontSize: 34, fontWeight: FontWeight.w800,
                                   color: Colors.black

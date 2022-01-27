@@ -118,307 +118,309 @@ class _MushafPageState extends State<MushafPage> {
         initialData: 50,
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
-            return Scaffold(
-                drawer: const Menu(),
-                endDrawer: const Setting(),
-                appBar: AppBar(
-                  iconTheme: Theme.of(context).iconTheme,
-                  title: Row(
-                    children: const [
-                      CircleAvatar(
-                        backgroundImage: AssetImage('assets/quranirab.png'),
-                        radius: 18.0,
+            return SingleChildScrollView(
+              child: Scaffold(
+                  drawer: const Menu(),
+                  endDrawer: const Setting(),
+                  appBar: AppBar(
+                    iconTheme: Theme.of(context).iconTheme,
+                    title: Row(
+                      children: const [
+                        CircleAvatar(
+                          backgroundImage: AssetImage('assets/quranirab.png'),
+                          radius: 18.0,
+                        ),
+                      ],
+                    ),
+                    elevation: 0,
+                    centerTitle: false,
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    actions: <Widget>[
+                      IconButton(
+                        tooltip:
+                            MaterialLocalizations.of(context).searchFieldLabel,
+                        onPressed: () => setState(() {
+                          isSearch = true;
+                        }),
+                        icon: Icon(
+                          Icons.search,
+                          color: Theme.of(context).iconTheme.color,
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      Padding(
+                          padding: const EdgeInsets.only(right: 20.0),
+                          child: Language()),
+                      Builder(
+                        builder: (context) => IconButton(
+                          icon: const Icon(
+                            Icons.settings,
+                          ),
+                          onPressed: () => Scaffold.of(context).openEndDrawer(),
+                          tooltip: MaterialLocalizations.of(context)
+                              .openAppDrawerTooltip,
+                        ),
                       ),
                     ],
                   ),
-                  elevation: 0,
-                  centerTitle: false,
-                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  actions: <Widget>[
-                    IconButton(
-                      tooltip:
-                          MaterialLocalizations.of(context).searchFieldLabel,
-                      onPressed: () => setState(() {
-                        isSearch = true;
-                      }),
-                      icon: Icon(
-                        Icons.search,
-                        color: Theme.of(context).iconTheme.color,
-                      ),
-                    ),
-                    const SizedBox(width: 20),
-                    Padding(
-                        padding: const EdgeInsets.only(right: 20.0),
-                        child: Language()),
-                    Builder(
-                      builder: (context) => IconButton(
-                        icon: const Icon(
-                          Icons.settings,
-                        ),
-                        onPressed: () => Scaffold.of(context).openEndDrawer(),
-                        tooltip: MaterialLocalizations.of(context)
-                            .openAppDrawerTooltip,
-                      ),
-                    ),
-                  ],
-                ),
-                body: Stack(
-                  children: [
-                    isSearch ? buildSuggestions(context) : Container(),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        color: (themeProvider.isDarkMode)
-                            ? const Color(0xff808ba1)
-                            : const Color(0xfffff3ca),
-                        width: screenSize.width * 0.2,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 14.0, top: 153),
-                          child: ListView(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: InkWell(
-                                  child: const Text(
-                                    'The Straight',
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                  onTap: () {},
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: InkWell(
-                                  child: const Text(
-                                    'Nu\' al-kalimah',
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                  onTap: () {},
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: InkWell(
-                                  child: const Text(
-                                    'Isim',
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                  onTap: () {},
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: InkWell(
-                                  child: const Text(
-                                    'Sorof',
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                  onTap: () {},
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: InkWell(
-                                  child: const Text(
-                                    'Nahu',
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                  onTap: () {},
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 250.0),
-                      child: Align(
-                        alignment: Alignment.topCenter,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                color: (themeProvider.isDarkMode)
-                                    ? const Color(0xff808BA1)
-                                    : const Color(0xffFFF3CA)),
-                            width: screenSize.width * 0.3,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  GestureDetector(
-                                    child: Container(
-                                      width: screenSize.width * 0.12,
-                                      height: 37,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          color: (themeProvider.isDarkMode)
-                                              ? _checkDark()
-                                              : _check()),
-                                      child: const Center(
-                                          child: Text(
-                                        'Translation',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: 18, color: Colors.black),
-                                      )),
+                  body: Stack(
+                    children: [
+                      isSearch ? buildSuggestions(context) : Container(),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          color: (themeProvider.isDarkMode)
+                              ? const Color(0xff808ba1)
+                              : const Color(0xfffff3ca),
+                          width: screenSize.width * 0.2,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 14.0, top: 153),
+                            child: ListView(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: InkWell(
+                                    child: const Text(
+                                      'The Straight',
+                                      style: TextStyle(fontSize: 20),
                                     ),
-                                    onTap: () {
-                                      setState(() {
-                                        a = true;
-                                        b = false;
-                                        controller.jumpToPage(1);
-                                      });
-                                    },
+                                    onTap: () {},
                                   ),
-                                  GestureDetector(
-                                    child: Container(
-                                      width: screenSize.width * 0.12,
-                                      height: 37,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          color: (themeProvider.isDarkMode)
-                                              ? _checkDark2()
-                                              : _check2()),
-                                      child: const Center(
-                                          child: Text(
-                                        'Reading',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: 18, color: Colors.black),
-                                      )),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: InkWell(
+                                    child: const Text(
+                                      'Nu\' al-kalimah',
+                                      style: TextStyle(fontSize: 20),
                                     ),
-                                    onTap: () {
-                                      setState(() {
-                                        a = false;
-                                        b = true;
-                                        controller.jumpToPage(0);
-                                      });
-                                    },
+                                    onTap: () {},
                                   ),
-                                ],
-                              ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: InkWell(
+                                    child: const Text(
+                                      'Isim',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    onTap: () {},
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: InkWell(
+                                    child: const Text(
+                                      'Sorof',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    onTap: () {},
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: InkWell(
+                                    child: const Text(
+                                      'Nahu',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    onTap: () {},
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 128, left: 250.0),
-                      child: Align(
-                        child: SizedBox(
-                          height: screenSize.height,
-                          width: screenSize.width * 0.5,
-                          child:PageView(
-                            controller: controller,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Directionality(
-                                      textDirection: TextDirection.rtl,
-                                      child: Text(
-                                        alfatihah.replaceAll('b', '\n'),
-                                        textAlign: TextAlign.center,
-                                        style: const TextStyle(
-                                            fontFamily: 'MeQuran2',
-                                            fontSize: 40),
-                                      )),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Expanded(
-                                    child: ListView.builder(
-                                      itemCount: _list.length,
-                                      controller: _controller,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return Card(
-                                          color: (themeProvider.isDarkMode)
-                                              ? const Color(0xffC4C4C4)
-                                              : const Color(0xffFFF5EC),
-                                          child: ListTile(
-                                            title: Text(
-                                              '1:${index + 1}',
-                                              style:
-                                                  const TextStyle(fontSize: 18),
-                                            ),
-                                            subtitle: Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Text(
-                                                    _list[index],
-                                                    style: const TextStyle(
-                                                        fontSize: 18),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        );
+                      Padding(
+                        padding: const EdgeInsets.only(left: 250.0),
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: (themeProvider.isDarkMode)
+                                      ? const Color(0xff808BA1)
+                                      : const Color(0xffFFF3CA)),
+                              width: screenSize.width * 0.3,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    GestureDetector(
+                                      child: Container(
+                                        width: screenSize.width * 0.12,
+                                        height: 37,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            color: (themeProvider.isDarkMode)
+                                                ? _checkDark()
+                                                : _check()),
+                                        child: const Center(
+                                            child: Text(
+                                          'Translation',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 18, color: Colors.black),
+                                        )),
+                                      ),
+                                      onTap: () {
+                                        setState(() {
+                                          a = true;
+                                          b = false;
+                                          controller.jumpToPage(1);
+                                        });
                                       },
                                     ),
-                                  )
-                                ],
+                                    GestureDetector(
+                                      child: Container(
+                                        width: screenSize.width * 0.12,
+                                        height: 37,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            color: (themeProvider.isDarkMode)
+                                                ? _checkDark2()
+                                                : _check2()),
+                                        child: const Center(
+                                            child: Text(
+                                          'Reading',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 18, color: Colors.black),
+                                        )),
+                                      ),
+                                      onTap: () {
+                                        setState(() {
+                                          a = false;
+                                          b = true;
+                                          controller.jumpToPage(0);
+                                        });
+                                      },
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 250, bottom: 30.0),
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                  primary: (themeProvider.isDarkMode)
-                                      ? const Color(0xff808BA1)
-                                      : const Color(0xfffcd77a)),
-                              child: const Text(
-                                'Previous Page',
-                                style: TextStyle(color: Colors.black),
-                              ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 128, left: 250.0),
+                        child: Align(
+                          child: SizedBox(
+                            height: screenSize.height,
+                            width: screenSize.width * 0.5,
+                            child:PageView(
+                              controller: controller,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  children: [
+                                    Directionality(
+                                        textDirection: TextDirection.rtl,
+                                        child: Text(
+                                          alfatihah.replaceAll('b', '\n'),
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                              fontFamily: 'MeQuran2',
+                                              fontSize: 40),
+                                        )),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Expanded(
+                                      child: ListView.builder(
+                                        itemCount: _list.length,
+                                        controller: _controller,
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return Card(
+                                            color: (themeProvider.isDarkMode)
+                                                ? const Color(0xffC4C4C4)
+                                                : const Color(0xffFFF5EC),
+                                            child: ListTile(
+                                              title: Text(
+                                                '1:${index + 1}',
+                                                style:
+                                                    const TextStyle(fontSize: 18),
+                                              ),
+                                              subtitle: Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Text(
+                                                      _list[index],
+                                                      style: const TextStyle(
+                                                          fontSize: 18),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ],
                             ),
-                            const SizedBox(width: 25),
-                            ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                    primary: (themeProvider.isDarkMode)
-                                        ? const Color(0xff4C6A7A)
-                                        : const Color(0xffffeeb0)),
-                                child: const Text(
-                                  'Beginning Surah',
-                                  style: TextStyle(color: Colors.black),
-                                )),
-                            const SizedBox(width: 25),
-                            ElevatedButton(
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 250, bottom: 30.0),
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ElevatedButton(
                                 onPressed: () {},
                                 style: ElevatedButton.styleFrom(
                                     primary: (themeProvider.isDarkMode)
                                         ? const Color(0xff808BA1)
                                         : const Color(0xfffcd77a)),
                                 child: const Text(
-                                  'Next Page',
+                                  'Previous Page',
                                   style: TextStyle(color: Colors.black),
-                                )),
-                          ],
+                                ),
+                              ),
+                              const SizedBox(width: 25),
+                              ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                      primary: (themeProvider.isDarkMode)
+                                          ? const Color(0xff4C6A7A)
+                                          : const Color(0xffffeeb0)),
+                                  child: const Text(
+                                    'Beginning Surah',
+                                    style: TextStyle(color: Colors.black),
+                                  )),
+                              const SizedBox(width: 25),
+                              ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                      primary: (themeProvider.isDarkMode)
+                                          ? const Color(0xff808BA1)
+                                          : const Color(0xfffcd77a)),
+                                  child: const Text(
+                                    'Next Page',
+                                    style: TextStyle(color: Colors.black),
+                                  )),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ));
+                    ],
+                  )),
+            );
           } else {
             return const CircularProgressIndicator();
           }
