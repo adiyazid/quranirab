@@ -3,22 +3,23 @@ import 'package:provider/provider.dart';
 import 'package:quranirab/facebook/widgets/responsive.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/widget/LanguagePopup.dart';
-import 'package:quranirab/widget/SettingPopup.dart';
+import 'package:quranirab/widget/setting.popup.dart';
 import 'package:quranirab/widget/TranslationPopup.dart';
 import 'package:quranirab/widget/menu.dart';
 
 import 'Appbar/appbar.dart';
-import 'Surah/surah.dart';
+import 'Surah/surah1.dart';
+import 'Surah/surah3.dart';
 import 'Translation/translation.dart';
 
-class FacebookHomeScreen extends StatefulWidget {
-  const FacebookHomeScreen({Key? key}) : super(key: key);
+class FacebookHomeScreen3 extends StatefulWidget {
+  const FacebookHomeScreen3({Key? key}) : super(key: key);
 
   @override
-  _FacebookHomeScreenState createState() => _FacebookHomeScreenState();
+  _FacebookHomeScreen3State createState() => _FacebookHomeScreen3State();
 }
 
-class _FacebookHomeScreenState extends State<FacebookHomeScreen> {
+class _FacebookHomeScreen3State extends State<FacebookHomeScreen3> {
   final TrackingScrollController _trackingScrollController =
       TrackingScrollController();
 
@@ -146,7 +147,7 @@ class _HomeScreenDesktopState extends State<_HomeScreenDesktop> {
                   child: Column(
                     children: [
                       Row(children: [
-                        Container(
+                        SizedBox(
                           width: MediaQuery.of(context).size.width * 0.3,
                           child: ListTile(
                             title: Column(
@@ -193,16 +194,12 @@ class _HomeScreenDesktopState extends State<_HomeScreenDesktop> {
                           ),
                         ),
                         const Spacer(),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 16.0),
-                          child: ElevatedButton(
-                              onPressed: () {
-                                const TransPopup();
-                              },
-                              child: Container()),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 20, right: 8),
+                          child: TransPopup(),
                         ),
                       ]),
-                      Container(
+                      SizedBox(
                         width: MediaQuery.of(context).size.width,
                         child: TabBar(
                             indicatorPadding: const EdgeInsets.all(8),
@@ -245,8 +242,8 @@ class _HomeScreenDesktopState extends State<_HomeScreenDesktop> {
           },
           body: const TabBarView(
             children: [
-              TranslationPage(),
-              SurahPage('1', '1'),
+              TranslationPage('1', '1'),
+              SurahPage3('1', '1'),
             ],
           ),
         ),

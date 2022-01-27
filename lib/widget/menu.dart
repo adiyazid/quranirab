@@ -44,7 +44,7 @@ class Menu extends StatelessWidget {
                 ),
               ],
             ),
-            Divider(color: Colors.grey[300]),
+            Divider(color: Colors.grey[300],thickness: 1,),
             const SizedBox(height: 18),
             buildMenuItem(
               text: 'Home',

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/facebook/widgets/more_options_list.dart';
@@ -236,42 +237,42 @@ class _SurahPageState extends State<SurahPage> {
                       //           : const Text('Loading...'),
                       //     ),
                       //   ),
-                          Container(
-                      color: themeProvider.isDarkMode
-                                ? const Color(0xff9A9A9A)
-                                : const Color(0xffFFF5EC),
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Center(
-                                child: _list.isNotEmpty
-                                    ? Directionality(
-                                        textDirection: TextDirection.rtl,
-                                        child: GestureDetector(
-                                          onTap: () => setState(() {
-                                            visible = true;
-                                          }),
-                                          child: RichText(
-                                              textAlign: TextAlign.center,
-                                              text: TextSpan(
-                                                  children: _list
-                                                      .map(
-                                                        (e) => TextSpan(
-                                                          text: e
-                                                              .trim()
-                                                              .replaceAll('b', '\n'),
-                                                          style: const TextStyle(
-                                                              fontSize: 40,
-                                                              fontFamily: 'MeQuran2',
-                                                              color: Colors.black),
-                                                        ),
-                                                      )
-                                                      .toList())),
-                                        ),
-                                      )
-                                    : const Text('Loading...'),
-                              ),
-                            ),
+                      Container(
+                        color: themeProvider.isDarkMode
+                            ? const Color(0xff9A9A9A)
+                            : const Color(0xffFFF5EC),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Center(
+                            child: _list.isNotEmpty
+                                ? Directionality(
+                                    textDirection: TextDirection.rtl,
+                                    child: GestureDetector(
+                                      onTap: () => setState(() {
+                                        visible = true;
+                                      }),
+                                      child: RichText(
+                                          textAlign: TextAlign.center,
+                                          text: TextSpan(
+                                              children: _list
+                                                  .map(
+                                                    (e) => TextSpan(
+                                                      text: e.trim().replaceAll(
+                                                          'b', '\n'),
+                                                      style: const TextStyle(
+                                                          fontSize: 40,
+                                                          fontFamily:
+                                                              'MeQuran2',
+                                                          color: Colors.black),
+                                                    ),
+                                                  )
+                                                  .toList())),
+                                    ),
+                                  )
+                                : const Text('Loading...'),
                           ),
+                        ),
+                      ),
                       // Container(
                       //   color: themeProvider.isDarkMode
                       //       ? const Color(0xff9A9A9A)

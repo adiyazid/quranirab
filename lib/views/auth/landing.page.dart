@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quranirab/facebook/screens/home_screen.dart';
+import 'package:quranirab/facebook/screens/home_screen_1.dart';
+import 'package:quranirab/facebook/screens/home_screen_2.dart';
+import 'package:quranirab/facebook/screens/home_screen_3.dart';
 import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/quiz_module/Quiz.Home.dart';
 import 'package:quranirab/views/auth/login.dart';
@@ -55,9 +57,10 @@ class DummyPage extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const LandingPage()));
+                                builder: (context) =>
+                                    const FacebookHomeScreen2()));
                       },
-                      child: const Text('Firebase integration')),
+                      child: const Text('Surah screen2')),
                   const SizedBox(
                     height: 8,
                   ),
@@ -67,9 +70,20 @@ class DummyPage extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    const FacebookHomeScreen()));
+                                    const FacebookHomeScreen3()));
                       },
-                      child: const Text('Facebook template')),
+                      child: const Text('Surah screen3')),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LandingPage()));
+                      },
+                      child: const Text('Firebase integration')),
                   const SizedBox(
                     height: 8,
                   ),

@@ -61,7 +61,7 @@ class _LangPopupState extends State<LangPopup>{
                               onTap: (){}
                           ),
                            const Divider(
-                              color: Color(0xFFC4C4C4)),
+                              color: Color(0xFFC4C4C4),thickness: 1,),
                           buildMenuItem(
                               text: 'English',
                               enable: true,

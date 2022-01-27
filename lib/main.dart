@@ -20,21 +20,24 @@ Future<void> main() async {
   );
   final appUser = AppUser();
   runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider<AppUser>.value(value: appUser),
-    ],
-    child: ChangeNotifierProvider(
-          create: (context) => ThemeProvider(),
+      providers: [
+        ChangeNotifierProvider<AppUser>.value(value: appUser),
+      ],
+      child: ChangeNotifierProvider(
+          create: (context) => FontSizeController(),
           builder: (context, _) {
-            final themeProvider =
-                Provider.of<ThemeProvider>(context, listen: true);
-            return MaterialApp(
-              home: const DummyPage(),
-              themeMode: themeProvider.themeMode,
-              theme: QuranThemes.lightTheme,
-              darkTheme: QuranThemes.darkTheme,
-              debugShowCheckedModeBanner: false,
-            );
-          })
-  ));
+            return ChangeNotifierProvider(
+                create: (context) => ThemeProvider(),
+                builder: (context, _) {
+                  final themeProvider =
+                      Provider.of<ThemeProvider>(context, listen: true);
+                  return MaterialApp(
+                    home: const DummyPage(),
+                    themeMode: themeProvider.themeMode,
+                    theme: QuranThemes.lightTheme,
+                    darkTheme: QuranThemes.darkTheme,
+                    debugShowCheckedModeBanner: false,
+                  );
+                });
+          })));
 }

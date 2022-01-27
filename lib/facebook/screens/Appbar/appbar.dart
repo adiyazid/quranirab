@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:quranirab/facebook/widgets/circle_button.dart';
 import 'package:quranirab/widget/LanguagePopup.dart';
-import 'package:quranirab/widget/SettingPopup.dart';
-import 'package:quranirab/widget/language.dart';
+import 'package:quranirab/widget/setting.popup.dart';
 
 class Appbar extends StatefulWidget {
   const Appbar({Key? key}) : super(key: key);

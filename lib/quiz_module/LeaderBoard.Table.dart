@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/widget/LanguagePopup.dart';
-import 'package:quranirab/widget/SettingPopup.dart';
+import 'package:quranirab/widget/setting.popup.dart';
 import 'package:quranirab/widget/menu.dart';
 
 class LeaderBoardTable extends StatefulWidget {
