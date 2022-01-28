@@ -49,30 +49,30 @@ class DummyPage extends StatelessWidget {
                                     const FacebookHomeScreen()));
                       },
                       child: const Text('Surah screen')),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const FacebookHomeScreen2()));
-                      },
-                      child: const Text('Surah screen2')),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const FacebookHomeScreen3()));
-                      },
-                      child: const Text('Surah screen3')),
+                  // const SizedBox(
+                  //   height: 8,
+                  // ),
+                  // ElevatedButton(
+                  //     onPressed: () {
+                  //       Navigator.push(
+                  //           context,
+                  //           MaterialPageRoute(
+                  //               builder: (context) =>
+                  //                   const FacebookHomeScreen2()));
+                  //     },
+                  //     child: const Text('Surah screen2')),
+                  // const SizedBox(
+                  //   height: 8,
+                  // ),
+                  // ElevatedButton(
+                  //     onPressed: () {
+                  //       Navigator.push(
+                  //           context,
+                  //           MaterialPageRoute(
+                  //               builder: (context) =>
+                  //                   const FacebookHomeScreen3()));
+                  //     },
+                  //     child: const Text('Surah screen3')),
                   const SizedBox(
                     height: 8,
                   ),

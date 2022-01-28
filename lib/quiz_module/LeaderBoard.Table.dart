@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quranirab/provider/user.provider.dart';
+import 'package:quranirab/quiz_module/leaderboard.model.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/widget/LanguagePopup.dart';
 import 'package:quranirab/widget/setting.popup.dart';
@@ -13,25 +16,54 @@ class LeaderBoardTable extends StatefulWidget {
 }
 
 class _LeaderBoardTableState extends State<LeaderBoardTable> {
-  var dataTable = [
-    LeaderBoard(1, 'Fajar', 10, 100),
-    LeaderBoard(2, 'Dania', 10, 90),
-    LeaderBoard(3, 'Hakimi', 10, 80),
-    LeaderBoard(4, 'Fang', 10, 70),
-    LeaderBoard(5, 'Safuan', 10, 60),
-    LeaderBoard(6, 'Mai', 10, 50),
-    LeaderBoard(7, 'Sanjev', 10, 40),
-    LeaderBoard(8, 'Ayu', 10, 30),
-    LeaderBoard(9, 'Hanan', 10, 20),
-    LeaderBoard(10, 'Adnin', 10, 10),
-  ];
+  final List _userName = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    init();
+  }
+
+  final usernameRef = FirebaseFirestore.instance.collection('quranIrabUsers');
+  var dataTable = [];
+  var userID = [];
   bool _sortAscending = false;
 
   _onSortId(int index, bool ascending) {
     setState(() {
       _sortAscending = ascending;
-      dataTable.sort((a, b) =>
-          ascending ? a.score.compareTo(b.score) : b.score.compareTo(a.score));
+      dataTable.sort((a, b) => ascending
+          ? a.score.compareTo(b['score'])
+          : b.score.compareTo(a['score']));
+    });
+  }
+
+  final leaderBoardRef = FirebaseFirestore.instance
+      .collection('quiz')
+      .doc('1')
+      .collection('users');
+
+  Future<void> init() async {
+    List leaderboard = await leaderBoardRef
+        .orderBy('score', descending: true)
+        .limit(10)
+        .get()
+        .then((snapshot) => snapshot.docs);
+    setState(() {
+      dataTable = leaderboard;
+    });
+    await leaderBoardRef
+        .orderBy('score', descending: true)
+        .limit(10)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (int i = 0; i < dataTable.length; i++) {
+        setState(() {
+          userID.add(querySnapshot.docs[i]['user-id']);
+        });
+      }
+      getUserName(userID);
     });
   }
 
@@ -172,298 +204,462 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                           const Divider(
                               color: Color.fromRGBO(0, 0, 0, 1), thickness: 1),
                           Center(
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.7,
-                              height: MediaQuery.of(context).size.height * 0.82,
-                              child: TabBarView(children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                      decoration: BoxDecoration(
-                                          color: themeProvider.isDarkMode
-                                              ? const Color(0xffD2D6DA)
-                                              : const Color(0xffFFFAD0),
-                                          shape: BoxShape.rectangle),
-                                      child: Theme(
-                                        data: Theme.of(context).copyWith(
-                                            dividerColor:
-                                                const Color(0xffBABABA)),
-                                        child: DataTable(
-                                            sortColumnIndex: 3,
-                                            sortAscending: _sortAscending,
-                                            headingRowHeight: 80,
-                                            dataRowHeight: 80,
-                                            headingTextStyle: const TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 32,
-                                                fontWeight: FontWeight.bold),
-                                            dataTextStyle: const TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 32),
+                            child: _userName.length == dataTable.length
+                                ? SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.7,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.82,
+                                    child: TabBarView(children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
                                             decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(20)),
-                                            headingRowColor:
-                                                MaterialStateProperty.all(
-                                                    themeProvider.isDarkMode
-                                                        ? const Color(
-                                                            0xff808BA1)
-                                                        : const Color(
-                                                            0xFFFFEDAD)),
-                                            columnSpacing: 20,
-                                            columns: [
-                                              DataColumn(
-                                                  label: Text(
-                                                    'Rank',
-                                                    style: TextStyle(
-                                                        color: themeProvider
-                                                                .isDarkMode
-                                                            ? Colors.white
-                                                            : Colors.black),
-                                                  ),
-                                                  numeric: false,
-                                                  onSort: null),
-                                              DataColumn(
-                                                label: Text(
-                                                  'Name',
-                                                  style: TextStyle(
-                                                      color: themeProvider
-                                                              .isDarkMode
-                                                          ? Colors.white
-                                                          : Colors.black),
-                                                ),
-                                              ),
-                                              DataColumn(
-                                                  label: Text(
-                                                    'Total Pages',
-                                                    style: TextStyle(
-                                                        color: themeProvider
-                                                                .isDarkMode
-                                                            ? Colors.white
-                                                            : Colors.black),
-                                                  ),
-                                                  numeric: false,
-                                                  onSort: null),
-                                              DataColumn(
-                                                  label: Text(
-                                                    'Score',
-                                                    style: TextStyle(
-                                                        color: themeProvider
-                                                                .isDarkMode
-                                                            ? Colors.white
-                                                            : Colors.black),
-                                                  ),
-                                                  numeric: false,
-                                                  onSort: _onSortId),
-                                            ],
-                                            rows: dataTable
-                                                .map(
-                                                    (e) => DataRow(
-                                                            selected: false,
-                                                            cells: [
-                                                              DataCell(
-                                                                Text(
-                                                                  '${e.rank}',
-                                                                  style: const TextStyle(
-                                                                      color: Colors
-                                                                          .black),
-                                                                ),
-                                                              ),
-                                                              DataCell(
-                                                                  Row(
-                                                                    children: [
-                                                                      const CircleAvatar(
-                                                                        backgroundColor:
-                                                                            Color(0xffBABABA),
-                                                                        backgroundImage:
-                                                                            AssetImage('assets/Image3.png'),
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        width:
-                                                                            16,
-                                                                      ),
+                                                color: themeProvider.isDarkMode
+                                                    ? const Color(0xffD2D6DA)
+                                                    : const Color(0xffFFFAD0),
+                                                shape: BoxShape.rectangle),
+                                            child: Theme(
+                                              data: Theme.of(context).copyWith(
+                                                  dividerColor:
+                                                      const Color(0xffBABABA)),
+                                              child: DataTable(
+                                                  sortColumnIndex: 3,
+                                                  sortAscending: _sortAscending,
+                                                  headingRowHeight: 80,
+                                                  dataRowHeight: 80,
+                                                  headingTextStyle:
+                                                      const TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 32,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                  dataTextStyle:
+                                                      const TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 32),
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20)),
+                                                  headingRowColor:
+                                                      MaterialStateProperty
+                                                          .all(themeProvider
+                                                                  .isDarkMode
+                                                              ? const Color(
+                                                                  0xff808BA1)
+                                                              : const Color(
+                                                                  0xFFFFEDAD)),
+                                                  columnSpacing: 20,
+                                                  columns: [
+                                                    DataColumn(
+                                                        label: Text(
+                                                          'Rank',
+                                                          style: TextStyle(
+                                                              color: themeProvider
+                                                                      .isDarkMode
+                                                                  ? Colors.white
+                                                                  : Colors
+                                                                      .black),
+                                                        ),
+                                                        numeric: false,
+                                                        onSort: null),
+                                                    DataColumn(
+                                                      label: Text(
+                                                        'Name',
+                                                        style: TextStyle(
+                                                            color: themeProvider
+                                                                    .isDarkMode
+                                                                ? Colors.white
+                                                                : Colors.black),
+                                                      ),
+                                                    ),
+                                                    DataColumn(
+                                                        label: Text(
+                                                          'Total Pages',
+                                                          style: TextStyle(
+                                                              color: themeProvider
+                                                                      .isDarkMode
+                                                                  ? Colors.white
+                                                                  : Colors
+                                                                      .black),
+                                                        ),
+                                                        numeric: false,
+                                                        onSort: null),
+                                                    DataColumn(
+                                                        label: Text(
+                                                          'Score',
+                                                          style: TextStyle(
+                                                              color: themeProvider
+                                                                      .isDarkMode
+                                                                  ? Colors.white
+                                                                  : Colors
+                                                                      .black),
+                                                        ),
+                                                        numeric: false,
+                                                        onSort: _onSortId),
+                                                  ],
+                                                  rows: dataTable
+                                                      .map(
+                                                          (e) => DataRow(
+                                                                  selected:
+                                                                      false,
+                                                                  cells: [
+                                                                    DataCell(
                                                                       Text(
-                                                                        e.name,
+                                                                        '${dataTable.indexOf(e) + 1}',
                                                                         style: const TextStyle(
                                                                             color:
                                                                                 Colors.black),
                                                                       ),
-                                                                      const Spacer(),
-                                                                    ],
-                                                                  ),
-                                                                  showEditIcon:
-                                                                      false,
-                                                                  onTap: () {}),
-                                                              DataCell(
-                                                                Text(
-                                                                  "${e.chapterCompleted}",
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .center,
-                                                                  style: const TextStyle(
-                                                                      color: Colors
-                                                                          .black),
-                                                                ),
-                                                              ),
-                                                              DataCell(
-                                                                Text(
-                                                                  "${e.score}",
-                                                                  style: const TextStyle(
-                                                                      color: Colors
-                                                                          .black),
-                                                                ),
-                                                              ),
-                                                            ]))
-                                                .toList()),
-                                      )),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                      decoration: BoxDecoration(
-                                          color: themeProvider.isDarkMode
-                                              ? const Color(0xffD2D6DA)
-                                              : const Color(0xffFFFAD0),
-                                          shape: BoxShape.rectangle),
-                                      child: Theme(
-                                        data: Theme.of(context).copyWith(
-                                            dividerColor:
-                                                const Color(0xffBABABA)),
-                                        child: DataTable(
-                                            sortColumnIndex: 3,
-                                            sortAscending: _sortAscending,
-                                            headingRowHeight: 80,
-                                            dataRowHeight: 80,
-                                            headingTextStyle: const TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 32,
-                                                fontWeight: FontWeight.bold),
-                                            dataTextStyle: const TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 32),
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(20)),
-                                            headingRowColor:
-                                                MaterialStateProperty.all(
-                                                    themeProvider.isDarkMode
-                                                        ? const Color(
-                                                            0xff808BA1)
-                                                        : const Color(
-                                                            0xFFFFEDAD)),
-                                            columnSpacing: 20,
-                                            columns: [
-                                              DataColumn(
-                                                  label: Text(
-                                                    'Rank',
-                                                    style: TextStyle(
-                                                        color: themeProvider
-                                                                .isDarkMode
-                                                            ? Colors.white
-                                                            : Colors.black),
-                                                  ),
-                                                  numeric: false,
-                                                  onSort: null),
-                                              DataColumn(
-                                                label: Text(
-                                                  'Name',
-                                                  style: TextStyle(
-                                                      color: themeProvider
-                                                              .isDarkMode
-                                                          ? Colors.white
-                                                          : Colors.black),
-                                                ),
-                                              ),
-                                              DataColumn(
-                                                  label: Text(
-                                                    'Total Pages',
-                                                    style: TextStyle(
-                                                        color: themeProvider
-                                                                .isDarkMode
-                                                            ? Colors.white
-                                                            : Colors.black),
-                                                  ),
-                                                  numeric: false,
-                                                  onSort: null),
-                                              DataColumn(
-                                                  label: Text(
-                                                    'Score',
-                                                    style: TextStyle(
-                                                        color: themeProvider
-                                                                .isDarkMode
-                                                            ? Colors.white
-                                                            : Colors.black),
-                                                  ),
-                                                  numeric: false,
-                                                  onSort: _onSortId),
-                                            ],
-                                            rows: dataTable
-                                                .map(
-                                                    (e) => DataRow(
-                                                            selected: false,
-                                                            cells: [
-                                                              DataCell(
-                                                                Text(
-                                                                  '${e.rank}',
-                                                                  style: const TextStyle(
-                                                                      color: Colors
-                                                                          .black),
-                                                                ),
-                                                              ),
-                                                              DataCell(
-                                                                  Row(
-                                                                    children: [
-                                                                      const CircleAvatar(
-                                                                        backgroundColor:
-                                                                            Color(0xffBABABA),
-                                                                        backgroundImage:
-                                                                            AssetImage('assets/Image3.png'),
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        width:
-                                                                            16,
-                                                                      ),
+                                                                    ),
+                                                                    DataCell(
+                                                                        Row(
+                                                                          children: [
+                                                                            const CircleAvatar(
+                                                                              backgroundColor: Color(0xffBABABA),
+                                                                              backgroundImage: AssetImage('assets/Image3.png'),
+                                                                            ),
+                                                                            const SizedBox(
+                                                                              width: 16,
+                                                                            ),
+                                                                            Text(
+                                                                              "${_userName[dataTable.indexOf(e)]}",
+                                                                              style: const TextStyle(color: Colors.black),
+                                                                            ),
+                                                                            const Spacer(),
+                                                                          ],
+                                                                        ),
+                                                                        showEditIcon:
+                                                                            false,
+                                                                        onTap:
+                                                                            () {}),
+                                                                    DataCell(
                                                                       Text(
-                                                                        e.name,
+                                                                        "${e['score']}",
+                                                                        textAlign:
+                                                                            TextAlign.center,
                                                                         style: const TextStyle(
                                                                             color:
                                                                                 Colors.black),
                                                                       ),
-                                                                      const Spacer(),
-                                                                    ],
-                                                                  ),
-                                                                  showEditIcon:
+                                                                    ),
+                                                                    DataCell(
+                                                                      Text(
+                                                                        "${e['score']}",
+                                                                        style: const TextStyle(
+                                                                            color:
+                                                                                Colors.black),
+                                                                      ),
+                                                                    ),
+                                                                  ]))
+                                                      .toList()),
+                                            )),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                            decoration: BoxDecoration(
+                                                color: themeProvider.isDarkMode
+                                                    ? const Color(0xffD2D6DA)
+                                                    : const Color(0xffFFFAD0),
+                                                shape: BoxShape.rectangle),
+                                            child: Theme(
+                                              data: Theme.of(context).copyWith(
+                                                  dividerColor:
+                                                      const Color(0xffBABABA)),
+                                              child: DataTable(
+                                                  sortColumnIndex: 3,
+                                                  sortAscending: _sortAscending,
+                                                  headingRowHeight: 80,
+                                                  dataRowHeight: 80,
+                                                  headingTextStyle:
+                                                      const TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 32,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                  dataTextStyle:
+                                                      const TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 32),
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20)),
+                                                  headingRowColor:
+                                                      MaterialStateProperty
+                                                          .all(themeProvider
+                                                                  .isDarkMode
+                                                              ? const Color(
+                                                                  0xff808BA1)
+                                                              : const Color(
+                                                                  0xFFFFEDAD)),
+                                                  columnSpacing: 20,
+                                                  columns: [
+                                                    DataColumn(
+                                                        label: Text(
+                                                          'Rank',
+                                                          style: TextStyle(
+                                                              color: themeProvider
+                                                                      .isDarkMode
+                                                                  ? Colors.white
+                                                                  : Colors
+                                                                      .black),
+                                                        ),
+                                                        numeric: false,
+                                                        onSort: null),
+                                                    DataColumn(
+                                                      label: Text(
+                                                        'Name',
+                                                        style: TextStyle(
+                                                            color: themeProvider
+                                                                    .isDarkMode
+                                                                ? Colors.white
+                                                                : Colors.black),
+                                                      ),
+                                                    ),
+                                                    DataColumn(
+                                                        label: Text(
+                                                          'Total Pages',
+                                                          style: TextStyle(
+                                                              color: themeProvider
+                                                                      .isDarkMode
+                                                                  ? Colors.white
+                                                                  : Colors
+                                                                      .black),
+                                                        ),
+                                                        numeric: false,
+                                                        onSort: null),
+                                                    DataColumn(
+                                                        label: Text(
+                                                          'Score',
+                                                          style: TextStyle(
+                                                              color: themeProvider
+                                                                      .isDarkMode
+                                                                  ? Colors.white
+                                                                  : Colors
+                                                                      .black),
+                                                        ),
+                                                        numeric: false,
+                                                        onSort: _onSortId),
+                                                  ],
+                                                  rows: dataTable
+                                                      .map(
+                                                          (e) => DataRow(
+                                                                  selected:
                                                                       false,
-                                                                  onTap: () {}),
-                                                              DataCell(
-                                                                Text(
-                                                                  "${e.chapterCompleted}",
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .center,
-                                                                  style: const TextStyle(
-                                                                      color: Colors
-                                                                          .black),
-                                                                ),
-                                                              ),
-                                                              DataCell(
-                                                                Text(
-                                                                  "${e.score}",
-                                                                  style: const TextStyle(
-                                                                      color: Colors
-                                                                          .black),
-                                                                ),
-                                                              ),
-                                                            ]))
-                                                .toList()),
-                                      )),
-                                ),
-                              ]),
-                            ),
+                                                                  cells: [
+                                                                    DataCell(
+                                                                      Text(
+                                                                        '${dataTable.indexOf(e) + 1}',
+                                                                        style: const TextStyle(
+                                                                            color:
+                                                                                Colors.black),
+                                                                      ),
+                                                                    ),
+                                                                    DataCell(
+                                                                        Row(
+                                                                          children: [
+                                                                            const CircleAvatar(
+                                                                              backgroundColor: Color(0xffBABABA),
+                                                                              backgroundImage: AssetImage('assets/Image3.png'),
+                                                                            ),
+                                                                            const SizedBox(
+                                                                              width: 16,
+                                                                            ),
+                                                                            Text(
+                                                                              "${_userName[dataTable.indexOf(e)]}",
+                                                                              style: const TextStyle(color: Colors.black),
+                                                                            ),
+                                                                            const Spacer(),
+                                                                          ],
+                                                                        ),
+                                                                        showEditIcon:
+                                                                            false,
+                                                                        onTap:
+                                                                            () {}),
+                                                                    DataCell(
+                                                                      Text(
+                                                                        "${e['score']}",
+                                                                        textAlign:
+                                                                            TextAlign.center,
+                                                                        style: const TextStyle(
+                                                                            color:
+                                                                                Colors.black),
+                                                                      ),
+                                                                    ),
+                                                                    DataCell(
+                                                                      Text(
+                                                                        "${e['score']}",
+                                                                        style: const TextStyle(
+                                                                            color:
+                                                                                Colors.black),
+                                                                      ),
+                                                                    ),
+                                                                  ]))
+                                                      .toList()),
+                                            )),
+                                      ),
+                                      // Padding(
+                                      //   padding: const EdgeInsets.all(8.0),
+                                      //   child: Container(
+                                      //       decoration: BoxDecoration(
+                                      //           color: themeProvider.isDarkMode
+                                      //               ? const Color(0xffD2D6DA)
+                                      //               : const Color(0xffFFFAD0),
+                                      //           shape: BoxShape.rectangle),
+                                      //       child: Theme(
+                                      //         data: Theme.of(context).copyWith(
+                                      //             dividerColor:
+                                      //                 const Color(0xffBABABA)),
+                                      //         child: DataTable(
+                                      //             sortColumnIndex: 3,
+                                      //             sortAscending: _sortAscending,
+                                      //             headingRowHeight: 80,
+                                      //             dataRowHeight: 80,
+                                      //             headingTextStyle: const TextStyle(
+                                      //                 color: Colors.black,
+                                      //                 fontSize: 32,
+                                      //                 fontWeight: FontWeight.bold),
+                                      //             dataTextStyle: const TextStyle(
+                                      //                 color: Colors.black,
+                                      //                 fontSize: 32),
+                                      //             decoration: BoxDecoration(
+                                      //                 borderRadius:
+                                      //                     BorderRadius.circular(20)),
+                                      //             headingRowColor:
+                                      //                 MaterialStateProperty.all(
+                                      //                     themeProvider.isDarkMode
+                                      //                         ? const Color(
+                                      //                             0xff808BA1)
+                                      //                         : const Color(
+                                      //                             0xFFFFEDAD)),
+                                      //             columnSpacing: 20,
+                                      //             columns: [
+                                      //               DataColumn(
+                                      //                   label: Text(
+                                      //                     'Rank',
+                                      //                     style: TextStyle(
+                                      //                         color: themeProvider
+                                      //                                 .isDarkMode
+                                      //                             ? Colors.white
+                                      //                             : Colors.black),
+                                      //                   ),
+                                      //                   numeric: false,
+                                      //                   onSort: null),
+                                      //               DataColumn(
+                                      //                 label: Text(
+                                      //                   'Name',
+                                      //                   style: TextStyle(
+                                      //                       color: themeProvider
+                                      //                               .isDarkMode
+                                      //                           ? Colors.white
+                                      //                           : Colors.black),
+                                      //                 ),
+                                      //               ),
+                                      //               DataColumn(
+                                      //                   label: Text(
+                                      //                     'Total Pages',
+                                      //                     style: TextStyle(
+                                      //                         color: themeProvider
+                                      //                                 .isDarkMode
+                                      //                             ? Colors.white
+                                      //                             : Colors.black),
+                                      //                   ),
+                                      //                   numeric: false,
+                                      //                   onSort: null),
+                                      //               DataColumn(
+                                      //                   label: Text(
+                                      //                     'Score',
+                                      //                     style: TextStyle(
+                                      //                         color: themeProvider
+                                      //                                 .isDarkMode
+                                      //                             ? Colors.white
+                                      //                             : Colors.black),
+                                      //                   ),
+                                      //                   numeric: false,
+                                      //                   onSort: _onSortId),
+                                      //             ],
+                                      //             rows: dataTable
+                                      //                 .map(
+                                      //                     (e) => DataRow(
+                                      //                             selected: false,
+                                      //                             cells: [
+                                      //                               DataCell(
+                                      //                                 Text(
+                                      //                                   '${e.rank}',
+                                      //                                   style: const TextStyle(
+                                      //                                       color: Colors
+                                      //                                           .black),
+                                      //                                 ),
+                                      //                               ),
+                                      //                               DataCell(
+                                      //                                   Row(
+                                      //                                     children: [
+                                      //                                       const CircleAvatar(
+                                      //                                         backgroundColor:
+                                      //                                             Color(0xffBABABA),
+                                      //                                         backgroundImage:
+                                      //                                             AssetImage('assets/Image3.png'),
+                                      //                                       ),
+                                      //                                       const SizedBox(
+                                      //                                         width:
+                                      //                                             16,
+                                      //                                       ),
+                                      //                                       Text(
+                                      //                                         e.name,
+                                      //                                         style: const TextStyle(
+                                      //                                             color:
+                                      //                                                 Colors.black),
+                                      //                                       ),
+                                      //                                       const Spacer(),
+                                      //                                     ],
+                                      //                                   ),
+                                      //                                   showEditIcon:
+                                      //                                       false,
+                                      //                                   onTap: () {}),
+                                      //                               DataCell(
+                                      //                                 Text(
+                                      //                                   "${e.chapterCompleted}",
+                                      //                                   textAlign:
+                                      //                                       TextAlign
+                                      //                                           .center,
+                                      //                                   style: const TextStyle(
+                                      //                                       color: Colors
+                                      //                                           .black),
+                                      //                                 ),
+                                      //                               ),
+                                      //                               DataCell(
+                                      //                                 Text(
+                                      //                                   "${e.score}",
+                                      //                                   style: const TextStyle(
+                                      //                                       color: Colors
+                                      //                                           .black),
+                                      //                                 ),
+                                      //                               ),
+                                      //                             ]))
+                                      //                 .toList()),
+                                      //       )),
+                                      // ),
+                                    ]),
+                                  )
+                                : const Center(
+                                    child: CircularProgressIndicator()),
                           ),
                         ]),
                   )))),
     );
+  }
+
+  Future<void> getUserName(List<dynamic> userID) async {
+    for (int i = 0; i < userID.length; i++) {
+      await usernameRef.doc(userID[i]).get().then((value) {
+        setState(() {
+          _userName.add('${value['first_name']} ${value['last_name']}');
+        });
+      });
+    }
   }
 }
 
