@@ -31,17 +31,19 @@ class _QuizState extends State<Quiz> {
   late QuestionModel question;
   bool dataReady = false;
   bool correctAnswer = false;
-  //late String question;
+
   late String selectedOption;
-  late QuerySnapshot relations;
+  late QuerySnapshot relationshipSnapshot;
   late QuerySnapshot optionTSnap;
   List<WordRelationship> wordRelationships = [];
+  List<WordRelationship> answers = [];
 
   final PageController _controller = PageController(initialPage: 0);
   var windowWidth;
   var windowHeight;
   double windowSize = 0;
 
+  int btnIndex = 0;
   int score = 0;
   bool btnPressed = false;
   String btnText = "Next";
@@ -114,6 +116,20 @@ class _QuizState extends State<Quiz> {
                             ),
                             Center(
                               child: SizedBox(
+                                height: 40,
+                                child: Text(
+                                  'Question ' + (index + 1).toString() + ' / ' + wordList.length.toString(),
+                                  style:const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 22.0,
+                                      fontWeight: FontWeight.bold
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            Center(
+                              child: SizedBox(
                                 height: 40.0,
                                 child: Text(
                                   'Ayat',
@@ -151,19 +167,7 @@ class _QuizState extends State<Quiz> {
                               indent:30.0,
                               endIndent: 30.0,
                             ),
-                            Center(
-                              child: SizedBox(
-                                height: 40,
-                                child: Text(
-                                  'Question ' + (index + 1).toString() + ' / ' + wordList.length.toString(),
-                                  style:const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 22.0,
-                                      fontWeight: FontWeight.bold
-                                  ),
-                                ),
-                              ),
-                            ),
+
                             Center(
                               child: SizedBox(
                                 height: 40.0,
@@ -198,6 +202,7 @@ class _QuizState extends State<Quiz> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   for (int i = 0; i < options_arabic.length; i++)
+
                                     Container(
                                       margin:const EdgeInsets.all(3),
                                       child: RawMaterialButton(
@@ -206,15 +211,25 @@ class _QuizState extends State<Quiz> {
                                         elevation: 0.0,
                                         fillColor: btnPressed
                                             ?
-                                        correctAnswer ?
-                                        options_arabic[i].correct
-                                            ? Colors.green
+                                            options_arabic[i].isSelected
+                                                ?
+                                            options_arabic[i].isCorrect
+                                                ? Colors.green
                                             : Colors.red
-                                        :Colors.amber
+
+                                        :!correctAnswer?
+                                                options_arabic[i].isCorrect?
+                                                    Colors.green
+                                                :!options_arabic[i].isSelected?
+                                                    AppColor.secondaryColor
+                                                :null
+                                            :AppColor.secondaryColor
+
                                             : AppColor.secondaryColor,
                                         onPressed: !answered
                                             ? () {
                                           selectedOption = options_arabic[i].id;
+                                          options_arabic[i].isSelected = true;
                                           checkAnswer(wordList[index].id.toString(), selectedOption);
 
                                           /**
@@ -247,6 +262,8 @@ class _QuizState extends State<Quiz> {
                                         ),
                                       ),
                                     ),
+
+
                                 ],
                               ),
                             )
@@ -279,7 +296,8 @@ class _QuizState extends State<Quiz> {
                           btnPressed = false;
                           correctAnswer = false;
                           for (int i = 0; i < options_arabic.length; i++) {
-                            options_arabic[i].correct =false;
+                            options_arabic[i].isCorrect =false;
+                            options_arabic[i].isSelected = false;
                           }
                         });
                       } },
@@ -358,52 +376,44 @@ class _QuizState extends State<Quiz> {
 
   }
 
-  Future<List<dynamic>> getRelationships() async {
-    /*
-     relations = await FirebaseFirestore.instance
-         .collection('word_relationships').
-     where('word_id', isEqualTo: wordId).get();
+  Future<List<dynamic>> getAnswers() async {
 
-     for(int i = 0; i < relations.docs.length; i++) {
-       wordRelationships.add(
-           WordRelationship(
-               wordId: relations.docs[i].get('word_id'),
-               relationship: relations.docs[i].get('word_category_id'))
-       );
-      //print('relationships found..');
-      // print(wordRelationships[i].relationship);
-     }
-
-      */
-
-
-    //get all relationships for the word
-    for(int i =0; i< wordList.length; i++) {
-      //print(wordList[i].id);
-
-      relations = await FirebaseFirestore.instance
+    for(int i =0; i< wordList.length; i++)
+    {
+      relationshipSnapshot = await FirebaseFirestore.instance
           .collection('word_relationships').
       where('word_id', isEqualTo: wordList[i].id).get();
 
-      for (int j=0; j< relations.docs.length; j++) {
+      for (int j=0; j< relationshipSnapshot.docs.length; j++)
+      {
         wordRelationships.add(
             WordRelationship(
-                wordId: relations.docs[j].get('word_id'),
-                relationship: relations.docs[j].get('word_category_id'))
+                wordId: relationshipSnapshot.docs[j].get('word_id'),
+                relationship: relationshipSnapshot.docs[j].get('word_category_id'))
         );
 
       }
 
+    }
 
+    for (int i = 0; i< wordRelationships.length; i++)
+    {
+      for (int j = 0; j < options_arabic.length; j++)
+      {
+        if(wordRelationships[i].relationship == options_arabic[j].id)
+        {
+          answers.add(wordRelationships[i]);
+          break;
+
+        }
+
+      }
 
     }
 
 
-
-    //print(wordRelationships[0].wordId);
-
     return  Future.delayed(Duration(seconds: 1),
-            () => wordRelationships.map((e) => e).toList());
+            () => answers.map((e) => e).toList());
   }
 
   Future<List<dynamic>> getNonTranslatedOptions() async {
@@ -447,39 +457,56 @@ class _QuizState extends State<Quiz> {
   }
 
 
+
   void generateQuestions() async {
     await getWords();
     await getQuestion();
-    await getRelationships();
     await getNonTranslatedOptions();
     await getTranslatedOptions();
+    await getAnswers();
+
+
 
     setState(() {
       dataReady = true;
     });
 
+
   }
 
   void checkAnswer(String wordId, String selectedOption) async {
 
-
-
-    for(int i = 0; i < wordRelationships.length; i++) {
-
-      if(wordId == wordRelationships[i].wordId
-          &&  wordRelationships[i].relationship == selectedOption) {
+    for(int i = 0; i < answers.length; i++)
+    {
+      if(wordId == answers[i].wordId
+          &&  answers[i].relationship == selectedOption) {
         correctAnswer = true;
         print('Correct Answer');
 
         for (int j = 0; j < options_arabic.length; j++) {
           if(options_arabic[j].id == selectedOption) {
-            options_arabic[j].correct = true;
+            options_arabic[j].isCorrect = true;
           }
         }
 
       }
+
     }
-  }
+    if(!correctAnswer) {
+      for(int i = 0; i < answers.length; i++) {
+          for (int j = 0; j < options_arabic.length; j++)
+          {
+            if(wordId == answers[i].wordId && options_arabic[j].id == answers[i].relationship ) {
+              options_arabic[j].isCorrect = true;
+            }
+          }
+
+        }
+
+      }
+    }
+
+
 
 
 }
