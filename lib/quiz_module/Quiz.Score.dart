@@ -11,8 +11,9 @@ import 'package:quranirab/quiz_module/LeaderBoard.Menu.dart';
 import 'package:quranirab/quiz_module/quiz_list.dart';
 
 class QuizScore extends StatefulWidget {
-  QuizScore(this.score, {Key? key}) : super(key: key);
+  QuizScore(this.score, this.questionsCount, {Key? key}) : super(key: key);
   int score;
+  int questionsCount;
 
   @override
   _QuizScoreState createState() => _QuizScoreState();
@@ -69,7 +70,7 @@ class _QuizScoreState extends State<QuizScore> {
                               height: 50,
                             ),
                             Text(
-                              "${widget.score}""/" ,
+                              "${widget.score}"" / " + '${widget.questionsCount}' ,
                                   //"${questions.length}",
                               style: const TextStyle(
                                   fontSize: 34, fontWeight: FontWeight.w800,
