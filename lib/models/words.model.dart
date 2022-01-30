@@ -22,6 +22,9 @@ class Words {
   String? updatedAt;
   String? wordOrder;
 
+  Words.fromWords({this.id, this.text});
+
+
   Words(
     this.active,
     this.createdAt,

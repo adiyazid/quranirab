@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:quranirab/provider/user.provider.dart';
+import 'package:quranirab/quiz_module/quiz.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -29,7 +30,8 @@ Future<void> main() async {
             final themeProvider =
                 Provider.of<ThemeProvider>(context, listen: true);
             return MaterialApp(
-              home: const DummyPage(),
+              home: Quiz(),
+              //home: const DummyPage(),
               themeMode: themeProvider.themeMode,
               theme: QuranThemes.lightTheme,
               darkTheme: QuranThemes.darkTheme,

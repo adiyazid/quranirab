@@ -21,9 +21,9 @@ List<String> question_quran=[
 
 ];
 
-
-List<QuestionModel> questions = [
-  QuestionModel(
+/*
+List<QuizModel> questions = [
+  QuizModel(
     "Questions: Type of Word?",
     {
       "الاسم": false,
@@ -31,27 +31,29 @@ List<QuestionModel> questions = [
       "الحرف": true,
     },
   ),
-  QuestionModel("Questions: Type of Word?", {
+  QuizModel("Questions: Type of Word?", {
     "الحرف": false,
     "الفعل": false,
     "الاسم": true,
   }),
-  QuestionModel("Questions: Type of Word?", {
+  QuizModel("Questions: Type of Word?", {
     "الفعل": true,
     "الاسم": false,
     "الحرف": false,
   }),
-  QuestionModel("Questions: Type of Word?", {
+  QuizModel("Questions: Type of Word?", {
     "الفعل": false,
     "الحرف": false,
     "الاسم": true,
 
   }),
-  QuestionModel("Questions: Type of Word?", {
+  QuizModel("Questions: Type of Word?", {
     "الفعل": true,
     "الحرف": false,
     "الاسم": false,
   }),
 
 ];
+*/
+
 //
