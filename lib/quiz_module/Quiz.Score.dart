@@ -8,7 +8,6 @@ import 'package:quranirab/widget/setting.dart';
 import 'package:quranirab/facebook/screens/Appbar/appbar.dart';
 import 'package:quranirab/quiz_module/utils/button182.dart';
 import 'package:quranirab/quiz_module/LeaderBoard.Menu.dart';
-import 'package:quranirab/quiz_module/quiz_list.dart';
 
 class QuizScore extends StatefulWidget {
   QuizScore(this.score,this.questionCount, {Key? key}) : super(key: key);
