@@ -1,22 +1,14 @@
 import 'package:quranirab/quiz_module/quiz_model.dart';
 
-List<String> ayat_quran=[
-  "Question 1",
-  "Question 2",
-  "Question 3",
-  "Question 4",
-  "Question 5",
-
-];
-
-List<String> word_quran=[
-  "ﻭ",
-  "ﻣﺴﺘﻘﻴﻢ",
-  "ﻳﺆﻣﻨﻮﻥ",
-  "ﻛﺮﻳﻢ",
-  "ﻧﻜﺘﺐ",
+import 'ayat_model.dart';
 
 
+List<AyatModel> Ayat=[
+  AyatModel("ﻭ", "ﻣﺴﺘﻘﻴﻢ"),
+  AyatModel("ﻣﺴﺘﻘﻴﻢ", "ﻣﺴﺘﻘﻴﻢ"),
+  AyatModel("ﻭ", "ﻣﺴﺘﻘﻴﻢ"),
+  AyatModel("ﻣﺴﺘﻘﻴﻢ", "ﻣﺴﺘﻘﻴﻢ"),
+  AyatModel("ﻭ", "ﻣﺴﺘﻘﻴﻢ"),
 ];
 
 List<String> question_quran=[
@@ -28,6 +20,7 @@ List<String> question_quran=[
 
 
 ];
+
 
 List<QuestionModel> questions = [
   QuestionModel(

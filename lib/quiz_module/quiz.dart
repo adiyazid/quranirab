@@ -151,12 +151,24 @@ class _QuizState extends State<Quiz> {
                             Center(
                               child: SizedBox(
                                 height: 40.0,
-                                child: Text(
-                                  ayat_quran[index].toString(),
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 22.0,
-                                      fontWeight: FontWeight.bold
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 22.0,
+                                        fontWeight: FontWeight.bold
+                                    ),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: Ayat[index].ayat_quran.toString(),
+                                      ),
+                                      TextSpan(
+                                        text: Ayat[index].word_ayat.toString(),
+                                        style: const TextStyle(
+                                          decoration: TextDecoration.underline,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -170,7 +182,7 @@ class _QuizState extends State<Quiz> {
                               child: SizedBox(
                                 height: 40.0,
                                 child: Text(
-                                  word_quran[index].toString(),
+                                  Ayat[index].ayat_quran,
                                   style: const TextStyle(
                                       color: Colors.black,
                                       fontSize: 22.0,
