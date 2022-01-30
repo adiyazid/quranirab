@@ -3,12 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:quranirab/models/words.model.dart';
-import 'package:quranirab/quiz_module/quiz_list.dart';
-import 'package:quranirab/quiz_module/quiz_model.dart';
+import 'package:quranirab/quiz_module/models/quiz_model.dart';
 import 'package:quranirab/quiz_module/utils/AppColor.java';
 import 'package:quranirab/quiz_module/Quiz.Score.dart';
 import 'package:intl/intl.dart';
-
 import 'models/answer_model.dart';
 import 'models/option_model.dart';
 import 'models/question_model.dart';
@@ -441,6 +439,7 @@ class _QuizState extends State<Quiz> {
   }
 
   void saveQuiz() {
+    //files quiz list not needed
     //get user id
     //get quiz type id
 
