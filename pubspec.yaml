@@ -57,6 +57,8 @@ dependencies:
   material_design_icons_flutter: ^5.0.5955-rc.1
   arabic_numbers: ^1.0.0
   custom_pop_up_menu: ^1.2.2
+  async: ^2.8.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -113,9 +115,6 @@ flutter:
     - family: MeQuran2
       fonts:
         - asset: fonts/me_quran2.ttf
-    - family: Surah
-      fonts:
-        - asset: fonts/SourceSansPro-Regular.ttf
     - family: Poppins
       fonts:
         - asset: assets/fonts/Poppins-Regular.ttf

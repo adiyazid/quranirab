@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/quiz_module/LeaderBoard.Table.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/widget/LanguagePopup.dart';
@@ -14,6 +16,13 @@ class LeaderBoardMenu extends StatefulWidget {
 }
 
 class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    calcOverallScore();
+  }
+
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
@@ -108,49 +117,6 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                       ],
                     ),
                   ),
-                  Container(
-                    width: 600,
-                    height: 130,
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30),
-                        bottomLeft: Radius.circular(30),
-                        bottomRight: Radius.circular(30),
-                      ),
-                      color: themeProvider.isDarkMode
-                          ? const Color(0xffD2D6DA)
-                          : const Color.fromRGBO(255, 250, 208, 1),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            'assets/Image7.png',
-                            scale: 4,
-                          ),
-                          const SizedBox(
-                            width: 104,
-                          ),
-                          const Flexible(
-                            child: Text(
-                              'Overall',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Color.fromRGBO(0, 0, 0, 1),
-                                  fontFamily: 'Source Serif Pro',
-                                  fontSize: 56,
-                                  letterSpacing:
-                                      0 /*percentages not used in flutter. defaulting to zero*/,
-                                  fontWeight: FontWeight.normal,
-                                  height: 1),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
                   InkWell(
                     onTap: () {
                       Navigator.push(
@@ -158,6 +124,57 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                           MaterialPageRoute(
                               builder: (context) => const LeaderBoardTable()));
                     },
+                    child: Container(
+                      width: 600,
+                      height: 130,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30),
+                          bottomLeft: Radius.circular(30),
+                          bottomRight: Radius.circular(30),
+                        ),
+                        color: themeProvider.isDarkMode
+                            ? const Color(0xffD2D6DA)
+                            : const Color.fromRGBO(255, 250, 208, 1),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              'assets/Image7.png',
+                              scale: 4,
+                            ),
+                            const SizedBox(
+                              width: 104,
+                            ),
+                            const Flexible(
+                              child: Text(
+                                'Overall',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Color.fromRGBO(0, 0, 0, 1),
+                                    fontFamily: 'Source Serif Pro',
+                                    fontSize: 56,
+                                    letterSpacing:
+                                        0 /*percentages not used in flutter. defaulting to zero*/,
+                                    fontWeight: FontWeight.normal,
+                                    height: 1),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    // onTap: () {
+                    //   Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //           builder: (context) => const LeaderBoardTable()));
+                    // },
                     child: Container(
                       width: 600,
                       height: 130,
@@ -302,6 +319,39 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                   ),
                 ])),
       ),
+    );
+  }
+
+  Future<void> calcOverallScore() async {
+    int overall = 0;
+    int num = 0;
+    await FirebaseFirestore.instance
+        .collection('quranIrabUsers')
+        .doc(AppUser.instance.user!.uid)
+        .collection('quizs')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        int score = doc['score'];
+        setState(() {
+          overall = overall + score;
+          num = num + 1;
+        });
+      }
+    });
+
+    await FirebaseFirestore.instance
+        .collection('leaderboards')
+        .doc('overall')
+        .collection('scores')
+        .doc(AppUser.instance.user!.uid)
+        .set(
+      {
+        'name': AppUser.instance.user!.displayName, // John Doe
+        'scores': overall,
+        'total-quiz': num
+      },
+      SetOptions(merge: true),
     );
   }
 }

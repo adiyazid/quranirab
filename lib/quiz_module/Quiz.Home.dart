@@ -44,9 +44,9 @@ class _QuizHomeState extends State<QuizHome> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => QuizMenu()));
+                                  builder: (context) => const QuizMenu()));
                         },
-                        child: const Text('Sanjev Quiz')),
+                        child: const Text('Quiz')),
                   )
                 ],
               ),

@@ -1,11 +1,10 @@
+import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/facebook/screens/Translation/translation.dart';
 import 'package:quranirab/facebook/widgets/more_options_list.dart';
-import 'package:quranirab/facebook/widgets/more_options_list2.dart';
 import 'package:quranirab/models/font.size.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/widget/LanguagePopup.dart';
@@ -13,7 +12,6 @@ import 'package:quranirab/widget/TranslationPopup.dart';
 import 'package:quranirab/widget/menu.dart';
 import 'package:quranirab/widget/setting.popup.dart';
 import 'package:quranirab/widget/responsive.dart' as w;
-import 'nav.draw.dart';
 
 class DataFromFirestore extends StatefulWidget {
   const DataFromFirestore({Key? key}) : super(key: key);
@@ -23,10 +21,13 @@ class DataFromFirestore extends StatefulWidget {
 }
 
 class _DataFromFirestoreState extends State<DataFromFirestore> {
+  late AsyncMemoizer _memoizer;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _memoizer = AsyncMemoizer();
     getData();
   }
 
@@ -34,54 +35,94 @@ class _DataFromFirestoreState extends State<DataFromFirestore> {
   final CollectionReference _collectionRef =
       FirebaseFirestore.instance.collection('suras');
 
-  Future<void> getData() async {
-    // Get docs from collection reference
-    QuerySnapshot querySnapshot =
-        await _collectionRef.orderBy('created_at').get();
+  Future<void> getData() => _memoizer.runOnce(() async {
+        // Get docs from collection reference
+        QuerySnapshot querySnapshot =
+            await _collectionRef.orderBy('created_at').get();
 
-    // Get data from docs and convert map to List
-    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-    setState(() {
-      _list = allData;
-    });
-  }
+        // Get data from docs and convert map to List
+        final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+        setState(() {
+          _list = allData;
+        });
+      });
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final fontsize = Provider.of<FontSizeController>(context);
     return Scaffold(
-      drawer: navDrawer(),
-      appBar: AppBar(
-        backgroundColor: Colors.orange[700],
-        elevation: 0,
-        actions: [],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(28.0),
-        child: Center(
+      backgroundColor:
+          themeProvider.isDarkMode ? const Color(0xff666666) : Colors.white,
+      drawer: const Menu(),
+      body: NestedScrollView(
+        physics: const BouncingScrollPhysics(),
+        headerSliverBuilder: (context, value) {
+          return [
+            SliverAppBar(
+              iconTheme: Theme.of(context).iconTheme,
+              leading: IconButton(
+                icon: const Icon(
+                  Icons.menu,
+                ),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+              ),
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              title: const CircleAvatar(
+                backgroundImage: AssetImage('assets/quranirab.png'),
+                radius: 18.0,
+              ),
+              centerTitle: false,
+              floating: true,
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 20.0),
+                  child: IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.search,
+                        size: 26.0,
+                      )),
+                ),
+                const Padding(
+                    padding: EdgeInsets.only(right: 20.0), child: LangPopup()),
+                const Padding(
+                    padding: EdgeInsets.only(right: 20.0),
+                    child: SettingPopup()),
+              ],
+            ),
+          ];
+        },
+        body: Center(
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Wrap(
-                  spacing: 8.0, // gap between adjacent chips
-                  runSpacing: 4.0, // gap between lines
-                  children: _list
-                      .map((data) => ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => PageScreen(
-                                          data["id"], data["start_line"])));
-                            },
-                            child: Text(
-                              '${data["start_line"]}',
-                              style: const TextStyle(
-                                  fontSize: 40,
-                                  fontFamily: 'MeQuran2',
-                                  color: Colors.white),
-                            ),
-                          ))
-                      .toList(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Wrap(
+                    spacing: 8.0, // gap between adjacent chips
+                    runSpacing: 4.0, // gap between lines
+                    children: _list
+                        .map((data) => ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => PageScreen(
+                                            data["id"], data["start_line"])));
+                              },
+                              child: Text(
+                                '${data["start_line"]}',
+                                style: TextStyle(
+                                    fontSize: fontsize.value,
+                                    fontFamily: 'MeQuran2',
+                                    color: Colors.white),
+                              ),
+                            ))
+                        .toList(),
+                  ),
                 )
               ],
             ),

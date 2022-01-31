@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/user.provider.dart';
@@ -19,7 +20,8 @@ class _SignupWidgetState extends State<SignupWidget> {
   final TextEditingController _lastName = TextEditingController();
   final TextEditingController _pass1 = TextEditingController();
   final TextEditingController _pass2 = TextEditingController();
-
+  CollectionReference users =
+      FirebaseFirestore.instance.collection('quranIrabUsers');
   bool _check = false;
 
   @override
@@ -293,6 +295,8 @@ class _SignupWidgetState extends State<SignupWidget> {
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: TextFormField(
+                      obscureText: true,
+                      obscuringCharacter: '*',
                       controller: _pass1,
                       decoration: InputDecoration(
                           enabledBorder: UnderlineInputBorder(
@@ -338,6 +342,8 @@ class _SignupWidgetState extends State<SignupWidget> {
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: TextFormField(
+                      obscureText: true,
+                      obscuringCharacter: '*',
                       controller: _pass2,
                       decoration: InputDecoration(
                           enabledBorder: UnderlineInputBorder(
@@ -404,6 +410,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                             password: _pass1.text,
                             lastName: _lastName.text,
                             firstName: _firstName.text);
+                        await addUser();
                         Navigator.pop(context);
                         showTopSnackBar(
                           context,
@@ -467,5 +474,18 @@ class _SignupWidgetState extends State<SignupWidget> {
       //BUTTON LOCATION
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
     );
+  }
+
+  Future<void> addUser() {
+    // Call the user's CollectionReference to add a new user
+    return users
+        .doc(AppUser.instance.user!.uid)
+        .set({
+          'first_name': _firstName.text, // John Doe
+          'last_name': _lastName.text, // Stokes and Sons
+          'email': _email.text // 42
+        })
+        .then((value) => print("User Added"))
+        .catchError((error) => print("Failed to add user: $error"));
   }
 }
