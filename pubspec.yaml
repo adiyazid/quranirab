@@ -110,33 +110,18 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Meor
-      fonts:
-        - asset: fonts/QCF_P001.TTF
-    - family: Meor2
-      fonts:
-        - asset: fonts/QCF_P002.TTF
-    - family: Meor3
-      fonts:
-        - asset: fonts/QCF_P003.TTF
-    - family: Meor4
-      fonts:
-        - asset: fonts/QCF_P004.TTF
-    - family: Meor5
-      fonts:
-        - asset: fonts/QCF_P005.TTF
-    - family: Meor6
-      fonts:
-        - asset: fonts/QCF_P006.TTF
-    - family: Meor7
-      fonts:
-        - asset: fonts/QCF_P007.TTF
     - family: MeQuran2
       fonts:
         - asset: fonts/me_quran2.ttf
     - family: Surah
       fonts:
         - asset: fonts/SourceSansPro-Regular.ttf
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+        - weight: 400
+
+
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

@@ -133,7 +133,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             await appUser.signUp(
                                 email: _email.text,
                                 password: _pass.text,
-                                name: _name.text);
+                                firstName: _name.text, lastName: '');
                             showTopSnackBar(
                               context,
                               const CustomSnackBar.success(

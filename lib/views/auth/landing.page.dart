@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/facebook/screens/home_screen_1.dart';
-import 'package:quranirab/facebook/screens/home_screen_2.dart';
-import 'package:quranirab/facebook/screens/home_screen_3.dart';
 import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/quiz_module/Quiz.Home.dart';
-import 'package:quranirab/views/auth/login.dart';
 import 'package:quranirab/views/data.from.firestore.dart';
-import 'package:quranirab/views/home.page.dart';
-import 'package:quranirab/views/page1.dart';
 import 'package:quranirab/views/quran.words.dart';
+
+import 'login.screen.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -23,7 +20,7 @@ class LandingPage extends StatelessWidget {
       return const DataFromFirestore();
     } else {
       print('Not logged in');
-      return LoginPage();
+      return const SigninWidget();
     }
   }
 }

@@ -51,12 +51,13 @@ class AppUser extends ChangeNotifier {
   Future<bool> signUp({
     required String email,
     required String password,
-    required String name,
+    required String firstName,
+    required String lastName,
   }) async {
     try {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
-      user!.updateDisplayName(name);
+      user!.updateDisplayName('$firstName $lastName');
       return true;
     } catch (e) {
       rethrow;
