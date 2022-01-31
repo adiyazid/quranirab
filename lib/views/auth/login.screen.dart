@@ -38,23 +38,23 @@ class _SigninWidgetState extends State<SigninWidget> {
                 top: 0,
                 left: -6,
                 child: Container(
-                  width: MediaQuery.of(context).size.width*0.35,
+                  width: MediaQuery.of(context).size.width*0.37,
                   height: MediaQuery.of(context).size.height,
                   decoration: theme.isDarkMode
                       ? BoxDecoration(
-                          color: const Color.fromRGBO(127, 139, 161, 1),
-                          border: Border.all(
-                            color: const Color.fromRGBO(255, 255, 255, 1),
-                            width: 10,
-                          ),
-                        )
+                    color: const Color.fromRGBO(127, 139, 161, 1),
+                    border: Border.all(
+                      color: const Color.fromRGBO(255, 255, 255, 1),
+                      width: 10,
+                    ),
+                  )
                       : BoxDecoration(
-                          color: const Color.fromRGBO(255, 243, 201, 1),
-                          border: Border.all(
-                            color: const Color.fromRGBO(255, 157, 11, 1),
-                            width: 10,
-                          ),
-                        ),
+                    color: const Color.fromRGBO(255, 243, 201, 1),
+                    border: Border.all(
+                      color: const Color.fromRGBO(255, 157, 11, 1),
+                      width: 10,
+                    ),
+                  ),
                   child: Center(
                     child: Text(
                       'Assalamualaikum',
@@ -66,7 +66,7 @@ class _SigninWidgetState extends State<SigninWidget> {
                           fontFamily: 'Poppins',
                           fontSize: 60,
                           letterSpacing:
-                              0 /*percentages not used in flutter. defaulting to zero*/,
+                          0 /*percentages not used in flutter. defaulting to zero*/,
                           fontWeight: FontWeight.normal,
                           height: 1),
                     ),
@@ -85,7 +85,7 @@ class _SigninWidgetState extends State<SigninWidget> {
                       fontFamily: 'Poppins',
                       fontSize: 64,
                       letterSpacing:
-                          0 /*percentages not used in flutter. defaulting to zero*/,
+                      0 /*percentages not used in flutter. defaulting to zero*/,
                       fontWeight: FontWeight.normal,
                       height: 1),
                 )),
@@ -93,7 +93,7 @@ class _SigninWidgetState extends State<SigninWidget> {
                 top: 479,
                 left: 767,
                 child: Container(
-                    width: MediaQuery.of(context).size.width*0.25,
+                    width: MediaQuery.of(context).size.width*0.35,
                     height: 54,
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.only(
@@ -128,7 +128,7 @@ class _SigninWidgetState extends State<SigninWidget> {
                                 fontFamily: 'Poppins',
                                 fontSize: 24,
                                 letterSpacing:
-                                    0 /*percentages not used in flutter. defaulting to zero*/,
+                                0 /*percentages not used in flutter. defaulting to zero*/,
                                 fontWeight: FontWeight.normal,
                                 height: 1)),
                       ),
@@ -137,7 +137,7 @@ class _SigninWidgetState extends State<SigninWidget> {
                 top: 550,
                 left: 767,
                 child: Container(
-                  width: MediaQuery.of(context).size.width*0.25,
+                  width: MediaQuery.of(context).size.width*0.35,
                   height: 54,
                   decoration: BoxDecoration(
                     borderRadius: const BorderRadius.only(
@@ -174,7 +174,7 @@ class _SigninWidgetState extends State<SigninWidget> {
                               fontFamily: 'Poppins',
                               fontSize: 24,
                               letterSpacing:
-                                  0 /*percentages not used in flutter. defaulting to zero*/,
+                              0 /*percentages not used in flutter. defaulting to zero*/,
                               fontWeight: FontWeight.normal,
                               height: 1)),
                     ),
@@ -214,7 +214,7 @@ class _SigninWidgetState extends State<SigninWidget> {
                     }
                   },
                   child: Container(
-                    width: MediaQuery.of(context).size.width*0.25,
+                    width: MediaQuery.of(context).size.width*0.35,
                     height: 54,
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.only(
@@ -238,7 +238,7 @@ class _SigninWidgetState extends State<SigninWidget> {
                             fontFamily: 'Poppins',
                             fontSize: 24,
                             letterSpacing:
-                                0 /*percentages not used in flutter. defaulting to zero*/,
+                            0 /*percentages not used in flutter. defaulting to zero*/,
                             fontWeight: FontWeight.normal,
                             height: 1),
                       ),
@@ -278,7 +278,7 @@ class _SigninWidgetState extends State<SigninWidget> {
                       fontFamily: 'Poppins',
                       fontSize: 18,
                       letterSpacing:
-                          0 /*percentages not used in flutter. defaulting to zero*/,
+                      0 /*percentages not used in flutter. defaulting to zero*/,
                       fontWeight: FontWeight.normal,
                       height: 1),
                 )),
@@ -298,7 +298,7 @@ class _SigninWidgetState extends State<SigninWidget> {
                         fontFamily: 'Poppins',
                         fontSize: 16,
                         letterSpacing:
-                            0 /*percentages not used in flutter. defaulting to zero*/,
+                        0 /*percentages not used in flutter. defaulting to zero*/,
                         fontWeight: FontWeight.normal,
                         height: 1),
                   ),

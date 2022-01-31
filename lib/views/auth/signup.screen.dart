@@ -21,7 +21,7 @@ class _SignupWidgetState extends State<SignupWidget> {
   final TextEditingController _pass1 = TextEditingController();
   final TextEditingController _pass2 = TextEditingController();
   CollectionReference users =
-      FirebaseFirestore.instance.collection('quranIrabUsers');
+  FirebaseFirestore.instance.collection('quranIrabUsers');
   bool _check = false;
 
   @override
@@ -41,7 +41,7 @@ class _SignupWidgetState extends State<SignupWidget> {
           child: Stack(children: <Widget>[
             Positioned(
                 top: 475,
-                left: 402,
+                left: 252,
                 child: Container(
                   width: 522,
                   height: 54,
@@ -78,7 +78,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                               fontFamily: 'Poppins',
                               fontSize: 24,
                               letterSpacing:
-                                  0 /*percentages not used in flutter. defaulting to zero*/,
+                              0 /*percentages not used in flutter. defaulting to zero*/,
                               fontWeight: FontWeight.normal,
                               height: 1)),
                     ),
@@ -86,7 +86,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                 )),
             const Positioned(
                 top: 301,
-                left: 299,
+                left: 149,
                 child: Text(
                   'Register for QuranIrab',
                   textAlign: TextAlign.left,
@@ -94,13 +94,13 @@ class _SignupWidgetState extends State<SignupWidget> {
                       fontFamily: 'Poppins',
                       fontSize: 64,
                       letterSpacing:
-                          0 /*percentages not used in flutter. defaulting to zero*/,
+                      0 /*percentages not used in flutter. defaulting to zero*/,
                       fontWeight: FontWeight.normal,
                       height: 1),
                 )),
             Positioned(
                 top: 687,
-                left: 403,
+                left: 253,
                 child: Row(
                   children: [
                     Checkbox(
@@ -121,7 +121,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                           fontFamily: 'Poppins',
                           fontSize: 14,
                           letterSpacing:
-                              0 /*percentages not used in flutter. defaulting to zero*/,
+                          0 /*percentages not used in flutter. defaulting to zero*/,
                           fontWeight: FontWeight.normal,
                           height: 1),
                     ),
@@ -129,7 +129,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                 )),
             Positioned(
                 top: 170,
-                left: 579,
+                left: 429,
                 child: Container(
                     width: 125,
                     height: 112,
@@ -177,7 +177,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                           fontFamily: 'Poppins',
                           fontSize: 60,
                           letterSpacing:
-                              0 /*percentages not used in flutter. defaulting to zero*/,
+                          0 /*percentages not used in flutter. defaulting to zero*/,
                           fontWeight: FontWeight.normal,
                           height: 1),
                     ),
@@ -187,7 +187,7 @@ class _SignupWidgetState extends State<SignupWidget> {
             ),
             Positioned(
                 top: 405,
-                left: 403,
+                left: 253,
                 child: Container(
                   width: 250,
                   height: 54,
@@ -224,7 +224,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                               fontFamily: 'Poppins',
                               fontSize: 24,
                               letterSpacing:
-                                  0 /*percentages not used in flutter. defaulting to zero*/,
+                              0 /*percentages not used in flutter. defaulting to zero*/,
                               fontWeight: FontWeight.normal,
                               height: 1)),
                     ),
@@ -232,7 +232,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                 )),
             Positioned(
                 top: 405,
-                left: 672,
+                left: 522,
                 child: Container(
                   width: 250,
                   height: 54,
@@ -269,7 +269,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                               fontFamily: 'Poppins',
                               fontSize: 24,
                               letterSpacing:
-                                  0 /*percentages not used in flutter. defaulting to zero*/,
+                              0 /*percentages not used in flutter. defaulting to zero*/,
                               fontWeight: FontWeight.normal,
                               height: 1)),
                     ),
@@ -277,7 +277,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                 )),
             Positioned(
                 top: 546,
-                left: 400,
+                left: 250,
                 child: Container(
                   width: 522,
                   height: 54,
@@ -316,7 +316,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                               fontFamily: 'Poppins',
                               fontSize: 24,
                               letterSpacing:
-                                  0 /*percentages not used in flutter. defaulting to zero*/,
+                              0 /*percentages not used in flutter. defaulting to zero*/,
                               fontWeight: FontWeight.normal,
                               height: 1)),
                     ),
@@ -324,7 +324,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                 )),
             Positioned(
                 top: 615,
-                left: 402,
+                left: 252,
                 child: Container(
                   width: 522,
                   height: 54,
@@ -363,7 +363,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                               fontFamily: 'Poppins',
                               fontSize: 24,
                               letterSpacing:
-                                  0 /*percentages not used in flutter. defaulting to zero*/,
+                              0 /*percentages not used in flutter. defaulting to zero*/,
                               fontWeight: FontWeight.normal,
                               height: 1)),
                     ),
@@ -373,7 +373,7 @@ class _SignupWidgetState extends State<SignupWidget> {
             ///button
             Positioned(
                 top: 726,
-                left: 532,
+                left: 382,
                 child: InkWell(
                   onTap: () async {
                     if (_pass1.text == '' &&
@@ -392,7 +392,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                         context,
                         const CustomSnackBar.error(
                           message:
-                              'Password did not match. Please insert again',
+                          'Password did not match. Please insert again',
                         ),
                       );
                     } else if (_check == false) {
@@ -400,7 +400,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                         context,
                         const CustomSnackBar.error(
                           message:
-                              'Please agree with terms and condition before proceed',
+                          'Please agree with terms and condition before proceed',
                         ),
                       );
                     } else {
@@ -449,7 +449,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                             fontFamily: 'Poppins',
                             fontSize: 24,
                             letterSpacing:
-                                0 /*percentages not used in flutter. defaulting to zero*/,
+                            0 /*percentages not used in flutter. defaulting to zero*/,
                             fontWeight: FontWeight.normal,
                             height: 1),
                       ),
@@ -481,10 +481,10 @@ class _SignupWidgetState extends State<SignupWidget> {
     return users
         .doc(AppUser.instance.user!.uid)
         .set({
-          'first_name': _firstName.text, // John Doe
-          'last_name': _lastName.text, // Stokes and Sons
-          'email': _email.text // 42
-        })
+      'first_name': _firstName.text, // John Doe
+      'last_name': _lastName.text, // Stokes and Sons
+      'email': _email.text // 42
+    })
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));
   }
