@@ -38,7 +38,7 @@ class _SigninWidgetState extends State<SigninWidget> {
                 top: 0,
                 left: -6,
                 child: Container(
-                  width: 630,
+                  width: MediaQuery.of(context).size.width*0.35,
                   height: MediaQuery.of(context).size.height,
                   decoration: theme.isDarkMode
                       ? BoxDecoration(
@@ -93,7 +93,7 @@ class _SigninWidgetState extends State<SigninWidget> {
                 top: 479,
                 left: 767,
                 child: Container(
-                    width: 522,
+                    width: MediaQuery.of(context).size.width*0.25,
                     height: 54,
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.only(
@@ -137,7 +137,7 @@ class _SigninWidgetState extends State<SigninWidget> {
                 top: 550,
                 left: 767,
                 child: Container(
-                  width: 522,
+                  width: MediaQuery.of(context).size.width*0.25,
                   height: 54,
                   decoration: BoxDecoration(
                     borderRadius: const BorderRadius.only(
@@ -214,7 +214,7 @@ class _SigninWidgetState extends State<SigninWidget> {
                     }
                   },
                   child: Container(
-                    width: 522,
+                    width: MediaQuery.of(context).size.width*0.25,
                     height: 54,
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.only(

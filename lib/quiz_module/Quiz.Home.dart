@@ -39,31 +39,34 @@ class _QuizHomeState extends State<QuizHome> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 50,bottom: 20),
+                      padding: const EdgeInsets.only(top: 50, bottom: 20),
                       child: Container(
                           color: const Color(0xfffff5ec),
-                          width: MediaQuery.of(context).size.width/1.4,
-                          height: MediaQuery.of(context).size.height/1.4,
+                          width: MediaQuery.of(context).size.width / 1.4,
+                          height: MediaQuery.of(context).size.height / 1.4,
                           child: Center(
-                            child: button182('Start the Quiz', const TextStyle(fontSize: 28), ManyColors.color11,
+                            child: button182(
+                                'Start the Quiz',
+                                const TextStyle(fontSize: 28),
+                                ManyColors.color11,
                                 10, () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const Quiz()));
-                                }, true),)
-                      ),
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const Quiz()));
+                            }, true),
+                          )),
                     ),
-                    button114('Back', const TextStyle(color: Colors.black, fontSize: 18), const Color(0xffffb55f),
+                    button114(
+                        'Back',
+                        const TextStyle(color: Colors.black, fontSize: 18),
+                        const Color(0xffffb55f),
                         10, () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const FacebookHomeScreen()));
-                        }, true),
+                      Navigator.pop(context);
+                    }, true),
                   ],
-                )
-            )],
+                ))
+          ],
         ),
       ),
     );
