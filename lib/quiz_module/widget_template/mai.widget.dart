@@ -76,7 +76,7 @@ class _ContainerWidgetState extends State<ContainerWidget> {
                           ),
                           alignment: Alignment.center)),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 button182('button 182', const TextStyle(fontSize: 20),
@@ -84,8 +84,8 @@ class _ContainerWidgetState extends State<ContainerWidget> {
                 const SizedBox(
                   height: 20,
                 ),
-                button114('button 114', Colors.redAccent,
-                    'assets/quranirab.png', 20, () {}, true),
+                //button114('button 114', Colors.redAccent,
+                //    'assets/quranirab.png', 20, () {}, true),
                 const SizedBox(
                   height: 20,
                 ),
