@@ -31,8 +31,8 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
     setState(() {
       _sortAscending = ascending;
       dataTable.sort((a, b) => ascending
-          ? a.score.compareTo(b['scores'])
-          : b.score.compareTo(a['scores']));
+          ? a['scores'].compareTo(b['scores'])
+          : b['scores'].compareTo(a['scores']));
     });
   }
 
