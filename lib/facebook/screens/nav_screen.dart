@@ -6,7 +6,7 @@ import 'package:quranirab/facebook/widgets/responsive.dart';
 
 
 import '../data.dart';
-import 'home_screen.dart';
+import 'home_screen_1.dart';
 
 class NavScreen extends StatefulWidget {
   @override

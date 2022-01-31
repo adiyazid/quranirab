@@ -1,14 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:quranirab/facebook/screens/home_screen.dart';
 import 'package:quranirab/provider/user.provider.dart';
-import 'package:quranirab/quiz_module/Quiz.dart';
-import 'package:quranirab/test-database.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/views/auth/landing.page.dart';
-import 'package:quranirab/views/home.page.dart';
-import 'package:quranirab/views/mushaf.page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,22 +20,24 @@ Future<void> main() async {
   );
   final appUser = AppUser();
   runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider<AppUser>.value(value: appUser),
-    ],
-    child: ChangeNotifierProvider(
-          create: (context) => ThemeProvider(),
+      providers: [
+        ChangeNotifierProvider<AppUser>.value(value: appUser),
+      ],
+      child: ChangeNotifierProvider(
+          create: (context) => FontSizeController(),
           builder: (context, _) {
-            final themeProvider =
-                Provider.of<ThemeProvider>(context, listen: true);
-            return MaterialApp(
-              home:Quiz(),
-              //home: const FacebookHomeScreen(),
-              themeMode: themeProvider.themeMode,
-              theme: QuranThemes.lightTheme,
-              darkTheme: QuranThemes.darkTheme,
-              debugShowCheckedModeBanner: false,
-            );
-          })
-  ));
+            return ChangeNotifierProvider(
+                create: (context) => ThemeProvider(),
+                builder: (context, _) {
+                  final themeProvider =
+                      Provider.of<ThemeProvider>(context, listen: true);
+                  return MaterialApp(
+                    home: const LandingPage(),
+                    themeMode: themeProvider.themeMode,
+                    theme: QuranThemes.lightTheme,
+                    darkTheme: QuranThemes.darkTheme,
+                    debugShowCheckedModeBanner: false,
+                  );
+                });
+          })));
 }
