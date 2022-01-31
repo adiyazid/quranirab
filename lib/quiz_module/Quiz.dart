@@ -61,6 +61,7 @@ class _QuizState extends State<Quiz> {
     windowHeight = MediaQuery.of(context).size.height;
     windowSize = min(windowWidth, windowHeight);
     return Scaffold(
+      backgroundColor: Color(0xffffb55f),
       body: dataReady
           ? PageView.builder(
               controller: _controller,
@@ -166,14 +167,16 @@ class _QuizState extends State<Quiz> {
                                   ),
                                   Center(
                                     child: SizedBox(
-                                      height: 40.0,
+                                      height: 60.0,
                                       child: Text(
                                         question.translation,
                                         //question_quran[index].toString(),
                                         style: const TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 22.0,
-                                            fontWeight: FontWeight.bold),
+                                          color: Colors.black,
+                                          fontSize: 22.0,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'MeQuran2',
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -264,6 +267,7 @@ class _QuizState extends State<Quiz> {
                                                   style: const TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 18.0,
+                                                    fontFamily: 'MeQuran2',
                                                   ),
                                                 ),
                                               ),
