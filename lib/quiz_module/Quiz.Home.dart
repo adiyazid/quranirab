@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:quranirab/facebook/screens/Appbar/appbar.dart';
+import 'package:quranirab/facebook/screens/home_screen_1.dart';
 import 'package:quranirab/quiz_module/utils/button114.dart';
 import 'package:quranirab/quiz_module/utils/button182.dart';
 import 'package:quranirab/quiz_module/utils/colors.dart';
 import 'package:quranirab/widget/menu.dart';
 import 'package:quranirab/widget/setting.dart';
-import 'package:quranirab/facebook/screens/home_screen.dart';
 import 'package:quranirab/quiz_module/Quiz.dart';
 
 class QuizHome extends StatefulWidget {
