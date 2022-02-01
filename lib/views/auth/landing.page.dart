@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/facebook/screens/home_screen_1.dart';
 import 'package:quranirab/provider/user.provider.dart';
-import 'package:quranirab/quiz_module/Quiz.Home.dart';
+import 'package:quranirab/quiz_module/quiz.home.dart';
 import 'package:quranirab/views/data.from.firestore.dart';
 import 'package:quranirab/views/quran.words.dart';
 

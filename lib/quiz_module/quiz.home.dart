@@ -6,7 +6,7 @@ import 'package:quranirab/quiz_module/utils/button182.dart';
 import 'package:quranirab/quiz_module/utils/colors.dart';
 import 'package:quranirab/widget/menu.dart';
 import 'package:quranirab/widget/setting.dart';
-import 'package:quranirab/quiz_module/Quiz.dart';
+import 'package:quranirab/quiz_module/quiz.dart';
 
 class QuizHome extends StatefulWidget {
   const QuizHome({Key? key}) : super(key: key);
