@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:quranirab/facebook/screens/home_screen_1.dart';
-import 'package:quranirab/quiz_module/Quiz.Home.dart';
+import 'package:quranirab/quiz_module/quiz.home.dart';
 import 'package:quranirab/widget/menu.dart';
 import 'package:quranirab/widget/setting.dart';
 import 'package:quranirab/facebook/screens/Appbar/appbar.dart';

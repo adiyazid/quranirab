@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:quranirab/models/option-model.dart';
+import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/quiz_module/quiz_list.dart';
 import 'package:quranirab/quiz_module/quiz_model.dart';
 import 'package:quranirab/quiz_module/utils/AppColor.java';
@@ -291,6 +292,7 @@ class _QuizState extends State<Quiz> {
                           onPressed: () {
                             if (_controller.page?.toInt() ==
                                 wordList.length - 1) {
+                              addScore(score);
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -486,6 +488,34 @@ class _QuizState extends State<Quiz> {
           }
         }
       }
+    }
+  }
+
+  Future<void> addScore(int score) async {
+    CollectionReference quiz = FirebaseFirestore.instance
+        .collection('quranIrabUsers')
+        .doc(AppUser.instance.user!.uid)
+        .collection('quizs');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int old = prefs.getInt('score') ?? 0;
+    if (old < score) {
+      prefs.setInt('score', score);
+      quiz
+          // existing document in 'users' collection: "ABC123"
+          .doc('beginner')
+          .set(
+            {
+              'user-id': AppUser.instance.user!.uid,
+              'score': score,
+              'date-taken': DateTime.now()
+            },
+            SetOptions(merge: true),
+      )
+          .then((value) =>
+              print("'score' & 'date' merged with existing data!"))
+          .catchError((error) => print("Failed to merge data: $error"));
+    } else {
+      print('try again');
     }
   }
 }

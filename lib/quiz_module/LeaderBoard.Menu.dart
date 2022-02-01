@@ -270,7 +270,8 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                     ),
                   ),
                   InkWell(
-                    onTap: () {
+                    onTap: () async {
+                      await calcOverallScore();
                       Navigator.push(
                           context,
                           MaterialPageRoute(

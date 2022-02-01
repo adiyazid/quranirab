@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quranirab/quiz_module/Quiz.Home.dart';
+import 'package:quranirab/provider/user.provider.dart';
+import 'package:quranirab/quiz_module/LeaderBoard.Menu.dart';
+import 'package:quranirab/quiz_module/quiz.home.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/data.from.firestore.dart';
 
-import '../quiz_module/Quiz.Home.dart';
+import '../quiz_module/quiz.home.dart';
 
 class Menu extends StatelessWidget {
   final padding = const EdgeInsets.symmetric(horizontal: 10);
@@ -92,14 +94,26 @@ class Menu extends StatelessWidget {
             const SizedBox(height: 16),
             buildMenuItem(
               darkMode: themeProvider.isDarkMode,
-              text: 'Quiz',
-              icon: Icons.menu_book,
+              text: 'Leaderboard',
+              icon: Icons.score,
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const QuizHome()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const LeaderBoardMenu()));
               },
             ),
+            const SizedBox(height: 16),
+            buildMenuItem(
+              darkMode: themeProvider.isDarkMode,
+              text: 'Logout',
+              icon: Icons.exit_to_app,
+              onTap: () async {
+                Navigator.pop(context);
+                await AppUser.instance.signOut();
+              },
+            )
           ],
         ),
       ),

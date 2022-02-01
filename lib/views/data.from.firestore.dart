@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:quranirab/facebook/screens/Translation/translation.dart';
 import 'package:quranirab/facebook/widgets/more_options_list.dart';
 import 'package:quranirab/models/font.size.dart';
+import 'package:quranirab/quiz_module/quiz.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/widget/LanguagePopup.dart';
 import 'package:quranirab/widget/TranslationPopup.dart';
@@ -169,7 +170,6 @@ class _PageScreenState extends State<PageScreen> {
   }
 
   bool isDark = false;
-
 
   @override
   Widget build(BuildContext context) {
@@ -547,6 +547,7 @@ class _SurahScreenState extends State<SurahScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Spacer(),
               ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
@@ -586,6 +587,25 @@ class _SurahScreenState extends State<SurahScreen> {
                     'Next Page',
                     style: TextStyle(color: Colors.black, fontSize: 20),
                   )),
+              Spacer(),
+              Padding(
+                padding: const EdgeInsets.only(right: 80.0),
+                child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Quiz()));
+                    },
+                    style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 32, vertical: 16),
+                        primary: (themeProvider.isDarkMode)
+                            ? const Color(0xff808BA1)
+                            : const Color(0xfffcd77a)),
+                    child: const Text(
+                      'Quiz',
+                      style: TextStyle(color: Colors.black, fontSize: 20),
+                    )),
+              ),
             ],
           ),
         ),
