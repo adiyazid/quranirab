@@ -21,7 +21,7 @@ class _SignupWidgetState extends State<SignupWidget> {
   final TextEditingController _pass1 = TextEditingController();
   final TextEditingController _pass2 = TextEditingController();
   CollectionReference users =
-  FirebaseFirestore.instance.collection('quranIrabUsers');
+      FirebaseFirestore.instance.collection('quranIrabUsers');
   bool _check = false;
 
   @override
@@ -39,115 +39,10 @@ class _SignupWidgetState extends State<SignupWidget> {
                 : Colors.white,
           ),
           child: Stack(children: <Widget>[
-            Positioned(
-                top: 475,
-                left: 252,
-                child: Container(
-                  width: 522,
-                  height: 54,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                    ),
-                    color: theme.isDarkMode
-                        ? const Color(0xff808BA1)
-                        : const Color(0xffFFEEB0),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: TextFormField(
-                      controller: _email,
-                      decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: theColor),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: theColor),
-                          ),
-                          border: UnderlineInputBorder(
-                            borderSide: BorderSide(color: theColor),
-                          ),
-                          hintText: 'Email',
-                          hintStyle: TextStyle(
-                              color: theme.isDarkMode
-                                  ? Colors.white
-                                  : const Color.fromRGBO(151, 151, 151, 1),
-                              fontFamily: 'Poppins',
-                              fontSize: 24,
-                              letterSpacing:
-                              0 /*percentages not used in flutter. defaulting to zero*/,
-                              fontWeight: FontWeight.normal,
-                              height: 1)),
-                    ),
-                  ),
-                )),
-            const Positioned(
-                top: 301,
-                left: 149,
-                child: Text(
-                  'Register for QuranIrab',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 64,
-                      letterSpacing:
-                      0 /*percentages not used in flutter. defaulting to zero*/,
-                      fontWeight: FontWeight.normal,
-                      height: 1),
-                )),
-            Positioned(
-                top: 687,
-                left: 253,
-                child: Row(
-                  children: [
-                    Checkbox(
-                      activeColor: Colors.lightBlue,
-                      checkColor: Colors.white,
-                      tristate: false,
-                      value: _check,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          _check = value!;
-                        });
-                      },
-                    ),
-                    const Text(
-                      'I accept the terms and conditions and I have read the privacy policy ',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontSize: 14,
-                          letterSpacing:
-                          0 /*percentages not used in flutter. defaulting to zero*/,
-                          fontWeight: FontWeight.normal,
-                          height: 1),
-                    ),
-                  ],
-                )),
-            Positioned(
-                top: 170,
-                left: 429,
-                child: Container(
-                    width: 125,
-                    height: 112,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(25),
-                        topRight: Radius.circular(25),
-                        bottomLeft: Radius.circular(25),
-                        bottomRight: Radius.circular(25),
-                      ),
-                      image: DecorationImage(
-                          image: AssetImage('assets/quranirab.png'),
-                          fit: BoxFit.fitWidth),
-                    ))),
             Align(
               alignment: Alignment.topRight,
               child: Container(
-                width: 630,
+                width: MediaQuery.of(context).size.width * 0.37,
                 height: MediaQuery.of(context).size.height,
                 decoration: BoxDecoration(
                   border: Border.all(
@@ -175,9 +70,9 @@ class _SignupWidgetState extends State<SignupWidget> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontFamily: 'Poppins',
-                          fontSize: 60,
+                          fontSize: 50,
                           letterSpacing:
-                          0 /*percentages not used in flutter. defaulting to zero*/,
+                              0 /*percentages not used in flutter. defaulting to zero*/,
                           fontWeight: FontWeight.normal,
                           height: 1),
                     ),
@@ -185,277 +80,388 @@ class _SignupWidgetState extends State<SignupWidget> {
                 ),
               ),
             ),
-            Positioned(
-                top: 405,
-                left: 253,
-                child: Container(
-                  width: 250,
-                  height: 54,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.5,
+                height: MediaQuery.of(context).size.height * 0.7,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Flexible(
+                      child: Container(
+                          width: 125,
+                          height: 112,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(25),
+                              topRight: Radius.circular(25),
+                              bottomLeft: Radius.circular(25),
+                              bottomRight: Radius.circular(25),
+                            ),
+                            image: DecorationImage(
+                                image: AssetImage('assets/quranirab.png'),
+                                fit: BoxFit.fitWidth),
+                          )),
                     ),
-                    color: theme.isDarkMode
-                        ? const Color(0xff808BA1)
-                        : const Color(0xffFFEEB0),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: TextFormField(
-                      controller: _firstName,
-                      decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: theColor),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: theColor),
-                          ),
-                          border: UnderlineInputBorder(
-                            borderSide: BorderSide(color: theColor),
-                          ),
-                          hintText: 'First Name',
-                          hintStyle: TextStyle(
-                              color: theme.isDarkMode
-                                  ? Colors.white
-                                  : const Color.fromRGBO(151, 151, 151, 1),
-                              fontFamily: 'Poppins',
-                              fontSize: 24,
-                              letterSpacing:
-                              0 /*percentages not used in flutter. defaulting to zero*/,
-                              fontWeight: FontWeight.normal,
-                              height: 1)),
-                    ),
-                  ),
-                )),
-            Positioned(
-                top: 405,
-                left: 522,
-                child: Container(
-                  width: 250,
-                  height: 54,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                    ),
-                    color: theme.isDarkMode
-                        ? const Color(0xff808BA1)
-                        : const Color(0xffFFEEB0),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: TextFormField(
-                      controller: _lastName,
-                      decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: theColor),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: theColor),
-                          ),
-                          border: UnderlineInputBorder(
-                            borderSide: BorderSide(color: theColor),
-                          ),
-                          hintText: 'Last Name',
-                          hintStyle: TextStyle(
-                              color: theme.isDarkMode
-                                  ? Colors.white
-                                  : const Color.fromRGBO(151, 151, 151, 1),
-                              fontFamily: 'Poppins',
-                              fontSize: 24,
-                              letterSpacing:
-                              0 /*percentages not used in flutter. defaulting to zero*/,
-                              fontWeight: FontWeight.normal,
-                              height: 1)),
-                    ),
-                  ),
-                )),
-            Positioned(
-                top: 546,
-                left: 250,
-                child: Container(
-                  width: 522,
-                  height: 54,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                    ),
-                    color: theme.isDarkMode
-                        ? const Color(0xff808BA1)
-                        : const Color(0xffFFEEB0),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: TextFormField(
-                      obscureText: true,
-                      obscuringCharacter: '*',
-                      controller: _pass1,
-                      decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: theColor),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: theColor),
-                          ),
-                          border: UnderlineInputBorder(
-                            borderSide: BorderSide(color: theColor),
-                          ),
-                          hintText: 'Password',
-                          hintStyle: TextStyle(
-                              color: theme.isDarkMode
-                                  ? Colors.white
-                                  : const Color.fromRGBO(151, 151, 151, 1),
-                              fontFamily: 'Poppins',
-                              fontSize: 24,
-                              letterSpacing:
-                              0 /*percentages not used in flutter. defaulting to zero*/,
-                              fontWeight: FontWeight.normal,
-                              height: 1)),
-                    ),
-                  ),
-                )),
-            Positioned(
-                top: 615,
-                left: 252,
-                child: Container(
-                  width: 522,
-                  height: 54,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                    ),
-                    color: theme.isDarkMode
-                        ? const Color(0xff808BA1)
-                        : const Color(0xffFFEEB0),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: TextFormField(
-                      obscureText: true,
-                      obscuringCharacter: '*',
-                      controller: _pass2,
-                      decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: theColor),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: theColor),
-                          ),
-                          border: UnderlineInputBorder(
-                            borderSide: BorderSide(color: theColor),
-                          ),
-                          hintText: 'Confirm Password',
-                          hintStyle: TextStyle(
-                              color: theme.isDarkMode
-                                  ? Colors.white
-                                  : const Color.fromRGBO(151, 151, 151, 1),
-                              fontFamily: 'Poppins',
-                              fontSize: 24,
-                              letterSpacing:
-                              0 /*percentages not used in flutter. defaulting to zero*/,
-                              fontWeight: FontWeight.normal,
-                              height: 1)),
-                    ),
-                  ),
-                )),
-
-            ///button
-            Positioned(
-                top: 726,
-                left: 382,
-                child: InkWell(
-                  onTap: () async {
-                    if (_pass1.text == '' &&
-                        _pass2.text == '' &&
-                        _firstName.text == '' &&
-                        _lastName.text == '' &&
-                        _email.text == '') {
-                      showTopSnackBar(
-                        context,
-                        const CustomSnackBar.error(
-                          message: 'Please Fill All Field',
-                        ),
-                      );
-                    } else if (_pass1.text != _pass2.text) {
-                      showTopSnackBar(
-                        context,
-                        const CustomSnackBar.error(
-                          message:
-                          'Password did not match. Please insert again',
-                        ),
-                      );
-                    } else if (_check == false) {
-                      showTopSnackBar(
-                        context,
-                        const CustomSnackBar.error(
-                          message:
-                          'Please agree with terms and condition before proceed',
-                        ),
-                      );
-                    } else {
-                      try {
-                        await appUser.signUp(
-                            email: _email.text,
-                            password: _pass1.text,
-                            lastName: _lastName.text,
-                            firstName: _firstName.text);
-                        await addUser();
-                        Navigator.pop(context);
-                        showTopSnackBar(
-                          context,
-                          const CustomSnackBar.success(
-                            message: 'New Account Created',
-                          ),
-                        );
-                      } catch (e) {
-                        showTopSnackBar(
-                            context,
-                            CustomSnackBar.error(
-                              message: e.toString(),
-                            ));
-                      }
-                    }
-                  },
-                  child: Container(
-                    width: 248,
-                    height: 54,
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                        bottomLeft: Radius.circular(20),
-                        bottomRight: Radius.circular(20),
-                      ),
-                      color: theme.isDarkMode
-                          ? const Color(0xff808AB1)
-                          : const Color(0xffFFB55F),
-                    ),
-                    child: const Center(
+                    Flexible(
                       child: Text(
-                        'Sign up',
+                        'Register for QuranIrab',
                         textAlign: TextAlign.left,
                         style: TextStyle(
                             fontFamily: 'Poppins',
-                            fontSize: 24,
+                            fontSize: 45,
                             letterSpacing:
-                            0 /*percentages not used in flutter. defaulting to zero*/,
+                                0 /*percentages not used in flutter. defaulting to zero*/,
                             fontWeight: FontWeight.normal,
                             height: 1),
                       ),
                     ),
-                  ),
-                )),
+                    Flexible(
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.37,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.17,
+                              height: 54,
+                              decoration: BoxDecoration(
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20),
+                                  bottomLeft: Radius.circular(20),
+                                  bottomRight: Radius.circular(20),
+                                ),
+                                color: theme.isDarkMode
+                                    ? const Color(0xff808BA1)
+                                    : const Color(0xffFFEEB0),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: TextFormField(
+                                  controller: _firstName,
+                                  decoration: InputDecoration(
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: theColor),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: theColor),
+                                      ),
+                                      border: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: theColor),
+                                      ),
+                                      hintText: 'First Name',
+                                      hintStyle: TextStyle(
+                                          color: theme.isDarkMode
+                                              ? Colors.white
+                                              : const Color.fromRGBO(
+                                                  151, 151, 151, 1),
+                                          fontFamily: 'Poppins',
+                                          fontSize: 24,
+                                          letterSpacing:
+                                              0 /*percentages not used in flutter. defaulting to zero*/,
+                                          fontWeight: FontWeight.normal,
+                                          height: 1)),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.17,
+                              height: 54,
+                              decoration: BoxDecoration(
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20),
+                                  bottomLeft: Radius.circular(20),
+                                  bottomRight: Radius.circular(20),
+                                ),
+                                color: theme.isDarkMode
+                                    ? const Color(0xff808BA1)
+                                    : const Color(0xffFFEEB0),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: TextFormField(
+                                  controller: _lastName,
+                                  decoration: InputDecoration(
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: theColor),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: theColor),
+                                      ),
+                                      border: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: theColor),
+                                      ),
+                                      hintText: 'Last Name',
+                                      hintStyle: TextStyle(
+                                          color: theme.isDarkMode
+                                              ? Colors.white
+                                              : const Color.fromRGBO(
+                                                  151, 151, 151, 1),
+                                          fontFamily: 'Poppins',
+                                          fontSize: 24,
+                                          letterSpacing:
+                                              0 /*percentages not used in flutter. defaulting to zero*/,
+                                          fontWeight: FontWeight.normal,
+                                          height: 1)),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.37,
+                      height: 54,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
+                        color: theme.isDarkMode
+                            ? const Color(0xff808BA1)
+                            : const Color(0xffFFEEB0),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: TextFormField(
+                          controller: _email,
+                          decoration: InputDecoration(
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: theColor),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: theColor),
+                              ),
+                              border: UnderlineInputBorder(
+                                borderSide: BorderSide(color: theColor),
+                              ),
+                              hintText: 'Email',
+                              hintStyle: TextStyle(
+                                  color: theme.isDarkMode
+                                      ? Colors.white
+                                      : const Color.fromRGBO(151, 151, 151, 1),
+                                  fontFamily: 'Poppins',
+                                  fontSize: 24,
+                                  letterSpacing:
+                                      0 /*percentages not used in flutter. defaulting to zero*/,
+                                  fontWeight: FontWeight.normal,
+                                  height: 1)),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.37,
+                      height: 54,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
+                        color: theme.isDarkMode
+                            ? const Color(0xff808BA1)
+                            : const Color(0xffFFEEB0),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: TextFormField(
+                          obscureText: true,
+                          obscuringCharacter: '*',
+                          controller: _pass1,
+                          decoration: InputDecoration(
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: theColor),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: theColor),
+                              ),
+                              border: UnderlineInputBorder(
+                                borderSide: BorderSide(color: theColor),
+                              ),
+                              hintText: 'Password',
+                              hintStyle: TextStyle(
+                                  color: theme.isDarkMode
+                                      ? Colors.white
+                                      : const Color.fromRGBO(151, 151, 151, 1),
+                                  fontFamily: 'Poppins',
+                                  fontSize: 24,
+                                  letterSpacing:
+                                      0 /*percentages not used in flutter. defaulting to zero*/,
+                                  fontWeight: FontWeight.normal,
+                                  height: 1)),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.37,
+                      height: 54,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
+                        color: theme.isDarkMode
+                            ? const Color(0xff808BA1)
+                            : const Color(0xffFFEEB0),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: TextFormField(
+                          obscureText: true,
+                          obscuringCharacter: '*',
+                          controller: _pass2,
+                          decoration: InputDecoration(
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: theColor),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: theColor),
+                              ),
+                              border: UnderlineInputBorder(
+                                borderSide: BorderSide(color: theColor),
+                              ),
+                              hintText: 'Confirm Password',
+                              hintStyle: TextStyle(
+                                  color: theme.isDarkMode
+                                      ? Colors.white
+                                      : const Color.fromRGBO(151, 151, 151, 1),
+                                  fontFamily: 'Poppins',
+                                  fontSize: 24,
+                                  letterSpacing:
+                                      0 /*percentages not used in flutter. defaulting to zero*/,
+                                  fontWeight: FontWeight.normal,
+                                  height: 1)),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.47,
+                      child: Row(
+                        children: [Spacer(),
+                          Checkbox(
+                            activeColor: Colors.lightBlue,
+                            checkColor: Colors.white,
+                            tristate: false,
+                            value: _check,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                _check = value!;
+                              });
+                            },
+                          ),
+                          const Text(
+                            'I accept the terms and conditions and I have read the privacy policy ',
+                            textAlign: TextAlign.left,
+                            maxLines: 2,
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 14,
+                                letterSpacing:
+                                    0 /*percentages not used in flutter. defaulting to zero*/,
+                                fontWeight: FontWeight.normal,
+                                height: 1),
+                          ),
+                          Spacer(),
+                        ],
+                      ),
+                    ),
+
+                    ///button
+                    InkWell(
+                      onTap: () async {
+                        if (_pass1.text == '' &&
+                            _pass2.text == '' &&
+                            _firstName.text == '' &&
+                            _lastName.text == '' &&
+                            _email.text == '') {
+                          showTopSnackBar(
+                            context,
+                            const CustomSnackBar.error(
+                              message: 'Please Fill All Field',
+                            ),
+                          );
+                        } else if (_pass1.text != _pass2.text) {
+                          showTopSnackBar(
+                            context,
+                            const CustomSnackBar.error(
+                              message:
+                                  'Password did not match. Please insert again',
+                            ),
+                          );
+                        } else if (_check == false) {
+                          showTopSnackBar(
+                            context,
+                            const CustomSnackBar.error(
+                              message:
+                                  'Please agree with terms and condition before proceed',
+                            ),
+                          );
+                        } else {
+                          try {
+                            await appUser.signUp(
+                                email: _email.text,
+                                password: _pass1.text,
+                                lastName: _lastName.text,
+                                firstName: _firstName.text);
+                            await addUser();
+                            Navigator.pop(context);
+                            showTopSnackBar(
+                              context,
+                              const CustomSnackBar.success(
+                                message: 'New Account Created',
+                              ),
+                            );
+                          } catch (e) {
+                            showTopSnackBar(
+                                context,
+                                CustomSnackBar.error(
+                                  message: e.toString(),
+                                ));
+                          }
+                        }
+                      },
+                      child: Container(
+                        width: 248,
+                        height: 54,
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20),
+                            bottomLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(20),
+                          ),
+                          color: theme.isDarkMode
+                              ? const Color(0xff808AB1)
+                              : const Color(0xffFFB55F),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'Sign up',
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 24,
+                                letterSpacing:
+                                    0 /*percentages not used in flutter. defaulting to zero*/,
+                                fontWeight: FontWeight.normal,
+                                height: 1),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ])),
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -481,10 +487,10 @@ class _SignupWidgetState extends State<SignupWidget> {
     return users
         .doc(AppUser.instance.user!.uid)
         .set({
-      'first_name': _firstName.text, // John Doe
-      'last_name': _lastName.text, // Stokes and Sons
-      'email': _email.text // 42
-    })
+          'first_name': _firstName.text, // John Doe
+          'last_name': _lastName.text, // Stokes and Sons
+          'email': _email.text // 42
+        })
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));
   }
