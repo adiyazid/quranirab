@@ -509,7 +509,8 @@ class _SignupWidgetState extends State<SignupWidget> {
         .set({
           'first_name': _firstName.text, // John Doe
           'last_name': _lastName.text, // Stokes and Sons
-          'email': _email.text // 42
+          'email': _email.text,
+          'uid': AppUser.instance.user!.uid
         })
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));

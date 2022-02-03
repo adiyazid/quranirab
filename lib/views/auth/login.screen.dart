@@ -77,7 +77,8 @@ class _SigninWidgetState extends State<SigninWidget> {
             Align(
               alignment: Alignment.centerRight,
               child: Padding(
-                padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.06),
+                padding: EdgeInsets.only(
+                    right: MediaQuery.of(context).size.width * 0.06),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.5,
                   height: MediaQuery.of(context).size.height * 0.7,
@@ -133,8 +134,8 @@ class _SigninWidgetState extends State<SigninWidget> {
                             ),
                             child: Center(
                               child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 16.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
                                 child: TextFormField(
                                   controller: _email,
                                   decoration: InputDecoration(
@@ -179,7 +180,8 @@ class _SigninWidgetState extends State<SigninWidget> {
                                 : const Color.fromRGBO(255, 237, 176, 1),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
                             child: Center(
                               child: TextFormField(
                                 obscureText: true,
@@ -243,11 +245,16 @@ class _SigninWidgetState extends State<SigninWidget> {
                                 await appUser.signIn(
                                     email: _email.text, password: _pass.text);
                                 showTopSnackBar(
-                                  context,
-                                  const CustomSnackBar.success(
-                                    message: 'Login Success',
-                                  ),
-                                );
+                                    context,
+                                    const CustomSnackBar.success(
+                                      message: 'Login Success',
+                                    ),
+                                    showOutAnimationDuration:
+                                        Duration(milliseconds: 200),
+                                    hideOutAnimationDuration:
+                                        Duration(milliseconds: 250),
+                                    displayDuration:
+                                        Duration(milliseconds: 600));
                               } catch (e) {
                                 showTopSnackBar(
                                     context,
