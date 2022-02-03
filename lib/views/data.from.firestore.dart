@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quran/quran.dart';
 import 'package:quranirab/facebook/screens/Translation/translation.dart';
 import 'package:quranirab/facebook/widgets/more_options_list.dart';
 import 'package:quranirab/models/font.size.dart';
@@ -194,7 +195,8 @@ class _PageScreenState extends State<PageScreen> {
                             MaterialPageRoute(
                                 builder: (context) => SurahScreen(
                                     data["medina_mushaf_page_id"],
-                                    widget.surah)));
+                                    widget.surah,
+                                    widget.surah_name)));
                       },
                       child: Text(
                         'Page ${data["medina_mushaf_page_id"]}',
@@ -214,8 +216,10 @@ class _PageScreenState extends State<PageScreen> {
 class SurahScreen extends StatefulWidget {
   final String id;
   final String surah;
+  final String name;
 
-  const SurahScreen(this.id, this.surah, {Key? key}) : super(key: key);
+  const SurahScreen(this.id, this.surah, this.name, {Key? key})
+      : super(key: key);
 
   @override
   _SurahScreenState createState() => _SurahScreenState();
@@ -229,6 +233,8 @@ class _SurahScreenState extends State<SurahScreen> {
   bool visible = false;
 
   bool color = true;
+
+  var scrollController = ScrollController();
 
   void initState() {
     // TODO: implement initState
@@ -284,8 +290,9 @@ class _SurahScreenState extends State<SurahScreen> {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final fontsize = Provider.of<FontSizeController>(context);
     return Scaffold(
-      backgroundColor:
-          themeProvider.isDarkMode ? const Color(0xff666666) : Colors.white,
+      backgroundColor: (themeProvider.isDarkMode)
+          ? const Color(0xff666666)
+          : const Color(0xFFffffff),
       drawer: const Menu(),
       body: DefaultTabController(
         length: 2,
@@ -337,9 +344,9 @@ class _SurahScreenState extends State<SurahScreen> {
                           child: ListTile(
                             title: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
+                              children: [
                                 Text(
-                                  'Al-Fatihah',
+                                  getSurahName(int.parse(widget.surah)),
                                   style: TextStyle(fontSize: 18),
                                 ),
                                 Text(
@@ -363,7 +370,7 @@ class _SurahScreenState extends State<SurahScreen> {
                         SizedBox(
                           width: 320,
                           child: Row(
-                            children: const [
+                            children: [
                               VerticalDivider(
                                 thickness: 2,
                                 color: Colors.grey,
@@ -371,7 +378,7 @@ class _SurahScreenState extends State<SurahScreen> {
                               SizedBox(width: 16),
                               Flexible(
                                 child: Text(
-                                  'Juz 1 / Hizb 1 - Page 1',
+                                  'Juz 1 / Hizb 1 - Page ${widget.id}',
                                   style: TextStyle(fontSize: 16),
                                 ),
                               )
@@ -403,6 +410,7 @@ class _SurahScreenState extends State<SurahScreen> {
                                     child: Text(
                                       'Translations',
                                       style: TextStyle(
+                                          fontSize: 16,
                                           color: themeProvider.isDarkMode
                                               ? Colors.white
                                               : Colors.black),
@@ -415,6 +423,7 @@ class _SurahScreenState extends State<SurahScreen> {
                                     child: Text(
                                       'Reading',
                                       style: TextStyle(
+                                          fontSize: 16,
                                           color: themeProvider.isDarkMode
                                               ? Colors.white
                                               : Colors.black),
@@ -430,82 +439,22 @@ class _SurahScreenState extends State<SurahScreen> {
               ),
             ];
           },
-          body: Padding(
-            padding: const EdgeInsets.only(bottom: 80.0),
-            child: TabBarView(
+          body: SingleChildScrollView(
+            child: Column(
               children: [
-                TranslationPage(widget.surah, widget.id),
-                Container(
-                  color: themeProvider.isDarkMode
-                      ? const Color(0xff9A9A9A)
-                      : const Color(0xffFFF5EC),
-                  child: Stack(
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.9,
+                  child: TabBarView(
                     children: [
-                      Align(
-                        alignment: Alignment.center,
-                        child: Container(
-                          color: themeProvider.isDarkMode
-                              ? const Color(0xff9A9A9A)
-                              : const Color(0xffFFF5EC),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(
-                              child: _list.isNotEmpty
-                                  ? Directionality(
-                                      textDirection: TextDirection.rtl,
-                                      child: RichText(
-                                          textAlign: TextAlign.center,
-                                          text: TextSpan(
-                                              children: _list
-                                                  .map(
-                                                    (e) => TextSpan(
-                                                      recognizer:
-                                                          TapGestureRecognizer()
-                                                            ..onTap = () async {
-                                                              setState(() {
-                                                                visible = true;
-                                                              });
-                                                            },
-                                                      onEnter: (e) {
-                                                        setState(() {
-                                                          color = false;
-                                                        });
-                                                      },
-                                                      onExit: (e) {
-                                                        setState(() {
-                                                          color = true;
-                                                        });
-                                                      },
-                                                      text: e.trim().replaceAll(
-                                                          'b', '\n'),
-                                                      style: TextStyle(
-                                                          fontSize:
-                                                              fontsize.value,
-                                                          fontFamily:
-                                                              'MeQuran2',
-                                                          color: color
-                                                              ? Colors.black
-                                                              : Colors.blue),
-                                                    ),
-                                                  )
-                                                  .toList())),
-                                    )
-                                  : const Text('Loading...'),
-                            ),
-                          ),
-                        ),
-                      ),
-                      InkWell(
-                        onDoubleTap: () {
-                          setState(() {
-                            visible = false;
-                          });
-                        },
-                        child: Visibility(
-                          visible: visible,
-                          child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Container(
+                      TranslationPage(widget.surah, widget.id),
+                      Container(
+                        color: themeProvider.isDarkMode
+                            ? const Color(0xff9A9A9A)
+                            : const Color(0xffFFF5EC),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
                               width: MediaQuery.of(context).size.width * 0.25,
                               decoration: BoxDecoration(
                                 border: Border.all(
@@ -521,12 +470,66 @@ class _SurahScreenState extends State<SurahScreen> {
                                 nukKalimah: c,
                               ),
                             ),
-                          ),
+                            Expanded(
+                              child: _list.isNotEmpty
+                                  ? Center(
+                                    child: Container(
+                                      color: themeProvider.isDarkMode
+                                          ? const Color(0xff9A9A9A)
+                                          : const Color(0xffFFF5EC),
+                                      child: Directionality(
+                                        textDirection: TextDirection.rtl,
+                                        child: RichText(
+                                            textAlign: TextAlign.center,
+                                            text: TextSpan(
+                                                children: _list
+                                                    .map(
+                                                      (e) => TextSpan(
+                                                        recognizer:
+                                                            TapGestureRecognizer()
+                                                              ..onTap =
+                                                                  () async {
+                                                                setState(() {
+                                                                  visible =
+                                                                      true;
+                                                                });
+                                                              },
+                                                        onEnter: (e) {
+                                                          setState(() {
+                                                            color = false;
+                                                          });
+                                                        },
+                                                        onExit: (e) {
+                                                          setState(() {
+                                                            color = true;
+                                                          });
+                                                        },
+                                                        text: e
+                                                            .trim()
+                                                            .replaceAll(
+                                                                'b', '\n'),
+                                                        style: TextStyle(
+                                                            fontSize:
+                                                                fontsize.value,
+                                                            fontFamily:
+                                                                'MeQuran2',
+                                                            color: color
+                                                                ? Colors.black
+                                                                : Colors.blue),
+                                                      ),
+                                                    )
+                                                    .toList())),
+                                      ),
+                                    ),
+                                  )
+                                  : const Text('Loading...'),
+                            ),
+                          ],
                         ),
-                      ),
+                      )
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -542,23 +545,24 @@ class _SurahScreenState extends State<SurahScreen> {
           color:
               themeProvider.isDarkMode ? const Color(0xff666666) : Colors.white,
         ),
-        height: MediaQuery.of(context).size.height * 0.08,
+        height: MediaQuery.of(context).size.height * 0.1,
         child: Align(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Spacer(),
+              const Spacer(),
+              const Spacer(),
               ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 32, vertical: 16),
+                        horizontal: 32, vertical: 18),
                     primary: (themeProvider.isDarkMode)
                         ? const Color(0xff808BA1)
                         : const Color(0xfffcd77a)),
                 child: const Text(
                   'Previous Page',
-                  style: TextStyle(color: Colors.black, fontSize: 20),
+                  style: TextStyle(color: Colors.black, fontSize: 18),
                 ),
               ),
               const SizedBox(width: 25),
@@ -566,28 +570,28 @@ class _SurahScreenState extends State<SurahScreen> {
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 32, vertical: 16),
+                          horizontal: 32, vertical: 18),
                       primary: (themeProvider.isDarkMode)
                           ? const Color(0xff4C6A7A)
                           : const Color(0xffffeeb0)),
                   child: const Text(
                     'Beginning Surah',
-                    style: TextStyle(color: Colors.black, fontSize: 20),
+                    style: TextStyle(color: Colors.black, fontSize: 18),
                   )),
               const SizedBox(width: 25),
               ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 32, vertical: 16),
+                          horizontal: 32, vertical: 18),
                       primary: (themeProvider.isDarkMode)
                           ? const Color(0xff808BA1)
                           : const Color(0xfffcd77a)),
                   child: const Text(
                     'Next Page',
-                    style: TextStyle(color: Colors.black, fontSize: 20),
+                    style: TextStyle(color: Colors.black, fontSize: 18),
                   )),
-              Spacer(),
+              const Spacer(),
               Padding(
                 padding: const EdgeInsets.only(right: 80.0),
                 child: ElevatedButton(
@@ -597,13 +601,13 @@ class _SurahScreenState extends State<SurahScreen> {
                     },
                     style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 32, vertical: 16),
+                            horizontal: 32, vertical: 18),
                         primary: (themeProvider.isDarkMode)
                             ? const Color(0xff808BA1)
                             : const Color(0xfffcd77a)),
                     child: const Text(
                       'Quiz',
-                      style: TextStyle(color: Colors.black, fontSize: 20),
+                      style: TextStyle(color: Colors.black, fontSize: 18),
                     )),
               ),
             ],

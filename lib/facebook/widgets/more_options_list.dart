@@ -17,6 +17,7 @@ class MoreOptionsList extends StatefulWidget {
 }
 
 class _MoreOptionsListState extends State<MoreOptionsList> {
+  final ScrollController _controller = ScrollController();
   @override
   Widget build(BuildContext context) {
     final List<_Option> _popUpList = [
@@ -113,6 +114,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
       ),
     ];
     return ListView.builder(
+      controller: _controller,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: 1 + _popUpList.length,
       itemBuilder: (BuildContext context, int index) {
