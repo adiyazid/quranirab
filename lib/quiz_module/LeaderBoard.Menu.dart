@@ -16,6 +16,8 @@ class LeaderBoardMenu extends StatefulWidget {
 }
 
 class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
+  int diff = 0;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -326,6 +328,8 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
   Future<void> calcOverallScore() async {
     int overall = 0;
     int num = 0;
+    int newOverall = 0;
+    int newNum = 0;
     await FirebaseFirestore.instance
         .collection('quranIrabUsers')
         .doc(AppUser.instance.user!.uid)
@@ -333,14 +337,28 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
         .get()
         .then((QuerySnapshot querySnapshot) {
       for (var doc in querySnapshot.docs) {
+        var now = DateTime.now();
+        var time = DateTime.parse(doc['date-taken'].toDate().toString());
+
         int score = doc['score'];
         setState(() {
-          overall = overall + score;
-          num = num + 1;
+          var diff = now.difference(time).inDays;
+          if (diff > 30) {
+            overall = overall + score;
+            num = num + 1;
+          } else {
+            newOverall = newOverall + score;
+            newNum = newNum + 1;
+          }
         });
       }
+      print('$overall $num $newOverall $newNum');
+      addToFirebase(newOverall, newNum, overall, num);
     });
+  }
 
+  Future<void> addToFirebase(
+      int newOverAll, int newNum, int overAll, int num) async {
     await FirebaseFirestore.instance
         .collection('leaderboards')
         .doc('overall')
@@ -349,8 +367,23 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
         .set(
       {
         'name': AppUser.instance.user!.displayName, // John Doe
-        'scores': overall,
-        'total-quiz': num
+        'scores': newOverAll,
+        'total-quiz': newNum,
+        'last-updated': DateTime.now()
+      },
+      SetOptions(merge: true),
+    );
+    await FirebaseFirestore.instance
+        .collection('leaderboards')
+        .doc('overall')
+        .collection('oldScores')
+        .doc(AppUser.instance.user!.uid)
+        .set(
+      {
+        'name': AppUser.instance.user!.displayName, // John Doe
+        'scores': overAll,
+        'total-quiz': num,
+        'last-updated': DateTime.now()
       },
       SetOptions(merge: true),
     );

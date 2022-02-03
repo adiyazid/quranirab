@@ -39,7 +39,7 @@ class _SigninWidgetState extends State<SigninWidget> {
                 top: 0,
                 left: -6,
                 child: Container(
-                  width: MediaQuery.of(context).size.width * 0.37,
+                  width: MediaQuery.of(context).size.width * 0.45,
                   height: MediaQuery.of(context).size.height,
                   decoration: theme.isDarkMode
                       ? BoxDecoration(
@@ -65,7 +65,7 @@ class _SigninWidgetState extends State<SigninWidget> {
                               ? Colors.white
                               : const Color.fromRGBO(0, 0, 0, 1),
                           fontFamily: 'Poppins',
-                          fontSize: 45,
+                          fontSize: 40,
                           letterSpacing:
                               0 /*percentages not used in flutter. defaulting to zero*/,
                           fontWeight: FontWeight.normal,

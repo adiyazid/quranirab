@@ -117,7 +117,7 @@ flutter:
       - asset: fonts/me_quran2.ttf
    - family: Poppins
      fonts:
-      - asset: assets/fonts/Poppins-Regular.ttf
+      - asset: fonts/Poppins-Regular.ttf
       - weight: 400
 
 

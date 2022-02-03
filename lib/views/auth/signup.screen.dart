@@ -85,7 +85,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                 padding: EdgeInsets.only(
                     left: MediaQuery.of(context).size.width * 0.06),
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.5,
+                  width: MediaQuery.of(context).size.width * 0.55,
                   height: MediaQuery.of(context).size.height * 0.7,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -163,7 +163,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                                                 : const Color.fromRGBO(
                                                     151, 151, 151, 1),
                                             fontFamily: 'Poppins',
-                                            fontSize: 24,
+                                            fontSize: 20,
                                             letterSpacing:
                                                 0 /*percentages not used in flutter. defaulting to zero*/,
                                             fontWeight: FontWeight.normal,
@@ -209,7 +209,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                                                 : const Color.fromRGBO(
                                                     151, 151, 151, 1),
                                             fontFamily: 'Poppins',
-                                            fontSize: 24,
+                                            fontSize: 20,
                                             letterSpacing:
                                                 0 /*percentages not used in flutter. defaulting to zero*/,
                                             fontWeight: FontWeight.normal,
@@ -256,7 +256,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                                         : const Color.fromRGBO(
                                             151, 151, 151, 1),
                                     fontFamily: 'Poppins',
-                                    fontSize: 24,
+                                    fontSize: 20,
                                     letterSpacing:
                                         0 /*percentages not used in flutter. defaulting to zero*/,
                                     fontWeight: FontWeight.normal,
@@ -301,7 +301,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                                         : const Color.fromRGBO(
                                             151, 151, 151, 1),
                                     fontFamily: 'Poppins',
-                                    fontSize: 24,
+                                    fontSize: 20,
                                     letterSpacing:
                                         0 /*percentages not used in flutter. defaulting to zero*/,
                                     fontWeight: FontWeight.normal,
@@ -346,7 +346,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                                         : const Color.fromRGBO(
                                             151, 151, 151, 1),
                                     fontFamily: 'Poppins',
-                                    fontSize: 24,
+                                    fontSize: 20,
                                     letterSpacing:
                                         0 /*percentages not used in flutter. defaulting to zero*/,
                                     fontWeight: FontWeight.normal,
@@ -382,7 +382,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                                   maxLines: 2,
                                   style: TextStyle(
                                       fontFamily: 'Poppins',
-                                      fontSize: 14,
+                                      fontSize: 18,
                                       letterSpacing:
                                           0 /*percentages not used in flutter. defaulting to zero*/,
                                       fontWeight: FontWeight.normal,
