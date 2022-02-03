@@ -339,7 +339,6 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
       for (var doc in querySnapshot.docs) {
         var now = DateTime.now();
         var time = DateTime.parse(doc['date-taken'].toDate().toString());
-
         int score = doc['score'];
         setState(() {
           var diff = now.difference(time).inDays;
@@ -352,8 +351,9 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
           }
         });
       }
-      print('$overall $num $newOverall $newNum');
-      addToFirebase(newOverall, newNum, overall, num);
+      if (newNum != 0 || newNum != 0) {
+        addToFirebase(newOverall, newNum, overall, num);
+      }
     });
   }
 
@@ -381,8 +381,8 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
         .set(
       {
         'name': AppUser.instance.user!.displayName, // John Doe
-        'scores': overAll,
-        'total-quiz': num,
+        'scores': overAll + newOverAll,
+        'total-quiz': num + newNum,
         'last-updated': DateTime.now()
       },
       SetOptions(merge: true),
