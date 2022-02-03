@@ -103,24 +103,43 @@ class _DataFromFirestoreState extends State<DataFromFirestore> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Wrap(
-                    spacing: 8.0, // gap between adjacent chips
-                    runSpacing: 4.0, // gap between lines
+                  child: GridView(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4,
+                      crossAxisSpacing: 5.0,
+                      mainAxisSpacing: 5.0,
+                    ),
                     children: _list
-                        .map((data) => ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => PageScreen(
-                                            data["id"], data["start_line"])));
-                              },
-                              child: Text(
-                                '${data["start_line"]}',
-                                style: TextStyle(
-                                    fontSize: fontsize.value,
-                                    fontFamily: 'MeQuran2',
-                                    color: Colors.white),
+                        .map((data) => Card(
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => PageScreen(
+                                              data["id"],
+                                              data["start_line"],
+                                              data["ename"],
+                                              data["tname"])));
+                                },
+                                child: ListTile(
+                                  title: Text(
+                                    '${data["start_line"]} (${data["tname"]})',
+                                    style: TextStyle(
+                                        fontSize: fontsize.value,
+                                        fontFamily: 'MeQuran2',
+                                        color: Colors.white),
+                                  ),
+                                  subtitle: Text(
+                                    '${data["ename"]}',
+                                    style: TextStyle(
+                                        fontSize: fontsize.value,
+                                        fontFamily: 'MeQuran2',
+                                        color: Colors.white),
+                                  ),
+                                ),
                               ),
                             ))
                         .toList(),
@@ -138,8 +157,12 @@ class _DataFromFirestoreState extends State<DataFromFirestore> {
 class PageScreen extends StatefulWidget {
   final String surah;
   final String surah_name;
+  final String detail;
+  final String name;
 
-  const PageScreen(this.surah, this.surah_name, {Key? key}) : super(key: key);
+  const PageScreen(this.surah, this.surah_name, this.detail, this.name,
+      {Key? key})
+      : super(key: key);
 
   @override
   _PageScreenState createState() => _PageScreenState();
@@ -196,7 +219,8 @@ class _PageScreenState extends State<PageScreen> {
                                 builder: (context) => SurahScreen(
                                     data["medina_mushaf_page_id"],
                                     widget.surah,
-                                    widget.surah_name)));
+                                    widget.name,
+                                    widget.detail)));
                       },
                       child: Text(
                         'Page ${data["medina_mushaf_page_id"]}',
@@ -217,8 +241,9 @@ class SurahScreen extends StatefulWidget {
   final String id;
   final String surah;
   final String name;
+  final String detail;
 
-  const SurahScreen(this.id, this.surah, this.name, {Key? key})
+  const SurahScreen(this.id, this.surah, this.name, this.detail, {Key? key})
       : super(key: key);
 
   @override
@@ -346,13 +371,15 @@ class _SurahScreenState extends State<SurahScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  getSurahName(int.parse(widget.surah)),
-                                  style: TextStyle(fontSize: 18),
+                                  widget.name,
+                                  style: TextStyle( fontSize: fontsize
+                                      .value-2,),
                                 ),
                                 Text(
-                                  'The Opener',
+                                  widget.detail,
                                   style: TextStyle(
-                                      color: Colors.grey, fontSize: 16),
+                                      color: Colors.grey,  fontSize: fontsize
+                                      .value-2,),
                                 ),
                               ],
                             ),
@@ -379,7 +406,8 @@ class _SurahScreenState extends State<SurahScreen> {
                               Flexible(
                                 child: Text(
                                   'Juz 1 / Hizb 1 - Page ${widget.id}',
-                                  style: TextStyle(fontSize: 16),
+                                  style: TextStyle( fontSize: fontsize
+                                      .value-2,),
                                 ),
                               )
                             ],
@@ -410,7 +438,8 @@ class _SurahScreenState extends State<SurahScreen> {
                                     child: Text(
                                       'Translations',
                                       style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: fontsize
+                                              .value-2,
                                           color: themeProvider.isDarkMode
                                               ? Colors.white
                                               : Colors.black),
@@ -423,7 +452,8 @@ class _SurahScreenState extends State<SurahScreen> {
                                     child: Text(
                                       'Reading',
                                       style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: fontsize
+                                              .value-2,
                                           color: themeProvider.isDarkMode
                                               ? Colors.white
                                               : Colors.black),
@@ -454,74 +484,79 @@ class _SurahScreenState extends State<SurahScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.25,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: (themeProvider.isDarkMode)
-                                        ? const Color(0xffffffff)
-                                        : const Color(0xffFFB55F)),
-                                color: (themeProvider.isDarkMode)
-                                    ? const Color(0xff808ba1)
-                                    : const Color(0xfffff3ca),
-                              ),
-                              child: MoreOptionsList(
-                                surah: 'Straight',
-                                nukKalimah: c,
+                            Flexible(
+                              flex: 3,
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.33,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: (themeProvider.isDarkMode)
+                                          ? const Color(0xffffffff)
+                                          : const Color(0xffFFB55F)),
+                                  color: (themeProvider.isDarkMode)
+                                      ? const Color(0xff808ba1)
+                                      : const Color(0xfffff3ca),
+                                ),
+                                child: MoreOptionsList(
+                                  surah: 'Straight',
+                                  nukKalimah: c,
+                                ),
                               ),
                             ),
                             Expanded(
+                              flex: 6,
                               child: _list.isNotEmpty
                                   ? Center(
-                                    child: Container(
-                                      color: themeProvider.isDarkMode
-                                          ? const Color(0xff9A9A9A)
-                                          : const Color(0xffFFF5EC),
-                                      child: Directionality(
-                                        textDirection: TextDirection.rtl,
-                                        child: RichText(
-                                            textAlign: TextAlign.center,
-                                            text: TextSpan(
-                                                children: _list
-                                                    .map(
-                                                      (e) => TextSpan(
-                                                        recognizer:
-                                                            TapGestureRecognizer()
-                                                              ..onTap =
-                                                                  () async {
-                                                                setState(() {
-                                                                  visible =
-                                                                      true;
-                                                                });
-                                                              },
-                                                        onEnter: (e) {
-                                                          setState(() {
-                                                            color = false;
-                                                          });
-                                                        },
-                                                        onExit: (e) {
-                                                          setState(() {
-                                                            color = true;
-                                                          });
-                                                        },
-                                                        text: e
-                                                            .trim()
-                                                            .replaceAll(
-                                                                'b', '\n'),
-                                                        style: TextStyle(
-                                                            fontSize:
-                                                                fontsize.value,
-                                                            fontFamily:
-                                                                'MeQuran2',
-                                                            color: color
-                                                                ? Colors.black
-                                                                : Colors.blue),
-                                                      ),
-                                                    )
-                                                    .toList())),
+                                      child: Container(
+                                        color: themeProvider.isDarkMode
+                                            ? const Color(0xff9A9A9A)
+                                            : const Color(0xffFFF5EC),
+                                        child: Directionality(
+                                          textDirection: TextDirection.rtl,
+                                          child: RichText(
+                                              textAlign: TextAlign.center,
+                                              text: TextSpan(
+                                                  children: _list
+                                                      .map(
+                                                        (e) => TextSpan(
+                                                          recognizer:
+                                                              TapGestureRecognizer()
+                                                                ..onTap =
+                                                                    () async {
+                                                                  setState(() {
+                                                                    visible =
+                                                                        true;
+                                                                  });
+                                                                },
+                                                          onEnter: (e) {
+                                                            setState(() {
+                                                              color = false;
+                                                            });
+                                                          },
+                                                          onExit: (e) {
+                                                            setState(() {
+                                                              color = true;
+                                                            });
+                                                          },
+                                                          text: e
+                                                              .trim()
+                                                              .replaceAll(
+                                                                  'b', '\n'),
+                                                          style: TextStyle(
+                                                              fontSize: fontsize
+                                                                  .value,
+                                                              fontFamily:
+                                                                  'MeQuran2',
+                                                              color: color
+                                                                  ? Colors.black
+                                                                  : Colors
+                                                                      .blue),
+                                                        ),
+                                                      )
+                                                      .toList())),
+                                        ),
                                       ),
-                                    ),
-                                  )
+                                    )
                                   : const Text('Loading...'),
                             ),
                           ],

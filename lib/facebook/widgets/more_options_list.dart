@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:quranirab/theme/theme_provider.dart';
 
 import '../palette.dart';
 
@@ -18,6 +20,7 @@ class MoreOptionsList extends StatefulWidget {
 
 class _MoreOptionsListState extends State<MoreOptionsList> {
   final ScrollController _controller = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     final List<_Option> _popUpList = [
@@ -119,6 +122,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
       itemCount: 1 + _popUpList.length,
       itemBuilder: (BuildContext context, int index) {
         if (index == 0) {
+          final fontsize = Provider.of<FontSizeController>(context);
           return Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -129,7 +133,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                     child: Text(
                       widget.surah,
                       style: TextStyle(
-                        fontSize: 30,
+                        fontSize: fontsize.value,
                         color: Theme.of(context).textSelectionColor,
                       ),
                     )),
@@ -163,49 +167,45 @@ class _Option extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.25,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40.0),
-        child: Row(
-          children: [
-            Container(
-              height: answer.length < 35 ? 56 : 120,
-              padding: const EdgeInsets.only(
-                bottom: 0.2, // space between underline and text
-              ),
-              decoration: BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(
+    final fontsize = Provider.of<FontSizeController>(context);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Row(
+        children: [
+          Container(
+            height: answer.length < 35 ? 56 : 120,
+            padding: const EdgeInsets.only(
+              bottom: 0.2, // space between underline and text
+            ),
+            decoration: BoxDecoration(
+                border: Border(
+                    bottom: BorderSide(
+              color: Theme.of(context).textSelectionColor, // Text colour here
+              width: 1, // Underline width
+            ))),
+            child: Text(
+              answer,
+              maxLines: 2,
+              style: TextStyle(
+                fontFamily: 'MeQuran2',
+                fontSize: 20,
                 color: Theme.of(context).textSelectionColor, // Text colour here
-                width: 1, // Underline width
-              ))),
-              child: Text(
-                answer,
-                maxLines: 2,
-                style: TextStyle(
-                  fontFamily: 'MeQuran2',
-                  fontSize: 24,
-                  color:
-                      Theme.of(context).textSelectionColor, // Text colour here
-                ),
               ),
             ),
-            Spacer(),
-            Directionality(
-                textDirection: TextDirection.rtl,
-                child: Text(
-                  label,
-                  style: TextStyle(
-                    fontFamily: 'MeQuran2',
-                    fontSize: 24,
-                    color: (hasColor)
-                        ? color
-                        : Theme.of(context).textSelectionColor,
-                  ),
-                )),
-          ],
-        ),
+          ),
+          Spacer(),
+          Directionality(
+              textDirection: TextDirection.rtl,
+              child: Text(
+                label,
+                style: TextStyle(
+                  fontFamily: 'MeQuran2',
+                  fontSize: 20,
+                  color:
+                      (hasColor) ? color : Theme.of(context).textSelectionColor,
+                ),
+              )),
+        ],
       ),
     );
   }

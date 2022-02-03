@@ -109,29 +109,26 @@ class _TranslationPageState extends State<TranslationPage> {
       ),
       child: _list.isNotEmpty && _lists.isNotEmpty
           ? Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Flexible(
-                  flex: 2,
+                  flex: 3,
                   child: Visibility(
                     visible: true,
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.25,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                              color: (themeProvider.isDarkMode)
-                                  ? const Color(0xffffffff)
-                                  : const Color(0xffFFB55F)),
-                          color: (themeProvider.isDarkMode)
-                              ? const Color(0xff808ba1)
-                              : const Color(0xfffff3ca),
-                        ),
-                        child: const MoreOptionsList(
-                          surah: 'Straight',
-                          nukKalimah: '',
-                        ),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.33,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: (themeProvider.isDarkMode)
+                                ? const Color(0xffffffff)
+                                : const Color(0xffFFB55F)),
+                        color: (themeProvider.isDarkMode)
+                            ? const Color(0xff808ba1)
+                            : const Color(0xfffff3ca),
+                      ),
+                      child: const MoreOptionsList(
+                        surah: 'Straight',
+                        nukKalimah: '',
                       ),
                     ),
                   ),
@@ -145,6 +142,7 @@ class _TranslationPageState extends State<TranslationPage> {
                       child: ListView.builder(
                         itemCount: _lists.length,
                         itemBuilder: (BuildContext context, int index) {
+                          final fontsize = Provider.of<FontSizeController>(context);
                           return Card(
                             semanticContainer: true,
                             clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -163,7 +161,8 @@ class _TranslationPageState extends State<TranslationPage> {
                                     children: [
                                       Container(
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(8),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
                                           color: (themeProvider.isDarkMode)
                                               ? const Color(0xff67748E)
                                               : const Color(0xffFFEEB0),
@@ -173,7 +172,7 @@ class _TranslationPageState extends State<TranslationPage> {
                                           child: Text(
                                             '1:${index + 1}',
                                             style: TextStyle(
-                                                fontSize: 18,
+                                                fontSize: fontsize.value,
                                                 color: Theme.of(context)
                                                     .textSelectionColor),
                                           ),
@@ -182,9 +181,11 @@ class _TranslationPageState extends State<TranslationPage> {
                                       const SizedBox(width: 8),
                                       CustomPopupMenu(
                                         menuBuilder: () => ClipRRect(
-                                          borderRadius: BorderRadius.circular(5),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
                                           child: Container(
-                                            color: Theme.of(context).primaryColor,
+                                            color:
+                                                Theme.of(context).primaryColor,
                                             child: IntrinsicWidth(
                                               child: Column(
                                                 crossAxisAlignment:
@@ -192,16 +193,18 @@ class _TranslationPageState extends State<TranslationPage> {
                                                 children: menuItems
                                                     .map(
                                                       (item) => GestureDetector(
-                                                        behavior: HitTestBehavior
-                                                            .translucent,
-                                                        onTap:
-                                                            _controller.hideMenu,
+                                                        behavior:
+                                                            HitTestBehavior
+                                                                .translucent,
+                                                        onTap: _controller
+                                                            .hideMenu,
                                                         child: Container(
                                                           height: 40,
                                                           padding:
                                                               const EdgeInsets
                                                                       .symmetric(
-                                                                  horizontal: 20),
+                                                                  horizontal:
+                                                                      20),
                                                           child: Row(
                                                             children: <Widget>[
                                                               Icon(
@@ -212,12 +215,11 @@ class _TranslationPageState extends State<TranslationPage> {
                                                                     .textSelectionColor,
                                                               ),
                                                               Expanded(
-                                                                child: Container(
-                                                                  margin:
-                                                                      const EdgeInsets
-                                                                              .only(
-                                                                          left:
-                                                                              10),
+                                                                child:
+                                                                    Container(
+                                                                  margin: const EdgeInsets
+                                                                          .only(
+                                                                      left: 10),
                                                                   padding: const EdgeInsets
                                                                           .symmetric(
                                                                       vertical:
@@ -229,8 +231,7 @@ class _TranslationPageState extends State<TranslationPage> {
                                                                       color: Theme.of(
                                                                               context)
                                                                           .textSelectionColor,
-                                                                      fontSize:
-                                                                          12,
+                                                                          fontSize: 12,
                                                                     ),
                                                                   ),
                                                                 ),
@@ -280,7 +281,8 @@ class _TranslationPageState extends State<TranslationPage> {
                                           child: Text(
                                             _list[index],
                                             textAlign: TextAlign.justify,
-                                            style: const TextStyle(fontSize: 18),
+                                            style:
+                                               TextStyle( fontSize: fontsize.value,),
                                           ),
                                         ),
                                         SizedBox(
@@ -292,8 +294,8 @@ class _TranslationPageState extends State<TranslationPage> {
                                                 .trim()
                                                 .replaceAll('b', ''),
                                             textDirection: TextDirection.rtl,
-                                            style: const TextStyle(
-                                                fontSize: 26,
+                                            style:  TextStyle(
+                                                fontSize: fontsize.value,
                                                 fontFamily: 'MeQuran2',
                                                 color: Colors.black),
                                           ),
