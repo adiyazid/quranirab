@@ -250,11 +250,11 @@ class _SigninWidgetState extends State<SigninWidget> {
                                       message: 'Login Success',
                                     ),
                                     showOutAnimationDuration:
-                                        Duration(milliseconds: 200),
+                                    Duration(milliseconds: 200),
                                     hideOutAnimationDuration:
-                                        Duration(milliseconds: 250),
+                                    Duration(milliseconds: 250),
                                     displayDuration:
-                                        Duration(milliseconds: 600));
+                                        Duration(milliseconds: 1000));
                               } catch (e) {
                                 showTopSnackBar(
                                     context,

@@ -99,54 +99,58 @@ class _DataFromFirestoreState extends State<DataFromFirestore> {
         },
         body: Center(
           child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GridView(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4,
-                      crossAxisSpacing: 5.0,
-                      mainAxisSpacing: 5.0,
-                    ),
-                    children: _list
-                        .map((data) => Card(
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => PageScreen(
-                                              data["id"],
-                                              data["start_line"],
-                                              data["ename"],
-                                              data["tname"])));
-                                },
-                                child: ListTile(
-                                  title: Text(
-                                    '${data["start_line"]} (${data["tname"]})',
-                                    style: TextStyle(
-                                        fontSize: fontsize.value,
-                                        fontFamily: 'MeQuran2',
-                                        color: Colors.white),
-                                  ),
-                                  subtitle: Text(
-                                    '${data["ename"]}',
-                                    style: TextStyle(
-                                        fontSize: fontsize.value,
-                                        fontFamily: 'MeQuran2',
-                                        color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                            ))
-                        .toList(),
+            child: _list.isEmpty
+                ? Text('Loading...')
+                : Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GridView(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 4,
+                            crossAxisSpacing: 5.0,
+                            mainAxisSpacing: 5.0,
+                          ),
+                          children: _list
+                              .map((data) => Card(
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    PageScreen(
+                                                        data["id"],
+                                                        data["start_line"],
+                                                        data["ename"],
+                                                        data["tname"])));
+                                      },
+                                      child: ListTile(
+                                        title: Text(
+                                          '${data["start_line"]} (${data["tname"]})',
+                                          style: TextStyle(
+                                              fontSize: fontsize.value,
+                                              fontFamily: 'MeQuran2',
+                                              color: Colors.white),
+                                        ),
+                                        subtitle: Text(
+                                          '${data["ename"]}',
+                                          style: TextStyle(
+                                              fontSize: fontsize.value,
+                                              fontFamily: 'MeQuran2',
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                  ))
+                              .toList(),
+                        ),
+                      )
+                    ],
                   ),
-                )
-              ],
-            ),
           ),
         ),
       ),
@@ -372,14 +376,16 @@ class _SurahScreenState extends State<SurahScreen> {
                               children: [
                                 Text(
                                   widget.name,
-                                  style: TextStyle( fontSize: fontsize
-                                      .value-2,),
+                                  style: TextStyle(
+                                    fontSize: fontsize.value - 2,
+                                  ),
                                 ),
                                 Text(
                                   widget.detail,
                                   style: TextStyle(
-                                      color: Colors.grey,  fontSize: fontsize
-                                      .value-2,),
+                                    color: Colors.grey,
+                                    fontSize: fontsize.value - 2,
+                                  ),
                                 ),
                               ],
                             ),
@@ -406,8 +412,9 @@ class _SurahScreenState extends State<SurahScreen> {
                               Flexible(
                                 child: Text(
                                   'Juz 1 / Hizb 1 - Page ${widget.id}',
-                                  style: TextStyle( fontSize: fontsize
-                                      .value-2,),
+                                  style: TextStyle(
+                                    fontSize: fontsize.value - 2,
+                                  ),
                                 ),
                               )
                             ],
@@ -438,8 +445,7 @@ class _SurahScreenState extends State<SurahScreen> {
                                     child: Text(
                                       'Translations',
                                       style: TextStyle(
-                                          fontSize: fontsize
-                                              .value-2,
+                                          fontSize: fontsize.value - 2,
                                           color: themeProvider.isDarkMode
                                               ? Colors.white
                                               : Colors.black),
@@ -452,8 +458,7 @@ class _SurahScreenState extends State<SurahScreen> {
                                     child: Text(
                                       'Reading',
                                       style: TextStyle(
-                                          fontSize: fontsize
-                                              .value-2,
+                                          fontSize: fontsize.value - 2,
                                           color: themeProvider.isDarkMode
                                               ? Colors.white
                                               : Colors.black),
