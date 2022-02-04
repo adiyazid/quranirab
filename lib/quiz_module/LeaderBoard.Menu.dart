@@ -25,6 +25,8 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
     super.initState();
     calcOverallScore();
     calcCategory1();
+    calcCategory2();
+    calcCategory3();
   }
 
   @override
@@ -122,14 +124,18 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                     ),
                   ),
                   InkWell(
-                    onTap: () {
+                    onTap: () async {
                       setState(() {
                         catData.category = 'overall';
                       });
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const LeaderBoardTable()));
+                      await calcOverallScore();
+                      await Future.delayed(const Duration(seconds: 2), () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const LeaderBoardTable()));
+                      });
                     },
                     child: Container(
                       width: 600,
@@ -176,14 +182,18 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                     ),
                   ),
                   InkWell(
-                    onTap: () {
+                    onTap: () async {
                       setState(() {
                         catData.category = 'categoryU201';
                       });
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const LeaderBoardTable()));
+                      await calcCategory1();
+                      await Future.delayed(const Duration(seconds: 2), () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const LeaderBoardTable()));
+                      });
                     },
                     child: Container(
                       width: 600,
@@ -232,11 +242,18 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                     ),
                   ),
                   InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const LeaderBoardTable()));
+                    onTap: () async {
+                      setState(() {
+                        catData.category = 'categoryU402';
+                      });
+                      await calcCategory2();
+                      await Future.delayed(const Duration(seconds: 2), () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const LeaderBoardTable()));
+                      });
                     },
                     child: Container(
                       width: 600,
@@ -281,11 +298,17 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                   ),
                   InkWell(
                     onTap: () async {
-                      await calcOverallScore();
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const LeaderBoardTable()));
+                      setState(() {
+                        catData.category = 'categoryU604';
+                      });
+                      await calcCategory3();
+                      await Future.delayed(const Duration(seconds: 2), () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const LeaderBoardTable()));
+                      });
                     },
                     child: Container(
                       width: 600,
@@ -429,4 +452,8 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
       addToFirebase(newOverall, newNum, overall, num, 'categoryU201');
     }
   }
+
+  Future<void> calcCategory2() async {}
+
+  Future<void> calcCategory3() async {}
 }

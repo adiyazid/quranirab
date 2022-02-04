@@ -8,6 +8,7 @@ import 'package:quranirab/facebook/screens/Translation/translation.dart';
 import 'package:quranirab/facebook/widgets/more_options_list.dart';
 import 'package:quranirab/models/font.size.dart';
 import 'package:quranirab/quiz_module/quiz.dart';
+import 'package:quranirab/quiz_module/quiz.home.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/widget/LanguagePopup.dart';
 import 'package:quranirab/widget/TranslationPopup.dart';
@@ -636,8 +637,11 @@ class _SurahScreenState extends State<SurahScreen> {
                 padding: const EdgeInsets.only(right: 80.0),
                 child: ElevatedButton(
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Quiz()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  QuizHome(int.parse(widget.id))));
                     },
                     style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(

@@ -9,7 +9,9 @@ import 'package:quranirab/widget/setting.dart';
 import 'package:quranirab/quiz_module/quiz.dart';
 
 class QuizHome extends StatefulWidget {
-  const QuizHome({Key? key}) : super(key: key);
+  final int page;
+
+  const QuizHome(this.page, {Key? key}) : super(key: key);
 
   @override
   _QuizHomeState createState() => _QuizHomeState();
@@ -53,7 +55,7 @@ class _QuizHomeState extends State<QuizHome> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const Quiz()));
+                                      builder: (context) => Quiz(widget.page)));
                             }, true),
                           )),
                     ),

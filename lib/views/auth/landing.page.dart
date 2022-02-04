@@ -95,14 +95,14 @@ class DummyPage extends StatelessWidget {
                   const SizedBox(
                     height: 8,
                   ),
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const QuizHome()));
-                      },
-                      child: const Text('Quiz')),
+                  // ElevatedButton(
+                  //     onPressed: () {
+                  //       Navigator.push(
+                  //           context,
+                  //           MaterialPageRoute(
+                  //               builder: (context) => const QuizHome()));
+                  //     },
+                  //     child: const Text('Quiz')),
                 ]),
           )),
     );
