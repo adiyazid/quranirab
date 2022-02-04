@@ -142,7 +142,8 @@ class _TranslationPageState extends State<TranslationPage> {
                       child: ListView.builder(
                         itemCount: _lists.length,
                         itemBuilder: (BuildContext context, int index) {
-                          final fontsize = Provider.of<FontSizeController>(context);
+                          final fontsize =
+                              Provider.of<FontSizeController>(context);
                           return Card(
                             semanticContainer: true,
                             clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -167,10 +168,10 @@ class _TranslationPageState extends State<TranslationPage> {
                                               ? const Color(0xff67748E)
                                               : const Color(0xffFFEEB0),
                                         ),
-                                        width: 40,
+                                        width: 60,
                                         child: Center(
                                           child: Text(
-                                            '1:${index + 1}',
+                                            '${widget.sura_id}:${a + index}',
                                             style: TextStyle(
                                                 fontSize: fontsize.value,
                                                 color: Theme.of(context)
@@ -231,7 +232,8 @@ class _TranslationPageState extends State<TranslationPage> {
                                                                       color: Theme.of(
                                                                               context)
                                                                           .textSelectionColor,
-                                                                          fontSize: 12,
+                                                                      fontSize:
+                                                                          12,
                                                                     ),
                                                                   ),
                                                                 ),
@@ -281,8 +283,9 @@ class _TranslationPageState extends State<TranslationPage> {
                                           child: Text(
                                             _list[index],
                                             textAlign: TextAlign.justify,
-                                            style:
-                                               TextStyle( fontSize: fontsize.value,),
+                                            style: TextStyle(
+                                              fontSize: fontsize.value,
+                                            ),
                                           ),
                                         ),
                                         SizedBox(
@@ -294,7 +297,7 @@ class _TranslationPageState extends State<TranslationPage> {
                                                 .trim()
                                                 .replaceAll('b', ''),
                                             textDirection: TextDirection.rtl,
-                                            style:  TextStyle(
+                                            style: TextStyle(
                                                 fontSize: fontsize.value,
                                                 fontFamily: 'MeQuran2',
                                                 color: Colors.black),

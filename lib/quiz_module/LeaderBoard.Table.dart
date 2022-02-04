@@ -218,131 +218,139 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                       data: Theme.of(context).copyWith(
                                           dividerColor:
                                               const Color(0xffBABABA)),
-                                      child: DataTable(
-                                          sortColumnIndex: 3,
-                                          sortAscending: _sortAscending,
-                                          headingRowHeight: 80,
-                                          dataRowHeight: 80,
-                                          headingTextStyle: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.bold),
-                                          dataTextStyle: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 24),
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(20)),
-                                          headingRowColor: MaterialStateProperty
-                                              .all(themeProvider.isDarkMode
-                                                  ? const Color(0xff808BA1)
-                                                  : const Color(0xFFFFEDAD)),
-                                          columnSpacing: 20,
-                                          columns: [
-                                            DataColumn(
-                                                label: Text(
-                                                  'Rank',
-                                                  style: TextStyle(
-                                                      color: themeProvider
-                                                              .isDarkMode
-                                                          ? Colors.white
-                                                          : Colors.black),
-                                                ),
-                                                numeric: false,
-                                                onSort: null),
-                                            DataColumn(
-                                              label: Text(
-                                                'Name',
-                                                style: TextStyle(
-                                                    color:
-                                                        themeProvider.isDarkMode
+                                      child: oldDataTable.isEmpty
+                                          ? Center(
+                                              child: Text(
+                                              'No data',
+                                              style: TextStyle(fontSize: 40),
+                                            ))
+                                          : DataTable(
+                                              sortColumnIndex: 3,
+                                              sortAscending: _sortAscending,
+                                              headingRowHeight: 80,
+                                              dataRowHeight: 80,
+                                              headingTextStyle: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 24,
+                                                  fontWeight: FontWeight.bold),
+                                              dataTextStyle: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 24),
+                                              decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius
+                                                      .circular(20)),
+                                              headingRowColor:
+                                                  MaterialStateProperty.all(
+                                                      themeProvider.isDarkMode
+                                                          ? const Color(
+                                                              0xff808BA1)
+                                                          : const Color(
+                                                              0xFFFFEDAD)),
+                                              columnSpacing: 20,
+                                              columns: [
+                                                DataColumn(
+                                                    label: Text(
+                                                      'Rank',
+                                                      style: TextStyle(
+                                                          color: themeProvider
+                                                                  .isDarkMode
+                                                              ? Colors.white
+                                                              : Colors.black),
+                                                    ),
+                                                    numeric: false,
+                                                    onSort: null),
+                                                DataColumn(
+                                                  label: Text(
+                                                    'Name',
+                                                    style: TextStyle(
+                                                        color: themeProvider
+                                                                .isDarkMode
                                                             ? Colors.white
                                                             : Colors.black),
-                                              ),
-                                            ),
-                                            DataColumn(
-                                                label: Text(
-                                                  'Total Quizzes',
-                                                  style: TextStyle(
-                                                      color: themeProvider
-                                                              .isDarkMode
-                                                          ? Colors.white
-                                                          : Colors.black),
+                                                  ),
                                                 ),
-                                                numeric: false,
-                                                onSort: null),
-                                            DataColumn(
-                                                label: Text(
-                                                  'Score',
-                                                  style: TextStyle(
-                                                      color: themeProvider
-                                                              .isDarkMode
-                                                          ? Colors.white
-                                                          : Colors.black),
-                                                ),
-                                                numeric: false,
-                                                onSort: _onSortId),
-                                          ],
-                                          rows: oldDataTable
-                                              .map((e) => DataRow(
-                                                      selected: false,
-                                                      cells: [
-                                                        DataCell(
-                                                          Text(
-                                                            '${oldDataTable.indexOf(e) + 1}',
-                                                            style:
-                                                                const TextStyle(
-                                                                    color: Colors
-                                                                        .black),
-                                                          ),
-                                                        ),
-                                                        DataCell(
-                                                            Row(
-                                                              children: [
-                                                                const CircleAvatar(
-                                                                  backgroundColor:
-                                                                      Color(
-                                                                          0xffBABABA),
-                                                                  backgroundImage:
-                                                                      AssetImage(
-                                                                          'assets/Image3.png'),
+                                                DataColumn(
+                                                    label: Text(
+                                                      'Total Quizzes',
+                                                      style: TextStyle(
+                                                          color: themeProvider
+                                                                  .isDarkMode
+                                                              ? Colors.white
+                                                              : Colors.black),
+                                                    ),
+                                                    numeric: false,
+                                                    onSort: null),
+                                                DataColumn(
+                                                    label: Text(
+                                                      'Score',
+                                                      style: TextStyle(
+                                                          color: themeProvider
+                                                                  .isDarkMode
+                                                              ? Colors.white
+                                                              : Colors.black),
+                                                    ),
+                                                    numeric: false,
+                                                    onSort: _onSortId),
+                                              ],
+                                              rows: oldDataTable
+                                                  .map(
+                                                      (e) => DataRow(
+                                                              selected: false,
+                                                              cells: [
+                                                                DataCell(
+                                                                  Text(
+                                                                    '${oldDataTable.indexOf(e) + 1}',
+                                                                    style: const TextStyle(
+                                                                        color: Colors
+                                                                            .black),
+                                                                  ),
                                                                 ),
-                                                                const SizedBox(
-                                                                  width: 16,
+                                                                DataCell(
+                                                                    Row(
+                                                                      children: [
+                                                                        const CircleAvatar(
+                                                                          backgroundColor:
+                                                                              Color(0xffBABABA),
+                                                                          backgroundImage:
+                                                                              AssetImage('assets/Image3.png'),
+                                                                        ),
+                                                                        const SizedBox(
+                                                                          width:
+                                                                              16,
+                                                                        ),
+                                                                        Text(
+                                                                          "${e['name']}",
+                                                                          style:
+                                                                              const TextStyle(color: Colors.black),
+                                                                        ),
+                                                                        const Spacer(),
+                                                                      ],
+                                                                    ),
+                                                                    showEditIcon:
+                                                                        false,
+                                                                    onTap:
+                                                                        () {}),
+                                                                DataCell(
+                                                                  Text(
+                                                                    "${e['total-quiz']}",
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                    style: const TextStyle(
+                                                                        color: Colors
+                                                                            .black),
+                                                                  ),
                                                                 ),
-                                                                Text(
-                                                                  "${e['name']}",
-                                                                  style: const TextStyle(
-                                                                      color: Colors
-                                                                          .black),
+                                                                DataCell(
+                                                                  Text(
+                                                                    "${e['scores']}",
+                                                                    style: const TextStyle(
+                                                                        color: Colors
+                                                                            .black),
+                                                                  ),
                                                                 ),
-                                                                const Spacer(),
-                                                              ],
-                                                            ),
-                                                            showEditIcon: false,
-                                                            onTap: () {}),
-                                                        DataCell(
-                                                          Text(
-                                                            "${e['total-quiz']}",
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style:
-                                                                const TextStyle(
-                                                                    color: Colors
-                                                                        .black),
-                                                          ),
-                                                        ),
-                                                        DataCell(
-                                                          Text(
-                                                            "${e['scores']}",
-                                                            style:
-                                                                const TextStyle(
-                                                                    color: Colors
-                                                                        .black),
-                                                          ),
-                                                        ),
-                                                      ]))
-                                              .toList()),
+                                                              ]))
+                                                  .toList()),
                                     )),
                               ),
                               Padding(
@@ -357,131 +365,139 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                       data: Theme.of(context).copyWith(
                                           dividerColor:
                                               const Color(0xffBABABA)),
-                                      child: DataTable(
-                                          sortColumnIndex: 3,
-                                          sortAscending: _sortAscending,
-                                          headingRowHeight: 80,
-                                          dataRowHeight: 80,
-                                          headingTextStyle: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.bold),
-                                          dataTextStyle: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 24),
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(20)),
-                                          headingRowColor: MaterialStateProperty
-                                              .all(themeProvider.isDarkMode
-                                                  ? const Color(0xff808BA1)
-                                                  : const Color(0xFFFFEDAD)),
-                                          columnSpacing: 20,
-                                          columns: [
-                                            DataColumn(
-                                                label: Text(
-                                                  'Rank',
-                                                  style: TextStyle(
-                                                      color: themeProvider
-                                                              .isDarkMode
-                                                          ? Colors.white
-                                                          : Colors.black),
-                                                ),
-                                                numeric: false,
-                                                onSort: null),
-                                            DataColumn(
-                                              label: Text(
-                                                'Name',
-                                                style: TextStyle(
-                                                    color:
-                                                        themeProvider.isDarkMode
+                                      child: dataTable.isEmpty
+                                          ? Center(
+                                              child: Text(
+                                              'No data',
+                                              style: TextStyle(fontSize: 40),
+                                            ))
+                                          : DataTable(
+                                              sortColumnIndex: 3,
+                                              sortAscending: _sortAscending,
+                                              headingRowHeight: 80,
+                                              dataRowHeight: 80,
+                                              headingTextStyle: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 24,
+                                                  fontWeight: FontWeight.bold),
+                                              dataTextStyle: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 24),
+                                              decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius
+                                                      .circular(20)),
+                                              headingRowColor:
+                                                  MaterialStateProperty.all(
+                                                      themeProvider.isDarkMode
+                                                          ? const Color(
+                                                              0xff808BA1)
+                                                          : const Color(
+                                                              0xFFFFEDAD)),
+                                              columnSpacing: 20,
+                                              columns: [
+                                                DataColumn(
+                                                    label: Text(
+                                                      'Rank',
+                                                      style: TextStyle(
+                                                          color: themeProvider
+                                                                  .isDarkMode
+                                                              ? Colors.white
+                                                              : Colors.black),
+                                                    ),
+                                                    numeric: false,
+                                                    onSort: null),
+                                                DataColumn(
+                                                  label: Text(
+                                                    'Name',
+                                                    style: TextStyle(
+                                                        color: themeProvider
+                                                                .isDarkMode
                                                             ? Colors.white
                                                             : Colors.black),
-                                              ),
-                                            ),
-                                            DataColumn(
-                                                label: Text(
-                                                  'Total Quizzes',
-                                                  style: TextStyle(
-                                                      color: themeProvider
-                                                              .isDarkMode
-                                                          ? Colors.white
-                                                          : Colors.black),
+                                                  ),
                                                 ),
-                                                numeric: false,
-                                                onSort: null),
-                                            DataColumn(
-                                                label: Text(
-                                                  'Score',
-                                                  style: TextStyle(
-                                                      color: themeProvider
-                                                              .isDarkMode
-                                                          ? Colors.white
-                                                          : Colors.black),
-                                                ),
-                                                numeric: false,
-                                                onSort: _onSortId),
-                                          ],
-                                          rows: dataTable
-                                              .map((e) => DataRow(
-                                                      selected: false,
-                                                      cells: [
-                                                        DataCell(
-                                                          Text(
-                                                            '${dataTable.indexOf(e) + 1}',
-                                                            style:
-                                                                const TextStyle(
-                                                                    color: Colors
-                                                                        .black),
-                                                          ),
-                                                        ),
-                                                        DataCell(
-                                                            Row(
-                                                              children: [
-                                                                const CircleAvatar(
-                                                                  backgroundColor:
-                                                                      Color(
-                                                                          0xffBABABA),
-                                                                  backgroundImage:
-                                                                      AssetImage(
-                                                                          'assets/Image3.png'),
+                                                DataColumn(
+                                                    label: Text(
+                                                      'Total Quizzes',
+                                                      style: TextStyle(
+                                                          color: themeProvider
+                                                                  .isDarkMode
+                                                              ? Colors.white
+                                                              : Colors.black),
+                                                    ),
+                                                    numeric: false,
+                                                    onSort: null),
+                                                DataColumn(
+                                                    label: Text(
+                                                      'Score',
+                                                      style: TextStyle(
+                                                          color: themeProvider
+                                                                  .isDarkMode
+                                                              ? Colors.white
+                                                              : Colors.black),
+                                                    ),
+                                                    numeric: false,
+                                                    onSort: _onSortId),
+                                              ],
+                                              rows: dataTable
+                                                  .map(
+                                                      (e) => DataRow(
+                                                              selected: false,
+                                                              cells: [
+                                                                DataCell(
+                                                                  Text(
+                                                                    '${dataTable.indexOf(e) + 1}',
+                                                                    style: const TextStyle(
+                                                                        color: Colors
+                                                                            .black),
+                                                                  ),
                                                                 ),
-                                                                const SizedBox(
-                                                                  width: 16,
+                                                                DataCell(
+                                                                    Row(
+                                                                      children: [
+                                                                        const CircleAvatar(
+                                                                          backgroundColor:
+                                                                              Color(0xffBABABA),
+                                                                          backgroundImage:
+                                                                              AssetImage('assets/Image3.png'),
+                                                                        ),
+                                                                        const SizedBox(
+                                                                          width:
+                                                                              16,
+                                                                        ),
+                                                                        Text(
+                                                                          "${e['name']}",
+                                                                          style:
+                                                                              const TextStyle(color: Colors.black),
+                                                                        ),
+                                                                        const Spacer(),
+                                                                      ],
+                                                                    ),
+                                                                    showEditIcon:
+                                                                        false,
+                                                                    onTap:
+                                                                        () {}),
+                                                                DataCell(
+                                                                  Text(
+                                                                    "${e['total-quiz']}",
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                    style: const TextStyle(
+                                                                        color: Colors
+                                                                            .black),
+                                                                  ),
                                                                 ),
-                                                                Text(
-                                                                  "${e['name']}",
-                                                                  style: const TextStyle(
-                                                                      color: Colors
-                                                                          .black),
+                                                                DataCell(
+                                                                  Text(
+                                                                    "${e['scores']}",
+                                                                    style: const TextStyle(
+                                                                        color: Colors
+                                                                            .black),
+                                                                  ),
                                                                 ),
-                                                                const Spacer(),
-                                                              ],
-                                                            ),
-                                                            showEditIcon: false,
-                                                            onTap: () {}),
-                                                        DataCell(
-                                                          Text(
-                                                            "${e['total-quiz']}",
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style:
-                                                                const TextStyle(
-                                                                    color: Colors
-                                                                        .black),
-                                                          ),
-                                                        ),
-                                                        DataCell(
-                                                          Text(
-                                                            "${e['scores']}",
-                                                            style:
-                                                                const TextStyle(
-                                                                    color: Colors
-                                                                        .black),
-                                                          ),
-                                                        ),
-                                                      ]))
-                                              .toList()),
+                                                              ]))
+                                                  .toList()),
                                     )),
                               ),
                             ]),
@@ -491,17 +507,3 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
     );
   }
 }
-
-// class LeaderBoard {
-//   final int rank;
-//   final String name;
-//   final int chapterCompleted;
-//   final int score;
-//
-//   LeaderBoard(this.rank, this.name, this.chapterCompleted, this.score);
-//
-//   @override
-//   String toString() {
-//     return 'LeaderBoard{rank: $rank, name: $name, chapters completed: $chapterCompleted, score: $score}';
-//   }
-// }
