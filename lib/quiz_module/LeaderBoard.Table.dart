@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quranirab/models/category.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/widget/LanguagePopup.dart';
 import 'package:quranirab/widget/setting.popup.dart';
@@ -38,11 +39,11 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
 
   final leaderBoardRef = FirebaseFirestore.instance
       .collection('leaderboards')
-      .doc('overall')
+      .doc(catData.category)
       .collection('scores');
   final oldLeaderBoardRef = FirebaseFirestore.instance
       .collection('leaderboards')
-      .doc('overall')
+      .doc(catData.category)
       .collection('oldScores');
 
   Future<void> init() async {
@@ -62,19 +63,6 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
     setState(() {
       oldDataTable = leaderboards;
     });
-    // await leaderBoardRef
-    //     .where('category', isEqualTo: 'overall')
-    //     .orderBy('score', descending: true)
-    //     .limit(10)
-    //     .get()
-    //     .then((QuerySnapshot querySnapshot) {
-    //   for (int i = 0; i < dataTable.length; i++) {
-    //     setState(() {
-    //       userID.add(querySnapshot.docs[i]['user-id']);
-    //     });
-    //   }
-    //   getUserName(userID);
-    // });
   }
 
   @override
