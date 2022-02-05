@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:quranirab/models/words.model.dart';
@@ -7,6 +8,7 @@ import 'package:quranirab/quiz_module/models/quiz_model.dart';
 import 'package:quranirab/quiz_module/utils/AppColor.java';
 import 'package:quranirab/quiz_module/Quiz.Score.dart';
 import 'package:intl/intl.dart';
+import 'package:quranirab/views/home.page.dart';
 import 'models/answer_model.dart';
 import 'models/option_model.dart';
 import 'models/question_model.dart';
@@ -20,10 +22,12 @@ class Quiz extends StatefulWidget {
 
 class _QuizState extends State<Quiz> {
   int page = 1;
+  int noOfAnswers = 0;
 
   //int count = 0;
   double progress = 0;
   String level = 'beginner';
+  late String quizTypeId;
   List<String> words = [];
   List<String> wordIds = [];
   List<String> options_malay = [];
@@ -34,6 +38,7 @@ class _QuizState extends State<Quiz> {
 
   bool dataReady = false;
   bool correctAnswer = false;
+  late String quizId;
 
   late String selectedOption;
   late QuerySnapshot relationshipSnapshot;
@@ -355,8 +360,11 @@ class _QuizState extends State<Quiz> {
                           margin: const EdgeInsets.only(left: 10),
                           child: RawMaterialButton(
                             onPressed: () {
+
                               if (_controller.page?.toInt() ==
                                   wordList.length - 1) {
+                                noOfAnswers++;
+                                saveQuiz();
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -374,7 +382,7 @@ class _QuizState extends State<Quiz> {
                                   );
                                   return;
                                 }
-
+                                noOfAnswers++;
                                 _controller.nextPage(
                                     duration: const Duration(milliseconds: 250),
                                     curve: Curves.easeInExpo);
@@ -438,47 +446,230 @@ class _QuizState extends State<Quiz> {
     );
   }
 
-  void saveQuiz() {
-    //files quiz list not needed
-    //get user id
-    //get quiz type id
+  Future<bool> quizExist() async {
+    bool exist;
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User? user = auth.currentUser;
+    final userId = user?.uid;
+    String? uid = userId?.toString();
+    QuerySnapshot takenQuiz =
+        await FirebaseFirestore.instance.collection('quiz').
+    where('userId', isEqualTo: '0123').where('mushaf_page', isEqualTo: page).get();
 
+
+    if (takenQuiz.docs.length > 0) {
+      exist = true;
+      quizId = takenQuiz.docs[0].id;
+
+      /*
+      final value = await FirebaseFirestore.instance
+          .collection("quiz")
+          .doc(doc)
+          .get();
+      wordList = value.data()!['remainingWords'];
+      print(wordList);
+
+      //wordList = takenQuizes.docs[0].get('remainingWords');
+      print(wordList[0].id);
+
+       */
+    } else {
+      exist = false;
+    }
+    return exist;
+  }
+
+  Future<bool> quizCompleted(String quizId) async {
+    bool isCompleted;
+    DocumentSnapshot doc = await FirebaseFirestore.instance.collection('quiz').doc(quizId).get();
+
+      if (doc.exists) {
+        print('doc exist');
+        if( doc.get('progress') == 100) {
+          print('progress = 100');
+          isCompleted = true;
+        } else {
+          isCompleted = false;
+    }
+      } else {
+        isCompleted = false;
+      }
+
+
+    return isCompleted;
+  }
+
+  Future<List<Words>> getRemainingWords(String quizId) async {
+    List<String>? wordIds = [];
+    late DocumentSnapshot remainingWords;
+    final value = await FirebaseFirestore.instance
+        .collection("quiz")
+        .doc(quizId)
+        .get();
+    QuizModel quiz = QuizModel.fromMap(value.data());
+
+    wordIds = quiz.remainingWords.cast<String>();
+    print('word ids');
+    print(wordIds.length);
+
+    for (int i = 0; i < wordIds.length; i ++) {
+      remainingWords =  await FirebaseFirestore.instance
+          .collection('words').doc(wordIds[i]).get();
+
+      wordList.add(
+          Words.fromWords(
+              id: remainingWords.get('id'),
+              text: remainingWords.get('text')
+          )
+      );
+    }
+
+    if(wordList.isEmpty) {
+      await getWords();
+    }
+    return wordList.map((e) => e).toList();
+  }
+
+
+  void saveQuiz() async{
+
+    //files quiz list not needed
+
+    QuizModel quiz;
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User? user = auth.currentUser;
+    final uid = user?.uid;
     List<String> remainingWords = [];
-    if(totalAnsweredQuestion > 0) {
-      if (totalAnsweredQuestion == wordList.length) {
+    bool exist = await quizExist();
+
+    bool isCompleted;
+
+
+    if(noOfAnswers > 0) {
+
+
+      if (noOfAnswers == wordList.length) {
         progress = 100;
         remainingWords = [];
+        isCompleted = true;
       }
-      else {
-        progress = (totalAnsweredQuestion / wordList.length) * 100;
-        for (int i = totalAnsweredQuestion; i < wordList.length; i++) {
+      else  {
+        progress = (noOfAnswers * 100) / wordList.length;
+        progress = progress.roundToDouble();
+        isCompleted = false;
+
+        //get remaining words
+        for (int i = noOfAnswers; i < wordList.length; i++) {
           remainingWords.add(wordList[i].id.toString());
         }
       }
+      
       final DateTime now = DateTime.now();
       final DateFormat dateFormat = DateFormat('yyyy-MM-dd');
       final String date = dateFormat.format(now);
 
+      if(exist) {
+        bool wasCompleted = await quizCompleted(quizId);
+        DocumentSnapshot quizInfo = await FirebaseFirestore.instance.collection('quiz').doc(quizId).get();
+        int oldScore = quizInfo.get('score');
+        int oldProgress = quizInfo.get('progress');
+        if(wasCompleted) {
+          print('was completed');
+          if(isCompleted)
+          {
+            print('is completed');
+            if(score > oldScore)
+            {
+              print('overwrite the quiz');
+              quiz = QuizModel(
+                userId: '456',
+                level: level,
+                progress: progress,
+                mushaf_page: page,
+                score: score,
+                date_taken: date,
+                quiz_type_id: quizTypeId.toString(),
+                remainingWords: remainingWords,
+              );
+              FirebaseFirestore.instance.collection('quiz').doc(quizId).update(quiz.toMap()).then((value) =>
+              {
+                print('quiz overwritten'),
+              });
 
-      QuizModel quiz = QuizModel(
-        userId: '',
-        level: level,
-        progress: progress,
-        mushaf_page: page,
-        score: score,
-        date_taken: date,
-        quiz_type_id: '1',
-        remainingWords: remainingWords,
-      );
-      FirebaseFirestore.instance.collection('quiz').add(quiz.toMap()).then((value) => {});
+
+            }
+            else
+              {
+              print('ignore quiz');
+            }
+          }
+          else
+            {
+            print('done before but now not complete');
+          }
+        }
+        else
+          {
+          print('was not completed');
+          score = score + oldScore;
+          if(isCompleted) {
+            progress = 100;
+          } else {
+            progress = progress + oldProgress;
+          }
+
+          quiz = QuizModel(
+            userId: 'null',
+            level: level,
+            progress: progress,
+            mushaf_page: page,
+            score: score,
+            date_taken: date,
+            quiz_type_id: quizTypeId.toString(),
+            remainingWords: remainingWords,
+          );
+          FirebaseFirestore.instance.collection('quiz').doc(quizId).update(quiz.toMap()).then((value) =>
+          {
+            print('quiz updated'),
+          });
+
+        }
+
+
+      }
+      else
+      {
+        //first time taking quiz
+        quiz = QuizModel(
+          userId: 'user',
+          level: level,
+          progress: progress,
+          mushaf_page: page,
+          score: score,
+          date_taken: date,
+          quiz_type_id: quizTypeId.toString(),
+          remainingWords: remainingWords,
+        );
+
+        FirebaseFirestore.instance.collection('quiz').add(quiz.toMap()).then((value) => {});
+      }
     }
+    
+    
+
 
 
 
   }
 
   void generateQuestions() async {
-    await getWords();
+    bool isExist = await quizExist();
+    if (isExist) {
+      await getRemainingWords(quizId);
+    } else {
+      await getWords();
+    }
+    //await getWords();
     await getQuestion();
     await getNonTranslatedOptions();
     await getTranslatedOptions();
@@ -489,25 +680,42 @@ class _QuizState extends State<Quiz> {
     });
   }
 
-  Future<List<dynamic>> getWords() async {
+  List<Words> removeDuplicates(List<Words> words) {
+    List<Words> distinct;
+    List<Words> dummy = words;
+
+    for(int i = 0; i < words.length; i++) {
+      for (int j = 1; j < dummy.length; j++) {
+        if (words[i].text == words[j].text) {
+          dummy.removeAt(j);
+        }
+      }
+    }
+
+
+    ///distinct = words.toSet().toList();
+    distinct = dummy;
+    //print(distinct.length);
+
+    return distinct.map((e) => e).toList();
+  }
+  Future<List<Words>> getWords() async {
+
     QuerySnapshot wordsQuerySnapshot = await FirebaseFirestore.instance
         .collection('words')
         .where('medina_mushaf_page_id', isEqualTo: page.toString())
         .get();
 
-    //print(wordsQuerySnapshot.docs.length);
-    for (int i = 0; i < wordsQuerySnapshot.docs.length; i++) {
-      wordList.add(Words.fromWords(
-          id: wordsQuerySnapshot.docs[i].get('id').toString(),
-          text: wordsQuerySnapshot.docs[i].get('text').toString()));
+      for (int i = 0; i < wordsQuerySnapshot.docs.length; i++) {
+        wordList.add(Words.fromWords(
+            id: wordsQuerySnapshot.docs[i].get('id').toString(),
+            text: wordsQuerySnapshot.docs[i].get('text').toString()));
+      }
 
-      //wordIds.add(wordsQuerySnapshot.docs[i].get('id').toString());
-      //words.add(wordsQuerySnapshot.docs[i].get('text').toString()) ;
-
-    }
-
-    print(wordList.length);
-    return words.map((e) => e).toList();
+     wordList = removeDuplicates(wordList);
+      wordList.shuffle();
+    //print(wordList.length);
+    return wordList.map((e) => e).toList();
   }
 
   Future<void> getQuestion() async {
@@ -520,8 +728,9 @@ class _QuizState extends State<Quiz> {
       question = QuestionModel(
           question: questions.docs[0].get('question').toString(),
           translation: questions.docs[0].get('translation').toString());
-
-      print(question.translation);
+      quizTypeId = questions.docs[0].id;
+      //print(quizTypeId);
+      //print(question.translation);
     } else {
       print('else');
     }
@@ -564,6 +773,7 @@ class _QuizState extends State<Quiz> {
   }
 
   Future<List<dynamic>> getAnswers() async {
+
     for (int i = 0; i < wordList.length; i++) {
       relationshipSnapshot = await FirebaseFirestore.instance
           .collection('word_relationships')
@@ -587,8 +797,8 @@ class _QuizState extends State<Quiz> {
       }
     }
 
-    return Future.delayed(
-        Duration(seconds: 1), () => answers.map((e) => e).toList());
+    print(answers.length);
+    return answers.map((e) => e).toList();
   }
 
   void checkAnswer(String wordId, String selectedOption) async {

@@ -24,13 +24,29 @@ class QuizModel {
       'userId': userId,
       'level': level,
       'mushaf_page': mushaf_page,
-      'quiz_type_id': '',
+      'quiz_type_id': quiz_type_id,
       'score': score,
       'progress': progress,
       'date_taken': date_taken,
       'remainingWords': remainingWords,
     };
   }
+
+  factory QuizModel.fromMap(map)
+  {
+    return QuizModel(
+      userId: map['userId'],
+      level: map['level'],
+      mushaf_page: map['mushaf_page'],
+      quiz_type_id: map['quiz_type_id'],
+      score: map['score'],
+      progress: map['progress'],
+      date_taken: map['date_taken'],
+      remainingWords: map['remainingWords']
+
+    );
+  }
+
 
 
 

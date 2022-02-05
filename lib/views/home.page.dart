@@ -94,89 +94,91 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         body: Stack(
           children: [
             isSearch ? buildSuggestions(context) : Container(),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 89,
-                ),
-                Container(
-                    padding: const EdgeInsets.only(left: 50),
-                    child: RichText(
-                      text: TextSpan(children: [
-                        TextSpan(
-                          text: "Bookmark",
-                          style: TextStyle(
-                            shadows: [
-                              Shadow(
+            SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 89,
+                  ),
+                  Container(
+                      padding: const EdgeInsets.only(left: 50),
+                      child: RichText(
+                        text: TextSpan(children: [
+                          TextSpan(
+                            text: "Bookmark",
+                            style: TextStyle(
+                              shadows: [
+                                Shadow(
+                                    color: (themeProvider.isDarkMode)
+                                        ? const Color(0xFFFFFFFF)
+                                        : const Color(0xFF000000),
+                                    offset: const Offset(0, -10))
+                              ],
+                              color: Colors.transparent,
+                              fontSize: 20,
+                              decoration: TextDecoration.underline,
+                              // decorationColor: Colors.grey,
+                              decorationThickness: 2,
+                            ),
+                          ),
+                          TextSpan(
+                              text: "\nYou do not have any bookmark yet.",
+                              style: TextStyle(
+                                  fontSize: 20,
                                   color: (themeProvider.isDarkMode)
                                       ? const Color(0xFFFFFFFF)
-                                      : const Color(0xFF000000),
-                                  offset: const Offset(0, -10))
-                            ],
-                            color: Colors.transparent,
-                            fontSize: 20,
-                            decoration: TextDecoration.underline,
-                            // decorationColor: Colors.grey,
-                            decorationThickness: 2,
+                                      : const Color(0xFF000000))),
+                        ]),
+                      )),
+                  const SizedBox(
+                    height: 100,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 48.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: TabBar(
+                        labelColor: (themeProvider.isDarkMode)
+                            ? const Color(0xFFFFFFFF)
+                            : const Color(0xFF000000),
+                        unselectedLabelColor: (themeProvider.isDarkMode)
+                            ? const Color(0xFFFFFFFF)
+                            : const Color(0xFF000000),
+                        isScrollable: true,
+                        labelPadding: const EdgeInsets.only(left: 50, right: 50),
+                        indicatorSize: TabBarIndicatorSize.label,
+                        indicatorColor: (themeProvider.isDarkMode)
+                            ? const Color(0xFF263D4A)
+                            : const Color(0xFFE86F00),
+                        controller: _tabController,
+                        tabs: const [
+                          Tab(
+                            text: "Sura",
                           ),
-                        ),
-                        TextSpan(
-                            text: "\nYou do not have any bookmark yet.",
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: (themeProvider.isDarkMode)
-                                    ? const Color(0xFFFFFFFF)
-                                    : const Color(0xFF000000))),
-                      ]),
-                    )),
-                const SizedBox(
-                  height: 100,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 48.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: TabBar(
-                      labelColor: (themeProvider.isDarkMode)
-                          ? const Color(0xFFFFFFFF)
-                          : const Color(0xFF000000),
-                      unselectedLabelColor: (themeProvider.isDarkMode)
-                          ? const Color(0xFFFFFFFF)
-                          : const Color(0xFF000000),
-                      isScrollable: true,
-                      labelPadding: const EdgeInsets.only(left: 50, right: 50),
-                      indicatorSize: TabBarIndicatorSize.label,
-                      indicatorColor: (themeProvider.isDarkMode)
-                          ? const Color(0xFF263D4A)
-                          : const Color(0xFFE86F00),
-                      controller: _tabController,
-                      tabs: const [
-                        Tab(
-                          text: "Sura",
-                        ),
-                        Tab(
-                          text: "Juz",
-                        ),
-                      ],
+                          Tab(
+                            text: "Juz",
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 50),
-                  height: 650,
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: const [
-                      SurahGrid(),
-                      JuzGrid(),
-                    ],
+                  const SizedBox(
+                    height: 30,
                   ),
-                )
-              ],
+                  Container(
+                    padding: const EdgeInsets.only(left: 50),
+                    height: 650,
+                    child: TabBarView(
+                      controller: _tabController,
+                      children: const [
+                        SurahGrid(),
+                        JuzGrid(),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ],
         ),
