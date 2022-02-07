@@ -498,9 +498,9 @@ class _QuizState extends State<Quiz> {
         .doc(AppUser.instance.user!.uid)
         .collection('quizs');
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    int old = prefs.getInt('score') ?? 0;
+    int old = prefs.getInt('${widget.page}score') ?? 0;
     if (old < score) {
-      prefs.setInt('score', score);
+      prefs.setInt('${widget.page}score', score);
       quiz
           // existing document in 'users' collection: "ABC123"
           .doc(widget.page.toString())

@@ -226,7 +226,6 @@ class _SurahScreenState extends State<SurahScreen> {
     setState(() {
       _translate = data;
     });
-    print(_translate.length);
     if (start != 1) {
       _translate.removeRange(0, start! - 1);
     }
@@ -845,19 +844,21 @@ class _SurahScreenState extends State<SurahScreen> {
               const Spacer(),
               const Spacer(),
               ElevatedButton(
-                onPressed: () async {
-                  if (i < int.parse(widget.allpages.last)) {
-                    setState(() {
-                      i--;
-                    });
-                    await getStartAyah(widget.allpages[i]);
-                    await nextPage(widget.allpages[i]);
-                  } else {
-                    await getStartAyah(widget.allpages.first);
-                    await nextPage(widget.allpages.first);
-                  }
-                  print('${widget.allpages[i]}/${widget.allpages.last}');
-                },
+                onPressed: widget.allpages[i] != widget.allpages.first
+                    ? () async {
+                        if (i < int.parse(widget.allpages.last)) {
+                          setState(() {
+                            i--;
+                          });
+                          await getStartAyah(widget.allpages[i]);
+                          await nextPage(widget.allpages[i]);
+                        } else {
+                          await getStartAyah(widget.allpages.first);
+                          await nextPage(widget.allpages.first);
+                        }
+                        print('${widget.allpages[i]}/${widget.allpages.last}');
+                      }
+                    : null,
                 style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 32, vertical: 18),
@@ -874,6 +875,9 @@ class _SurahScreenState extends State<SurahScreen> {
                   onPressed: () async {
                     await getStartAyah(widget.allpages.first);
                     await nextPage(widget.allpages.first);
+                    setState(() {
+                      i = 0;
+                    });
                   },
                   style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
@@ -887,19 +891,22 @@ class _SurahScreenState extends State<SurahScreen> {
                   )),
               const SizedBox(width: 25),
               ElevatedButton(
-                  onPressed: () async {
-                    if (i < int.parse(widget.allpages.last)) {
-                      setState(() {
-                        i++;
-                      });
-                      await getStartAyah(widget.allpages[i]);
-                      await nextPage(widget.allpages[i]);
-                    } else {
-                      await getStartAyah(widget.allpages.last);
-                      await nextPage(widget.allpages.last);
-                    }
-                    print('${widget.allpages[i]}/${widget.allpages.last}');
-                  },
+                  onPressed: widget.allpages[i] != widget.allpages.last
+                      ? () async {
+                          if (i < int.parse(widget.allpages.last)) {
+                            setState(() {
+                              i++;
+                            });
+                            await getStartAyah(widget.allpages[i]);
+                            await nextPage(widget.allpages[i]);
+                          } else {
+                            await getStartAyah(widget.allpages.last);
+                            await nextPage(widget.allpages.last);
+                          }
+                          print(
+                              '${widget.allpages[i]}/${widget.allpages.last}');
+                        }
+                      : null,
                   style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 32, vertical: 18),

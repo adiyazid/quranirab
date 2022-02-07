@@ -23,10 +23,6 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    calcOverallScore();
-    calcCategory1();
-    calcCategory2();
-    calcCategory3();
   }
 
   @override
@@ -382,7 +378,7 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
           }
         });
       }
-      if (newNum != 0 || newNum != 0) {
+      if (newNum != 0 || num != 0) {
         addToFirebase(newOverall, newNum, overall, num, 'overall');
       }
     });
@@ -450,7 +446,7 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
         }
       }
     });
-    if (newNum != 0 || newNum != 0) {
+    if (newNum != 0 || num != 0) {
       addToFirebase(newOverall, newNum, overall, num, 'categoryU201');
     }
   }
@@ -485,7 +481,7 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
         }
       }
     });
-    if (newNum != 0 || newNum != 0) {
+    if (newNum != 0 || num != 0) {
       addToFirebase(newOverall, newNum, overall, num, 'categoryU402');
     }
   }
@@ -520,7 +516,7 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
         }
       }
     });
-    if (newNum != 0 || newNum != 0) {
+    if (newNum != 0 || num != 0) {
       addToFirebase(newOverall, newNum, overall, num, 'categoryU604');
     }
   }
