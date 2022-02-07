@@ -68,8 +68,10 @@ class FontSizeController with ChangeNotifier {
   double get value => _value;
 
   void increment() {
-    _value++;
-    notifyListeners();
+    if (_value != 38) {
+      _value++;
+      notifyListeners();
+    }
   }
 
   void decrement() {

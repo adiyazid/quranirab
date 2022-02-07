@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quranirab/Translation/translation.dart';
 import 'package:quranirab/facebook/widgets/responsive.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/widget/LanguagePopup.dart';
@@ -9,7 +10,6 @@ import 'package:quranirab/widget/menu.dart';
 
 import 'Appbar/appbar.dart';
 import 'Surah/surah1.dart';
-import 'Translation/translation.dart';
 
 class FacebookHomeScreen extends StatefulWidget {
   const FacebookHomeScreen({Key? key}) : super(key: key);
@@ -241,7 +241,7 @@ class _HomeScreenDesktopState extends State<_HomeScreenDesktop> {
           },
           body: const TabBarView(
             children: [
-              TranslationPage('1','1'),
+              TranslationPage('1', '1'),
               SurahPage('1', '1'),
             ],
           ),

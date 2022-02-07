@@ -112,13 +112,13 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: MeQuran2
-      fonts:
-        - asset: fonts/me_quran2.ttf
-    - family: Poppins
-      fonts:
-        - asset: assets/fonts/Poppins-Regular.ttf
-        - weight: 400
+   - family: MeQuran2
+     fonts:
+      - asset: fonts/me_quran2.ttf
+   - family: Poppins
+     fonts:
+      - asset: fonts/Poppins-Regular.ttf
+      - weight: 400
 
 
   #

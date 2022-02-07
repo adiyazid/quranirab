@@ -10,9 +10,10 @@ import 'package:quranirab/quiz_module/utils/button182.dart';
 import 'package:quranirab/quiz_module/LeaderBoard.Menu.dart';
 
 class QuizScore extends StatefulWidget {
-  QuizScore(this.score, this.questionsCount, {Key? key}) : super(key: key);
+  QuizScore(this.score, this.questionsCount,this.page, {Key? key}) : super(key: key);
   int score;
   int questionsCount;
+  int page;
 
   @override
   _QuizScoreState createState() => _QuizScoreState();
@@ -94,8 +95,7 @@ class _QuizScoreState extends State<QuizScore> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                const QuizHome()));
+                                            builder: (context) => QuizHome(widget.page)));
                                   }, true),
                                   //insert route to play again at quiz screen
                                   const SizedBox(

@@ -13,14 +13,15 @@ import 'package:quranirab/quiz_module/words.model.dart';
 import '../word-relationship-model.dart';
 
 class Quiz extends StatefulWidget {
-  const Quiz({Key? key}) : super(key: key);
+  final int page;
+
+  const Quiz(this.page, {Key? key}) : super(key: key);
 
   @override
   _QuizState createState() => _QuizState();
 }
 
 class _QuizState extends State<Quiz> {
-  int page = 1;
   int count = 0;
   String level = 'beginner';
 
@@ -296,8 +297,8 @@ class _QuizState extends State<Quiz> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          QuizScore(score, wordList.length)));
+                                      builder: (context) => QuizScore(score,
+                                          wordList.length, widget.page)));
                             } else {
                               if (!btnPressed) {
                                 Fluttertoast.showToast(
@@ -372,7 +373,7 @@ class _QuizState extends State<Quiz> {
   Future<List<dynamic>> getWords() async {
     QuerySnapshot wordsQuerySnapshot = await FirebaseFirestore.instance
         .collection('words')
-        .where('medina_mushaf_page_id', isEqualTo: page.toString())
+        .where('medina_mushaf_page_id', isEqualTo: widget.page.toString())
         .get();
 
     //print(wordsQuerySnapshot.docs.length);
@@ -497,22 +498,23 @@ class _QuizState extends State<Quiz> {
         .doc(AppUser.instance.user!.uid)
         .collection('quizs');
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    int old = prefs.getInt('score') ?? 0;
+    int old = prefs.getInt('${widget.page}score') ?? 0;
     if (old < score) {
-      prefs.setInt('score', score);
+      prefs.setInt('${widget.page}score', score);
       quiz
           // existing document in 'users' collection: "ABC123"
-          .doc('beginner')
+          .doc(widget.page.toString())
           .set(
             {
               'user-id': AppUser.instance.user!.uid,
               'score': score,
-              'date-taken': DateTime.now()
+              'date-taken': DateTime.now(),
+              'medina_mushaf_page_id': widget.page,
+              'level': level
             },
             SetOptions(merge: true),
-      )
-          .then((value) =>
-              print("'score' & 'date' merged with existing data!"))
+          )
+          .then((value) => print("'score' & 'date' merged with existing data!"))
           .catchError((error) => print("Failed to merge data: $error"));
     } else {
       print('try again');

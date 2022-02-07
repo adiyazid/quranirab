@@ -261,12 +261,14 @@ class _SettingPopupState extends State<SettingPopup>
                                           setState(() {
                                             // fontData.index = 2;
                                             // fontData.size = 60;
-                                            fontData.size = fontData.size + 1;
-                                            Provider.of<FontSizeController>(
-                                                    context,
-                                                    listen: false)
-                                                .increment();
-                                            no++;
+                                            if (fontData.size != 38) {
+                                              fontData.size = fontData.size + 1;
+                                              Provider.of<FontSizeController>(
+                                                      context,
+                                                      listen: false)
+                                                  .increment();
+                                              no++;
+                                            }
                                           });
                                         }
                                       },

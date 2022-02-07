@@ -1,6 +1,6 @@
 class FontSize {
   static final FontSize _fontData = FontSize._internal();
-  double size = 30;
+  double size = 23;
   int? index;
 
   factory FontSize() {

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quranirab/models/category.dart';
 import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/quiz_module/LeaderBoard.Table.dart';
 import 'package:quranirab/theme/theme_provider.dart';
@@ -16,11 +17,12 @@ class LeaderBoardMenu extends StatefulWidget {
 }
 
 class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
+  int diff = 0;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    calcOverallScore();
   }
 
   @override
@@ -118,11 +120,18 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                     ),
                   ),
                   InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const LeaderBoardTable()));
+                    onTap: () async {
+                      setState(() {
+                        catData.category = 'overall';
+                      });
+                      await calcOverallScore();
+                      await Future.delayed(const Duration(seconds: 2), () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const LeaderBoardTable()));
+                      });
                     },
                     child: Container(
                       width: 600,
@@ -169,12 +178,19 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                     ),
                   ),
                   InkWell(
-                    // onTap: () {
-                    //   Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //           builder: (context) => const LeaderBoardTable()));
-                    // },
+                    onTap: () async {
+                      setState(() {
+                        catData.category = 'categoryU201';
+                      });
+                      await calcCategory1();
+                      await Future.delayed(const Duration(seconds: 2), () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const LeaderBoardTable()));
+                      });
+                    },
                     child: Container(
                       width: 600,
                       height: 130,
@@ -222,11 +238,18 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                     ),
                   ),
                   InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const LeaderBoardTable()));
+                    onTap: () async {
+                      setState(() {
+                        catData.category = 'categoryU402';
+                      });
+                      await calcCategory2();
+                      await Future.delayed(const Duration(seconds: 2), () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const LeaderBoardTable()));
+                      });
                     },
                     child: Container(
                       width: 600,
@@ -271,11 +294,17 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                   ),
                   InkWell(
                     onTap: () async {
-                      await calcOverallScore();
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const LeaderBoardTable()));
+                      setState(() {
+                        catData.category = 'categoryU604';
+                      });
+                      await calcCategory3();
+                      await Future.delayed(const Duration(seconds: 2), () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const LeaderBoardTable()));
+                      });
                     },
                     child: Container(
                       width: 600,
@@ -326,6 +355,8 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
   Future<void> calcOverallScore() async {
     int overall = 0;
     int num = 0;
+    int newOverall = 0;
+    int newNum = 0;
     await FirebaseFirestore.instance
         .collection('quranIrabUsers')
         .doc(AppUser.instance.user!.uid)
@@ -333,26 +364,160 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
         .get()
         .then((QuerySnapshot querySnapshot) {
       for (var doc in querySnapshot.docs) {
+        var now = DateTime.now();
+        var time = DateTime.parse(doc['date-taken'].toDate().toString());
         int score = doc['score'];
         setState(() {
-          overall = overall + score;
-          num = num + 1;
+          var diff = now.difference(time).inDays;
+          if (diff > 30) {
+            overall = overall + score;
+            num = num + 1;
+          } else {
+            newOverall = newOverall + score;
+            newNum = newNum + 1;
+          }
         });
       }
+      if (newNum != 0 || num != 0) {
+        addToFirebase(newOverall, newNum, overall, num, 'overall');
+      }
     });
+  }
 
+  Future<void> addToFirebase(
+      int newOverAll, int newNum, int overAll, int num, String category) async {
     await FirebaseFirestore.instance
         .collection('leaderboards')
-        .doc('overall')
+        .doc(category)
         .collection('scores')
         .doc(AppUser.instance.user!.uid)
         .set(
       {
         'name': AppUser.instance.user!.displayName, // John Doe
-        'scores': overall,
-        'total-quiz': num
+        'scores': newOverAll,
+        'total-quiz': newNum,
+        'last-updated': DateTime.now()
       },
       SetOptions(merge: true),
     );
+    await FirebaseFirestore.instance
+        .collection('leaderboards')
+        .doc(category)
+        .collection('oldScores')
+        .doc(AppUser.instance.user!.uid)
+        .set(
+      {
+        'name': AppUser.instance.user!.displayName, // John Doe
+        'scores': overAll + newOverAll,
+        'total-quiz': num + newNum,
+        'last-updated': DateTime.now()
+      },
+      SetOptions(merge: true),
+    );
+  }
+
+  Future<void> calcCategory1() async {
+    int overall = 0;
+    int num = 0;
+    int newOverall = 0;
+    int newNum = 0;
+    await FirebaseFirestore.instance
+        .collection('quranIrabUsers')
+        .doc(AppUser.instance.user!.uid)
+        .collection('quizs')
+        .where('medina_mushaf_page_id', isLessThanOrEqualTo: 201)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        if (doc['medina_mushaf_page_id'] > 0) {
+          var now = DateTime.now();
+          var time = DateTime.parse(doc['date-taken'].toDate().toString());
+          int score = doc['score'];
+          setState(() {
+            var diff = now.difference(time).inDays;
+            if (diff > 30) {
+              overall = overall + score;
+              num = num + 1;
+            } else {
+              newOverall = newOverall + score;
+              newNum = newNum + 1;
+            }
+          });
+        }
+      }
+    });
+    if (newNum != 0 || num != 0) {
+      addToFirebase(newOverall, newNum, overall, num, 'categoryU201');
+    }
+  }
+
+  Future<void> calcCategory2() async {
+    int overall = 0;
+    int num = 0;
+    int newOverall = 0;
+    int newNum = 0;
+    await FirebaseFirestore.instance
+        .collection('quranIrabUsers')
+        .doc(AppUser.instance.user!.uid)
+        .collection('quizs')
+        .where('medina_mushaf_page_id', isLessThanOrEqualTo: 402)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        if (doc['medina_mushaf_page_id'] > 201) {
+          var now = DateTime.now();
+          var time = DateTime.parse(doc['date-taken'].toDate().toString());
+          int score = doc['score'];
+          setState(() {
+            var diff = now.difference(time).inDays;
+            if (diff > 30) {
+              overall = overall + score;
+              num = num + 1;
+            } else {
+              newOverall = newOverall + score;
+              newNum = newNum + 1;
+            }
+          });
+        }
+      }
+    });
+    if (newNum != 0 || num != 0) {
+      addToFirebase(newOverall, newNum, overall, num, 'categoryU402');
+    }
+  }
+
+  Future<void> calcCategory3() async {
+    int overall = 0;
+    int num = 0;
+    int newOverall = 0;
+    int newNum = 0;
+    await FirebaseFirestore.instance
+        .collection('quranIrabUsers')
+        .doc(AppUser.instance.user!.uid)
+        .collection('quizs')
+        .where('medina_mushaf_page_id', isLessThanOrEqualTo: 604)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        if (doc['medina_mushaf_page_id'] > 402) {
+          var now = DateTime.now();
+          var time = DateTime.parse(doc['date-taken'].toDate().toString());
+          int score = doc['score'];
+          setState(() {
+            var diff = now.difference(time).inDays;
+            if (diff > 30) {
+              overall = overall + score;
+              num = num + 1;
+            } else {
+              newOverall = newOverall + score;
+              newNum = newNum + 1;
+            }
+          });
+        }
+      }
+    });
+    if (newNum != 0 || num != 0) {
+      addToFirebase(newOverall, newNum, overall, num, 'categoryU604');
+    }
   }
 }

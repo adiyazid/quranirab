@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:quranirab/facebook/screens/Appbar/appbar.dart';
-import 'package:quranirab/facebook/screens/home_screen_1.dart';
 import 'package:quranirab/quiz_module/utils/button114.dart';
 import 'package:quranirab/quiz_module/utils/button182.dart';
 import 'package:quranirab/quiz_module/utils/colors.dart';
@@ -9,7 +8,9 @@ import 'package:quranirab/widget/setting.dart';
 import 'package:quranirab/quiz_module/quiz.dart';
 
 class QuizHome extends StatefulWidget {
-  const QuizHome({Key? key}) : super(key: key);
+  final int page;
+
+  const QuizHome(this.page, {Key? key}) : super(key: key);
 
   @override
   _QuizHomeState createState() => _QuizHomeState();
@@ -38,6 +39,15 @@ class _QuizHomeState extends State<QuizHome> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+
+                    // Padding(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   child: Text('Quiz Page ${widget.page}',
+                    //       style: TextStyle(
+                    //         fontSize: 28,
+                    //         color: ManyColors.color11,
+                    //       )),
+                    // ),
                     Padding(
                       padding: const EdgeInsets.only(top: 50, bottom: 20),
                       child: Container(
@@ -53,7 +63,7 @@ class _QuizHomeState extends State<QuizHome> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const Quiz()));
+                                      builder: (context) => Quiz(widget.page)));
                             }, true),
                           )),
                     ),
