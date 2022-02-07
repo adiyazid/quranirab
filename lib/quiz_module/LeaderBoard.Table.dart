@@ -47,14 +47,23 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
       .collection('oldScores');
 
   Future<void> init() async {
-    List leaderboard = await leaderBoardRef
+    await leaderBoardRef
         .orderBy('scores', descending: true)
         .limit(10)
         .get()
-        .then((snapshot) => snapshot.docs);
-    setState(() {
-      dataTable = leaderboard;
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        var now = DateTime.now();
+        var time = DateTime.parse(doc['last-updated'].toDate().toString());
+        setState(() {
+          var diff = now.difference(time).inDays;
+          if (diff < 30) {
+            dataTable.add(doc);
+          }
+        });
+      }
     });
+
     List leaderboards = await oldLeaderBoardRef
         .orderBy('scores', descending: true)
         .limit(10)
