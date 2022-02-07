@@ -878,6 +878,7 @@ class _SurahScreenState extends State<SurahScreen> {
                       i = 0;
                     });
                   },
+
                   style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 32, vertical: 18),
