@@ -215,7 +215,6 @@ class _SurahScreenState extends State<SurahScreen> {
         .where('translation_id', isEqualTo: "2")
         .where('sura_id', isEqualTo: widget.sura_id)
         .get();
-
     // Get data from docs and convert map to List
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
     setState(() {
