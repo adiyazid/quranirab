@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:quranirab/models/words.model.dart';
+import 'package:quranirab/quiz_module/models/ayat_model.dart';
 import 'package:quranirab/quiz_module/models/quiz_model.dart';
 import 'package:quranirab/quiz_module/utils/AppColor.java';
 import 'package:quranirab/quiz_module/Quiz.Score.dart';
@@ -669,7 +670,7 @@ class _QuizState extends State<Quiz> {
     } else {
       await getWords();
     }
-    //await getWords();
+
     await getQuestion();
     await getNonTranslatedOptions();
     await getTranslatedOptions();
@@ -693,7 +694,6 @@ class _QuizState extends State<Quiz> {
     }
 
 
-    ///distinct = words.toSet().toList();
     distinct = dummy;
     //print(distinct.length);
 
@@ -714,9 +714,12 @@ class _QuizState extends State<Quiz> {
 
      wordList = removeDuplicates(wordList);
       wordList.shuffle();
+
+
     //print(wordList.length);
     return wordList.map((e) => e).toList();
   }
+
 
   Future<void> getQuestion() async {
     QuerySnapshot questions = await FirebaseFirestore.instance
