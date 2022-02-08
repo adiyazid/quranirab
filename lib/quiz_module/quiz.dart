@@ -244,7 +244,9 @@ class _QuizState extends State<Quiz> {
                                             color: Colors.black,
                                             fontSize: 22.0,
                                             fontWeight: FontWeight.bold,
-                                            fontFamily: 'MeQuran2'),
+                                            fontFamily: 'MeQuran2'
+                                          ),
+
                                       ),
                                     ),
                                   ),
@@ -419,6 +421,11 @@ class _QuizState extends State<Quiz> {
                           child: RawMaterialButton(
                             onPressed: () {
                               saveQuiz();
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          HomePage()));
                             },
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5)),
