@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quranirab/facebook/widgets/responsive.dart';
 import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/auth/signup.screen.dart';
@@ -137,6 +136,9 @@ class _SigninWidgetState extends State<SigninWidget> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 16.0),
                                 child: TextFormField(
+                                  cursorColor: theme.isDarkMode
+                                      ? Colors.white
+                                      : Colors.black,
                                   controller: _email,
                                   decoration: InputDecoration(
                                       enabledBorder: UnderlineInputBorder(
@@ -184,6 +186,9 @@ class _SigninWidgetState extends State<SigninWidget> {
                                 const EdgeInsets.symmetric(horizontal: 16.0),
                             child: Center(
                               child: TextFormField(
+                                cursorColor: theme.isDarkMode
+                                    ? Colors.white
+                                    : Colors.black,
                                 obscureText: true,
                                 obscuringCharacter: '*',
                                 controller: _pass,
