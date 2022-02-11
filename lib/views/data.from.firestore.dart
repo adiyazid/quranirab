@@ -209,6 +209,8 @@ class _SurahScreenState extends State<SurahScreen> {
   final CollectionReference _collectionTranslate =
       FirebaseFirestore.instance.collection('quran_translations');
 
+  var hizb;
+
   Future<void> getTranslation() async {
     // Get docs from collection reference
     QuerySnapshot querySnapshot = await _collectionTranslate
@@ -247,7 +249,7 @@ class _SurahScreenState extends State<SurahScreen> {
 
   void initState() {
     // TODO: implement initState
-
+    getHizb();
     getData();
     getTranslation();
     super.initState();
@@ -257,6 +259,8 @@ class _SurahScreenState extends State<SurahScreen> {
       FirebaseFirestore.instance.collection('quran_texts');
   final CollectionReference _collectionRefs =
       FirebaseFirestore.instance.collection('medina_mushaf_pages');
+  final CollectionReference _collectionHizb =
+      FirebaseFirestore.instance.collection('hizbs');
 
   Future<void> getData() async {
     // Get docs from collection reference
@@ -379,14 +383,14 @@ class _SurahScreenState extends State<SurahScreen> {
                                 Text(
                                   widget.name,
                                   style: TextStyle(
-                                    fontSize: 24,
+                                    fontSize: 20,
                                   ),
                                 ),
                                 Text(
                                   widget.detail,
                                   style: TextStyle(
                                     color: Colors.grey,
-                                    fontSize: 24,
+                                    fontSize: 20,
                                   ),
                                 ),
                               ],
@@ -411,14 +415,16 @@ class _SurahScreenState extends State<SurahScreen> {
                                 color: Colors.grey,
                               ),
                               SizedBox(width: 16),
-                              Flexible(
-                                child: Text(
-                                  'Juz ${getJuzNumber(int.parse(widget.sura_id), start!)} / Hizb 1 - Page ${widget.allpages[i]}',
-                                  style: TextStyle(
-                                    fontSize: 24,
-                                  ),
-                                ),
-                              )
+                              hizb != null
+                                  ? Flexible(
+                                      child: Text(
+                                        'Juz ${getJuzNumber(int.parse(widget.sura_id), start!)} / Hizb $hizb - Page ${widget.allpages[i]}',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    )
+                                  : Container(),
                             ],
                           ),
                         ),
@@ -447,7 +453,7 @@ class _SurahScreenState extends State<SurahScreen> {
                                     child: Text(
                                       'Translations',
                                       style: TextStyle(
-                                          fontSize: 24,
+                                          fontSize: 20,
                                           color: themeProvider.isDarkMode
                                               ? Colors.white
                                               : Colors.black),
@@ -460,7 +466,7 @@ class _SurahScreenState extends State<SurahScreen> {
                                     child: Text(
                                       'Reading',
                                       style: TextStyle(
-                                          fontSize: 24,
+                                          fontSize: 20,
                                           color: themeProvider.isDarkMode
                                               ? Colors.white
                                               : Colors.black),
@@ -878,7 +884,6 @@ class _SurahScreenState extends State<SurahScreen> {
                       i = 0;
                     });
                   },
-
                   style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 32, vertical: 18),
@@ -949,5 +954,18 @@ class _SurahScreenState extends State<SurahScreen> {
   Future<double> checkFont() async {
     var a = fontData.size;
     return a;
+  }
+
+  Future<void> getHizb() async {
+    await _collectionHizb
+        .where('medina_mushaf_page_id', isLessThanOrEqualTo: widget.allpages[i])
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        setState(() {
+          hizb = doc['id'];
+        });
+      }
+    });
   }
 }
