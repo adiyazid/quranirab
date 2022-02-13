@@ -51,7 +51,7 @@ class _QuizState extends State<Quiz> {
   var windowHeight;
   double windowSize = 0;
 
-  int score = 0; //Score were set in Button onpressed
+  double score = 0; //Score were set in Button onpressed
   int totalAnsweredQuestion = 0; // were set in button onpressed
   bool btnPressed = false;
   String btnText = "Next";
@@ -203,6 +203,7 @@ class _QuizState extends State<Quiz> {
                                   SizedBox(
                                     height: 20,
                                   ),
+                                  /**
                                   Center(
                                     child: SizedBox(
                                       height: 40.0,
@@ -230,6 +231,7 @@ class _QuizState extends State<Quiz> {
                                       ),
                                     ),
                                   ),
+                                      **/
                                   const Divider(
                                     color: Colors.black,
                                     indent: 30.0,
@@ -362,17 +364,19 @@ class _QuizState extends State<Quiz> {
                         Container(
                           margin: const EdgeInsets.only(left: 10),
                           child: RawMaterialButton(
-                            onPressed: () {
+                            onPressed: () async {
 
                               if (_controller.page?.toInt() ==
                                   wordList.length - 1) {
                                 noOfAnswers++;
-                                saveQuiz();
+                                await saveQuiz();
+
+
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            QuizScore(score, wordList.length)));
+                                            QuizScore(score)));
                               } else {
                                 if (!btnPressed) {
                                   Fluttertoast.showToast(
@@ -539,9 +543,7 @@ class _QuizState extends State<Quiz> {
   }
 
 
-  void saveQuiz() async{
-
-    //files quiz list not needed
+  Future<void> saveQuiz() async{
 
     QuizModel quiz;
     final FirebaseAuth auth = FirebaseAuth.instance;
@@ -576,12 +578,15 @@ class _QuizState extends State<Quiz> {
       final DateFormat dateFormat = DateFormat('yyyy-MM-dd');
       final String date = dateFormat.format(now);
 
-      if(exist) {
+      if(exist)
+      {
         bool wasCompleted = await quizCompleted(quizId);
         DocumentSnapshot quizInfo = await FirebaseFirestore.instance.collection('quiz').doc(quizId).get();
-        int oldScore = quizInfo.get('score');
+        double oldScore = quizInfo.get('score');
         int oldProgress = quizInfo.get('progress');
-        if(wasCompleted) {
+        int numberOfQuestions = quizInfo.get('number_of_questions');
+        if(wasCompleted)
+        {
           print('was completed');
           if(isCompleted)
           {
@@ -589,6 +594,8 @@ class _QuizState extends State<Quiz> {
             if(score > oldScore)
             {
               print('overwrite the quiz');
+              //convert score to 100
+              score = ((score * 100) / wordList.length) as double;
               quiz = QuizModel(
                 userId: '456',
                 level: level,
@@ -598,6 +605,7 @@ class _QuizState extends State<Quiz> {
                 date_taken: date,
                 quiz_type_id: quizTypeId.toString(),
                 remainingWords: remainingWords,
+                number_of_questions: noOfAnswers
               );
               FirebaseFirestore.instance.collection('quiz').doc(quizId).update(quiz.toMap()).then((value) =>
               {
@@ -619,6 +627,7 @@ class _QuizState extends State<Quiz> {
         else
           {
           print('was not completed');
+          score = ((score * 100) / (wordList.length + numberOfQuestions)).toDouble();
           score = score + oldScore;
           if(isCompleted) {
             progress = 100;
@@ -635,6 +644,7 @@ class _QuizState extends State<Quiz> {
             date_taken: date,
             quiz_type_id: quizTypeId.toString(),
             remainingWords: remainingWords,
+            number_of_questions: noOfAnswers
           );
           FirebaseFirestore.instance.collection('quiz').doc(quizId).update(quiz.toMap()).then((value) =>
           {
@@ -648,6 +658,7 @@ class _QuizState extends State<Quiz> {
       else
       {
         //first time taking quiz
+        score = ((score * 100 ) / wordList.length).toDouble().roundToDouble();
         quiz = QuizModel(
           userId: 'user',
           level: level,
@@ -657,9 +668,10 @@ class _QuizState extends State<Quiz> {
           date_taken: date,
           quiz_type_id: quizTypeId.toString(),
           remainingWords: remainingWords,
+          number_of_questions: noOfAnswers
         );
 
-        FirebaseFirestore.instance.collection('quiz').add(quiz.toMap()).then((value) => {});
+        await FirebaseFirestore.instance.collection('quiz').add(quiz.toMap()).then((value) => {});
       }
     }
     

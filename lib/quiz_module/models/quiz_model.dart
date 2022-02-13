@@ -3,17 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class QuizModel {
-  /*
-  String question;
-  Map<String, bool>? answers;
-  QuizModel(this.question, this.answers);
 
-   */
   late String userId;
   late String level;
   late int mushaf_page;
   late String quiz_type_id;
-  late int score;
+  late double score;
+  late int number_of_questions;
   late double progress;
   late var remainingWords = [];
   late String date_taken;
@@ -29,6 +25,7 @@ class QuizModel {
       'progress': progress,
       'date_taken': date_taken,
       'remainingWords': remainingWords,
+      'number_of_questions': number_of_questions
     };
   }
 
@@ -42,7 +39,8 @@ class QuizModel {
       score: map['score'],
       progress: map['progress'],
       date_taken: map['date_taken'],
-      remainingWords: map['remainingWords']
+      remainingWords: map['remainingWords'],
+      number_of_questions: map['number_of_questions']
 
     );
   }
@@ -58,7 +56,8 @@ class QuizModel {
     required this.score,
     required this.progress,
     required this.remainingWords,
-    required this.date_taken
+    required this.date_taken,
+    required this.number_of_questions
   });
 
 
