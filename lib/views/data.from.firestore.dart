@@ -633,13 +633,13 @@ class _SurahScreenState extends State<SurahScreen> {
                                                                                             prefs.setStringList('bookmarks', list);
 
                                                                                             ///use to chunk bookmark list
-                                                                                            // var lst = prefs.getStringList('bookmarks') ?? [];
-                                                                                            // var chunks = [];
-                                                                                            // int chunkSize = 4;
-                                                                                            // for (var i = 0; i < lst.length; i += chunkSize) {
-                                                                                            //   chunks.add(lst.sublist(i, i + chunkSize > lst.length ? lst.length : i + chunkSize));
-                                                                                            // }
-
+                                                                                            var lst = prefs.getStringList('bookmarks') ?? [];
+                                                                                            var chunks = [];
+                                                                                            int chunkSize = 4;
+                                                                                            for (var i = 0; i < lst.length; i += chunkSize) {
+                                                                                              chunks.add(lst.sublist(i, i + chunkSize > lst.length ? lst.length : i + chunkSize));
+                                                                                            }
+                                                                                            print(chunks);
                                                                                           } else {}
                                                                                         },
                                                                                         child: Container(
