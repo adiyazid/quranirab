@@ -176,7 +176,6 @@ class _SearchPopupState extends State<SearchPopup>
                                             builder: (context) => SurahScreen(
                                                   b,
                                                   pop[index]["id"],
-                                                  pop[index]["start_line"],
                                                   pop[index]["tname"],
                                                   pop[index]["ename"],
                                                 )))
@@ -186,7 +185,6 @@ class _SearchPopupState extends State<SearchPopup>
                                             builder: (context) => SurahScreen(
                                                   a,
                                                   _list[index]["id"],
-                                                  _list[index]["start_line"],
                                                   _list[index]["tname"],
                                                   _list[index]["ename"],
                                                 )));

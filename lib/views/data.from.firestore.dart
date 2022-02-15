@@ -16,6 +16,7 @@ import 'package:quranirab/widget/menu.dart';
 import 'package:quranirab/widget/search.popup.dart';
 import 'package:quranirab/widget/setting.popup.dart';
 import 'package:quranirab/widget/responsive.dart' as w;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DataFromFirestore extends StatefulWidget {
   const DataFromFirestore({Key? key}) : super(key: key);
@@ -105,8 +106,7 @@ class _DataFromFirestoreState extends State<DataFromFirestore> {
                     padding: EdgeInsets.only(right: 20.0),
                     child: SearchPopup()),
                 Padding(
-                    padding: EdgeInsets.only(right: 20.0),
-                    child: LangPopup()),
+                    padding: EdgeInsets.only(right: 20.0), child: LangPopup()),
                 Padding(
                     padding: EdgeInsets.only(right: 20.0),
                     child: SettingPopup()),
@@ -143,7 +143,6 @@ class _DataFromFirestoreState extends State<DataFromFirestore> {
                                                     SurahScreen(
                                                       a,
                                                       data["id"],
-                                                      data["start_line"],
                                                       data["tname"],
                                                       data["ename"],
                                                     )));
@@ -181,12 +180,10 @@ class _DataFromFirestoreState extends State<DataFromFirestore> {
 class SurahScreen extends StatefulWidget {
   final List allpages;
   final String sura_id;
-  final String surah;
   final String name;
   final String detail;
 
-  const SurahScreen(
-      this.allpages, this.sura_id, this.surah, this.name, this.detail,
+  const SurahScreen(this.allpages, this.sura_id, this.name, this.detail,
       {Key? key})
       : super(key: key);
 
@@ -614,14 +611,46 @@ class _SurahScreenState extends State<SurahScreen> {
                                                                                       color: Theme.of(context).textSelectionColor,
                                                                                     ),
                                                                                     Expanded(
-                                                                                      child: Container(
-                                                                                        margin: const EdgeInsets.only(left: 10),
-                                                                                        padding: const EdgeInsets.symmetric(vertical: 10),
-                                                                                        child: Text(
-                                                                                          item.text,
-                                                                                          style: TextStyle(
-                                                                                            color: Theme.of(context).textSelectionColor,
-                                                                                            fontSize: 12,
+                                                                                      child: InkWell(
+                                                                                        onTap: () async {
+                                                                                          // Obtain shared preferences.
+                                                                                          final prefs = await SharedPreferences.getInstance();
+                                                                                          if (item.text == 'Bookmark') {
+                                                                                            List<String> list = prefs.getStringList('bookmarks') ?? [];
+                                                                                            setState(() {
+                                                                                              if (list.contains(
+                                                                                                    '${widget.sura_id}:${start! + index}',
+                                                                                                  ) ==
+                                                                                                  false) {
+                                                                                                list.addAll([
+                                                                                                  '${widget.sura_id}:${start! + index}',
+                                                                                                  widget.sura_id,
+                                                                                                  widget.name,
+                                                                                                  widget.detail
+                                                                                                ]);
+                                                                                              }
+                                                                                            });
+                                                                                            prefs.setStringList('bookmarks', list);
+
+                                                                                            ///use to chunk bookmark list
+                                                                                            // var lst = prefs.getStringList('bookmarks') ?? [];
+                                                                                            // var chunks = [];
+                                                                                            // int chunkSize = 4;
+                                                                                            // for (var i = 0; i < lst.length; i += chunkSize) {
+                                                                                            //   chunks.add(lst.sublist(i, i + chunkSize > lst.length ? lst.length : i + chunkSize));
+                                                                                            // }
+
+                                                                                          } else {}
+                                                                                        },
+                                                                                        child: Container(
+                                                                                          margin: const EdgeInsets.only(left: 10),
+                                                                                          padding: const EdgeInsets.symmetric(vertical: 10),
+                                                                                          child: Text(
+                                                                                            item.text,
+                                                                                            style: TextStyle(
+                                                                                              color: Theme.of(context).textSelectionColor,
+                                                                                              fontSize: 12,
+                                                                                            ),
                                                                                           ),
                                                                                         ),
                                                                                       ),
