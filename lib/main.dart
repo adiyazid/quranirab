@@ -33,7 +33,8 @@ Future<void> main() async {
                       Provider.of<ThemeProvider>(context, listen: true);
                   return MaterialApp(
                     home: const LandingPage(),
-                    themeMode: themeProvider.themeMode,
+                    // themeMode: themeProvider.themeMode,
+                    themeMode: ThemeMode.light,
                     theme: QuranThemes.lightTheme,
                     darkTheme: QuranThemes.darkTheme,
                     debugShowCheckedModeBanner: false,

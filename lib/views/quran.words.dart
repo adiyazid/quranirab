@@ -63,7 +63,6 @@ class _WordsState extends State<Words> {
   Widget build(BuildContext context) {
 
       return Scaffold(
-        drawer: navDrawer(),
         appBar: AppBar(
           centerTitle: true,
           title: const Text('Words-Json'),
