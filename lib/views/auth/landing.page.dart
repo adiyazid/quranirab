@@ -8,6 +8,7 @@ import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/quran.words.dart';
 
+import '../data.from.firestore.dart';
 import 'login.screen.dart';
 
 class LandingPage extends StatelessWidget {
@@ -230,6 +231,15 @@ class _Slice2State extends State<Slice2> {
   var index = 0;
 
   List _break = [];
+  bool _selected = false;
+
+  Color _color(int index) {
+    if (index % 2 == 0) {
+      return Colors.red;
+    } else {
+      return Colors.blue;
+    }
+  }
 
   @override
   void initState() {
@@ -255,111 +265,158 @@ class _Slice2State extends State<Slice2> {
     var end2 = 5 / 33;
     final List<double> stop1 = [0.0, start1, end1, 1.0];
     final themeProvider = Provider.of<ThemeProvider>(context);
-    final Size size = (TextPainter(
-            text: TextSpan(
-              text: _list[0].replaceAll('b', '').trim(),
-              style: TextStyle(fontFamily: 'MeQuran2', fontSize: 30),
-            ),
-            textAlign: TextAlign.center,
-            maxLines: 1,
-            textScaleFactor: MediaQuery.of(context).textScaleFactor,
-            textDirection: TextDirection.rtl)
-          ..layout())
-        .size;
-
+    // final Size size = (TextPainter(
+    //         text: TextSpan(
+    //           text: _list[0].replaceAll('b', '').trim(),
+    //           style: TextStyle(fontFamily: 'MeQuran2', fontSize: 30),
+    //         ),
+    //         textAlign: TextAlign.center,
+    //         maxLines: 1,
+    //         textScaleFactor: MediaQuery.of(context).textScaleFactor,
+    //         textDirection: TextDirection.rtl)
+    //       ..layout())
+    //     .size;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Word id : ${_positionW ?? 'null'}'),
-      ),
-      body: _list.isNotEmpty
-          ? Center(
-              child: Stack(
-                children: [
-                  Container(
-                    color: Colors.transparent,
-                    child: Text(
-                      _list.isNotEmpty
-                          ? _list[0].replaceAll('b', '\n').trim()
-                          : '',
-                      textDirection: TextDirection.rtl,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontFamily: 'MeQuran2', fontSize: 30),
-                    ),
-                  ),
-                  // Container(
-                  //   width: size.width,
-                  //   height: size.height,
-                  //   decoration: BoxDecoration(
-                  //     color: themeProvider.isDarkMode
-                  //         ? Colors.white
-                  //         : Colors.white,
-                  //     gradient: LinearGradient(
-                  //       colors: gradient,
-                  //       stops: stop1,
-                  //       end: Alignment.centerLeft,
-                  //       begin: Alignment.centerRight,
-                  //     ),
-                  //   ),
-                  //   child: CustomPaint(
-                  //     painter: CutOutTextPainter(
-                  //       text: _list[0],
-                  //       color: Colors.white,
-                  //     ),
-                  //   ),
-                  // ),
-                  Directionality(
+        appBar: AppBar(
+          title: Text('Word id : ${_positionW ?? 'null'}'),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              for (int i = 0; i < 7; i++)
+                Container(
+                  color: Colors.transparent,
+                  child: Directionality(
                     textDirection: TextDirection.rtl,
-                    child: SizedBox(
-                      width: size.width,
-                      height: size.height,
-                      // color: i % 2 == 0
-                      //     ? Colors.redAccent
-                      //     : Colors.blueAccent,
-                      child: Row(
-                        children: [
-                          for (var i = 1; i < _break[0]; i++)
-                            InkWell(
-                              onTap: i > _break[0]
-                                  ? null
-                                  : () async {
-                                      var text = _slice.where((element) =>
-                                          element["end"] >= i &&
-                                          i >= element["start"]);
-                                      String id = text
-                                          .map((e) => e['word_id'])
-                                          .toString();
-                                      setState(() {
-                                        if (id != '()') {
-                                          _positionW = id
-                                              .replaceAll('(', '')
-                                              .replaceAll(')', '');
-                                        }
-                                      });
-                                      // if (_slice[0]["end"] >= i &&
-                                      //     i >= _slice[0]["start"]) {
-                                      //   setState(() {
-                                      //     _positionW = _slice[0]['word_id'];
-                                      //   });
-                                      // } else {
-                                      //   setState(() {
-                                      //     _positionW = 'No data for position $i';
-                                      //   });
-                                      // }
-                                    },
-                              child: Container(
-                                  width: size.width / _list[0].length,
-                                  height: size.height * 0.5,
-                                  color: Colors.transparent),
-                            ),
-                        ],
-                      ),
-                    ),
+                    child: _list.isNotEmpty
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              for (int ii = 0;
+                                  ii < _list[i].split(' ').length;
+                                  ii++)
+                                InkWell(
+                                  onTap: ii == _list[i].split(' ').length - 1
+                                      ? null
+                                      : () => setState(() {
+                                            // _selected = true;
+                                            _positionW = ii;
+                                          }),
+                                  child: Container(
+                                    color:
+                                        ii % 2 == 0 ? Colors.blue : Colors.red,
+                                    child: Text(
+                                      _list[i].split(' ')[ii] ?? 'loading',
+                                      style: TextStyle(
+                                          color: _selected
+                                              ? _color(ii)
+                                              : Colors.black,
+                                          fontFamily: 'MeQuran2',
+                                          fontSize: 30),
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          )
+                        : Text(
+                            'Loading...',
+                            style: TextStyle(color: Colors.black, fontSize: 30),
+                          ),
                   ),
-                ],
-              ),
-            )
-          : Center(child: CircularProgressIndicator()),
-    );
+                )
+            ],
+          ),
+        )
+        // _list.isNotEmpty
+        //     ? Center(
+        //         child: Stack(
+        //           children: [
+        //             Container(
+        //               color: Colors.transparent,
+        //               child: Text(
+        //                 _list.isNotEmpty
+        //                     ? _list.join().replaceAll('b', '\n').trim()
+        //                     : '',
+        //                 textDirection: TextDirection.rtl,
+        //                 textAlign: TextAlign.center,
+        //                 style: TextStyle(fontFamily: 'MeQuran2', fontSize: 30),
+        //               ),
+        //             ),
+        //             // Container(
+        //             //   width: size.width,
+        //             //   height: size.height,
+        //             //   decoration: BoxDecoration(
+        //             //     color: themeProvider.isDarkMode
+        //             //         ? Colors.white
+        //             //         : Colors.white,
+        //             //     gradient: LinearGradient(
+        //             //       colors: gradient,
+        //             //       stops: stop1,
+        //             //       end: Alignment.centerLeft,
+        //             //       begin: Alignment.centerRight,
+        //             //     ),
+        //             //   ),
+        //             //   child: CustomPaint(
+        //             //     painter: CutOutTextPainter(
+        //             //       text: _list[0],
+        //             //       color: Colors.white,
+        //             //     ),
+        //             //   ),
+        //             // ),
+        //             Directionality(
+        //               textDirection: TextDirection.rtl,
+        //               child: SizedBox(
+        //                 width: size.width,
+        //                 height: size.height,
+        //                 // color: i % 2 == 0
+        //                 //     ? Colors.redAccent
+        //                 //     : Colors.blueAccent,
+        //                 child: Row(
+        //                   children: [
+        //                     for (var i = 1; i < _break[0]; i++)
+        //                       InkWell(
+        //                         onTap: i > _break[0]
+        //                             ? null
+        //                             : () async {
+        //                                 var text = _slice.where((element) =>
+        //                                     element["end"] >= i &&
+        //                                     i >= element["start"]);
+        //                                 String id = text
+        //                                     .map((e) => e['word_id'])
+        //                                     .toString();
+        //                                 setState(() {
+        //                                   if (id != '()') {
+        //                                     _positionW = id
+        //                                         .replaceAll('(', '')
+        //                                         .replaceAll(')', '');
+        //                                   }
+        //                                 });
+        //                                 // if (_slice[0]["end"] >= i &&
+        //                                 //     i >= _slice[0]["start"]) {
+        //                                 //   setState(() {
+        //                                 //     _positionW = _slice[0]['word_id'];
+        //                                 //   });
+        //                                 // } else {
+        //                                 //   setState(() {
+        //                                 //     _positionW = 'No data for position $i';
+        //                                 //   });
+        //                                 // }
+        //                               },
+        //                         child: Container(
+        //                             width: size.width / _list[0].length,
+        //                             height: size.height * 0.5,
+        //                             color: Colors.transparent),
+        //                       ),
+        //                   ],
+        //                 ),
+        //               ),
+        //             ),
+        //           ],
+        //         ),
+        //       )
+        //     : Center(child: CircularProgressIndicator()),
+        );
   }
 
   Future<void> getData() async {
@@ -370,7 +427,7 @@ class _Slice2State extends State<Slice2> {
         .then((QuerySnapshot querySnapshot) {
       for (var doc in querySnapshot.docs) {
         setState(() {
-          _list.add(doc["text1"].trim());
+          _list.add(doc["text"].trim());
         });
       }
     });
@@ -384,7 +441,7 @@ class _Slice2State extends State<Slice2> {
         });
       }
       for (var element in _list) {
-        _break.add(element.indexOf('﴿') -2);
+        _break.add(element.indexOf('﴿') - 2);
       }
     });
 
