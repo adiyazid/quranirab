@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/views/auth/landing.page.dart';
 
+import 'framework/horizontal.scroll.web.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -32,6 +34,7 @@ Future<void> main() async {
                   final themeProvider =
                       Provider.of<ThemeProvider>(context, listen: true);
                   return MaterialApp(
+                    scrollBehavior: MyCustomScrollBehavior(),
                     home: const LandingPage(),
                     // themeMode: themeProvider.themeMode,
                     themeMode: ThemeMode.light,
