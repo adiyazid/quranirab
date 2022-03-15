@@ -5,6 +5,7 @@ import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/views/quran.words.dart';
 import 'package:quranirab/views/slice/slice2.dart';
 
+import '../slice/test.slice.dart';
 import 'login.screen.dart';
 
 class LandingPage extends StatelessWidget {
@@ -37,18 +38,18 @@ class DummyPage extends StatelessWidget {
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  // ElevatedButton(
-                  //     onPressed: () {
-                  //       Navigator.push(
-                  //           context,
-                  //           MaterialPageRoute(
-                  //               builder: (context) =>
-                  //                   const FacebookHomeScreen()));
-                  //     },
-                  //     child: const Text('Surah screen')),
-                  // const SizedBox(
-                  //   height: 8,
-                  // ),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                     TestSplit()));
+                      },
+                      child: const Text('Surah screen')),
+                  const SizedBox(
+                    height: 8,
+                  ),
                   // ElevatedButton(
                   //     onPressed: () {
                   //       Navigator.push(
@@ -118,6 +119,7 @@ class DummyPage extends StatelessWidget {
     );
   }
 }
+
 
 // class Slice extends StatefulWidget {
 //   const Slice({Key? key}) : super(key: key);

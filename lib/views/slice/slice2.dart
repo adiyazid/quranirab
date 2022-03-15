@@ -47,6 +47,8 @@ class _Slice2State extends State<Slice2> {
   bool hoverI = false;
   bool hoverF = false;
 
+  int? nums;
+
   @override
   void initState() {
     getData();
@@ -68,6 +70,17 @@ class _Slice2State extends State<Slice2> {
     //         textDirection: TextDirection.rtl)
     //       ..layout())
     //     .size;
+    // var text = Characters(_list[0]);
+    // var a = 0;
+    // for (var element in text) {
+    //   if (element.toString() == 'b') {
+    //     print(a);
+    //     setState(() {
+    //       nums = a;
+    //     });
+    //   }
+    //   a++;
+    // }
     return !loading
         ? Scaffold(
             appBar: AppBar(
@@ -78,7 +91,7 @@ class _Slice2State extends State<Slice2> {
               child: Padding(
                 padding: const EdgeInsets.only(top: 80.0),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -100,90 +113,95 @@ class _Slice2State extends State<Slice2> {
                             child: Text('Fi‘l'))
                       ],
                     ),
-                    for (int num = 0; num < 2; num++)
-                      SizedBox(
-                        height: 100,
-                        child: category.length == word.length
-                            ? ListView.separated(
-                                reverse: true,
-                                primary: false,
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                separatorBuilder:
-                                    (BuildContext context, int index) {
-                                  int v = _break[0];
-                                  return num == 0
-                                      ? category[index] == 'Ism' ||
-                                              category[category.length >
-                                                          index + 1
-                                                      ? index + 1
-                                                      : index] ==
-                                                  'Fi‘l' ||
-                                              word[word.length > index + 1
-                                                      ? index + 1
-                                                      : index] ==
-                                                  'ﻭ'
-                                          ? Text(' ')
-                                          : Text('')
-                                      : category[index + v] == 'Ism' ||
-                                              category[category.length >
-                                                          index + 1
-                                                      ? index + 1
-                                                      : index] ==
-                                                  'Fi‘l' ||
-                                              word[word.length > index + 1
-                                                      ? index + 1
-                                                      : index] ==
-                                                  'ﻭ'
-                                          ? Text(' ')
-                                          : Text('');
-                                },
-                                itemBuilder: (BuildContext context, int i) {
-                                  int v = _break[0];
-                                  return InkWell(
-                                    onTap: () => setState(() {
-                                      num == 0
-                                          ? _positionW =
-                                              '${category[i]}'
-                                          : _positionW =
-                                              '${category[i + v]}';
-                                    }),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 8.0),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Flexible(
-                                            child: num == 0
-                                                ? Text(
-                                                    '${word[i]}',
-                                                    style: TextStyle(
-                                                      fontFamily: 'MeQuran2',
-                                                      fontSize: 30,
-                                                      color: checkColor(
-                                                          category[i]),
-                                                    ),
-                                                  )
-                                                : Text(
-                                                    '${word[i + v]}',
-                                                    style: TextStyle(
-                                                      fontFamily: 'MeQuran2',
-                                                      fontSize: 30,
-                                                      color: checkColor(num == 0
-                                                          ? category[i]
-                                                          : category[i + v]),
-                                                    ),
-                                                  ),
-                                          ),
-                                        ],
+                    // SizedBox(
+                    //   height: 100,
+                    //   child: category.length == word.length
+                    //       ? ListView.separated(
+                    //           reverse: true,
+                    //           primary: false,
+                    //           shrinkWrap: true,
+                    //           scrollDirection: Axis.horizontal,
+                    //           separatorBuilder:
+                    //               (BuildContext context, int index) {
+                    //             return category[index] == 'Ism' ||
+                    //                     category[category.length > index + 1
+                    //                             ? index + 1
+                    //                             : index] ==
+                    //                         'Fi‘l' ||
+                    //                     word[word.length > index + 1
+                    //                             ? index + 1
+                    //                             : index] ==
+                    //                         'ﻭ'
+                    //                 ? Text(' ')
+                    //                 : Text('');
+                    //           },
+                    //           itemBuilder: (BuildContext context, int i) {
+                    //             return InkWell(
+                    //               onTap: () => setState(() {
+                    //                 _positionW = '${category[i]}';
+                    //               }),
+                    //               child: Padding(
+                    //                 padding: const EdgeInsets.only(top: 8.0),
+                    //                 child: Row(
+                    //                   mainAxisSize: MainAxisSize.min,
+                    //                   children: [
+                    //                     Flexible(
+                    //                         child: Text(
+                    //                       '${word[i]}',
+                    //                       style: TextStyle(
+                    //                         fontFamily: 'MeQuran2',
+                    //                         fontSize: 30,
+                    //                         color: checkColor(category[i]),
+                    //                       ),
+                    //                     )),
+                    //                   ],
+                    //                 ),
+                    //               ),
+                    //             );
+                    //           },
+                    //           itemCount: word.length,
+                    //         )
+                    //       : Center(child: Text('Loading')),
+                    // ),
+                    category.length == word.length
+                        ? Padding(
+                          padding: const EdgeInsets.only(top: 38.0),
+                          child: SizedBox(
+                              width: 350,
+                              child: Wrap(
+                                textDirection: TextDirection.rtl,
+                                alignment: WrapAlignment.center,
+                                children: [
+                                  for (int i = 0; i < word.length; i++)
+                                    InkWell(
+                                      onTap: () => setState(() {
+                                        _positionW = '${category[i]}';
+                                      }),
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 8.0),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Flexible(
+                                                child: Text(
+                                              '${word[i]}',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontFamily: 'MeQuran2',
+                                                fontSize: 30,
+                                                color: checkColor(category[i]),
+                                              ),
+                                            )),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                },
-                                itemCount: 5,
-                              )
-                            : Center(child: Text('Loading')),
-                      ),
+                                    )
+                                ],
+                              ),
+                            ),
+                        )
+                        : CircularProgressIndicator(),
                     // Align(
                     //   alignment: Alignment.center,
                     //   child: SizedBox(
