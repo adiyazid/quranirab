@@ -35,7 +35,6 @@ class _Slice2State extends State<Slice2> {
 
   final List _break = [];
   bool loading = true;
-  final _wordID = [];
 
   var word = [];
   final category = [];
@@ -49,6 +48,12 @@ class _Slice2State extends State<Slice2> {
 
   int? nums;
 
+  var _ayaNumber = [];
+
+  var _lastWord = [];
+
+  var _frontWord = [];
+
   @override
   void initState() {
     getData();
@@ -58,29 +63,6 @@ class _Slice2State extends State<Slice2> {
 
   @override
   Widget build(BuildContext context) {
-    // final Size size = (TextPainter(
-    //         text: TextSpan(
-    //           text: 'بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ',
-    //           style: TextStyle(
-    //               fontFamily: 'MeQuran2', color: Colors.white, fontSize: 30),
-    //         ),
-    //         textAlign: TextAlign.center,
-    //         maxLines: 1,
-    //         textScaleFactor: MediaQuery.of(context).textScaleFactor,
-    //         textDirection: TextDirection.rtl)
-    //       ..layout())
-    //     .size;
-    // var text = Characters(_list[0]);
-    // var a = 0;
-    // for (var element in text) {
-    //   if (element.toString() == 'b') {
-    //     print(a);
-    //     setState(() {
-    //       nums = a;
-    //     });
-    //   }
-    //   a++;
-    // }
     return !loading
         ? Scaffold(
             appBar: AppBar(
@@ -93,251 +75,191 @@ class _Slice2State extends State<Slice2> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        TextButton(
-                            onPressed: () => setState(() {
-                                  hoverH = !hoverH;
-                                }),
-                            child: Text('Harf')),
-                        TextButton(
-                            onPressed: () => setState(() {
-                                  hoverI = !hoverI;
-                                }),
-                            child: Text('Ism')),
-                        TextButton(
-                            onPressed: () => setState(() {
-                                  hoverF = !hoverF;
-                                }),
-                            child: Text('Fi‘l'))
-                      ],
-                    ),
-                    // SizedBox(
-                    //   height: 100,
-                    //   child: category.length == word.length
-                    //       ? ListView.separated(
-                    //           reverse: true,
-                    //           primary: false,
-                    //           shrinkWrap: true,
-                    //           scrollDirection: Axis.horizontal,
-                    //           separatorBuilder:
-                    //               (BuildContext context, int index) {
-                    //             return category[index] == 'Ism' ||
-                    //                     category[category.length > index + 1
-                    //                             ? index + 1
-                    //                             : index] ==
-                    //                         'Fi‘l' ||
-                    //                     word[word.length > index + 1
-                    //                             ? index + 1
-                    //                             : index] ==
-                    //                         'ﻭ'
-                    //                 ? Text(' ')
-                    //                 : Text('');
-                    //           },
-                    //           itemBuilder: (BuildContext context, int i) {
-                    //             return InkWell(
-                    //               onTap: () => setState(() {
-                    //                 _positionW = '${category[i]}';
-                    //               }),
-                    //               child: Padding(
-                    //                 padding: const EdgeInsets.only(top: 8.0),
-                    //                 child: Row(
-                    //                   mainAxisSize: MainAxisSize.min,
-                    //                   children: [
-                    //                     Flexible(
-                    //                         child: Text(
-                    //                       '${word[i]}',
-                    //                       style: TextStyle(
-                    //                         fontFamily: 'MeQuran2',
-                    //                         fontSize: 30,
-                    //                         color: checkColor(category[i]),
-                    //                       ),
-                    //                     )),
-                    //                   ],
-                    //                 ),
-                    //               ),
-                    //             );
-                    //           },
-                    //           itemCount: word.length,
-                    //         )
-                    //       : Center(child: Text('Loading')),
-                    // ),
-                    category.length == word.length
-                        ? Padding(
-                          padding: const EdgeInsets.only(top: 38.0),
-                          child: SizedBox(
-                              width: 350,
-                              child: Wrap(
-                                textDirection: TextDirection.rtl,
-                                alignment: WrapAlignment.center,
-                                children: [
-                                  for (int i = 0; i < word.length; i++)
-                                    InkWell(
-                                      onTap: () => setState(() {
-                                        _positionW = '${category[i]}';
-                                      }),
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 8.0),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Flexible(
-                                                child: Text(
-                                              '${word[i]}',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontFamily: 'MeQuran2',
-                                                fontSize: 30,
-                                                color: checkColor(category[i]),
-                                              ),
-                                            )),
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                ],
-                              ),
-                            ),
-                        )
-                        : CircularProgressIndicator(),
-                    // Align(
-                    //   alignment: Alignment.center,
-                    //   child: SizedBox(
-                    //     height: 100,
-                    //     child: ListView(
-                    //       reverse: true,
-                    //       primary: false,
-                    //       shrinkWrap: true,
-                    //       scrollDirection: Axis.horizontal,
-                    //       children: <Widget>[
-                    //         for (int i = 0; i < total; i++)
-                    //           InkWell(
-                    //             onTap: () => setState(() {
-                    //               _positionW = i + 1;
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    //   children: [
+                    //     TextButton(
+                    //         onPressed: () => setState(() {
+                    //               hoverH = !hoverH;
                     //             }),
-                    //             child: Container(
-                    //               color: i % 2 == 0 ? Colors.blue : Colors.red,
-                    //               child: Center(
-                    //                   child: _checkStart(i + 1) == '(true)' ||
-                    //                           _checkEnd(i + 1) == '(true)'
-                    //                       ? Text(
-                    //                           '${i + 1}',
-                    //                           style: TextStyle(
-                    //                             color: Colors.white,
-                    //                           ),
-                    //                         )
-                    //                       : Text(
-                    //                           ' ',
-                    //                           style: TextStyle(
-                    //                             color: Colors.white,
+                    //         child: Text('Harf')),
+                    //     TextButton(
+                    //         onPressed: () => setState(() {
+                    //               hoverI = !hoverI;
+                    //             }),
+                    //         child: Text('Ism')),
+                    //     TextButton(
+                    //         onPressed: () => setState(() {
+                    //               hoverF = !hoverF;
+                    //             }),
+                    //         child: Text('Fi‘l'))
+                    //   ],
+                    // ),
+                    // category.length == word.length
+                    //     ? Padding(
+                    //         padding: const EdgeInsets.only(top: 38.0),
+                    //         child: SizedBox(
+                    //           width: MediaQuery.of(context).size.width * 0.4,
+                    //           child: Wrap(
+                    //             textDirection: TextDirection.rtl,
+                    //             alignment: WrapAlignment.center,
+                    //             children: [
+                    //               for (int i = 0; i < word.length; i++)
+                    //                 InkWell(
+                    //                   onTap: () => setState(() {
+                    //                     _positionW = '${category[i]}';
+                    //                   }),
+                    //                   child: Padding(
+                    //                     padding:
+                    //                         const EdgeInsets.only(top: 8.0),
+                    //                     child: Row(
+                    //                       mainAxisSize: MainAxisSize.min,
+                    //                       children: [
+                    //                         Flexible(
+                    //                             child: Padding(
+                    //                           padding: EdgeInsets.only(
+                    //                               left: category[i] == 'Ism' ||
+                    //                                       word[word.length >
+                    //                                                   i + 1
+                    //                                               ? i + 1
+                    //                                               : i] ==
+                    //                                           'ﻭ' ||
+                    //                                       category[
+                    //                                               category.length >
+                    //                                                       i + 1
+                    //                                                   ? i + 1
+                    //                                                   : i] ==
+                    //                                           'Fi‘l'
+                    //                                   ? 8.0
+                    //                                   : 0),
+                    //                           child: Text(
+                    //                             '${word[i]}',
+                    //                             textAlign: TextAlign.center,
+                    //                             style: TextStyle(
+                    //                               fontFamily: 'MeQuran2',
+                    //                               fontSize: 30,
+                    //                               color:
+                    //                                   checkColor(category[i]),
+                    //                             ),
                     //                           ),
                     //                         )),
-                    //             ),
+                    //                       ],
+                    //                     ),
+                    //                   ),
+                    //                 )
+                    //             ],
                     //           ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
+                    //         ),
+                    //       )
+                    //     : CircularProgressIndicator(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 495.0),
+                      child: Wrap(
+                          alignment: WrapAlignment.center,
+                          textDirection: TextDirection.rtl,
+                          children: [
+                            for (int index = 0;
+                                index <
+                                    _list
+                                        .join()
+                                        .replaceAll('', '')
+                                        .split('')
+                                        .length;
+                                index++)
+                              InkWell(
+                                child: _list
+                                                    .join()
+                                                    .replaceAll('', '')
+                                                    .split('')[
+                                                index != 0
+                                                    ? index - 1
+                                                    : index] !=
+                                            _lastWord[0] ||
+                                        _list
+                                                    .join()
+                                                    .replaceAll('', '')
+                                                    .split('')[
+                                                index > 10
+                                                    ? index + 2
+                                                    : index] !=
+                                            _frontWord[1]
+                                    ? Text(
+                                        _list
+                                            .join()
+                                            .replaceAll('', '')
+                                            .split('')[index],
+                                        style: TextStyle(
+                                          fontFamily: 'MeQuran2',
+                                          fontSize: 30,
+                                        ))
+                                    : Text(
+                                        '${_list.join().replaceAll('', '').split('')[index]}${_ayaNumber[0]}',
+                                        style: TextStyle(
+                                          fontFamily: 'MeQuran2',
+                                          fontSize: 30,
+                                        )),
+                                onTap: _list
+                                                .join()
+                                                .replaceAll('', '')
+                                                .split('')[
+                                            index != 0 ? index - 1 : index] !=
+                                        _lastWord[0]
+                                    ? () => setState(() {
+                                          print(_list
+                                              .join()
+                                              .replaceAll('', '')
+                                              .split('')[index]);
+                                          _slice.any((element) {
+                                            if (index + 1 >= element['start'] &&
+                                                index + 1 <= element['end']) {
+                                              getCategoryName(
+                                                  element['word_id']);
+                                              setState(() {
+                                                _positionW =
+                                                    'Waiting to retrieve data...';
+                                              });
+                                            }
+                                            return false;
+                                          });
+                                        })
+                                    : null,
+                              ),
+                          ]),
+                    ),
+                    for (int i = 0; i < _ayaNumber.length; i++)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(_ayaNumber[i],
+                              style: TextStyle(
+                                fontFamily: 'MeQuran2',
+                                fontSize: 30,
+                              )),
+                          Text(_frontWord[i],
+                              style: TextStyle(
+                                fontFamily: 'MeQuran2',
+                                fontSize: 30,
+                              )),
+                          Text(_lastWord[i],
+                              style: TextStyle(
+                                fontFamily: 'MeQuran2',
+                                fontSize: 30,
+                              )),
+                        ],
+                      ),
+                    // for (int index = 0; index < _slice.length; index++)
+                    //   Row(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    //     children: [
+                    //       Text('start ${_slice[index]['start']}'),
+                    //       Text('end ${_slice[index]['end']}')
+                    //     ],
+                    //   )
                   ],
                 ),
               ),
-            ))
-            // _list.isNotEmpty
-            //     ? Center(
-            //         child: Stack(
-            //           children: [
-            //             Container(
-            //               color: Colors.transparent,
-            //               child: Text(
-            //                 _list.isNotEmpty
-            //                     ? _list.join().replaceAll('b', '\n').trim()
-            //                     : '',
-            //                 textDirection: TextDirection.rtl,
-            //                 textAlign: TextAlign.center,
-            //                 style: TextStyle(fontFamily: 'MeQuran2', fontSize: 30),
-            //               ),
-            //             ),
-            //             // Container(
-            //             //   width: size.width,
-            //             //   height: size.height,
-            //             //   decoration: BoxDecoration(
-            //             //     color: themeProvider.isDarkMode
-            //             //         ? Colors.white
-            //             //         : Colors.white,
-            //             //     gradient: LinearGradient(
-            //             //       colors: gradient,
-            //             //       stops: stop1,
-            //             //       end: Alignment.centerLeft,
-            //             //       begin: Alignment.centerRight,
-            //             //     ),
-            //             //   ),
-            //             //   child: CustomPaint(
-            //             //     painter: CutOutTextPainter(
-            //             //       text: _list[0],
-            //             //       color: Colors.white,
-            //             //     ),
-            //             //   ),
-            //             // ),
-            //             Directionality(
-            //               textDirection: TextDirection.rtl,
-            //               child: SizedBox(
-            //                 width: size.width,
-            //                 height: size.height,
-            //                 // color: i % 2 == 0
-            //                 //     ? Colors.redAccent
-            //                 //     : Colors.blueAccent,
-            //                 child: Row(
-            //                   children: [
-            //                     for (var i = 1; i < _break[0]; i++)
-            //                       InkWell(
-            //                         onTap: i > _break[0]
-            //                             ? null
-            //                             : () async {
-            //                                 var text = _slice.where((element) =>
-            //                                     element["end"] >= i &&
-            //                                     i >= element["start"]);
-            //                                 String id = text
-            //                                     .map((e) => e['word_id'])
-            //                                     .toString();
-            //                                 setState(() {
-            //                                   if (id != '()') {
-            //                                     _positionW = id
-            //                                         .replaceAll('(', '')
-            //                                         .replaceAll(')', '');
-            //                                   }
-            //                                 });
-            //                                 // if (_slice[0]["end"] >= i &&
-            //                                 //     i >= _slice[0]["start"]) {
-            //                                 //   setState(() {
-            //                                 //     _positionW = _slice[0]['word_id'];
-            //                                 //   });
-            //                                 // } else {
-            //                                 //   setState(() {
-            //                                 //     _positionW = 'No data for position $i';
-            //                                 //   });
-            //                                 // }
-            //                               },
-            //                         child: Container(
-            //                             width: size.width / _list[0].length,
-            //                             height: size.height * 0.5,
-            //                             color: Colors.transparent),
-            //                       ),
-            //                   ],
-            //                 ),
-            //               ),
-            //             ),
-            //           ],
-            //         ),
-            //       )
-            //     : Center(child: CircularProgressIndicator()),
-            )
-        : Scaffold(
-            body: Center(
-                child: CircularProgressIndicator(
-            strokeWidth: 50,
-          )));
+            )))
+        : Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 
   Future<void> getData() async {
@@ -349,7 +271,11 @@ class _Slice2State extends State<Slice2> {
         .then((QuerySnapshot querySnapshot) {
       for (var doc in querySnapshot.docs) {
         setState(() {
-          _list.add(doc["text1"]);
+          _list.add(doc["text"].substring(0, doc["text"].length - 3));
+          _ayaNumber.add(doc["text"].substring(doc["text"].length - 3));
+          _frontWord.add(doc["text"].substring(0, 1));
+          _lastWord.add(doc["text"]
+              .substring(doc["text"].length - 6, doc["text"].length - 5));
         });
       }
       for (int i = 0; i < _list.length; i++) {
@@ -380,14 +306,14 @@ class _Slice2State extends State<Slice2> {
       });
     });
 
-    /// get the word and category
-    _slice.forEach((e) {
-      _wordID.add(e['word_id']);
-    });
-    _wordID.forEach((element) async {
-      await getText(element);
-      await getCategory(element);
-    });
+    // /// get the word and category
+    // _slice.forEach((e) {
+    //   _wordID.add(e['word_id']);
+    // });
+    // _wordID.forEach((element) async {
+    //   await getText(element);
+    //   await getCategory(element);
+    // });
     // FirebaseFirestore.instance
     //     .collection('raw_quran_texts')
     //     .where('id', isEqualTo: '1')
@@ -469,5 +395,33 @@ class _Slice2State extends State<Slice2> {
       return Colors.green[400];
     }
     return Colors.black;
+  }
+
+  getCategoryName(element) async {
+    await wordRelationship
+        .where('word_id', isEqualTo: element.toString())
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        getMainCategoryName(doc["word_category_id"].trim());
+      }
+    });
+  }
+
+  Future<void> getMainCategoryName(trim) async {
+    await wordCategory
+        .where('word_type', isEqualTo: 'main')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        if (doc["id"] == trim.toString()) {
+          setState(() {
+            _positionW = doc["tname"].trim();
+          });
+        } else {
+          null;
+        }
+      }
+    });
   }
 }
