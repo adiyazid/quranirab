@@ -31,8 +31,6 @@ class _Slice2State extends State<Slice2> {
 
   List _slice = [];
 
-  var index = 0;
-
   final List _break = [];
   bool loading = true;
 
@@ -46,7 +44,7 @@ class _Slice2State extends State<Slice2> {
   bool hoverI = false;
   bool hoverF = false;
 
-  int? nums;
+  int? nums = 0;
 
   var _ayaNumber = [];
 
@@ -153,7 +151,8 @@ class _Slice2State extends State<Slice2> {
                     //       )
                     //     : CircularProgressIndicator(),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 495.0),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * 0.1),
                       child: Wrap(
                           alignment: WrapAlignment.center,
                           textDirection: TextDirection.rtl,
@@ -167,22 +166,15 @@ class _Slice2State extends State<Slice2> {
                                         .length;
                                 index++)
                               InkWell(
-                                child: _list
-                                                    .join()
-                                                    .replaceAll('', '')
-                                                    .split('')[
-                                                index != 0
-                                                    ? index - 1
-                                                    : index] !=
-                                            _lastWord[0] ||
-                                        _list
-                                                    .join()
-                                                    .replaceAll('', '')
-                                                    .split('')[
-                                                index > 10
-                                                    ? index + 2
-                                                    : index] !=
-                                            _frontWord[1]
+                                child: checkAya(index) &&
+                                            index !=
+                                                _list
+                                                        .join()
+                                                        .replaceAll('', '')
+                                                        .split('')
+                                                        .length -
+                                                    1 ||
+                                        index < 10
                                     ? Text(
                                         _list
                                             .join()
@@ -193,35 +185,23 @@ class _Slice2State extends State<Slice2> {
                                           fontSize: 30,
                                         ))
                                     : Text(
-                                        '${_list.join().replaceAll('', '').split('')[index]}${_ayaNumber[0]}',
+                                        '${_list.join().replaceAll('', '').split('')[index]}${_ayaNumber[index != _list.join().split('').length - 1 ? nums! - 1 : nums!]}',
                                         style: TextStyle(
                                           fontFamily: 'MeQuran2',
                                           fontSize: 30,
                                         )),
-                                onTap: _list
-                                                .join()
-                                                .replaceAll('', '')
-                                                .split('')[
-                                            index != 0 ? index - 1 : index] !=
-                                        _lastWord[0]
-                                    ? () => setState(() {
-                                          print(_list
-                                              .join()
-                                              .replaceAll('', '')
-                                              .split('')[index]);
-                                          _slice.any((element) {
-                                            if (index + 1 >= element['start'] &&
-                                                index + 1 <= element['end']) {
-                                              getCategoryName(
-                                                  element['word_id']);
-                                              setState(() {
-                                                _positionW =
-                                                    'Waiting to retrieve data...';
-                                              });
-                                            }
-                                            return false;
-                                          });
-                                        })
+                                onTap: checkAya(index)
+                                    ? () {
+                                        _slice.any((element) {
+                                          if (index + 1 >= element['start'] &&
+                                              index + 1 <= element['end']) {
+                                            getCategoryName(element['word_id']);
+                                            _positionW =
+                                                'Waiting to retrieve data...';
+                                          }
+                                          return false;
+                                        });
+                                      }
                                     : null,
                               ),
                           ]),
@@ -423,5 +403,25 @@ class _Slice2State extends State<Slice2> {
         }
       }
     });
+  }
+
+  checkAya(index) {
+    if (index != 279 &&
+            _list
+                    .join()
+                    .replaceAll('', '')
+                    .split('')[index != 0 ? index - 1 : index] !=
+                _lastWord[nums!] ||
+        _list
+                .join()
+                .replaceAll('', '')
+                .split('')[index < 277 ? index + 2 : index] !=
+            _frontWord[nums! < 6 ? nums! + 1 : nums!]) {
+      return true;
+    }
+    if (nums! < 6 && index > 10) {
+      nums = nums! + 1;
+    }
+    return false;
   }
 }
