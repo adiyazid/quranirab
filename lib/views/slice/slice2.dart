@@ -185,7 +185,7 @@ class _Slice2State extends State<Slice2> {
                                           fontSize: 30,
                                         ))
                                     : Text(
-                                        '${_list.join().replaceAll('', '').split('')[index]}${_ayaNumber[index != _list.join().split('').length - 1 ? nums! - 1 : nums!]}',
+                                        '${_list.join().replaceAll('', '').split('')[index]} ${_ayaNumber[index != _list.join().split('').length - 1 ? nums! - 1 : nums!]}',
                                         style: TextStyle(
                                           fontFamily: 'MeQuran2',
                                           fontSize: 30,
@@ -196,8 +196,10 @@ class _Slice2State extends State<Slice2> {
                                           if (index + 1 >= element['start'] &&
                                               index + 1 <= element['end']) {
                                             getCategoryName(element['word_id']);
-                                            _positionW =
-                                                'Waiting to retrieve data...';
+                                            setState(() {
+                                              _positionW =
+                                                  'Waiting to retrieve data...';
+                                            });
                                           }
                                           return false;
                                         });
