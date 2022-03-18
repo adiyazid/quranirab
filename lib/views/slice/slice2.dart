@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:arabic_numbers/arabic_numbers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:quranirab/provider/ayah.number.provider.dart';
 
 class Slice2 extends StatefulWidget {
   const Slice2({Key? key}) : super(key: key);
@@ -25,7 +27,6 @@ class _Slice2State extends State<Slice2> {
       FirebaseFirestore.instance.collection('word_categories');
   final List _list = [];
 
-  var _positionW;
   var total = 0;
   var totalSlice = 10;
 
@@ -64,7 +65,9 @@ class _Slice2State extends State<Slice2> {
     return !loading
         ? Scaffold(
             appBar: AppBar(
-              title: Text('${_positionW ?? ''}'),
+              title: Consumer<AyaNumber>(builder: (context, number, child) {
+                return Text(number.data);
+              }),
             ),
             body: SingleChildScrollView(
                 child: Center(
@@ -166,69 +169,65 @@ class _Slice2State extends State<Slice2> {
                                         .length;
                                 index++)
                               InkWell(
-                                child: checkAya(index) &&
-                                            index !=
-                                                _list
-                                                        .join()
-                                                        .replaceAll('', '')
-                                                        .split('')
-                                                        .length -
-                                                    1 ||
-                                        index < 10
-                                    ? Text(
-                                        _list
-                                            .join()
-                                            .replaceAll('', '')
-                                            .split('')[index],
-                                        style: TextStyle(
-                                          fontFamily: 'MeQuran2',
-                                          fontSize: 30,
-                                        ))
-                                    : Text(
-                                        '${_list.join().replaceAll('', '').split('')[index]} ${_ayaNumber[index != _list.join().split('').length - 1 ? nums! - 1 : nums!]}',
-                                        style: TextStyle(
-                                          fontFamily: 'MeQuran2',
-                                          fontSize: 30,
-                                        )),
-                                onTap: checkAya(index)
-                                    ? () {
-                                        _slice.any((element) {
-                                          if (index + 1 >= element['start'] &&
-                                              index + 1 <= element['end']) {
-                                            getCategoryName(element['word_id']);
-                                            setState(() {
-                                              _positionW =
-                                                  'Waiting to retrieve data...';
-                                            });
-                                          }
-                                          return false;
-                                        });
+                                  child: checkAya(index) &&
+                                              index !=
+                                                  _list
+                                                          .join()
+                                                          .replaceAll('', '')
+                                                          .split('')
+                                                          .length -
+                                                      1 ||
+                                          index < 10
+                                      ? Text(
+                                          _list
+                                              .join()
+                                              .replaceAll('', '')
+                                              .split('')[index],
+                                          style: TextStyle(
+                                            fontFamily: 'MeQuran2',
+                                            fontSize: 30,
+                                          ))
+                                      : Text(
+                                          '${_list.join().replaceAll('', '').split('')[index]} ${_ayaNumber[index != _list.join().split('').length - 1 ? nums! - 1 : nums!]}',
+                                          style: TextStyle(
+                                            fontFamily: 'MeQuran2',
+                                            fontSize: 30,
+                                          )),
+                                  onTap: () {
+                                    for (var element in _slice) {
+                                      if (index + 1 >= element['start'] &&
+                                          index + 1 <= element['end']) {
+                                        getCategoryName(element['word_id']);
+                                        Provider.of<AyaNumber>(context,
+                                                listen: false)
+                                            .updateValue(
+                                                'Waiting to retrieve data...');
                                       }
-                                    : null,
-                              ),
+                                    }
+                                  }),
                           ]),
                     ),
-                    for (int i = 0; i < _ayaNumber.length; i++)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(_ayaNumber[i],
-                              style: TextStyle(
-                                fontFamily: 'MeQuran2',
-                                fontSize: 30,
-                              )),
-                          Text(_frontWord[i],
-                              style: TextStyle(
-                                fontFamily: 'MeQuran2',
-                                fontSize: 30,
-                              )),
-                          Text(_lastWord[i],
-                              style: TextStyle(
-                                fontFamily: 'MeQuran2',
-                                fontSize: 30,
-                              )),
-                        ],
-                      ),
+                    // for (int i = 0; i < _ayaNumber.length; i++)
+                    //   Row(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    //     children: [
+                    //       Text(_ayaNumber[i],
+                    //           style: TextStyle(
+                    //             fontFamily: 'MeQuran2',
+                    //             fontSize: 30,
+                    //           )),
+                    //       Text(_frontWord[i],
+                    //           style: TextStyle(
+                    //             fontFamily: 'MeQuran2',
+                    //             fontSize: 30,
+                    //           )),
+                    //       Text(_lastWord[i],
+                    //           style: TextStyle(
+                    //             fontFamily: 'MeQuran2',
+                    //             fontSize: 30,
+                    //           )),
+                    //     ],
+                    //   ),
                     // for (int index = 0; index < _slice.length; index++)
                     //   Row(
                     //     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -397,9 +396,8 @@ class _Slice2State extends State<Slice2> {
         .then((QuerySnapshot querySnapshot) {
       for (var doc in querySnapshot.docs) {
         if (doc["id"] == trim.toString()) {
-          setState(() {
-            _positionW = doc["tname"].trim();
-          });
+          Provider.of<AyaNumber>(context, listen: false)
+              .updateValue(doc["tname"].trim());
         } else {
           null;
         }
