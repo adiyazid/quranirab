@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AyaNumber extends ChangeNotifier {
-  var data = 'Word Category will display here..';
+  var data = 'No data..';
 
   currentValue() {
     notifyListeners();

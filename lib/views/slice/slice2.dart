@@ -52,9 +52,11 @@ class _Slice2State extends State<Slice2> {
   var _lastWord = [];
 
   var _frontWord = [];
+  late var loaded;
 
   @override
   void initState() {
+    loaded = true;
     getData();
     Future.delayed(Duration(milliseconds: 3000), cancelLoad);
     super.initState();
@@ -66,7 +68,7 @@ class _Slice2State extends State<Slice2> {
         ? Scaffold(
             appBar: AppBar(
               title: Consumer<AyaNumber>(builder: (context, number, child) {
-                return Text(number.data);
+                return Text(loaded ? 'No data...' : number.data);
               }),
             ),
             body: SingleChildScrollView(
@@ -198,6 +200,7 @@ class _Slice2State extends State<Slice2> {
                                       if (index + 1 >= element['start'] &&
                                           index + 1 <= element['end']) {
                                         getCategoryName(element['word_id']);
+                                        loaded = false;
                                         Provider.of<AyaNumber>(context,
                                                 listen: false)
                                             .updateValue(
