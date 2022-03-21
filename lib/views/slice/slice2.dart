@@ -54,6 +54,8 @@ class _Slice2State extends State<Slice2> {
   var _frontWord = [];
   late var loaded;
 
+  String page = "2";
+
   @override
   void initState() {
     loaded = true;
@@ -78,86 +80,9 @@ class _Slice2State extends State<Slice2> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    //   children: [
-                    //     TextButton(
-                    //         onPressed: () => setState(() {
-                    //               hoverH = !hoverH;
-                    //             }),
-                    //         child: Text('Harf')),
-                    //     TextButton(
-                    //         onPressed: () => setState(() {
-                    //               hoverI = !hoverI;
-                    //             }),
-                    //         child: Text('Ism')),
-                    //     TextButton(
-                    //         onPressed: () => setState(() {
-                    //               hoverF = !hoverF;
-                    //             }),
-                    //         child: Text('Fi‘l'))
-                    //   ],
-                    // ),
-                    // category.length == word.length
-                    //     ? Padding(
-                    //         padding: const EdgeInsets.only(top: 38.0),
-                    //         child: SizedBox(
-                    //           width: MediaQuery.of(context).size.width * 0.4,
-                    //           child: Wrap(
-                    //             textDirection: TextDirection.rtl,
-                    //             alignment: WrapAlignment.center,
-                    //             children: [
-                    //               for (int i = 0; i < word.length; i++)
-                    //                 InkWell(
-                    //                   onTap: () => setState(() {
-                    //                     _positionW = '${category[i]}';
-                    //                   }),
-                    //                   child: Padding(
-                    //                     padding:
-                    //                         const EdgeInsets.only(top: 8.0),
-                    //                     child: Row(
-                    //                       mainAxisSize: MainAxisSize.min,
-                    //                       children: [
-                    //                         Flexible(
-                    //                             child: Padding(
-                    //                           padding: EdgeInsets.only(
-                    //                               left: category[i] == 'Ism' ||
-                    //                                       word[word.length >
-                    //                                                   i + 1
-                    //                                               ? i + 1
-                    //                                               : i] ==
-                    //                                           'ﻭ' ||
-                    //                                       category[
-                    //                                               category.length >
-                    //                                                       i + 1
-                    //                                                   ? i + 1
-                    //                                                   : i] ==
-                    //                                           'Fi‘l'
-                    //                                   ? 8.0
-                    //                                   : 0),
-                    //                           child: Text(
-                    //                             '${word[i]}',
-                    //                             textAlign: TextAlign.center,
-                    //                             style: TextStyle(
-                    //                               fontFamily: 'MeQuran2',
-                    //                               fontSize: 30,
-                    //                               color:
-                    //                                   checkColor(category[i]),
-                    //                             ),
-                    //                           ),
-                    //                         )),
-                    //                       ],
-                    //                     ),
-                    //                   ),
-                    //                 )
-                    //             ],
-                    //           ),
-                    //         ),
-                    //       )
-                    //     : CircularProgressIndicator(),
                     Padding(
                       padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width * 0.1),
+                          horizontal: MediaQuery.of(context).size.width * 0.16),
                       child: Wrap(
                           alignment: WrapAlignment.center,
                           textDirection: TextDirection.rtl,
@@ -179,18 +104,14 @@ class _Slice2State extends State<Slice2> {
                                                           .split('')
                                                           .length -
                                                       1 ||
-                                          index < 10
-                                      ? Text(
-                                          _list
-                                              .join()
-                                              .replaceAll('', '')
-                                              .split('')[index],
+                                          index < _list[0].split(' ').length + 1
+                                      ? Text(_list.join().split('')[index],
                                           style: TextStyle(
                                             fontFamily: 'MeQuran2',
                                             fontSize: 30,
                                           ))
                                       : Text(
-                                          '${_list.join().replaceAll('', '').split('')[index]} ${_ayaNumber[index != _list.join().split('').length - 1 ? nums! - 1 : nums!]}',
+                                          ' ${_list.join().split('')[index]}${_ayaNumber[index != _list.join().split('').length - 1 ? nums! - 1 : nums!]}',
                                           style: TextStyle(
                                             fontFamily: 'MeQuran2',
                                             fontSize: 30,
@@ -200,6 +121,10 @@ class _Slice2State extends State<Slice2> {
                                       if (index + 1 >= element['start'] &&
                                           index + 1 <= element['end']) {
                                         getCategoryName(element['word_id']);
+                                        print(_list
+                                            .join()
+                                            .replaceAll('', '')
+                                            .split('')[index]);
                                         loaded = false;
                                         Provider.of<AyaNumber>(context,
                                                 listen: false)
@@ -210,35 +135,28 @@ class _Slice2State extends State<Slice2> {
                                   }),
                           ]),
                     ),
-                    // for (int i = 0; i < _ayaNumber.length; i++)
-                    //   Row(
-                    //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    //     children: [
-                    //       Text(_ayaNumber[i],
-                    //           style: TextStyle(
-                    //             fontFamily: 'MeQuran2',
-                    //             fontSize: 30,
-                    //           )),
-                    //       Text(_frontWord[i],
-                    //           style: TextStyle(
-                    //             fontFamily: 'MeQuran2',
-                    //             fontSize: 30,
-                    //           )),
-                    //       Text(_lastWord[i],
-                    //           style: TextStyle(
-                    //             fontFamily: 'MeQuran2',
-                    //             fontSize: 30,
-                    //           )),
-                    //     ],
-                    //   ),
-                    // for (int index = 0; index < _slice.length; index++)
-                    //   Row(
-                    //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    //     children: [
-                    //       Text('start ${_slice[index]['start']}'),
-                    //       Text('end ${_slice[index]['end']}')
-                    //     ],
-                    //   )
+                    for (int i = 0; i < _list.length; i++)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Spacer(),
+                          Text(
+                            _ayaNumber[i],
+                            style: TextStyle(fontFamily: 'MeQuran2'),
+                          ),
+                          Spacer(),
+                          Text(
+                            _frontWord[i],
+                            style: TextStyle(fontFamily: 'MeQuran2'),
+                          ),
+                          Spacer(),
+                          Text(
+                            _lastWord[i],
+                            style: TextStyle(fontFamily: 'MeQuran2'),
+                          ),
+                          Spacer(),
+                        ],
+                      ),
                   ],
                 ),
               ),
@@ -250,13 +168,14 @@ class _Slice2State extends State<Slice2> {
     ///get B
     await FirebaseFirestore.instance
         .collection('quran_texts')
-        .where('medina_mushaf_page_id', isEqualTo: '1')
+        .orderBy('created_at')
+        .where('medina_mushaf_page_id', isEqualTo: page)
         .get()
         .then((QuerySnapshot querySnapshot) {
       for (var doc in querySnapshot.docs) {
         setState(() {
           _list.add(doc["text"].substring(0, doc["text"].length - 3));
-          _ayaNumber.add(doc["text"].substring(doc["text"].length - 3));
+          _ayaNumber.add(doc["text"].substring(doc["text"].length - 4));
           _frontWord.add(doc["text"].substring(0, 1));
           _lastWord.add(doc["text"]
               .substring(doc["text"].length - 6, doc["text"].length - 5));
@@ -277,7 +196,7 @@ class _Slice2State extends State<Slice2> {
 
     ///getTotalSlice
     await sliceData
-        .where('id', isEqualTo: '1')
+        .where('id', isEqualTo: page)
         .get()
         .then((QuerySnapshot querySnapshot) {
       for (var doc in querySnapshot.docs) {
@@ -409,20 +328,17 @@ class _Slice2State extends State<Slice2> {
   }
 
   checkAya(index) {
-    if (index != 279 &&
-            _list
-                    .join()
-                    .replaceAll('', '')
-                    .split('')[index != 0 ? index - 1 : index] !=
+    var length = _list.join().split('').length;
+    var total = _list.length - 1;
+    var lengthAya1 = _list[0].split(' ').length;
+    if (index != length &&
+            _list.join().split('')[index != 0 ? index - 1 : index] !=
                 _lastWord[nums!] ||
-        _list
-                .join()
-                .replaceAll('', '')
-                .split('')[index < 277 ? index + 2 : index] !=
-            _frontWord[nums! < 6 ? nums! + 1 : nums!]) {
+        _list.join().split('')[index < length - 2 ? index + 2 : index] !=
+            _frontWord[nums! < total ? nums! + 1 : nums!]) {
       return true;
     }
-    if (nums! < 6 && index > 10) {
+    if (nums! < total && index > lengthAya1) {
       nums = nums! + 1;
     }
     return false;
