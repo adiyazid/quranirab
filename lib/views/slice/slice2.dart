@@ -54,7 +54,7 @@ class _Slice2State extends State<Slice2> {
   var _frontWord = [];
   late var loaded;
 
-  String page = "2";
+  String page = "3";
 
   @override
   void initState() {
@@ -82,7 +82,9 @@ class _Slice2State extends State<Slice2> {
                   children: [
                     Padding(
                       padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width * 0.16),
+                          horizontal: _list.length < 7
+                              ? MediaQuery.of(context).size.width * 0.16
+                              : MediaQuery.of(context).size.width * 0.1),
                       child: Wrap(
                           alignment: WrapAlignment.center,
                           textDirection: TextDirection.rtl,
@@ -111,7 +113,7 @@ class _Slice2State extends State<Slice2> {
                                             fontSize: 30,
                                           ))
                                       : Text(
-                                          ' ${_list.join().split('')[index]}${_ayaNumber[index != _list.join().split('').length - 1 ? nums! - 1 : nums!]}',
+                                          ' ${_list.join().split('')[index]} ${_ayaNumber[index != _list.join().split('').length - 1 ? nums! - 1 : nums!]}',
                                           style: TextStyle(
                                             fontFamily: 'MeQuran2',
                                             fontSize: 30,
@@ -121,10 +123,7 @@ class _Slice2State extends State<Slice2> {
                                       if (index + 1 >= element['start'] &&
                                           index + 1 <= element['end']) {
                                         getCategoryName(element['word_id']);
-                                        print(_list
-                                            .join()
-                                            .replaceAll('', '')
-                                            .split('')[index]);
+                                        print(index);
                                         loaded = false;
                                         Provider.of<AyaNumber>(context,
                                                 listen: false)
@@ -141,19 +140,19 @@ class _Slice2State extends State<Slice2> {
                         children: [
                           Spacer(),
                           Text(
-                            _ayaNumber[i],
+                            _list[i],
                             style: TextStyle(fontFamily: 'MeQuran2'),
                           ),
-                          Spacer(),
-                          Text(
-                            _frontWord[i],
-                            style: TextStyle(fontFamily: 'MeQuran2'),
-                          ),
-                          Spacer(),
-                          Text(
-                            _lastWord[i],
-                            style: TextStyle(fontFamily: 'MeQuran2'),
-                          ),
+                          // Spacer(),
+                          // Text(
+                          //   _frontWord[i],
+                          //   style: TextStyle(fontFamily: 'MeQuran2'),
+                          // ),
+                          // Spacer(),
+                          // Text(
+                          //   _lastWord[i],
+                          //   style: TextStyle(fontFamily: 'MeQuran2'),
+                          // ),
                           Spacer(),
                         ],
                       ),
@@ -166,6 +165,7 @@ class _Slice2State extends State<Slice2> {
 
   Future<void> getData() async {
     ///get B
+    var n = 0;
     await FirebaseFirestore.instance
         .collection('quran_texts')
         .orderBy('created_at')
@@ -177,8 +177,18 @@ class _Slice2State extends State<Slice2> {
           _list.add(doc["text"].substring(0, doc["text"].length - 3));
           _ayaNumber.add(doc["text"].substring(doc["text"].length - 4));
           _frontWord.add(doc["text"].substring(0, 1));
-          _lastWord.add(doc["text"]
-              .substring(doc["text"].length - 6, doc["text"].length - 5));
+          _lastWord.add(_list[n]
+              .trim()
+              .substring(_list[n].length - 3, _list[n].length - 2));
+          // for (int i = 0; i < doc["text"].split('').length; i++) {
+          //   if (doc["text"].split('')[i].contains('ﳁ')) {
+          //     _list.removeAt(n);
+          //     _list.insert(n, doc["text"].substring(0, i));
+          //     print(
+          //         'row ${n + 1} column (${i + 1}/${_list[n].split('').length})');
+          //   }
+          // }
+          n++;
         });
       }
       for (int i = 0; i < _list.length; i++) {
