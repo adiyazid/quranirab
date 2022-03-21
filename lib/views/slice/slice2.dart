@@ -54,7 +54,7 @@ class _Slice2State extends State<Slice2> {
   var _frontWord = [];
   late var loaded;
 
-  String page = "3";
+  String page = "1";
 
   @override
   void initState() {
@@ -180,14 +180,14 @@ class _Slice2State extends State<Slice2> {
           _lastWord.add(_list[n]
               .trim()
               .substring(_list[n].length - 3, _list[n].length - 2));
-          // for (int i = 0; i < doc["text"].split('').length; i++) {
-          //   if (doc["text"].split('')[i].contains('ﳁ')) {
-          //     _list.removeAt(n);
-          //     _list.insert(n, doc["text"].substring(0, i));
-          //     print(
-          //         'row ${n + 1} column (${i + 1}/${_list[n].split('').length})');
-          //   }
-          // }
+          for (int i = 0; i < doc["text"].split('').length; i++) {
+            if (doc["text"].split('')[i].contains('ﳁ')) {
+              // _list.removeAt(n);
+              // _list.insert(n, doc["text"].substring(0, i));
+              print(
+                  'row ${n + 1} column (${i + 1}/${_list[n].split('').length})');
+            }
+          }
           n++;
         });
       }
