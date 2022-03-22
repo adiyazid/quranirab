@@ -25,7 +25,7 @@ Future<void> main() async {
   runApp(MultiProvider(
       providers: [
         ChangeNotifierProvider<AppUser>.value(value: appUser),
-        ChangeNotifierProvider<AyaNumber>(create: (context) => AyaNumber())
+        ChangeNotifierProvider<AyaProvider>(create: (context) => AyaProvider())
       ],
       child: ChangeNotifierProvider(
           create: (context) => FontSizeController(),

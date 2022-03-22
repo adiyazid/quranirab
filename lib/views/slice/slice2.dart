@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
+import 'package:quranirab/views/auth/landing.page.dart';
 
 class Slice2 extends StatefulWidget {
   const Slice2({Key? key}) : super(key: key);
@@ -47,14 +48,11 @@ class _Slice2State extends State<Slice2> {
 
   int? nums = 0;
 
-  var _ayaNumber = [];
-
-  var _lastWord = [];
-
-  var _frontWord = [];
+  final _ayaNumber = [];
   late var loaded;
+  final _ayaPosition = [];
 
-  String page = "1";
+  List<bool> select = [];
 
   @override
   void initState() {
@@ -69,8 +67,14 @@ class _Slice2State extends State<Slice2> {
     return !loading
         ? Scaffold(
             appBar: AppBar(
-              title: Consumer<AyaNumber>(builder: (context, number, child) {
-                return Text(loaded ? 'No data...' : number.data);
+              leading: IconButton(
+                  onPressed: () => Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => DummyPage()),
+                      (route) => false),
+                  icon: Icon(Icons.arrow_back_ios)),
+              title: Consumer<AyaProvider>(builder: (context, number, child) {
+                return Text(loaded ? 'No data...' : number.category);
               }),
             ),
             body: SingleChildScrollView(
@@ -78,13 +82,16 @@ class _Slice2State extends State<Slice2> {
               child: Padding(
                 padding: const EdgeInsets.only(top: 80.0),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    // Text(select.toString()),
+                    // Text('Height ${MediaQuery.of(context).size.height}'),
+                    // Text('Width ${MediaQuery.of(context).size.width}'),
                     Padding(
                       padding: EdgeInsets.symmetric(
-                          horizontal: _list.length < 7
+                          horizontal: _list.join().length < 1000
                               ? MediaQuery.of(context).size.width * 0.16
-                              : MediaQuery.of(context).size.width * 0.1),
+                              : MediaQuery.of(context).size.width * 0.05),
                       child: Wrap(
                           alignment: WrapAlignment.center,
                           textDirection: TextDirection.rtl,
@@ -98,64 +105,81 @@ class _Slice2State extends State<Slice2> {
                                         .length;
                                 index++)
                               InkWell(
-                                  child: checkAya(index) &&
-                                              index !=
-                                                  _list
-                                                          .join()
-                                                          .replaceAll('', '')
-                                                          .split('')
-                                                          .length -
-                                                      1 ||
-                                          index < _list[0].split(' ').length + 1
-                                      ? Text(_list.join().split('')[index],
-                                          style: TextStyle(
-                                            fontFamily: 'MeQuran2',
-                                            fontSize: 30,
-                                          ))
+                                  child: checkAya(index)
+                                      ? Consumer<AyaProvider>(
+                                          builder: (context, aya, child) {
+                                          return Text(
+                                              _list.join().split('')[index],
+                                              style: TextStyle(
+                                                  fontFamily: 'MeQuran2',
+                                                  fontSize: 30,
+                                                  color: aya.getBoolean(index)
+                                                      ? aya.getColor()
+                                                      : Colors.black));
+                                        })
                                       : Text(
-                                          ' ${_list.join().split('')[index]} ${_ayaNumber[index != _list.join().split('').length - 1 ? nums! - 1 : nums!]}',
+                                          '${_list.join().split('')[index]}${_ayaNumber[index != _list.join().split('').length - 1 ? nums! - 1 : nums!]} ',
                                           style: TextStyle(
                                             fontFamily: 'MeQuran2',
                                             fontSize: 30,
                                           )),
-                                  onTap: () {
-                                    for (var element in _slice) {
-                                      if (index + 1 >= element['start'] &&
-                                          index + 1 <= element['end']) {
-                                        getCategoryName(element['word_id']);
-                                        print(index);
-                                        loaded = false;
-                                        Provider.of<AyaNumber>(context,
-                                                listen: false)
-                                            .updateValue(
-                                                'Waiting to retrieve data...');
-                                      }
-                                    }
-                                  }),
+                                  onTap: _ayaPosition.contains(index)
+                                      ? null
+                                      : () {
+                                          Provider.of<AyaProvider>(context,
+                                                  listen: false)
+                                              .updateValue(index);
+                                          loaded = false;
+                                          for (var element in _slice) {
+                                            if (index + 1 >= element['start'] &&
+                                                index + 1 <= element['end']) {
+                                              Provider.of<AyaProvider>(context,
+                                                      listen: false)
+                                                  .getCategoryName(
+                                                      element['word_id']);
+                                            }
+                                          }
+                                        }),
                           ]),
                     ),
-                    for (int i = 0; i < _list.length; i++)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Spacer(),
-                          Text(
-                            _list[i],
-                            style: TextStyle(fontFamily: 'MeQuran2'),
-                          ),
-                          // Spacer(),
-                          // Text(
-                          //   _frontWord[i],
-                          //   style: TextStyle(fontFamily: 'MeQuran2'),
-                          // ),
-                          // Spacer(),
-                          // Text(
-                          //   _lastWord[i],
-                          //   style: TextStyle(fontFamily: 'MeQuran2'),
-                          // ),
-                          Spacer(),
-                        ],
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Spacer(),
+                        ElevatedButton(
+                            onPressed: () {
+                              Provider.of<AyaProvider>(context, listen: false)
+                                  .previousPage();
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Slice2()),
+                                  (route) => false);
+                            },
+                            child: Text('Previous page')),
+                        Spacer(),
+                        Consumer<AyaProvider>(
+                            builder: (context, number, child) {
+                          return Text(
+                            'Page ${number.page}',
+                            style: TextStyle(fontSize: 30),
+                          );
+                        }),
+                        Spacer(),
+                        ElevatedButton(
+                            onPressed: () {
+                              Provider.of<AyaProvider>(context, listen: false)
+                                  .nextPage();
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Slice2()),
+                                  (route) => false);
+                            },
+                            child: Text('Next page')),
+                        Spacer(),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -164,8 +188,10 @@ class _Slice2State extends State<Slice2> {
   }
 
   Future<void> getData() async {
+    String page = '${Provider.of<AyaProvider>(context, listen: false).page}';
+
     ///get B
-    var n = 0;
+    var prev = 0;
     await FirebaseFirestore.instance
         .collection('quran_texts')
         .orderBy('created_at')
@@ -174,23 +200,22 @@ class _Slice2State extends State<Slice2> {
         .then((QuerySnapshot querySnapshot) {
       for (var doc in querySnapshot.docs) {
         setState(() {
-          _list.add(doc["text"].substring(0, doc["text"].length - 3));
-          _ayaNumber.add(doc["text"].substring(doc["text"].length - 4));
-          _frontWord.add(doc["text"].substring(0, 1));
-          _lastWord.add(_list[n]
-              .trim()
-              .substring(_list[n].length - 3, _list[n].length - 2));
           for (int i = 0; i < doc["text"].split('').length; i++) {
             if (doc["text"].split('')[i].contains('ﳁ')) {
-              // _list.removeAt(n);
-              // _list.insert(n, doc["text"].substring(0, i));
-              print(
-                  'row ${n + 1} column (${i + 1}/${_list[n].split('').length})');
+              _list.add(doc["text"].substring(0, i));
+              _ayaNumber.add(doc["text"].substring(i));
+              _ayaPosition.add(prev + i - 1);
+              prev = prev + i;
             }
           }
-          n++;
         });
       }
+      for (int i = 0;
+          i < _list.join().replaceAll('', '').split('').length;
+          i++) {
+        select.add(false);
+      }
+
       for (int i = 0; i < _list.length; i++) {
         if (_list.isNotEmpty) {
           setState(() {
@@ -203,6 +228,9 @@ class _Slice2State extends State<Slice2> {
         }
       }
     });
+
+    ///load list of boolean
+    Provider.of<AyaProvider>(context, listen: false).loadList(select);
 
     ///getTotalSlice
     await sliceData
@@ -218,39 +246,7 @@ class _Slice2State extends State<Slice2> {
         total = _slice.last["end"];
       });
     });
-
-    // /// get the word and category
-    // _slice.forEach((e) {
-    //   _wordID.add(e['word_id']);
-    // });
-    // _wordID.forEach((element) async {
-    //   await getText(element);
-    //   await getCategory(element);
-    // });
-    // FirebaseFirestore.instance
-    //     .collection('raw_quran_texts')
-    //     .where('id', isEqualTo: '1')
-    //     .get()
-    //     .then((QuerySnapshot querySnapshot) {
-    //   for (var doc in querySnapshot.docs) {
-    //     setState(() {
-    //       _list.add(doc["text"]);
-    //     });
-    //   }
-    // });
   }
-
-  // _checkStart(int i) {
-  //   var a = _slice.where((element) => element['start'] == i);
-  //   var b = a.map((e) => e['start'] == i);
-  //   return b.toString();
-  // }
-  //
-  // _checkEnd(int i) {
-  //   var a = _slice.where((element) => element['end'] == i);
-  //   var b = a.map((e) => e['end'] == i);
-  //   return b.toString();
-  // }
 
   Future<void> getText(element) async {
     await wordText
@@ -265,87 +261,17 @@ class _Slice2State extends State<Slice2> {
     });
   }
 
-  Future<void> getCategory(element) async {
-    await wordRelationship
-        .where('word_id', isEqualTo: element.toString())
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      for (var doc in querySnapshot.docs) {
-        getMainCategory(doc["word_category_id"].trim());
-      }
-    });
-  }
-
-  Future<void> getMainCategory(element) async {
-    await wordCategory
-        .where('word_type', isEqualTo: 'main')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      for (var doc in querySnapshot.docs) {
-        if (doc["id"] == element.toString()) {
-          setState(() {
-            category.add(doc["tname"].trim());
-          });
-        } else {
-          null;
-        }
-      }
-    });
-  }
-
   void cancelLoad() {
     setState(() {
       loading = false;
     });
   }
 
-  checkColor(category) {
-    if (category == 'Ism' && hoverI == true) {
-      return Colors.blueAccent;
-    } else if (category == 'Harf' && hoverH == true) {
-      return Colors.redAccent;
-    } else if (category == 'Fi‘l' && hoverF == true) {
-      return Colors.green[400];
-    }
-    return Colors.black;
-  }
-
-  getCategoryName(element) async {
-    await wordRelationship
-        .where('word_id', isEqualTo: element.toString())
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      for (var doc in querySnapshot.docs) {
-        getMainCategoryName(doc["word_category_id"].trim());
-      }
-    });
-  }
-
-  Future<void> getMainCategoryName(trim) async {
-    await wordCategory
-        .where('word_type', isEqualTo: 'main')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      for (var doc in querySnapshot.docs) {
-        if (doc["id"] == trim.toString()) {
-          Provider.of<AyaNumber>(context, listen: false)
-              .updateValue(doc["tname"].trim());
-        } else {
-          null;
-        }
-      }
-    });
-  }
-
   checkAya(index) {
-    var length = _list.join().split('').length;
     var total = _list.length - 1;
     var lengthAya1 = _list[0].split(' ').length;
-    if (index != length &&
-            _list.join().split('')[index != 0 ? index - 1 : index] !=
-                _lastWord[nums!] ||
-        _list.join().split('')[index < length - 2 ? index + 2 : index] !=
-            _frontWord[nums! < total ? nums! + 1 : nums!]) {
+    var a = _ayaPosition.contains(index);
+    if (!a) {
       return true;
     }
     if (nums! < total && index > lengthAya1) {
