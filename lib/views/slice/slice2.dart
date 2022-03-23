@@ -84,9 +84,6 @@ class _Slice2State extends State<Slice2> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Text(select.toString()),
-                    // Text('Height ${MediaQuery.of(context).size.height}'),
-                    // Text('Width ${MediaQuery.of(context).size.width}'),
                     Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal: _list.join().length < 1000
@@ -104,42 +101,59 @@ class _Slice2State extends State<Slice2> {
                                         .split('')
                                         .length;
                                 index++)
-                              InkWell(
-                                  child: checkAya(index)
-                                      ? Consumer<AyaProvider>(
-                                          builder: (context, aya, child) {
-                                          return Text(
-                                              _list.join().split('')[index],
-                                              style: TextStyle(
-                                                  fontFamily: 'MeQuran2',
-                                                  fontSize: 30,
-                                                  color: aya.getBoolean(index)
-                                                      ? aya.getColor()
-                                                      : Colors.black));
-                                        })
-                                      : Text(
-                                          '${_list.join().split('')[index]}${_ayaNumber[index != _list.join().split('').length - 1 ? nums! - 1 : nums!]} ',
-                                          style: TextStyle(
-                                            fontFamily: 'MeQuran2',
-                                            fontSize: 30,
-                                          )),
-                                  onTap: _ayaPosition.contains(index)
-                                      ? null
-                                      : () {
-                                          Provider.of<AyaProvider>(context,
-                                                  listen: false)
-                                              .updateValue(index);
-                                          loaded = false;
-                                          for (var element in _slice) {
-                                            if (index + 1 >= element['start'] &&
-                                                index + 1 <= element['end']) {
-                                              Provider.of<AyaProvider>(context,
-                                                      listen: false)
-                                                  .getCategoryName(
-                                                      element['word_id']);
-                                            }
+                              MouseRegion(
+                                onExit: _ayaPosition.contains(index)
+                                    ? null
+                                    : (e) {
+                                        Provider.of<AyaProvider>(context,
+                                                listen: false)
+                                            .updateValue(index);
+                                      },
+                                onEnter: _ayaPosition.contains(index)
+                                    ? null
+                                    : (e) {
+                                        Provider.of<AyaProvider>(context,
+                                                listen: false)
+                                            .updateValue(index);
+                                        loaded = false;
+                                        for (var element in _slice) {
+                                          if (index + 1 >= element['start'] &&
+                                              index + 1 <= element['end']) {
+                                            Provider.of<AyaProvider>(context,
+                                                    listen: false)
+                                                .getCategoryName(
+                                                    element['word_id']);
                                           }
-                                        }),
+                                        }
+                                      },
+                                child: InkWell(
+                                    child: checkAya(index)
+                                        ? Consumer<AyaProvider>(
+                                            builder: (context, aya, child) {
+                                            return Text(
+                                                _list.join().split('')[index],
+                                                style: TextStyle(
+                                                    fontFamily: 'MeQuran2',
+                                                    fontSize: 30,
+                                                    color: aya.getBoolean(index)
+                                                        ? aya.getColor(Provider
+                                                                .of<AyaProvider>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                            .category)
+                                                        : Colors.black));
+                                          })
+                                        : Text(
+                                            '${_list.join().split('')[index]}${_ayaNumber[index != _list.join().split('').length - 1 ? nums! - 1 : nums!]} ',
+                                            style: TextStyle(
+                                              fontFamily: 'MeQuran2',
+                                              fontSize: 30,
+                                            )),
+                                    onTap: _ayaPosition.contains(index)
+                                        ? null
+                                        : () {}),
+                              ),
                           ]),
                     ),
                     Row(

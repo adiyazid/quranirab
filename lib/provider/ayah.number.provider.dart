@@ -13,14 +13,16 @@ class AyaProvider extends ChangeNotifier {
       FirebaseFirestore.instance.collection('word_categories');
 
   List<bool> select = [];
+  List<bool> old = [];
 
-  currentValue() {
+  setDefault() {
+    select = old;
     notifyListeners();
-    return data;
   }
 
   void loadList(List<bool> list) {
     select = list;
+    old = list;
     notifyListeners();
   }
 
@@ -65,15 +67,16 @@ class AyaProvider extends ChangeNotifier {
     });
   }
 
-  Color? getColor() {
+  Color? getColor(category) {
     if (category == 'Ism') {
       return Colors.blueAccent;
     } else if (category == 'Harf') {
       return Colors.redAccent;
     } else if (category == 'Fi‘l') {
       return Colors.green[400];
+    } else {
+      return Colors.black;
     }
-    return Colors.black;
   }
 
   getBoolean(index) {
