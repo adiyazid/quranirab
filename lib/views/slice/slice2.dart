@@ -40,11 +40,6 @@ class _Slice2State extends State<Slice2> {
   final category = [];
 
   var totalLine = 0;
-  ArabicNumbers arabicNumber = ArabicNumbers();
-
-  bool hoverH = false;
-  bool hoverI = false;
-  bool hoverF = false;
 
   int? nums = 0;
 
@@ -84,6 +79,54 @@ class _Slice2State extends State<Slice2> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    // Directionality(
+                    //   textDirection: TextDirection.rtl,
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.center,
+                    //     children: [
+                    //       for (var item in _slice)
+                    //         MouseRegion(
+                    //           onEnter: (e) {
+                    //             loaded = false;
+                    //             Provider.of<AyaProvider>(context, listen: false)
+                    //                 .getCategoryName(item['word_id']);
+                    //           },
+                    //           child: InkWell(
+                    //             onTap: () {},
+                    //             child: Consumer<AyaProvider>(
+                    //                 builder: (context, aya, child) {
+                    //               return _list.join().split('')[item['end'] + 1] == ' '
+                    //                   ? Text(_list.join().split('').getRange(item['start'] - 1, item['end'] + 2).join(),
+                    //                   // "${checkAya(item['end'] + 1) ? '' : " ${_list.join().split('').length - item['end'] < 10 ? _ayaNumber.last : _ayaNumber[nums! - 1]} "}",
+                    //                       textDirection: TextDirection.rtl,
+                    //                       style: TextStyle(
+                    //                           fontFamily: 'MeQuran2',
+                    //                           fontSize: 20,
+                    //                           color: aya.getBoolean(item['start'])
+                    //                               ? aya.getColor(aya.category)
+                    //                               : Colors.black))
+                    //                   : Text(
+                    //                       _list
+                    //                           .join()
+                    //                           .split('')
+                    //                           .getRange(item['start'] - 1,
+                    //                               item['end'])
+                    //                           .join(),
+                    //                       textDirection: TextDirection.rtl,
+                    //                       style: TextStyle(
+                    //                           fontFamily: 'MeQuran2',
+                    //                           fontSize: 20,
+                    //                           color: aya.getBoolean(item['start'] - 1)
+                    //                               ? aya.getColor(Provider.of<AyaProvider>(context,
+                    //                                       listen: false)
+                    //                                   .category)
+                    //                               : Colors.black));
+                    //             }),
+                    //           ),
+                    //         ),
+                    //     ],
+                    //   ),
+                    // ),
                     Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal: _list.join().length < 1000
@@ -219,6 +262,7 @@ class _Slice2State extends State<Slice2> {
               _list.add(doc["text"].substring(0, i));
               _ayaNumber.add(doc["text"].substring(i));
               _ayaPosition.add(prev + i - 1);
+              print(prev + i - 1);
               prev = prev + i;
             }
           }
