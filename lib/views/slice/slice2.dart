@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:arabic_numbers/arabic_numbers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -79,126 +78,137 @@ class _Slice2State extends State<Slice2> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Directionality(
-                    //   textDirection: TextDirection.rtl,
-                    //   child: Row(
-                    //     mainAxisAlignment: MainAxisAlignment.center,
-                    //     children: [
-                    //       for (var item in _slice)
-                    //         MouseRegion(
-                    //           onEnter: (e) {
-                    //             loaded = false;
-                    //             Provider.of<AyaProvider>(context, listen: false)
-                    //                 .getCategoryName(item['word_id']);
-                    //           },
-                    //           child: InkWell(
-                    //             onTap: () {},
-                    //             child: Consumer<AyaProvider>(
-                    //                 builder: (context, aya, child) {
-                    //               return _list.join().split('')[item['end'] + 1] == ' '
-                    //                   ? Text(_list.join().split('').getRange(item['start'] - 1, item['end'] + 2).join(),
-                    //                   // "${checkAya(item['end'] + 1) ? '' : " ${_list.join().split('').length - item['end'] < 10 ? _ayaNumber.last : _ayaNumber[nums! - 1]} "}",
-                    //                       textDirection: TextDirection.rtl,
-                    //                       style: TextStyle(
-                    //                           fontFamily: 'MeQuran2',
-                    //                           fontSize: 20,
-                    //                           color: aya.getBoolean(item['start'])
-                    //                               ? aya.getColor(aya.category)
-                    //                               : Colors.black))
-                    //                   : Text(
-                    //                       _list
-                    //                           .join()
-                    //                           .split('')
-                    //                           .getRange(item['start'] - 1,
-                    //                               item['end'])
-                    //                           .join(),
-                    //                       textDirection: TextDirection.rtl,
-                    //                       style: TextStyle(
-                    //                           fontFamily: 'MeQuran2',
-                    //                           fontSize: 20,
-                    //                           color: aya.getBoolean(item['start'] - 1)
-                    //                               ? aya.getColor(Provider.of<AyaProvider>(context,
-                    //                                       listen: false)
-                    //                                   .category)
-                    //                               : Colors.black));
-                    //             }),
-                    //           ),
-                    //         ),
-                    //     ],
-                    //   ),
-                    // ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: _list.join().length < 1000
-                              ? MediaQuery.of(context).size.width * 0.16
-                              : MediaQuery.of(context).size.width * 0.05),
-                      child: Wrap(
-                          alignment: WrapAlignment.center,
-                          textDirection: TextDirection.rtl,
-                          children: [
-                            for (int index = 0;
-                                index <
-                                    _list
-                                        .join()
-                                        .replaceAll('', '')
-                                        .split('')
-                                        .length;
-                                index++)
-                              MouseRegion(
-                                onExit: _ayaPosition.contains(index)
-                                    ? null
-                                    : (e) {
-                                        Provider.of<AyaProvider>(context,
-                                                listen: false)
-                                            .updateValue(index);
-                                      },
-                                onEnter: _ayaPosition.contains(index)
-                                    ? null
-                                    : (e) {
-                                        Provider.of<AyaProvider>(context,
-                                                listen: false)
-                                            .updateValue(index);
-                                        loaded = false;
-                                        for (var element in _slice) {
-                                          if (index + 1 >= element['start'] &&
-                                              index + 1 <= element['end']) {
-                                            Provider.of<AyaProvider>(context,
-                                                    listen: false)
-                                                .getCategoryName(
-                                                    element['word_id']);
-                                          }
-                                        }
-                                      },
-                                child: InkWell(
-                                    child: checkAya(index)
-                                        ? Consumer<AyaProvider>(
-                                            builder: (context, aya, child) {
-                                            return Text(
-                                                _list.join().split('')[index],
-                                                style: TextStyle(
-                                                    fontFamily: 'MeQuran2',
-                                                    fontSize: 30,
-                                                    color: aya.getBoolean(index)
-                                                        ? aya.getColor(Provider
-                                                                .of<AyaProvider>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                            .category)
-                                                        : Colors.black));
-                                          })
-                                        : Text(
-                                            '${_list.join().split('')[index]}${_ayaNumber[index != _list.join().split('').length - 1 ? nums! - 1 : nums!]} ',
-                                            style: TextStyle(
-                                              fontFamily: 'MeQuran2',
-                                              fontSize: 30,
-                                            )),
-                                    onTap: _ayaPosition.contains(index)
-                                        ? null
-                                        : () {}),
+                    Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          for (var item in _slice)
+                            MouseRegion(
+                              onEnter: (e) {
+                                loaded = false;
+                                Provider.of<AyaProvider>(context, listen: false)
+                                    .getCategoryName(item['word_id']);
+                              },
+                              child: InkWell(
+                                onTap: () {},
+                                child: Consumer<AyaProvider>(
+                                    builder: (context, aya, child) {
+                                  // return _list.join().split('')[item['end'] + 1] ==
+                                  //         ' '
+                                  //     ? Text(
+                                  //         _list
+                                  //             .join()
+                                  //             .split('')
+                                  //             .getRange(item['start'] - 1,
+                                  //                 item['end'] + 2)
+                                  //             .join(),
+                                  //         // "${checkAya(item['end'] + 1) ? '' : " ${_list.join().split('').length - item['end'] < 10 ? _ayaNumber.last : _ayaNumber[nums! - 1]} "}",
+                                  //         textDirection: TextDirection.rtl,
+                                  //         style: TextStyle(
+                                  //             fontFamily: 'MeQuran2',
+                                  //             fontSize: 20,
+                                  //             color: aya.getBoolean(item['start'])
+                                  //                 ? aya.getColor(aya.category)
+                                  //                 : Colors.black))
+                                  //     :
+                                  return Text(
+                                      _list
+                                          .join()
+                                          .split('')
+                                          .getRange(
+                                              item['start'] - 1, item['end'])
+                                          .join(),
+                                      textDirection: TextDirection.rtl,
+                                      style: TextStyle(
+                                          fontFamily: 'MeQuran2',
+                                          fontSize: 20,
+                                          color:
+                                              aya.getBoolean(item['start'] - 1)
+                                                  ? aya.getColor(
+                                                      Provider.of<AyaProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .category)
+                                                  : Colors.black));
+                                }),
                               ),
-                          ]),
+                            ),
+                        ],
+                      ),
                     ),
+                    // Padding(
+                    //   padding: EdgeInsets.symmetric(
+                    //       horizontal: _list.join().length < 1000
+                    //           ? MediaQuery.of(context).size.width * 0.16
+                    //           : MediaQuery.of(context).size.width * 0.05),
+                    //   child: Wrap(
+                    //       alignment: WrapAlignment.center,
+                    //       textDirection: TextDirection.rtl,
+                    //       children: [
+                    //         for (int index = 0;
+                    //             index <
+                    //                 _list
+                    //                     .join()
+                    //                     .replaceAll('', '')
+                    //                     .split('')
+                    //                     .length;
+                    //             index++)
+                    //           MouseRegion(
+                    //             onExit: _ayaPosition.contains(index)
+                    //                 ? null
+                    //                 : (e) {
+                    //                     Provider.of<AyaProvider>(context,
+                    //                             listen: false)
+                    //                         .updateValue(index);
+                    //                   },
+                    //             onEnter: _ayaPosition.contains(index)
+                    //                 ? null
+                    //                 : (e) {
+                    //                     Provider.of<AyaProvider>(context,
+                    //                             listen: false)
+                    //                         .updateValue(index);
+                    //                     loaded = false;
+                    //                     for (var element in _slice) {
+                    //                       if (index + 1 >= element['start'] &&
+                    //                           index + 1 <= element['end']) {
+                    //                         Provider.of<AyaProvider>(context,
+                    //                                 listen: false)
+                    //                             .getCategoryName(
+                    //                                 element['word_id']);
+                    //                       }
+                    //                     }
+                    //                   },
+                    //             child: InkWell(
+                    //                 child: checkAya(index)
+                    //                     ? Consumer<AyaProvider>(
+                    //                         builder: (context, aya, child) {
+                    //                         return Text(
+                    //                             _list.join().split('')[index],
+                    //                             style: TextStyle(
+                    //                                 fontFamily: 'MeQuran2',
+                    //                                 fontSize: 30,
+                    //                                 color: aya.getBoolean(index)
+                    //                                     ? aya.getColor(Provider
+                    //                                             .of<AyaProvider>(
+                    //                                                 context,
+                    //                                                 listen:
+                    //                                                     false)
+                    //                                         .category)
+                    //                                     : Colors.black));
+                    //                       })
+                    //                     : Text(
+                    //                         '${_list.join().split('')[index]}${_ayaNumber[index != _list.join().split('').length - 1 ? nums! - 1 : nums!]} ',
+                    //                         style: TextStyle(
+                    //                           fontFamily: 'MeQuran2',
+                    //                           fontSize: 30,
+                    //                         )),
+                    //                 onTap: _ayaPosition.contains(index)
+                    //                     ? null
+                    //                     : () {}),
+                    //           ),
+                    //       ]),
+                    // ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -304,6 +314,27 @@ class _Slice2State extends State<Slice2> {
         total = _slice.last["end"];
       });
     });
+    for (int i = 0; i < _slice.length; i++) {
+      if (_slice[i != _slice.length - 1 ? i + 1 : i]['start'] -
+              _slice[i]['end'] ==
+          1) {
+        print('data fix');
+      } else {
+        var a = _slice[i != _slice.length - 1 ? i + 1 : i]['start'] -
+            _slice[i]['end'];
+        setState(() {
+          _slice.setAll(i, [
+            {
+              'start': _slice[i]['start'],
+              'end': i != _slice.length - 1
+                  ? _slice[i]['end'] + a - 1
+                  : _slice[i]['end'],
+              'word_id': _slice[i]['word_id']
+            }
+          ]);
+        });
+      }
+    }
   }
 
   Future<void> getText(element) async {

@@ -4,6 +4,7 @@ import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/views/quran.words.dart';
 import 'package:quranirab/views/slice/slice2.dart';
 
+import '../data.from.firestore.dart';
 import 'login.screen.dart';
 
 class LandingPage extends StatelessWidget {
