@@ -85,55 +85,84 @@ class _Slice2State extends State<Slice2> {
                         children: [
                           for (var item in _slice)
                             MouseRegion(
-                              onEnter: (e) {
-                                loaded = false;
-                                Provider.of<AyaProvider>(context, listen: false)
-                                    .getCategoryName(item['word_id']);
-                              },
-                              child: InkWell(
-                                onTap: () {},
-                                child: Consumer<AyaProvider>(
-                                    builder: (context, aya, child) {
-                                  // return _list.join().split('')[item['end'] + 1] ==
-                                  //         ' '
-                                  //     ? Text(
-                                  //         _list
-                                  //             .join()
-                                  //             .split('')
-                                  //             .getRange(item['start'] - 1,
-                                  //                 item['end'] + 2)
-                                  //             .join(),
-                                  //         // "${checkAya(item['end'] + 1) ? '' : " ${_list.join().split('').length - item['end'] < 10 ? _ayaNumber.last : _ayaNumber[nums! - 1]} "}",
-                                  //         textDirection: TextDirection.rtl,
-                                  //         style: TextStyle(
-                                  //             fontFamily: 'MeQuran2',
-                                  //             fontSize: 20,
-                                  //             color: aya.getBoolean(item['start'])
-                                  //                 ? aya.getColor(aya.category)
-                                  //                 : Colors.black))
-                                  //     :
-                                  return Text(
-                                      _list
-                                          .join()
-                                          .split('')
-                                          .getRange(
-                                              item['start'] - 1, item['end'])
-                                          .join(),
-                                      textDirection: TextDirection.rtl,
-                                      style: TextStyle(
-                                          fontFamily: 'MeQuran2',
-                                          fontSize: 20,
-                                          color:
-                                              aya.getBoolean(item['start'] - 1)
-                                                  ? aya.getColor(
-                                                      Provider.of<AyaProvider>(
-                                                              context,
-                                                              listen: false)
-                                                          .category)
-                                                  : Colors.black));
-                                }),
-                              ),
-                            ),
+                                onEnter: (e) {
+                                  loaded = false;
+                                  nums = 0;
+                                  Provider.of<AyaProvider>(context,
+                                          listen: false)
+                                      .getCategoryName(item['word_id']);
+                                },
+                                child: checkAya(item['end'])
+                                    ? Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Consumer<AyaProvider>(
+                                              builder: (context, aya, child) {
+                                            return InkWell(
+                                              onTap: () {},
+                                              child: Text(
+                                                  _list
+                                                      .join()
+                                                      .split('')
+                                                      .getRange(
+                                                          item['start'] - 1,
+                                                          item['end'])
+                                                      .join(),
+                                                  textDirection:
+                                                      TextDirection.rtl,
+                                                  style: TextStyle(
+                                                      fontFamily: 'MeQuran2',
+                                                      fontSize: 20,
+                                                      color: aya.getBoolean(
+                                                              item['start'] - 1)
+                                                          ? aya.getColor(
+                                                              Provider.of<AyaProvider>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .category)
+                                                          : Colors.black)),
+                                            );
+                                          }),
+                                          _list.join().split('').length -
+                                                      item['end'] <
+                                                  3
+                                              ? Text(
+                                                  " ${_list.join().split('').length - item['end'] < 3 ? _ayaNumber.last : ""}",
+                                                  style: TextStyle(
+                                                      fontFamily: 'MeQuran2',
+                                                      fontSize: 20,
+                                                      color: Colors.black),
+                                                )
+                                              : Container()
+                                        ],
+                                      )
+                                    : Row(
+                                        children: [
+                                          InkWell(
+                                            child: Text(
+                                              _list
+                                                  .join()
+                                                  .split('')
+                                                  .getRange(item['start'] - 1,
+                                                      item['end'])
+                                                  .join(),
+                                              style: TextStyle(
+                                                  fontFamily: 'MeQuran2',
+                                                  fontSize: 20,
+                                                  color: Colors.black),
+                                            ),
+                                            onTap: () {},
+                                          ),
+                                          Text(
+                                            "${_ayaNumber[nums! - 1]} ",
+                                            style: TextStyle(
+                                                fontFamily: 'MeQuran2',
+                                                fontSize: 20,
+                                                color: Colors.black),
+                                          )
+                                        ],
+                                      )),
                         ],
                       ),
                     ),
@@ -359,8 +388,18 @@ class _Slice2State extends State<Slice2> {
   checkAya(index) {
     var total = _list.length - 1;
     var lengthAya1 = _list[0].split(' ').length;
-    var a = _ayaPosition.contains(index);
+    var a = _ayaPosition.contains(index - 1);
+    var b = _ayaPosition.contains(index);
+    var c = _ayaPosition.contains(index + 1);
+    print(index);
+    print(_list.join().split('').length);
     if (!a) {
+      return true;
+    }
+    if (!a && !b) {
+      return true;
+    }
+    if (!a && !b && !c) {
       return true;
     }
     if (nums! < total && index > lengthAya1) {
