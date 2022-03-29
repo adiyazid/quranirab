@@ -67,7 +67,7 @@ class AyaProvider extends ChangeNotifier {
     });
   }
 
-  Color? getColor(category) {
+  Color? getColor(index) {
     if (category == 'Ism') {
       return Colors.blueAccent;
     } else if (category == 'Harf') {

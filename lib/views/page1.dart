@@ -176,7 +176,6 @@ class _SurahState extends State<Surah> {
                     String? SEmid5 = surah[6].substring(7, 8);
                     String? SEend = surah[6].substring(8, 9);
                     String? SEstop = surah[6].substring(9);
-
 //-------------------------------NEW FONT-------------------------------------//
                     ///verse one
                     String ba = datas.substring(0, 1);
