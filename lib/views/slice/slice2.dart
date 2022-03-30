@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -101,8 +100,17 @@ class _Slice2State extends State<Slice2> {
                                           nums = 0;
                                           Provider.of<AyaProvider>(context,
                                                   listen: false)
+                                              .clear();
+                                          Provider.of<AyaProvider>(context,
+                                                  listen: false)
                                               .getCategoryName(
                                                   _slice[i]['word_id']);
+                                          print(_slice[i]['word_id']);
+                                        },
+                                        onExit: (e) {
+                                          Provider.of<AyaProvider>(context,
+                                                  listen: false)
+                                              .clear();
                                         },
                                         child: checkAya(_slice[i]['end'])
                                             ? Row(
@@ -111,27 +119,32 @@ class _Slice2State extends State<Slice2> {
                                                   Consumer<AyaProvider>(builder:
                                                       (context, aya, child) {
                                                     return InkWell(
-                                                      onTap: () {},
-                                                      child: Text(
-                                                          _list
-                                                              .join()
-                                                              .split('')
-                                                              .getRange(
-                                                                  _slice[i]['start'] -
-                                                                      1,
-                                                                  _slice[i]
-                                                                      ['end'])
-                                                              .join(),
-                                                          textDirection:
-                                                              TextDirection.rtl,
-                                                          style: TextStyle(
+                                                        onTap: () {},
+                                                        child: Text(
+                                                            _list
+                                                                .join()
+                                                                .split('')
+                                                                .getRange(
+                                                                    _slice[i][
+                                                                            'start'] -
+                                                                        1,
+                                                                    _slice[i]
+                                                                        ['end'])
+                                                                .join(),
+                                                            textDirection:
+                                                                TextDirection
+                                                                    .rtl,
+                                                            style: TextStyle(
                                                               fontFamily:
                                                                   'MeQuran2',
                                                               fontSize: 20,
-                                                              color: aya.getBoolean(_slice[i]['start'] - 1)
-                                                                  ? aya.getColor(i)
-                                                                  : Colors.black)),
-                                                    );
+                                                              color: aya.getColor(
+                                                                  _slice[i][
+                                                                      'word_id']),
+                                                              // aya.getBoolean(_slice[i]['start'] - 1)
+                                                              //     ? aya.getColor(_slice[i]['word_id'])
+                                                              //     : Colors.black)),
+                                                            )));
                                                   }),
                                                   _list
                                                                   .join()
@@ -153,25 +166,31 @@ class _Slice2State extends State<Slice2> {
                                               )
                                             : Row(
                                                 children: [
-                                                  InkWell(
-                                                    child: Text(
-                                                      _list
-                                                          .join()
-                                                          .split('')
-                                                          .getRange(
-                                                              _slice[i][
-                                                                      'start'] -
-                                                                  1,
-                                                              _slice[i]['end'])
-                                                          .join(),
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              'MeQuran2',
-                                                          fontSize: 20,
-                                                          color: Colors.black),
-                                                    ),
-                                                    onTap: () {},
-                                                  ),
+                                                  Consumer<AyaProvider>(builder:
+                                                      (context, aya, child) {
+                                                    return InkWell(
+                                                      child: Text(
+                                                        _list
+                                                            .join()
+                                                            .split('')
+                                                            .getRange(
+                                                                _slice[i][
+                                                                        'start'] -
+                                                                    1,
+                                                                _slice[i]
+                                                                    ['end'])
+                                                            .join(),
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                'MeQuran2',
+                                                            fontSize: 20,
+                                                            color: aya.getColor(
+                                                                _slice[i][
+                                                                    'word_id'])),
+                                                      ),
+                                                      onTap: () {},
+                                                    );
+                                                  }),
                                                   Text(
                                                     "${_ayaNumber[nums! - 1]} ",
                                                     style: TextStyle(
@@ -187,6 +206,41 @@ class _Slice2State extends State<Slice2> {
                           SizedBox(
                             height: 100,
                           ),
+                          Consumer<AyaProvider>(builder: (context, aya, child) {
+                            List id = aya.getListId() ?? [];
+                            return id.isNotEmpty
+                                ? SizedBox(
+                                    height: 500,
+                                    width: 600,
+                                    child: ListView.builder(
+                                      shrinkWrap: true,
+                                      physics: const ClampingScrollPhysics(),
+                                      // scrollDirection: Axis.horizontal,
+                                      itemCount: id.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 8),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.lightBlueAccent,
+                                              borderRadius: BorderRadius.circular(8)
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                id[index] ?? 'No data',
+                                                maxLines: 2,
+                                                softWrap: true,
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  )
+                                : Container();
+                          }),
                           // for (int i = 0; i < _break.length; i++)
                           // Text(
                           //   _break[i],
