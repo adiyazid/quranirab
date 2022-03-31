@@ -281,6 +281,9 @@ class _SignupWidgetState extends State<SignupWidget> {
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: TextFormField(
+                            cursorColor: theme.isDarkMode
+                                ? Colors.white
+                                : Colors.black,
                             obscureText: true,
                             obscuringCharacter: '*',
                             controller: _pass1,
@@ -326,6 +329,9 @@ class _SignupWidgetState extends State<SignupWidget> {
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: TextFormField(
+                            cursorColor: theme.isDarkMode
+                                ? Colors.white
+                                : Colors.black,
                             obscureText: true,
                             obscuringCharacter: '*',
                             controller: _pass2,

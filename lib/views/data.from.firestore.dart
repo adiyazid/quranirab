@@ -13,8 +13,10 @@ import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/widget/LanguagePopup.dart';
 import 'package:quranirab/widget/TranslationPopup.dart';
 import 'package:quranirab/widget/menu.dart';
+import 'package:quranirab/widget/search.popup.dart';
 import 'package:quranirab/widget/setting.popup.dart';
 import 'package:quranirab/widget/responsive.dart' as w;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DataFromFirestore extends StatefulWidget {
   const DataFromFirestore({Key? key}) : super(key: key);
@@ -99,19 +101,13 @@ class _DataFromFirestoreState extends State<DataFromFirestore> {
               ),
               centerTitle: false,
               floating: true,
-              actions: [
+              actions: const [
                 Padding(
-                  padding: const EdgeInsets.only(right: 20.0),
-                  child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.search,
-                        size: 26.0,
-                      )),
-                ),
-                const Padding(
+                    padding: EdgeInsets.only(right: 20.0),
+                    child: SearchPopup()),
+                Padding(
                     padding: EdgeInsets.only(right: 20.0), child: LangPopup()),
-                const Padding(
+                Padding(
                     padding: EdgeInsets.only(right: 20.0),
                     child: SettingPopup()),
               ],
@@ -147,7 +143,6 @@ class _DataFromFirestoreState extends State<DataFromFirestore> {
                                                     SurahScreen(
                                                       a,
                                                       data["id"],
-                                                      data["start_line"],
                                                       data["tname"],
                                                       data["ename"],
                                                     )));
@@ -185,12 +180,10 @@ class _DataFromFirestoreState extends State<DataFromFirestore> {
 class SurahScreen extends StatefulWidget {
   final List allpages;
   final String sura_id;
-  final String surah;
   final String name;
   final String detail;
 
-  const SurahScreen(
-      this.allpages, this.sura_id, this.surah, this.name, this.detail,
+  const SurahScreen(this.allpages, this.sura_id, this.name, this.detail,
       {Key? key})
       : super(key: key);
 
@@ -208,6 +201,8 @@ class _SurahScreenState extends State<SurahScreen> {
   List _translate = [];
   final CollectionReference _collectionTranslate =
       FirebaseFirestore.instance.collection('quran_translations');
+
+  var hizb;
 
   Future<void> getTranslation() async {
     // Get docs from collection reference
@@ -247,7 +242,7 @@ class _SurahScreenState extends State<SurahScreen> {
 
   void initState() {
     // TODO: implement initState
-
+    getHizb();
     getData();
     getTranslation();
     super.initState();
@@ -257,6 +252,8 @@ class _SurahScreenState extends State<SurahScreen> {
       FirebaseFirestore.instance.collection('quran_texts');
   final CollectionReference _collectionRefs =
       FirebaseFirestore.instance.collection('medina_mushaf_pages');
+  final CollectionReference _collectionHizb =
+      FirebaseFirestore.instance.collection('hizbs');
 
   Future<void> getData() async {
     // Get docs from collection reference
@@ -348,20 +345,14 @@ class _SurahScreenState extends State<SurahScreen> {
                 ),
                 centerTitle: false,
                 floating: true,
-                actions: [
+                actions: const [
                   Padding(
-                    padding: const EdgeInsets.only(right: 20.0),
-                    child: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.search,
-                          size: 26.0,
-                        )),
-                  ),
-                  const Padding(
+                      padding: EdgeInsets.only(right: 20.0),
+                      child: SearchPopup()),
+                  Padding(
                       padding: EdgeInsets.only(right: 20.0),
                       child: LangPopup()),
-                  const Padding(
+                  Padding(
                       padding: EdgeInsets.only(right: 20.0),
                       child: SettingPopup()),
                 ],
@@ -379,14 +370,14 @@ class _SurahScreenState extends State<SurahScreen> {
                                 Text(
                                   widget.name,
                                   style: TextStyle(
-                                    fontSize: 24,
+                                    fontSize: 20,
                                   ),
                                 ),
                                 Text(
                                   widget.detail,
                                   style: TextStyle(
                                     color: Colors.grey,
-                                    fontSize: 24,
+                                    fontSize: 20,
                                   ),
                                 ),
                               ],
@@ -411,14 +402,16 @@ class _SurahScreenState extends State<SurahScreen> {
                                 color: Colors.grey,
                               ),
                               SizedBox(width: 16),
-                              Flexible(
-                                child: Text(
-                                  'Juz ${getJuzNumber(int.parse(widget.sura_id), start!)} / Hizb 1 - Page ${widget.allpages[i]}',
-                                  style: TextStyle(
-                                    fontSize: 24,
-                                  ),
-                                ),
-                              )
+                              hizb != null
+                                  ? Flexible(
+                                      child: Text(
+                                        'Juz ${getJuzNumber(int.parse(widget.sura_id), start!)} / Hizb $hizb - Page ${widget.allpages[i]}',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    )
+                                  : Container(),
                             ],
                           ),
                         ),
@@ -447,7 +440,7 @@ class _SurahScreenState extends State<SurahScreen> {
                                     child: Text(
                                       'Translations',
                                       style: TextStyle(
-                                          fontSize: 24,
+                                          fontSize: 20,
                                           color: themeProvider.isDarkMode
                                               ? Colors.white
                                               : Colors.black),
@@ -460,7 +453,7 @@ class _SurahScreenState extends State<SurahScreen> {
                                     child: Text(
                                       'Reading',
                                       style: TextStyle(
-                                          fontSize: 24,
+                                          fontSize: 20,
                                           color: themeProvider.isDarkMode
                                               ? Colors.white
                                               : Colors.black),
@@ -618,14 +611,46 @@ class _SurahScreenState extends State<SurahScreen> {
                                                                                       color: Theme.of(context).textSelectionColor,
                                                                                     ),
                                                                                     Expanded(
-                                                                                      child: Container(
-                                                                                        margin: const EdgeInsets.only(left: 10),
-                                                                                        padding: const EdgeInsets.symmetric(vertical: 10),
-                                                                                        child: Text(
-                                                                                          item.text,
-                                                                                          style: TextStyle(
-                                                                                            color: Theme.of(context).textSelectionColor,
-                                                                                            fontSize: 12,
+                                                                                      child: InkWell(
+                                                                                        onTap: () async {
+                                                                                          // Obtain shared preferences.
+                                                                                          final prefs = await SharedPreferences.getInstance();
+                                                                                          if (item.text == 'Bookmark') {
+                                                                                            List<String> list = prefs.getStringList('bookmarks') ?? [];
+                                                                                            setState(() {
+                                                                                              if (list.contains(
+                                                                                                    '${widget.sura_id}:${start! + index}',
+                                                                                                  ) ==
+                                                                                                  false) {
+                                                                                                list.addAll([
+                                                                                                  '${widget.sura_id}:${start! + index}',
+                                                                                                  widget.sura_id,
+                                                                                                  widget.name,
+                                                                                                  widget.detail
+                                                                                                ]);
+                                                                                              }
+                                                                                            });
+                                                                                            prefs.setStringList('bookmarks', list);
+
+                                                                                            ///use to chunk bookmark list
+                                                                                            var lst = prefs.getStringList('bookmarks') ?? [];
+                                                                                            var chunks = [];
+                                                                                            int chunkSize = 4;
+                                                                                            for (var i = 0; i < lst.length; i += chunkSize) {
+                                                                                              chunks.add(lst.sublist(i, i + chunkSize > lst.length ? lst.length : i + chunkSize));
+                                                                                            }
+                                                                                            print(chunks);
+                                                                                          } else {}
+                                                                                        },
+                                                                                        child: Container(
+                                                                                          margin: const EdgeInsets.only(left: 10),
+                                                                                          padding: const EdgeInsets.symmetric(vertical: 10),
+                                                                                          child: Text(
+                                                                                            item.text,
+                                                                                            style: TextStyle(
+                                                                                              color: Theme.of(context).textSelectionColor,
+                                                                                              fontSize: 12,
+                                                                                            ),
                                                                                           ),
                                                                                         ),
                                                                                       ),
@@ -878,7 +903,6 @@ class _SurahScreenState extends State<SurahScreen> {
                       i = 0;
                     });
                   },
-
                   style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 32, vertical: 18),
@@ -949,5 +973,18 @@ class _SurahScreenState extends State<SurahScreen> {
   Future<double> checkFont() async {
     var a = fontData.size;
     return a;
+  }
+
+  Future<void> getHizb() async {
+    await _collectionHizb
+        .where('medina_mushaf_page_id', isLessThanOrEqualTo: widget.allpages[i])
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        setState(() {
+          hizb = doc['id'];
+        });
+      }
+    });
   }
 }

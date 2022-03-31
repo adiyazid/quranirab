@@ -176,7 +176,6 @@ class _SurahState extends State<Surah> {
                     String? SEmid5 = surah[6].substring(7, 8);
                     String? SEend = surah[6].substring(8, 9);
                     String? SEstop = surah[6].substring(9);
-
 //-------------------------------NEW FONT-------------------------------------//
                     ///verse one
                     String ba = datas.substring(0, 1);
@@ -258,11 +257,11 @@ class _SurahState extends State<Surah> {
                                     ),
                                   ),
                                   child: CustomPaint(
-                                          painter: CutOutTextPainter(
-                                            text: Ostart,
-                                            color: Colors.white,
-                                          ),
-                                        ),
+                                    painter: CutOutTextPainter(
+                                      text: Ostart,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -273,7 +272,7 @@ class _SurahState extends State<Surah> {
                                     text: Tstop,
                                     size: 54,
                                     fontWeight: FontWeight.normal,
-                                    color:  Colors.grey.shade900,
+                                    color: Colors.grey.shade900,
                                     wordSpacing: 0),
                                 MeorText(
                                     text: Tend,
@@ -296,11 +295,11 @@ class _SurahState extends State<Surah> {
                                     ),
                                   ),
                                   child: CustomPaint(
-                                          painter: CutOutTextPainter(
-                                            text: Tmid,
-                                            color: Colors.white,
-                                          ),
-                                        ),
+                                    painter: CutOutTextPainter(
+                                      text: Tmid,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
                                 const SizedBox(
                                   width: 8,
@@ -349,7 +348,7 @@ class _SurahState extends State<Surah> {
                                     text: FIstop,
                                     size: 54,
                                     fontWeight: FontWeight.normal,
-                                    color:  Colors.grey.shade900,
+                                    color: Colors.grey.shade900,
                                     wordSpacing: 0),
                                 MeorText(
                                     text: FIend,
@@ -368,12 +367,12 @@ class _SurahState extends State<Surah> {
                                       begin: Alignment.centerRight,
                                     ),
                                   ),
-                                  child:  CustomPaint(
-                                          painter: CutOutTextPainter(
-                                            text: FImid2,
-                                            color: Colors.white,
-                                          ),
-                                        ),
+                                  child: CustomPaint(
+                                    painter: CutOutTextPainter(
+                                      text: FImid2,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
                                 MeorText(
                                     text: FImid1,
@@ -396,7 +395,7 @@ class _SurahState extends State<Surah> {
                                     text: Sstop,
                                     size: 54,
                                     fontWeight: FontWeight.normal,
-                                    color:Colors.grey.shade900,
+                                    color: Colors.grey.shade900,
                                     wordSpacing: 0),
                                 MeorText(
                                     text: Send,
@@ -421,12 +420,12 @@ class _SurahState extends State<Surah> {
                                       begin: Alignment.centerRight,
                                     ),
                                   ),
-                                  child:CustomPaint(
-                                          painter: CutOutTextPainter(
-                                            text: Sstart,
-                                            color: Colors.white,
-                                          ),
-                                        ),
+                                  child: CustomPaint(
+                                    painter: CutOutTextPainter(
+                                      text: Sstart,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -437,7 +436,7 @@ class _SurahState extends State<Surah> {
                                     text: SEstop,
                                     size: 54,
                                     fontWeight: FontWeight.normal,
-                                    color:  Colors.grey.shade900,
+                                    color: Colors.grey.shade900,
                                     wordSpacing: 0),
                                 MeorText(
                                     text: SEend,
@@ -463,12 +462,12 @@ class _SurahState extends State<Surah> {
                                       begin: Alignment.centerRight,
                                     ),
                                   ),
-                                  child:  CustomPaint(
-                                          painter: CutOutTextPainter(
-                                            text: SEmid4,
-                                            color: Colors.white,
-                                          ),
-                                        ),
+                                  child: CustomPaint(
+                                    painter: CutOutTextPainter(
+                                      text: SEmid4,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
                                 const SizedBox(width: 1),
                                 MeorText(
@@ -489,11 +488,11 @@ class _SurahState extends State<Surah> {
                                     ),
                                   ),
                                   child: CustomPaint(
-                                          painter: CutOutTextPainter(
-                                            text: SEmid2,
-                                            color: Colors.white,
-                                          ),
-                                        ),
+                                    painter: CutOutTextPainter(
+                                      text: SEmid2,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
                                 Container(
                                   width: 83,
@@ -507,11 +506,11 @@ class _SurahState extends State<Surah> {
                                     ),
                                   ),
                                   child: CustomPaint(
-                                          painter: CutOutTextPainter(
-                                            text: SEmid1,
-                                            color: Colors.white,
-                                          ),
-                                        ),
+                                    painter: CutOutTextPainter(
+                                      text: SEmid1,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
                                 MeorText(
                                     text: SEstart,
@@ -546,7 +545,7 @@ class _SurahState extends State<Surah> {
                                       style: TextStyle(
                                         fontFamily: 'MeQuran2',
                                         fontSize: 35,
-                                        color:  Colors.grey.shade900,
+                                        color: Colors.grey.shade900,
                                       )),
                                 ],
                               ),
@@ -577,7 +576,7 @@ class _SurahState extends State<Surah> {
                                       style: TextStyle(
                                         fontFamily: 'MeQuran2',
                                         fontSize: 35,
-                                        color:  Colors.grey.shade900,
+                                        color: Colors.grey.shade900,
                                       )),
                                 ],
                               ),
@@ -596,7 +595,7 @@ class _SurahState extends State<Surah> {
                                       style: TextStyle(
                                         fontFamily: 'MeQuran2',
                                         fontSize: 35,
-                                        color:  Colors.grey.shade900,
+                                        color: Colors.grey.shade900,
                                       )),
                                 ],
                               ),
@@ -658,7 +657,7 @@ class _SurahState extends State<Surah> {
                                       style: TextStyle(
                                         fontFamily: 'MeQuran2',
                                         fontSize: 35,
-                                        color:  Colors.grey.shade900,
+                                        color: Colors.grey.shade900,
                                       )),
                                 ],
                               ),
@@ -750,7 +749,7 @@ class _SurahState extends State<Surah> {
                                       style: TextStyle(
                                         fontFamily: 'MeQuran2',
                                         fontSize: 35,
-                                        color:  Colors.grey.shade900,
+                                        color: Colors.grey.shade900,
                                       )),
                                 ],
                               ),
@@ -784,15 +783,15 @@ class CutOutTextPainter extends CustomPainter {
 
   CutOutTextPainter({required this.text, required this.color}) {
     _textPainter = TextPainter(
+      textAlign: TextAlign.center,
       text: TextSpan(
         text: text,
         style: const TextStyle(
-          fontFamily: 'Meor',
-          fontSize: 54.0,
-          fontWeight: FontWeight.normal,
+          fontFamily: 'MeQuran2',
+          fontSize: 30.0,
         ),
       ),
-      textDirection: TextDirection.ltr,
+      textDirection: TextDirection.rtl,
     );
     _textPainter!.layout();
   }
