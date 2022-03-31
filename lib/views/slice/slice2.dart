@@ -33,9 +33,7 @@ class _Slice2State extends State<Slice2> {
 
   var total = 0;
   var totalSlice = 10;
-
   List _slice = [];
-
   final List _break = [];
   bool loading = true;
   var word = [];
@@ -46,9 +44,8 @@ class _Slice2State extends State<Slice2> {
   late var loaded;
   final _ayaPosition = [];
   List<bool> select = [];
-  List<int> _breakIndex = [];
+  List<int> _breakIndex = <int>[];
   int? length;
-
   BreakIndex? _index;
 
   @override
@@ -275,23 +272,30 @@ class _Slice2State extends State<Slice2> {
                             height: 30,
                           ),
                           SingleChildScrollView(
+                            reverse: true,
                             scrollDirection: Axis.horizontal,
                             child: Directionality(
                               textDirection: TextDirection.rtl,
-                              child: Row(
-                                children: [
-                                  for (int i = 0; i < _break.length; i++)
-                                    Text(
-                                      _break[i],
-                                      style: TextStyle(
-                                          fontFamily: 'MeQuran2',
-                                          fontSize: 20,
-                                          color: Colors.black),
-                                    ),
-                                ],
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    for (int i = 0; i < _break.length; i++)
+                                      Text(
+                                        _break[i],
+                                        style: TextStyle(
+                                            fontFamily: 'MeQuran2',
+                                            fontSize: 20,
+                                            color: Colors.black),
+                                      ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
+                          Text(_slice.isNotEmpty
+                              ? 'Last index at ${_slice.length}'
+                              : 'Loading'),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -501,15 +505,16 @@ class _Slice2State extends State<Slice2> {
     return false;
   }
 
+  ///todo: insert break line data entry
   Future<BreakIndex> readJsonData() async {
     String page = '${Provider.of<AyaProvider>(context, listen: false).page}';
     String jsonData = await rootBundle.loadString("break_index/break.json");
     _index = BreakIndex.fromJson(json.decode(jsonData));
     if (page == '1') {
-      _breakIndex = _index?.page1 ?? [];
+      _breakIndex = _index?.page1 ?? <int>[];
     }
     if (page == '2') {
-      _breakIndex = _index?.page2 ?? [];
+      _breakIndex = _index?.page2 ?? <int>[];
     }
     return _index!;
   }
