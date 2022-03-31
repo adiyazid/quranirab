@@ -1,17 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:quranirab/models/word.detail.dart';
 
 class AyaProvider extends ChangeNotifier {
   var data = 'No data..';
   var page = 1;
   var category = 'Waiting to retrieve data...';
-  final List _allCategory = [];
+  final List<WordDetail> _labelCategory = [];
   CollectionReference wordRelationship =
       FirebaseFirestore.instance.collection('word_relationships');
 
   CollectionReference wordCategory =
       FirebaseFirestore.instance.collection('word_categories');
-
+  CollectionReference wordCategoryTranslation =
+      FirebaseFirestore.instance.collection('category_translations');
   List<bool> select = [];
   List<bool> old = [];
   List isim = [];
@@ -23,9 +25,9 @@ class AyaProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  getListId() {
-    if (_allCategory.isNotEmpty) {
-      return _allCategory;
+  getLabelName() {
+    if (_labelCategory.isNotEmpty) {
+      return _labelCategory;
     } else {
       return null;
     }
@@ -58,15 +60,16 @@ class AyaProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getCategoryName(wordId) async {
+  Future<void> getCategoryName(wordId, langId) async {
     await wordRelationship
         .where('word_id', isEqualTo: wordId.toString())
         .get()
         .then((QuerySnapshot querySnapshot) {
-      _allCategory.clear();
+      _labelCategory.clear();
       clear();
       notifyListeners();
       for (var doc in querySnapshot.docs) {
+        // getCategoryNameTranslation(doc["word_category_id"].trim(), langId);
         getMainCategoryName(doc["word_category_id"].trim(), wordId);
         getLabelCategoryName(doc["word_category_id"].trim());
       }
@@ -125,10 +128,23 @@ class AyaProvider extends ChangeNotifier {
         .then((QuerySnapshot querySnapshot) {
       for (var doc in querySnapshot.docs) {
         if (doc["id"] == wordCategoryId.toString()) {
-          _allCategory.add(doc["tname"].trim());
+          _labelCategory
+              .add(WordDetail(doc["tname"].trim(), doc["word_type"].trim()));
           notifyListeners();
         }
       }
     });
+  }
+
+  Future<void> getCategoryNameTranslation(categoryId, langId) async {
+    await wordCategoryTranslation
+        .where('word_category_id', isEqualTo: categoryId)
+        .get()
+        .then((QuerySnapshot querySnapshot) =>
+            querySnapshot.docs.forEach((element) {
+              if (element['language_id'] == langId) {
+                print('${element['name']} ${element['word_category_id']}');
+              }
+            }));
   }
 }

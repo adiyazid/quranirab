@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
+import 'package:quranirab/provider/language.provider.dart';
 import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,9 @@ Future<void> main() async {
   runApp(MultiProvider(
       providers: [
         ChangeNotifierProvider<AppUser>.value(value: appUser),
-        ChangeNotifierProvider<AyaProvider>(create: (context) => AyaProvider())
+        ChangeNotifierProvider<AyaProvider>(create: (context) => AyaProvider()),
+        ChangeNotifierProvider<LangProvider>(
+            create: (context) => LangProvider())
       ],
       child: ChangeNotifierProvider(
           create: (context) => FontSizeController(),
