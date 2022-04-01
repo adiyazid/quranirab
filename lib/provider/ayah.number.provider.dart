@@ -4,9 +4,10 @@ import 'package:quranirab/models/word.detail.dart';
 
 class AyaProvider extends ChangeNotifier {
   var data = 'No data..';
-  var page = 1;
+  var page = 440;
   var category = 'Waiting to retrieve data...';
-  final List<WordDetail> _labelCategory = [];
+  final List<WordDetail> _wordTypeDetail = [];
+  final List<WordDetail> _wordName = [];
   CollectionReference wordRelationship =
       FirebaseFirestore.instance.collection('word_relationships');
 
@@ -25,9 +26,17 @@ class AyaProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  getLabelName() {
-    if (_labelCategory.isNotEmpty) {
-      return _labelCategory;
+  getWordTypeList() {
+    if (_wordTypeDetail.isNotEmpty) {
+      return _wordTypeDetail;
+    } else {
+      return null;
+    }
+  }
+
+  getWordNameList() {
+    if (_wordName.isNotEmpty) {
+      return _wordName;
     } else {
       return null;
     }
@@ -65,18 +74,19 @@ class AyaProvider extends ChangeNotifier {
         .where('word_id', isEqualTo: wordId.toString())
         .get()
         .then((QuerySnapshot querySnapshot) {
-      _labelCategory.clear();
+      _wordTypeDetail.clear();
+      _wordName.clear();
       clear();
       notifyListeners();
       for (var doc in querySnapshot.docs) {
         // getCategoryNameTranslation(doc["word_category_id"].trim(), langId);
-        getMainCategoryName(doc["word_category_id"].trim(), wordId);
-        getLabelCategoryName(doc["word_category_id"].trim());
+        getMainCategoryName(doc["word_category_id"].trim(), wordId, langId);
+        getLabelCategoryName(doc["word_category_id"].trim(), langId);
       }
     });
   }
 
-  Future<void> getMainCategoryName(wordCategoryId, wordId) async {
+  Future<void> getMainCategoryName(wordCategoryId, wordId, langId) async {
     await wordCategory
         .where('word_type', isEqualTo: 'main')
         .get()
@@ -121,15 +131,31 @@ class AyaProvider extends ChangeNotifier {
     select.replaceRange(index, index, [!value]);
   }
 
-  Future<void> getLabelCategoryName(wordCategoryId) async {
+  Future<void> getLabelCategoryName(wordCategoryId, String langId) async {
     await wordCategory
         .where('word_type', isEqualTo: 'label')
         .get()
         .then((QuerySnapshot querySnapshot) {
       for (var doc in querySnapshot.docs) {
         if (doc["id"] == wordCategoryId.toString()) {
-          _labelCategory
-              .add(WordDetail(doc["tname"].trim(), doc["word_type"].trim()));
+          _wordTypeDetail.add(WordDetail(
+              id: int.parse(doc["id"].trim()),
+              name: doc["tname"].trim(),
+              type: doc["word_type"].trim()));
+          notifyListeners();
+        }
+      }
+    });
+    await wordCategoryTranslation
+        .where('language_id', isEqualTo: langId)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        if (doc["word_category_id"] == wordCategoryId.toString()) {
+          _wordName.add(WordDetail(
+              id: int.parse(doc["id"].trim()),
+              name: doc["name"].trim(),
+              type: ''));
           notifyListeners();
         }
       }
