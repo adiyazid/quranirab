@@ -9,6 +9,7 @@ import 'package:quranirab/quiz_module/models/quiz_model.dart';
 import 'package:quranirab/quiz_module/utils/AppColor.java';
 import 'package:quranirab/quiz_module/Quiz.Score.dart';
 import 'package:intl/intl.dart';
+import 'package:quranirab/views/authentication.dart';
 import 'package:quranirab/views/home.page.dart';
 import 'models/answer_model.dart';
 import 'models/option_model.dart';
@@ -466,25 +467,13 @@ class _QuizState extends State<Quiz> {
     String? uid = userId?.toString();
     QuerySnapshot takenQuiz =
         await FirebaseFirestore.instance.collection('quiz').
-    where('userId', isEqualTo: '0123').where('mushaf_page', isEqualTo: page).get();
+    where('userId', isEqualTo: uid).where('mushaf_page', isEqualTo: page).get();
 
 
     if (takenQuiz.docs.length > 0) {
       exist = true;
       quizId = takenQuiz.docs[0].id;
 
-      /*
-      final value = await FirebaseFirestore.instance
-          .collection("quiz")
-          .doc(doc)
-          .get();
-      wordList = value.data()!['remainingWords'];
-      print(wordList);
-
-      //wordList = takenQuizes.docs[0].get('remainingWords');
-      print(wordList[0].id);
-
-       */
     } else {
       exist = false;
     }
@@ -597,7 +586,7 @@ class _QuizState extends State<Quiz> {
               //convert score to 100
               score = ((score * 100) / wordList.length) as double;
               quiz = QuizModel(
-                userId: '456',
+                userId: uid,
                 level: level,
                 progress: progress,
                 mushaf_page: page,
@@ -636,7 +625,7 @@ class _QuizState extends State<Quiz> {
           }
 
           quiz = QuizModel(
-            userId: 'null',
+            userId: uid,
             level: level,
             progress: progress,
             mushaf_page: page,
@@ -660,7 +649,7 @@ class _QuizState extends State<Quiz> {
         //first time taking quiz
         score = ((score * 100 ) / wordList.length).toDouble().roundToDouble();
         quiz = QuizModel(
-          userId: 'user',
+          userId: uid,
           level: level,
           progress: progress,
           mushaf_page: page,
