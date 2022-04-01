@@ -59,6 +59,7 @@ dependencies:
   custom_pop_up_menu: ^1.2.2
   async: ^2.8.1
   responsive: ^0.3.11+11
+  popover: ^0.2.6+3
 
 dev_dependencies:
   flutter_test:

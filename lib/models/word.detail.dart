@@ -1,6 +1,7 @@
 class WordDetail {
   String? type;
   String? name;
+  int? id;
 
-  WordDetail(this.name, this.type);
+  WordDetail({required this.name, required this.type, required this.id});
 }
