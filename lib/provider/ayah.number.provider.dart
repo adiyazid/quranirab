@@ -139,7 +139,21 @@ class AyaProvider extends ChangeNotifier {
       for (var doc in querySnapshot.docs) {
         if (doc["id"] == wordCategoryId.toString()) {
           _wordTypeDetail.add(WordDetail(
-              id: int.parse(doc["id"].trim()),
+              categoryId: int.parse(doc["id"].trim()),
+              name: doc["tname"].trim(),
+              type: doc["word_type"].trim()));
+          notifyListeners();
+        }
+      }
+    });
+    await wordCategory
+        .where('word_type', isEqualTo: 'main-label')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        if (doc["id"] == wordCategoryId.toString()) {
+          _wordTypeDetail.add(WordDetail(
+              categoryId: int.parse(doc["id"].trim()),
               name: doc["tname"].trim(),
               type: doc["word_type"].trim()));
           notifyListeners();
@@ -154,6 +168,7 @@ class AyaProvider extends ChangeNotifier {
         if (doc["word_category_id"] == wordCategoryId.toString()) {
           _wordName.add(WordDetail(
               id: int.parse(doc["id"].trim()),
+              categoryId: int.parse(doc["word_category_id"].trim()),
               name: doc["name"].trim(),
               type: ''));
           notifyListeners();
