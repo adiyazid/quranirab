@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quranirab/provider/ayah.number.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 
 import '../palette.dart';
@@ -122,7 +123,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
       itemCount: 1 + _popUpList.length,
       itemBuilder: (BuildContext context, int index) {
         if (index == 0) {
-          final fontsize = Provider.of<FontSizeController>(context);
+          final fontsize = Provider.of<AyaProvider>(context);
           return Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -167,7 +168,7 @@ class _Option extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fontsize = Provider.of<FontSizeController>(context);
+    final fontsize = Provider.of<AyaProvider>(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(

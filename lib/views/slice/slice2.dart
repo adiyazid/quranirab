@@ -7,13 +7,15 @@ import 'package:flutter/services.dart';
 import 'package:popover/popover.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/models/break.index.model.dart';
+import 'package:quranirab/models/font.size.dart';
 import 'package:quranirab/models/word.detail.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
 import 'package:quranirab/provider/language.provider.dart';
-import 'package:quranirab/views/auth/landing.page.dart';
 
 class Slice2 extends StatefulWidget {
-  const Slice2({Key? key}) : super(key: key);
+  final String page;
+
+  const Slice2(this.page, {Key? key}) : super(key: key);
 
   @override
   _Slice2State createState() => _Slice2State();
@@ -41,14 +43,18 @@ class _Slice2State extends State<Slice2> {
   var word = [];
   final category = [];
   var totalLine = 0;
-  int? nums = 0;
   final _ayaNumber = [];
   final _ayaPosition = [];
   List<bool> select = [];
   List<int> _breakIndex = <int>[];
   int? length;
+  bool hover = false;
   BreakIndex? _index;
   GlobalKey key = GlobalKey();
+
+  double all = 0;
+
+  int? nums=0;
 
   @override
   void initState() {
@@ -60,71 +66,123 @@ class _Slice2State extends State<Slice2> {
 
   @override
   Widget build(BuildContext context) {
+    // final themeProvider = Provider.of<ThemeProvider>(context);
+
     return !loading
         ? Scaffold(
-            appBar: AppBar(
-              leading: IconButton(
-                  onPressed: () => Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => DummyPage()),
-                      (route) => false),
-                  icon: Icon(Icons.arrow_back_ios)),
-              title: Consumer<AyaProvider>(builder: (context, number, child) {
-                return Text('Page ${number.page}');
-              }),
-              centerTitle: true,
-            ),
             body: SingleChildScrollView(
                 child: Center(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 80.0),
-                child: _breakIndex.isNotEmpty
-                    ? Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          for (int index = 0;
-                              index < _breakIndex.length;
-                              index++)
-                            Directionality(
-                              textDirection: TextDirection.rtl,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  for (int i = 0 + index != 0
-                                          ? _breakIndex[index - 1]
-                                          : 0;
-                                      i < _breakIndex[index];
-                                      i++)
-                                    checkAya(_slice[i]['end'])
-                                        ? Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Consumer<AyaProvider>(builder:
-                                                  (context, aya, child) {
-                                                return InkWell(
-                                                    onTap: () {
-                                                      nums = 0;
-                                                      Provider.of<AyaProvider>(
-                                                              context,
-                                                              listen: false)
-                                                          .getCategoryName(
-                                                              _slice[i]
-                                                                  ['word_id'],
-                                                              Provider.of<LangProvider>(
+            child: _breakIndex.isNotEmpty
+                ? Stack(
+                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Visibility(
+                      //   visible: _visible,
+                      //   child: Align(
+                      //     alignment: Alignment.topLeft,
+                      //     child: SizedBox(
+                      //       height: MediaQuery.of(context).size.height,
+                      //       width: MediaQuery.of(context).size.height * 0.33,
+                      //       child: Container(
+                      //         color: themeProvider.isDarkMode
+                      //             ? const Color(0xff9A9A9A)
+                      //             : const Color(0xffFFF5EC),
+                      //         child: Container(
+                      //           width: MediaQuery.of(context).size.width * 0.33,
+                      //           decoration: BoxDecoration(
+                      //             border: Border.all(
+                      //                 color: (themeProvider.isDarkMode)
+                      //                     ? const Color(0xffffffff)
+                      //                     : const Color(0xffFFB55F)),
+                      //             color: (themeProvider.isDarkMode)
+                      //                 ? const Color(0xff808ba1)
+                      //                 : const Color(0xfffff3ca),
+                      //           ),
+                      //           child: MoreOptionsList(
+                      //             surah: 'Straight',
+                      //             nukKalimah: 'c',
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 80.0),
+                          child: Column(
+                            children: [
+                              for (int index = 0;
+                                  index < _breakIndex.length;
+                                  index++)
+                                Directionality(
+                                  textDirection: TextDirection.rtl,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      for (int i = 0 + index != 0
+                                              ? _breakIndex[index - 1]
+                                              : 0;
+                                          i < _breakIndex[index];
+                                          i++)
+                                        checkAya(_slice[i]['end'], index)
+                                            ? Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Consumer<AyaProvider>(builder:
+                                                      (context, aya, child) {
+                                                    return InkWell(
+                                                        onTap: () {
+                                                          Provider.of<AyaProvider>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .getCategoryName(
+                                                                  _slice[i][
+                                                                      'word_id'],
+                                                                  Provider.of<LangProvider>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .langId);
+                                                          showPopover(
+                                                            backgroundColor:
+                                                                Color(
+                                                                    0xffFFF3CA),
+                                                            context: context,
+                                                            transitionDuration:
+                                                                Duration(
+                                                                    milliseconds:
+                                                                        200),
+                                                            bodyBuilder: (context) =>
+                                                                ListItems(_list
+                                                                    .join()
+                                                                    .split('')
+                                                                    .getRange(
+                                                                        _slice[i]['start'] -
+                                                                            1,
+                                                                        _slice[i]
+                                                                            [
+                                                                            'end'])
+                                                                    .join()),
+                                                            onPop: () {
+                                                              Provider.of<AyaProvider>(
                                                                       context,
                                                                       listen:
                                                                           false)
-                                                                  .langId);
-                                                      showPopover(
-                                                        backgroundColor:
-                                                            Color(0xffFFF3CA),
-                                                        context: context,
-                                                        transitionDuration:
-                                                            Duration(
-                                                                milliseconds:
-                                                                    200),
-                                                        bodyBuilder: (context) =>
-                                                            ListItems(_list
+                                                                  .clear();
+                                                            },
+                                                            direction:
+                                                                PopoverDirection
+                                                                    .bottom,
+                                                            width: 450,
+                                                            height: 400,
+                                                            arrowHeight: 15,
+                                                            arrowWidth: 30,
+                                                          );
+                                                        },
+                                                        child: Text(
+                                                            _list
                                                                 .join()
                                                                 .split('')
                                                                 .getRange(
@@ -133,23 +191,49 @@ class _Slice2State extends State<Slice2> {
                                                                         1,
                                                                     _slice[i]
                                                                         ['end'])
-                                                                .join()),
-                                                        onPop: () {
-                                                          Provider.of<AyaProvider>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .clear();
-                                                        },
-                                                        direction:
-                                                            PopoverDirection
-                                                                .bottom,
-                                                        width: 450,
-                                                        height: 400,
-                                                        arrowHeight: 15,
-                                                        arrowWidth: 30,
-                                                      );
-                                                    },
-                                                    child: Text(
+                                                                .join(),
+                                                            textDirection:
+                                                                TextDirection
+                                                                    .rtl,
+                                                            style: TextStyle(
+                                                              fontFamily:
+                                                                  'MeQuran2',
+                                                              fontSize:
+                                                                  aya.value,
+                                                              color: aya.getColor(
+                                                                  _slice[i][
+                                                                      'word_id']),
+                                                              // aya.getBoolean(_slice[i]['start'] - 1)
+                                                              //     ? aya.getColor(_slice[i]['word_id'])
+                                                              //     : Colors.black)),
+                                                            )));
+                                                  }),
+                                                  _list
+                                                                  .join()
+                                                                  .split('')
+                                                                  .length -
+                                                              _slice[i]['end'] <
+                                                          3
+                                                      ? Text(
+                                                          " ${_list.join().split('').length - _slice[i]['end'] < 3 ? _ayaNumber.last : ""}",
+                                                          style: TextStyle(
+                                                            fontFamily:
+                                                                'MeQuran2',
+                                                            fontSize: Provider
+                                                                    .of<AyaProvider>(
+                                                                        context)
+                                                                .value,
+                                                          ),
+                                                        )
+                                                      : Container()
+                                                ],
+                                              )
+                                            : Row(
+                                                children: [
+                                                  Consumer<AyaProvider>(builder:
+                                                      (context, aya, child) {
+                                                    return InkWell(
+                                                      child: Text(
                                                         _list
                                                             .join()
                                                             .split('')
@@ -160,169 +244,94 @@ class _Slice2State extends State<Slice2> {
                                                                 _slice[i]
                                                                     ['end'])
                                                             .join(),
-                                                        textDirection:
-                                                            TextDirection.rtl,
                                                         style: TextStyle(
-                                                          fontFamily:
-                                                              'MeQuran2',
-                                                          fontSize: 20,
-                                                          color: aya.getColor(
-                                                              _slice[i]
-                                                                  ['word_id']),
-                                                          // aya.getBoolean(_slice[i]['start'] - 1)
-                                                          //     ? aya.getColor(_slice[i]['word_id'])
-                                                          //     : Colors.black)),
-                                                        )));
-                                              }),
-                                              _list.join().split('').length -
-                                                          _slice[i]['end'] <
-                                                      3
-                                                  ? Text(
-                                                      " ${_list.join().split('').length - _slice[i]['end'] < 3 ? _ayaNumber.last : ""}",
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              'MeQuran2',
-                                                          fontSize: 20,
-                                                          color: Colors.black),
-                                                    )
-                                                  : Container()
-                                            ],
-                                          )
-                                        : Row(
-                                            children: [
-                                              Consumer<AyaProvider>(builder:
-                                                  (context, aya, child) {
-                                                return InkWell(
-                                                  child: Text(
-                                                    _list
-                                                        .join()
-                                                        .split('')
-                                                        .getRange(
-                                                            _slice[i]['start'] -
-                                                                1,
-                                                            _slice[i]['end'])
-                                                        .join(),
-                                                    style: TextStyle(
-                                                        fontFamily: 'MeQuran2',
-                                                        fontSize: 20,
-                                                        color: aya.getColor(
-                                                            _slice[i]
-                                                                ['word_id'])),
-                                                  ),
-                                                  onTap: () {
-                                                    nums = 0;
-                                                    Provider.of<AyaProvider>(
-                                                            context,
-                                                            listen: false)
-                                                        .getCategoryName(
-                                                            _slice[i]
-                                                                ['word_id'],
-                                                            Provider.of<LangProvider>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .langId);
-                                                    showPopover(
-                                                      backgroundColor:
-                                                          Color(0xffFFF3CA),
-                                                      context: context,
-                                                      transitionDuration:
-                                                          const Duration(
-                                                              milliseconds:
-                                                                  200),
-                                                      bodyBuilder: (context) =>
-                                                          ListItems(_list
-                                                              .join()
-                                                              .split('')
-                                                              .getRange(
-                                                                  _slice[i][
-                                                                          'start'] -
-                                                                      1,
-                                                                  _slice[i]
-                                                                      ['end'])
-                                                              .join()),
-                                                      onPop: () {
+                                                            fontFamily:
+                                                                'MeQuran2',
+                                                            fontSize: aya.value,
+                                                            color: aya.getColor(
+                                                                _slice[i][
+                                                                    'word_id'])),
+                                                      ),
+                                                      onTap: () {
                                                         Provider.of<AyaProvider>(
                                                                 context,
                                                                 listen: false)
-                                                            .clear();
+                                                            .getCategoryName(
+                                                                _slice[i]
+                                                                    ['word_id'],
+                                                                Provider.of<LangProvider>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .langId);
+                                                        showPopover(
+                                                          backgroundColor:
+                                                              Color(0xffFFF3CA),
+                                                          context: context,
+                                                          transitionDuration:
+                                                              const Duration(
+                                                                  milliseconds:
+                                                                      200),
+                                                          bodyBuilder:
+                                                              (context) {
+                                                            return ListItems(_list
+                                                                .join()
+                                                                .split('')
+                                                                .getRange(
+                                                                    _slice[i][
+                                                                            'start'] -
+                                                                        1,
+                                                                    _slice[i]
+                                                                        ['end'])
+                                                                .join());
+                                                          },
+                                                          onPop: () {
+                                                            nums=0;
+                                                            Provider.of<AyaProvider>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .clear();
+                                                          },
+                                                          direction:
+                                                              PopoverDirection
+                                                                  .bottom,
+                                                          width: 450,
+                                                          height: 400,
+                                                          arrowHeight: 15,
+                                                          arrowWidth: 30,
+                                                        );
                                                       },
-                                                      direction:
-                                                          PopoverDirection
-                                                              .bottom,
-                                                      width: 450,
-                                                      height: 400,
-                                                      arrowHeight: 15,
-                                                      arrowWidth: 30,
                                                     );
-                                                  },
-                                                );
-                                              }),
-                                              Text(
-                                                "${_ayaNumber[nums! - 1]} ",
-                                                style: TextStyle(
-                                                    fontFamily: 'MeQuran2',
-                                                    fontSize: 20,
-                                                    color: Colors.black),
+                                                  }),
+                                                  Text(
+                                                    "${_ayaNumber[nums! - 1]} ",
+                                                    style: TextStyle(
+                                                      fontFamily: 'MeQuran2',
+                                                      fontSize: fontData.size,
+                                                    ),
+                                                  )
+                                                ],
                                               )
-                                            ],
-                                          ),
-                                ],
-                              ),
-                            ),
-                          SizedBox(
-                            height: 30,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Spacer(),
-                              ElevatedButton(
-                                  onPressed: () {
-                                    Provider.of<AyaProvider>(context,
-                                            listen: false)
-                                        .previousPage();
-                                    Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Slice2()),
-                                        (route) => false);
-                                  },
-                                  child: Text('Previous page')),
-                              Spacer(),
-                              Consumer<AyaProvider>(
-                                  builder: (context, number, child) {
-                                return Text(
-                                  'Page ${number.page}',
-                                  style: TextStyle(fontSize: 30),
-                                );
-                              }),
-                              Spacer(),
-                              ElevatedButton(
-                                  onPressed: () {
-                                    Provider.of<AyaProvider>(context,
-                                            listen: false)
-                                        .nextPage();
-                                    Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Slice2()),
-                                        (route) => false);
-                                  },
-                                  child: Text('Next page')),
-                              Spacer(),
+                                    ],
+                                  ),
+                                ),
                             ],
                           ),
-                        ],
-                      )
-                    : Container(),
-              ),
-            )))
-        : Scaffold(body: Center(child: CircularProgressIndicator()));
+                        ),
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                    ],
+                  )
+                : Container(),
+          )))
+        : Scaffold(body: Center(child: Text('Loading...')));
   }
 
   Future<void> getData() async {
-    String page = '${Provider.of<AyaProvider>(context, listen: false).page}';
+    String page = widget.page;
 
     ///todo: get aya
     var prev = 0;
@@ -459,14 +468,13 @@ class _Slice2State extends State<Slice2> {
     });
   }
 
-  checkAya(index) {
+  checkAya(index, lineIndex) {
     var total = _list.length - 1;
     var lengthAya1 = _list[0].split(' ').length;
     var a = _ayaPosition.contains(index - 1);
     var b = _ayaPosition.contains(index);
     var c = _ayaPosition.contains(index + 1);
-    // print(index);
-    // print(_list.join().split('').length);
+
     if (!a) {
       return true;
     }

@@ -16,8 +16,8 @@ class LandingPage extends StatelessWidget {
 
     if (appUser.user != null) {
       print('Logged in');
-      // return const DataFromFirestore();
-      return const DummyPage();
+      return const DataFromFirestore();
+      // return const DummyPage();
     } else {
       print('Not logged in');
       return const SigninWidget();
@@ -42,7 +42,7 @@ class DummyPage extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const Slice2()));
+                                builder: (context) => Slice2('1')));
                       },
                       child: const Text('Flutter Slice')),
                   ElevatedButton(

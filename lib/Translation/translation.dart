@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/facebook/screens/home_screen_1.dart';
 import 'package:quranirab/facebook/widgets/more_options_list.dart';
+import 'package:quranirab/provider/ayah.number.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 
 class TranslationPage extends StatefulWidget {
@@ -146,7 +147,7 @@ class _TranslationPageState extends State<TranslationPage> {
                             itemCount: _lists.length,
                             itemBuilder: (BuildContext context, int index) {
                               final fontsize =
-                                  Provider.of<FontSizeController>(context);
+                                  Provider.of<AyaProvider>(context);
                               return Card(
                                 semanticContainer: true,
                                 clipBehavior: Clip.antiAliasWithSaveLayer,

@@ -4,7 +4,8 @@ import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
-import 'package:quranirab/views/data.from.firestore.dart';
+
+import '../views/surah.screen.dart';
 
 class SearchPopup extends StatefulWidget {
   const SearchPopup({Key? key}) : super(key: key);

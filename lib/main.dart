@@ -24,29 +24,25 @@ Future<void> main() async {
   );
   final appUser = AppUser();
   runApp(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<AppUser>.value(value: appUser),
-        ChangeNotifierProvider<AyaProvider>(create: (context) => AyaProvider()),
-        ChangeNotifierProvider<LangProvider>(
-            create: (context) => LangProvider())
-      ],
-      child: ChangeNotifierProvider(
-          create: (context) => FontSizeController(),
-          builder: (context, _) {
-            return ChangeNotifierProvider(
-                create: (context) => ThemeProvider(),
-                builder: (context, _) {
-                  final themeProvider =
-                      Provider.of<ThemeProvider>(context, listen: true);
-                  return MaterialApp(
-                    scrollBehavior: MyCustomScrollBehavior(),
-                    home: const LandingPage(),
-                    // themeMode: themeProvider.themeMode,
-                    themeMode: ThemeMode.light,
-                    theme: QuranThemes.lightTheme,
-                    darkTheme: QuranThemes.darkTheme,
-                    debugShowCheckedModeBanner: false,
-                  );
-                });
-          })));
+    providers: [
+      ChangeNotifierProvider<AppUser>.value(value: appUser),
+      ChangeNotifierProvider<AyaProvider>(create: (context) => AyaProvider()),
+      ChangeNotifierProvider<LangProvider>(create: (context) => LangProvider())
+    ],
+    child: ChangeNotifierProvider(
+        create: (context) => ThemeProvider(),
+        builder: (context, _) {
+          final themeProvider =
+              Provider.of<ThemeProvider>(context, listen: true);
+          return MaterialApp(
+            scrollBehavior: MyCustomScrollBehavior(),
+            home: const LandingPage(),
+            themeMode: themeProvider.themeMode,
+            // themeMode: ThemeMode.light,
+            theme: QuranThemes.lightTheme,
+            darkTheme: QuranThemes.darkTheme,
+            debugShowCheckedModeBanner: false,
+          );
+        }),
+  ));
 }

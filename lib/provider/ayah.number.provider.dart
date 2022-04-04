@@ -1,11 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:quranirab/models/font.size.dart';
 import 'package:quranirab/models/word.detail.dart';
 
 class AyaProvider extends ChangeNotifier {
   var data = 'No data..';
-  var page = 440;
+  var page = 1;
   var category = 'Waiting to retrieve data...';
+  double _value = fontData.size;
+  int nums = 0;
+
+  get value => _value;
   final List<WordDetail> _wordTypeDetail = [];
   final List<WordDetail> _wordName = [];
   CollectionReference wordRelationship =
@@ -21,8 +26,25 @@ class AyaProvider extends ChangeNotifier {
   List haraf = [];
   List fail = [];
 
-  setDefault() {
+  void increment() {
+    if (_value != 38) {
+      _value = _value + 5;
+      notifyListeners();
+    }
+  }
+
+  void decrement() {
+    _value = _value - 5;
+    notifyListeners();
+  }
+
+  void setDefault() {
     select = old;
+    notifyListeners();
+  }
+
+  void getPage(int no) {
+    page = no;
     notifyListeners();
   }
 
@@ -52,6 +74,7 @@ class AyaProvider extends ChangeNotifier {
     if (page != 604) {
       page = page + 1;
       notifyListeners();
+      getPage(page);
     }
   }
 

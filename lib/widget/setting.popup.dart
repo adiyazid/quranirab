@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/models/font.size.dart';
+import 'package:quranirab/provider/ayah.number.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
+
+import '../views/surah.screen.dart';
 
 class SettingPopup extends StatefulWidget {
   const SettingPopup({Key? key}) : super(key: key);
@@ -248,12 +251,24 @@ class _SettingPopupState extends State<SettingPopup>
                                       onPressed: (int newIndex) {
                                         if (newIndex == 0) {
                                           setState(() {
-                                            if (fontData.size != 0) {
-                                              fontData.size = fontData.size - 1;
-                                              Provider.of<FontSizeController>(
-                                                      context,
+                                            if (fontData.size != 0 &&
+                                                fontData.size > 5) {
+                                              fontData.size = fontData.size - 5;
+                                              Provider.of<AyaProvider>(context,
                                                       listen: false)
                                                   .decrement();
+                                              Navigator.pushAndRemoveUntil(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          SurahScreen(
+                                                              fontData
+                                                                  .allpages!,
+                                                              fontData.sura_id!,
+                                                              fontData.name!,
+                                                              fontData
+                                                                  .detail!)),
+                                                  (route) => false);
                                             }
                                             no--;
                                           });
@@ -262,11 +277,23 @@ class _SettingPopupState extends State<SettingPopup>
                                             // fontData.index = 2;
                                             // fontData.size = 60;
                                             if (fontData.size != 38) {
-                                              fontData.size = fontData.size + 1;
-                                              Provider.of<FontSizeController>(
-                                                      context,
+                                              fontData.size = fontData.size + 5;
+                                              Provider.of<AyaProvider>(context,
                                                       listen: false)
                                                   .increment();
+                                              Navigator.pushAndRemoveUntil(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          SurahScreen(
+                                                              fontData
+                                                                  .allpages!,
+                                                              fontData.sura_id!,
+                                                              fontData.name!,
+                                                              fontData
+                                                                  .detail!)),
+                                                  (route) => false);
+
                                               no++;
                                             }
                                           });
