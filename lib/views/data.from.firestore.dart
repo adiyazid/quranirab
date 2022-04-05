@@ -133,6 +133,9 @@ class _DataFromFirestoreState extends State<DataFromFirestore> {
                                         fontData.sura_id = data["id"];
                                         fontData.name = data["tname"];
                                         fontData.detail = data["ename"];
+                                        Provider.of<AyaProvider>(context,
+                                                listen: false)
+                                            .getPage(int.parse(a.first));
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(

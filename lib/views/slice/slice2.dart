@@ -54,7 +54,7 @@ class _Slice2State extends State<Slice2> {
 
   double all = 0;
 
-  int? nums=0;
+  int? nums = 0;
 
   @override
   void initState() {
@@ -67,7 +67,7 @@ class _Slice2State extends State<Slice2> {
   @override
   Widget build(BuildContext context) {
     // final themeProvider = Provider.of<ThemeProvider>(context);
-
+    checkRebuilt(nums);
     return !loading
         ? Scaffold(
             body: SingleChildScrollView(
@@ -166,6 +166,7 @@ class _Slice2State extends State<Slice2> {
                                                                             'end'])
                                                                     .join()),
                                                             onPop: () {
+                                                              nums = 0;
                                                               Provider.of<AyaProvider>(
                                                                       context,
                                                                       listen:
@@ -286,7 +287,7 @@ class _Slice2State extends State<Slice2> {
                                                                 .join());
                                                           },
                                                           onPop: () {
-                                                            nums=0;
+                                                            nums = 0;
                                                             Provider.of<AyaProvider>(
                                                                     context,
                                                                     listen:
@@ -506,6 +507,10 @@ class _Slice2State extends State<Slice2> {
     }
     return _index!;
   }
+///todo:avoid rebuild ayat number
+  void checkRebuilt(no) {
+    if (no != 0) nums = 0;
+  }
 }
 
 class ListItems extends StatefulWidget {
@@ -569,7 +574,7 @@ class _ListItemsState extends State<ListItems> {
               return Column(
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Directionality(
                           textDirection: TextDirection.rtl,
@@ -580,7 +585,6 @@ class _ListItemsState extends State<ListItems> {
                               decoration: BoxDecoration(
                                 borderRadius:
                                     BorderRadiusDirectional.circular(8),
-                                color: Colors.amber[300],
                               ),
                               child: Padding(
                                 padding:
@@ -597,12 +601,9 @@ class _ListItemsState extends State<ListItems> {
                           )),
                     ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Divider(
-                      thickness: 2,
-                      color: Colors.black,
-                    ),
+                  Divider(
+                    thickness: 2,
+                    color: Colors.black,
                   ),
                   SizedBox(
                     height: 300,
@@ -627,12 +628,11 @@ class _ListItemsState extends State<ListItems> {
                                       ? Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Container(
-                                            height: 50,
+                                            height: 80,
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadiusDirectional
                                                       .circular(8),
-                                              color: Colors.amber[300],
                                             ),
                                             child: Center(
                                               child: Padding(
@@ -641,7 +641,8 @@ class _ListItemsState extends State<ListItems> {
                                                   child: Text(
                                                     "${index + 1 < name.length ? name[index + 1].name : ''}",
                                                     style: TextStyle(
-                                                        fontFamily: 'MeQuran2'),
+                                                        fontFamily: 'MeQuran2',
+                                                        fontSize: 20),
                                                     textAlign: TextAlign.center,
                                                   )),
                                             ),
@@ -652,12 +653,11 @@ class _ListItemsState extends State<ListItems> {
                                               padding:
                                                   const EdgeInsets.all(8.0),
                                               child: Container(
-                                                height: 50,
+                                                height: 80,
                                                 decoration: BoxDecoration(
                                                   borderRadius:
                                                       BorderRadiusDirectional
                                                           .circular(8),
-                                                  color: Colors.amber[300],
                                                 ),
                                                 child: Center(
                                                   child: Padding(
@@ -668,7 +668,8 @@ class _ListItemsState extends State<ListItems> {
                                                         "${name[index].name}",
                                                         style: TextStyle(
                                                             fontFamily:
-                                                                'MeQuran2'),
+                                                                'MeQuran2',
+                                                            fontSize: 20),
                                                         textAlign:
                                                             TextAlign.center,
                                                       )),
@@ -685,9 +686,8 @@ class _ListItemsState extends State<ListItems> {
                                               borderRadius:
                                                   BorderRadiusDirectional
                                                       .circular(8),
-                                              color: Colors.amber[300],
                                             ),
-                                            height: 50,
+                                            height: 80,
                                             child: Center(
                                               child: Padding(
                                                 padding:
@@ -696,7 +696,8 @@ class _ListItemsState extends State<ListItems> {
                                                   'نوع الكلمة',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
-                                                      fontFamily: 'MeQuran2'),
+                                                      fontFamily: 'MeQuran2',
+                                                      fontSize: 20),
                                                 ),
                                               ),
                                             ),
@@ -708,12 +709,11 @@ class _ListItemsState extends State<ListItems> {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Container(
-                                        height: 50,
+                                        height: 80,
                                         decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadiusDirectional.circular(
                                                   8),
-                                          color: Colors.amber[300],
                                         ),
                                         child: Center(
                                           child: Padding(
@@ -770,8 +770,8 @@ class _ListItemsState extends State<ListItems> {
 
   checkMainFontSize(int? id) {
     if (id == 3 || id == 68) {
-      return 18;
+      return 24;
     }
-    return 14;
+    return 20;
   }
 }
