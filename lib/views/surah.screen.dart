@@ -600,9 +600,7 @@ class _SurahScreenState extends State<SurahScreen>
                             )
                           : const Center(child: Text('Loading...')),
                     ),
-                    Consumer<AyaProvider>(builder: (context, aya, child) {
-                      return Slice2("${aya.page}");
-                    }),
+                    Slice2("${Provider.of<AyaProvider>(context).page}"),
                   ],
                 ),
               ),
@@ -637,7 +635,12 @@ class _SurahScreenState extends State<SurahScreen>
                       ? () async {
                           Provider.of<AyaProvider>(context, listen: false)
                               .previousPage();
-
+                          Provider.of<AyaProvider>(context, listen: false)
+                              .readJsonData();
+                          Provider.of<AyaProvider>(context, listen: false)
+                              .readSliceData();
+                          Provider.of<AyaProvider>(context, listen: false)
+                              .readAya();
                           if (i < int.parse(widget.allpages.last)) {
                             setState(() {
                               i--;
@@ -670,6 +673,12 @@ class _SurahScreenState extends State<SurahScreen>
                       ? () async {
                           Provider.of<AyaProvider>(context, listen: false)
                               .nextPage();
+                          Provider.of<AyaProvider>(context, listen: false)
+                              .readJsonData();
+                          Provider.of<AyaProvider>(context, listen: false)
+                              .readSliceData();
+                          Provider.of<AyaProvider>(context, listen: false)
+                              .readAya();
                           // Navigator.pushAndRemoveUntil(
                           //     context,
                           //     MaterialPageRoute(

@@ -40,6 +40,8 @@ class AyaProvider extends ChangeNotifier {
   final CollectionReference _sliceData =
       FirebaseFirestore.instance.collection('medina_mushaf_pages');
 
+  List? list = [];
+
   get value => _value;
 
   get sliceData => _sliceData;
@@ -66,22 +68,53 @@ class AyaProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<BreakIndex> readJsonData() async {
+  Future<void> readAya() async {
+    clearPrevAya();
+    notifyListeners();
+    var prev = 0;
+    // List<int> indexBreak = [];
+    await FirebaseFirestore.instance
+        .collection('quran_texts')
+        .orderBy('created_at')
+        .where('medina_mushaf_page_id', isEqualTo: "${page}")
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        String text = doc["text1"];
+        for (int i = 0; i < doc["text"].split('').length; i++) {
+          if (doc["text"].split('')[i].contains('ﳁ')) {
+            list!.add('${doc["text"].substring(0, i)}');
+            // _ayaNumber.add(doc["text"].substring(i));
+            // _ayaPosition.add(prev + i - 1);
+            prev = prev + i;
+          }
+        }
+        notifyListeners();
+      }
+      for (int i = 0;
+          i < list!.join().replaceAll('', '').split('').length;
+          i++) {
+        select.add(false);
+      }
+    });
+  }
+
+  Future<void> readJsonData() async {
     String jsonData = await rootBundle.loadString("break_index/break.json");
     _index = BreakIndex.fromJson(json.decode(jsonData));
     if (page == 1) {
       breakIndex = _index?.page1 ?? <int>[];
       notifyListeners();
-    }
-    if (page == 2) {
+    } else if (page == 2) {
       breakIndex = _index?.page2 ?? <int>[];
       notifyListeners();
-    }
-    if (page == 440) {
+    } else if (page == 440) {
       breakIndex = _index?.page440 ?? <int>[];
       notifyListeners();
+    } else {
+      breakIndex = <int>[];
+      notifyListeners();
     }
-    return _index!;
   }
 
   Future<void> readSliceData() async {
@@ -280,5 +313,10 @@ class AyaProvider extends ChangeNotifier {
                 print('${element['name']} ${element['word_category_id']}');
               }
             }));
+  }
+
+  void clearPrevAya() {
+    list!.clear();
+    notifyListeners();
   }
 }
