@@ -19,7 +19,8 @@ class AyaProvider extends ChangeNotifier {
   int nums = 0;
 
   BreakIndex? _index;
-
+  List _ayaPosition = [];
+  List ayaNumber = [];
   List<int>? breakIndex;
   List<SlicingDatum>? slice = <SlicingDatum>[];
   List<bool> select = [];
@@ -27,8 +28,8 @@ class AyaProvider extends ChangeNotifier {
   List isim = [];
   List haraf = [];
   List fail = [];
-  final List<WordDetail> _wordTypeDetail = [];
-  final List<WordDetail> _wordName = [];
+  final List<WordDetail> wordTypeDetail = [];
+  final List<WordDetail> wordName = [];
 
   CollectionReference wordRelationship =
       FirebaseFirestore.instance.collection('word_relationships');
@@ -45,6 +46,9 @@ class AyaProvider extends ChangeNotifier {
   get value => _value;
 
   get sliceData => _sliceData;
+  bool visible = false;
+
+  get _visible => set();
 
   void increment() {
     if (_value != 40) {
@@ -84,8 +88,8 @@ class AyaProvider extends ChangeNotifier {
         for (int i = 0; i < doc["text"].split('').length; i++) {
           if (doc["text"].split('')[i].contains('ﳁ')) {
             list!.add('${doc["text"].substring(0, i)}');
-            // _ayaNumber.add(doc["text"].substring(i));
-            // _ayaPosition.add(prev + i - 1);
+            ayaNumber.add(doc["text"].substring(i));
+            _ayaPosition.add(prev + i - 1);
             prev = prev + i;
           }
         }
@@ -152,16 +156,16 @@ class AyaProvider extends ChangeNotifier {
   }
 
   getWordTypeList() {
-    if (_wordTypeDetail.isNotEmpty) {
-      return _wordTypeDetail;
+    if (wordTypeDetail.isNotEmpty) {
+      return wordTypeDetail;
     } else {
       return null;
     }
   }
 
   getWordNameList() {
-    if (_wordName.isNotEmpty) {
-      return _wordName;
+    if (wordName.isNotEmpty) {
+      return wordName;
     } else {
       return null;
     }
@@ -200,8 +204,8 @@ class AyaProvider extends ChangeNotifier {
         .where('word_id', isEqualTo: wordId.toString())
         .get()
         .then((QuerySnapshot querySnapshot) {
-      _wordTypeDetail.clear();
-      _wordName.clear();
+      wordTypeDetail.clear();
+      wordName.clear();
       clear();
       notifyListeners();
       for (var doc in querySnapshot.docs) {
@@ -236,9 +240,11 @@ class AyaProvider extends ChangeNotifier {
       return Colors.redAccent;
     } else if (fail.contains(wordId)) {
       return Colors.green[400];
-    } else {
-      return Colors.black;
     }
+  }
+
+  void checkRebuilt(no) {
+    if (no != 0) nums = 0;
   }
 
   getBoolean(index) {
@@ -264,7 +270,7 @@ class AyaProvider extends ChangeNotifier {
         .then((QuerySnapshot querySnapshot) {
       for (var doc in querySnapshot.docs) {
         if (doc["id"] == wordCategoryId.toString()) {
-          _wordTypeDetail.add(WordDetail(
+          wordTypeDetail.add(WordDetail(
               categoryId: int.parse(doc["id"].trim()),
               name: doc["tname"].trim(),
               type: doc["word_type"].trim()));
@@ -278,7 +284,7 @@ class AyaProvider extends ChangeNotifier {
         .then((QuerySnapshot querySnapshot) {
       for (var doc in querySnapshot.docs) {
         if (doc["id"] == wordCategoryId.toString()) {
-          _wordTypeDetail.add(WordDetail(
+          wordTypeDetail.add(WordDetail(
               categoryId: int.parse(doc["id"].trim()),
               name: doc["tname"].trim(),
               type: doc["word_type"].trim()));
@@ -292,7 +298,7 @@ class AyaProvider extends ChangeNotifier {
         .then((QuerySnapshot querySnapshot) {
       for (var doc in querySnapshot.docs) {
         if (doc["word_category_id"] == wordCategoryId.toString()) {
-          _wordName.add(WordDetail(
+          wordName.add(WordDetail(
               id: int.parse(doc["id"].trim()),
               categoryId: int.parse(doc["word_category_id"].trim()),
               name: doc["name"].trim(),
@@ -317,6 +323,32 @@ class AyaProvider extends ChangeNotifier {
 
   void clearPrevAya() {
     list!.clear();
+    notifyListeners();
+  }
+
+  checkAya(index) {
+    var total = list!.length - 1;
+    var lengthAya1 = list![0].split(' ').length;
+    var a = _ayaPosition.contains(index != 0 ? index - 1 : index);
+    var b = _ayaPosition.contains(index);
+    var c = _ayaPosition.contains(index + 1);
+    if (!a) {
+      return true;
+    }
+    if (!a && !b) {
+      return true;
+    }
+    if (!a && !b && !c) {
+      return true;
+    }
+    if (nums < total && index > lengthAya1) {
+      nums = nums + 1;
+    }
+    return false;
+  }
+
+  set() {
+    visible = !visible;
     notifyListeners();
   }
 }

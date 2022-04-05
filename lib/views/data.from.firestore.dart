@@ -129,10 +129,6 @@ class _DataFromFirestoreState extends State<DataFromFirestore> {
                                     child: InkWell(
                                       onTap: () async {
                                         var a = await getTotalPage(data["id"]);
-                                        fontData.allpages = a;
-                                        fontData.sura_id = data["id"];
-                                        fontData.name = data["tname"];
-                                        fontData.detail = data["ename"];
                                         Provider.of<AyaProvider>(context,
                                                 listen: false)
                                             .getPage(int.parse(a.first));

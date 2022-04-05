@@ -14,6 +14,7 @@ import 'package:quranirab/widget/TranslationPopup.dart';
 import 'package:quranirab/widget/responsive.dart' as w;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../facebook/widgets/more_options_list.dart';
 import '../provider/ayah.number.provider.dart';
 import '../theme/theme_provider.dart';
 import '../widget/LanguagePopup.dart';
@@ -162,6 +163,7 @@ class _SurahScreenState extends State<SurahScreen>
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+
     return Scaffold(
       backgroundColor: (themeProvider.isDarkMode)
           ? const Color(0xff666666)
@@ -331,30 +333,6 @@ class _SurahScreenState extends State<SurahScreen>
                           ? Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                // Flexible(
-                                //   flex: 3,
-                                //   child: Visibility(
-                                //     visible: true,
-                                //     child: Container(
-                                //       width:
-                                //           MediaQuery.of(context).size.width *
-                                //               0.33,
-                                //       decoration: BoxDecoration(
-                                //         border: Border.all(
-                                //             color: (themeProvider.isDarkMode)
-                                //                 ? const Color(0xffffffff)
-                                //                 : const Color(0xffFFB55F)),
-                                //         color: (themeProvider.isDarkMode)
-                                //             ? const Color(0xff808ba1)
-                                //             : const Color(0xfffff3ca),
-                                //       ),
-                                //       child: const MoreOptionsList(
-                                //         surah: 'Straight',
-                                //         nukKalimah: '',
-                                //       ),
-                                //     ),
-                                //   ),
-                                // ),
                                 Expanded(
                                   flex: 6,
                                   child: Padding(
@@ -653,13 +631,37 @@ class _SurahScreenState extends State<SurahScreen>
                           }
                         }
                       : null,
-                  child: Text('Previous page')),
+                  child: Text(
+                    'Previous page',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
+                  )),
               Spacer(),
               Consumer<AyaProvider>(builder: (context, number, child) {
-                return Text(
-                  'Page ${number.page}',
-                  style: TextStyle(fontSize: 30),
-                );
+                return ElevatedButton(
+                    onPressed: number.page == int.parse(widget.allpages.first)
+                        ? null
+                        : () async {
+                            Provider.of<AyaProvider>(context, listen: false)
+                                .getPage(number.page);
+                            await getStartAyah(widget.allpages.first);
+                            await nextPage(widget.allpages.first);
+                            setState(() {
+                              i = 0;
+                            });
+                          },
+                    style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 32, vertical: 18),
+                        primary: (themeProvider.isDarkMode)
+                            ? const Color(0xff4C6A7A)
+                            : const Color(0xffffeeb0)),
+                    child: const Text(
+                      'Beginning Surah',
+                      style: TextStyle(color: Colors.black, fontSize: 18),
+                    ));
               }),
               Spacer(),
               ElevatedButton(
@@ -679,15 +681,6 @@ class _SurahScreenState extends State<SurahScreen>
                               .readSliceData();
                           Provider.of<AyaProvider>(context, listen: false)
                               .readAya();
-                          // Navigator.pushAndRemoveUntil(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => SurahScreen(
-                          //             widget.allpages,
-                          //             widget.sura_id,
-                          //             widget.name,
-                          //             widget.detail)),
-                          //     (route) => false);
                           if (i < int.parse(widget.allpages.last)) {
                             setState(() {
                               i++;
@@ -700,7 +693,13 @@ class _SurahScreenState extends State<SurahScreen>
                           }
                         }
                       : null,
-                  child: Text('Next page')),
+                  child: Text(
+                    'Next page',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
+                  )),
               Spacer(),
             ],
           ),
