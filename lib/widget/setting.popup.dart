@@ -252,23 +252,11 @@ class _SettingPopupState extends State<SettingPopup>
                                         if (newIndex == 0) {
                                           setState(() {
                                             if (fontData.size != 0 &&
-                                                fontData.size > 5) {
+                                                fontData.size > 20) {
                                               fontData.size = fontData.size - 5;
                                               Provider.of<AyaProvider>(context,
                                                       listen: false)
                                                   .decrement();
-                                              Navigator.pushAndRemoveUntil(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          SurahScreen(
-                                                              fontData
-                                                                  .allpages!,
-                                                              fontData.sura_id!,
-                                                              fontData.name!,
-                                                              fontData
-                                                                  .detail!)),
-                                                  (route) => false);
                                             }
                                             no--;
                                           });
@@ -276,24 +264,11 @@ class _SettingPopupState extends State<SettingPopup>
                                           setState(() {
                                             // fontData.index = 2;
                                             // fontData.size = 60;
-                                            if (fontData.size != 38) {
+                                            if (fontData.size != 40) {
                                               fontData.size = fontData.size + 5;
                                               Provider.of<AyaProvider>(context,
                                                       listen: false)
                                                   .increment();
-                                              Navigator.pushAndRemoveUntil(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          SurahScreen(
-                                                              fontData
-                                                                  .allpages!,
-                                                              fontData.sura_id!,
-                                                              fontData.name!,
-                                                              fontData
-                                                                  .detail!)),
-                                                  (route) => false);
-
                                               no++;
                                             }
                                           });

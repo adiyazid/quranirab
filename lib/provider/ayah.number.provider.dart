@@ -1,18 +1,35 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:quranirab/models/font.size.dart';
 import 'package:quranirab/models/word.detail.dart';
+
+import '../models/break.index.model.dart';
+import '../models/slicing.data.model.dart';
 
 class AyaProvider extends ChangeNotifier {
   var data = 'No data..';
   var page = 1;
   var category = 'Waiting to retrieve data...';
+
   double _value = fontData.size;
+
   int nums = 0;
 
-  get value => _value;
+  BreakIndex? _index;
+
+  List<int>? breakIndex;
+  List<SlicingDatum>? slice = <SlicingDatum>[];
+  List<bool> select = [];
+  List<bool> old = [];
+  List isim = [];
+  List haraf = [];
+  List fail = [];
   final List<WordDetail> _wordTypeDetail = [];
   final List<WordDetail> _wordName = [];
+
   CollectionReference wordRelationship =
       FirebaseFirestore.instance.collection('word_relationships');
 
@@ -20,14 +37,15 @@ class AyaProvider extends ChangeNotifier {
       FirebaseFirestore.instance.collection('word_categories');
   CollectionReference wordCategoryTranslation =
       FirebaseFirestore.instance.collection('category_translations');
-  List<bool> select = [];
-  List<bool> old = [];
-  List isim = [];
-  List haraf = [];
-  List fail = [];
+  final CollectionReference _sliceData =
+      FirebaseFirestore.instance.collection('medina_mushaf_pages');
+
+  get value => _value;
+
+  get sliceData => _sliceData;
 
   void increment() {
-    if (_value != 38) {
+    if (_value != 40) {
       _value = _value + 5;
       notifyListeners();
     }
@@ -46,6 +64,58 @@ class AyaProvider extends ChangeNotifier {
   void getPage(int no) {
     page = no;
     notifyListeners();
+  }
+
+  Future<BreakIndex> readJsonData() async {
+    String jsonData = await rootBundle.loadString("break_index/break.json");
+    _index = BreakIndex.fromJson(json.decode(jsonData));
+    if (page == 1) {
+      breakIndex = _index?.page1 ?? <int>[];
+      notifyListeners();
+    }
+    if (page == 2) {
+      breakIndex = _index?.page2 ?? <int>[];
+      notifyListeners();
+    }
+    if (page == 440) {
+      breakIndex = _index?.page440 ?? <int>[];
+      notifyListeners();
+    }
+    return _index!;
+  }
+
+  Future<void> readSliceData() async {
+    await sliceData
+        .where('id', isEqualTo: "${page}")
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        ///todo:parse json list to object list
+        Iterable l = json.decode(doc["slicing_data"]);
+        List<SlicingDatum> _slice = List<SlicingDatum>.from(
+            l.map((model) => SlicingDatum.fromJson(model)));
+        slice = _slice;
+        notifyListeners();
+      }
+    });
+    for (int i = 0; i < slice!.length; i++) {
+      if (slice![i != slice!.length - 1 ? i + 1 : i].start - slice![i].end ==
+          1) {
+        print('data fix');
+      } else {
+        var a =
+            slice![i != slice!.length - 1 ? i + 1 : i].start - slice![i].end;
+        slice!.setAll(i, [
+          SlicingDatum(
+              start: slice![i].start,
+              end: i != slice!.length - 1
+                  ? slice![i].end + a - 1
+                  : slice![i].end,
+              wordId: slice![i].wordId)
+        ]);
+        notifyListeners();
+      }
+    }
   }
 
   getWordTypeList() {

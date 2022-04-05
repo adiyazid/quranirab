@@ -35,7 +35,8 @@ class SurahScreen extends StatefulWidget {
   _SurahScreenState createState() => _SurahScreenState();
 }
 
-class _SurahScreenState extends State<SurahScreen> {
+class _SurahScreenState extends State<SurahScreen>
+    with SingleTickerProviderStateMixin {
   List _list = [];
   int? a = 0;
   String? b;
@@ -45,6 +46,8 @@ class _SurahScreenState extends State<SurahScreen> {
   List _translate = [];
   final CollectionReference _collectionTranslate =
       FirebaseFirestore.instance.collection('quran_translations');
+
+  late TabController _tabController;
 
   Future<void> getTranslation() async {
     // Get docs from collection reference
@@ -84,6 +87,7 @@ class _SurahScreenState extends State<SurahScreen> {
 
   void initState() {
     // TODO: implement initState
+    _tabController = TabController(vsync: this, length: 2, initialIndex: 1);
     getHizb();
     getData();
     getTranslation();
@@ -163,232 +167,348 @@ class _SurahScreenState extends State<SurahScreen> {
           ? const Color(0xff666666)
           : const Color(0xFFffffff),
       drawer: const Menu(),
-      body: DefaultTabController(
-        initialIndex: 1,
-        length: 2,
-        child: NestedScrollView(
-          physics: const BouncingScrollPhysics(),
-          headerSliverBuilder: (context, value) {
-            return [
-              SliverAppBar(
-                iconTheme: Theme.of(context).iconTheme,
-                leading: IconButton(
-                  icon: const Icon(
-                    Icons.menu,
-                  ),
-                  onPressed: () {
-                    Scaffold.of(context).openDrawer();
-                  },
+      body: NestedScrollView(
+        physics: const BouncingScrollPhysics(),
+        headerSliverBuilder: (context, value) {
+          return [
+            SliverAppBar(
+              iconTheme: Theme.of(context).iconTheme,
+              leading: IconButton(
+                icon: const Icon(
+                  Icons.menu,
                 ),
-                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                title: const CircleAvatar(
-                  backgroundImage: AssetImage('assets/quranirab.png'),
-                  radius: 18.0,
-                ),
-                centerTitle: false,
-                floating: true,
-                actions: const [
-                  Padding(
-                      padding: EdgeInsets.only(right: 20.0),
-                      child: SearchPopup()),
-                  Padding(
-                      padding: EdgeInsets.only(right: 20.0),
-                      child: LangPopup()),
-                  Padding(
-                      padding: EdgeInsets.only(right: 20.0),
-                      child: SettingPopup()),
-                ],
-                bottom: PreferredSize(
-                  preferredSize: const Size.fromHeight(120),
-                  child: Column(
-                    children: [
-                      Row(children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.3,
-                          child: ListTile(
-                            title: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  widget.name,
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                  ),
-                                ),
-                                Text(
-                                  widget.detail,
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            trailing: const Icon(Icons.keyboard_arrow_down),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 5,
-                          height: 40,
-                          child: VerticalDivider(
-                            thickness: 2,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 320,
-                          child: Row(
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+              ),
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              title: const CircleAvatar(
+                backgroundImage: AssetImage('assets/quranirab.png'),
+                radius: 18.0,
+              ),
+              centerTitle: false,
+              floating: true,
+              actions: const [
+                Padding(
+                    padding: EdgeInsets.only(right: 20.0),
+                    child: SearchPopup()),
+                Padding(
+                    padding: EdgeInsets.only(right: 20.0), child: LangPopup()),
+                Padding(
+                    padding: EdgeInsets.only(right: 20.0),
+                    child: SettingPopup()),
+              ],
+              bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(120),
+                child: Column(
+                  children: [
+                    Row(children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        child: ListTile(
+                          title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              VerticalDivider(
-                                thickness: 2,
-                                color: Colors.grey,
+                              Text(
+                                widget.name,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                ),
                               ),
-                              SizedBox(width: 16),
-                              hizb != null
-                                  ? Flexible(
-                                      child: Text(
-                                        'Juz ${getJuzNumber(int.parse(widget.sura_id), start!)} / Hizb $hizb - Page ${widget.allpages[i]}',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                    )
-                                  : Container(),
+                              Text(
+                                widget.detail,
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 20,
+                                ),
+                              ),
                             ],
                           ),
-                        ),
-                        const Spacer(),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 20, right: 8),
-                          child: TransPopup(),
-                        ),
-                      ]),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal:
-                                w.Responsive.isDesktop(context) ? 400.0 : 80),
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          child: TabBar(
-                              indicatorPadding: const EdgeInsets.all(8),
-                              indicator: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  // Creates border
-                                  color: Theme.of(context).primaryColor),
-                              tabs: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Tab(
-                                    child: Text(
-                                      'Translations',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          color: themeProvider.isDarkMode
-                                              ? Colors.white
-                                              : Colors.black),
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Tab(
-                                    child: Text(
-                                      'Reading',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          color: themeProvider.isDarkMode
-                                              ? Colors.white
-                                              : Colors.black),
-                                    ),
-                                  ),
-                                )
-                              ]),
+                          trailing: const Icon(Icons.keyboard_arrow_down),
                         ),
                       ),
-                    ],
-                  ),
+                      const SizedBox(
+                        width: 5,
+                        height: 40,
+                        child: VerticalDivider(
+                          thickness: 2,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 320,
+                        child: Row(
+                          children: [
+                            VerticalDivider(
+                              thickness: 2,
+                              color: Colors.grey,
+                            ),
+                            SizedBox(width: 16),
+                            hizb != null
+                                ? Flexible(
+                                    child: Text(
+                                      'Juz ${getJuzNumber(int.parse(widget.sura_id), start!)} / Hizb $hizb - Page ${widget.allpages[i]}',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  )
+                                : Container(),
+                          ],
+                        ),
+                      ),
+                      const Spacer(),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 20, right: 8),
+                        child: TransPopup(),
+                      ),
+                    ]),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal:
+                              w.Responsive.isDesktop(context) ? 400.0 : 80),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: TabBar(
+                            controller: _tabController,
+                            indicatorPadding: const EdgeInsets.all(8),
+                            indicator: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                // Creates border
+                                color: Theme.of(context).primaryColor),
+                            tabs: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Tab(
+                                  child: Text(
+                                    'Translations',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        color: themeProvider.isDarkMode
+                                            ? Colors.white
+                                            : Colors.black),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Tab(
+                                  child: Text(
+                                    'Reading',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        color: themeProvider.isDarkMode
+                                            ? Colors.white
+                                            : Colors.black),
+                                  ),
+                                ),
+                              )
+                            ]),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ];
-          },
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.9,
-                  child: TabBarView(
-                    children: [
-                      // TranslationPage(widget.sura_id, widget.allpages[i]),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: (themeProvider.isDarkMode)
-                              ? const Color(0xff666666)
-                              : const Color(0xFFffffff),
-                        ),
-                        child: _list.isNotEmpty && _translate.isNotEmpty
-                            ? Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  // Flexible(
-                                  //   flex: 3,
-                                  //   child: Visibility(
-                                  //     visible: true,
-                                  //     child: Container(
-                                  //       width:
-                                  //           MediaQuery.of(context).size.width *
-                                  //               0.33,
-                                  //       decoration: BoxDecoration(
-                                  //         border: Border.all(
-                                  //             color: (themeProvider.isDarkMode)
-                                  //                 ? const Color(0xffffffff)
-                                  //                 : const Color(0xffFFB55F)),
-                                  //         color: (themeProvider.isDarkMode)
-                                  //             ? const Color(0xff808ba1)
-                                  //             : const Color(0xfffff3ca),
-                                  //       ),
-                                  //       child: const MoreOptionsList(
-                                  //         surah: 'Straight',
-                                  //         nukKalimah: '',
-                                  //       ),
-                                  //     ),
-                                  //   ),
-                                  // ),
-                                  Expanded(
-                                    flex: 6,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16.0),
-                                      child: Align(
-                                        alignment: Alignment.topLeft,
-                                        child: ListView.builder(
-                                          itemCount: _list.length,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            final fontsize =
-                                                Provider.of<AyaProvider>(
-                                                    context);
-                                            return Card(
-                                              semanticContainer: true,
-                                              clipBehavior:
-                                                  Clip.antiAliasWithSaveLayer,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(10.0),
-                                              ),
-                                              elevation: 5,
-                                              color: (themeProvider.isDarkMode)
-                                                  ? const Color(0xffC4C4C4)
-                                                  : const Color(0xffFFF5EC),
-                                              child: Column(
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Row(
-                                                      children: [
-                                                        Container(
+            ),
+          ];
+        },
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.9,
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    // TranslationPage(widget.sura_id, widget.allpages[i]),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: (themeProvider.isDarkMode)
+                            ? const Color(0xff666666)
+                            : const Color(0xFFffffff),
+                      ),
+                      child: _list.isNotEmpty && _translate.isNotEmpty
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // Flexible(
+                                //   flex: 3,
+                                //   child: Visibility(
+                                //     visible: true,
+                                //     child: Container(
+                                //       width:
+                                //           MediaQuery.of(context).size.width *
+                                //               0.33,
+                                //       decoration: BoxDecoration(
+                                //         border: Border.all(
+                                //             color: (themeProvider.isDarkMode)
+                                //                 ? const Color(0xffffffff)
+                                //                 : const Color(0xffFFB55F)),
+                                //         color: (themeProvider.isDarkMode)
+                                //             ? const Color(0xff808ba1)
+                                //             : const Color(0xfffff3ca),
+                                //       ),
+                                //       child: const MoreOptionsList(
+                                //         surah: 'Straight',
+                                //         nukKalimah: '',
+                                //       ),
+                                //     ),
+                                //   ),
+                                // ),
+                                Expanded(
+                                  flex: 6,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0),
+                                    child: Align(
+                                      alignment: Alignment.topLeft,
+                                      child: ListView.builder(
+                                        itemCount: _list.length,
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          final fontsize =
+                                              Provider.of<AyaProvider>(context);
+                                          return Card(
+                                            semanticContainer: true,
+                                            clipBehavior:
+                                                Clip.antiAliasWithSaveLayer,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                            ),
+                                            elevation: 5,
+                                            color: (themeProvider.isDarkMode)
+                                                ? const Color(0xffC4C4C4)
+                                                : const Color(0xffFFF5EC),
+                                            child: Column(
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Row(
+                                                    children: [
+                                                      Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8),
+                                                          color: (themeProvider
+                                                                  .isDarkMode)
+                                                              ? const Color(
+                                                                  0xff67748E)
+                                                              : const Color(
+                                                                  0xffFFEEB0),
+                                                        ),
+                                                        width: 70,
+                                                        child: Center(
+                                                          child: Text(
+                                                            '${widget.sura_id}:${start! + index}',
+                                                            style: TextStyle(
+                                                                fontSize:
+                                                                    fontsize
+                                                                        .value,
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .textSelectionColor),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(width: 8),
+                                                      CustomPopupMenu(
+                                                        menuBuilder: () =>
+                                                            ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                          child: Container(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            child:
+                                                                IntrinsicWidth(
+                                                              child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .stretch,
+                                                                children:
+                                                                    menuItems
+                                                                        .map(
+                                                                          (item) =>
+                                                                              GestureDetector(
+                                                                            behavior:
+                                                                                HitTestBehavior.translucent,
+                                                                            onTap:
+                                                                                _controller.hideMenu,
+                                                                            child:
+                                                                                Container(
+                                                                              height: 40,
+                                                                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                                                                              child: Row(
+                                                                                children: <Widget>[
+                                                                                  Icon(
+                                                                                    item.icon,
+                                                                                    size: 15,
+                                                                                    color: Theme.of(context).textSelectionColor,
+                                                                                  ),
+                                                                                  Expanded(
+                                                                                    child: InkWell(
+                                                                                      onTap: () async {
+                                                                                        // Obtain shared preferences.
+                                                                                        final prefs = await SharedPreferences.getInstance();
+                                                                                        if (item.text == 'Bookmark') {
+                                                                                          List<String> list = prefs.getStringList('bookmarks') ?? [];
+                                                                                          setState(() {
+                                                                                            if (list.contains(
+                                                                                                  '${widget.sura_id}:${start! + index}',
+                                                                                                ) ==
+                                                                                                false) {
+                                                                                              list.addAll([
+                                                                                                '${widget.sura_id}:${start! + index}',
+                                                                                                widget.sura_id,
+                                                                                                widget.name,
+                                                                                                widget.detail
+                                                                                              ]);
+                                                                                            }
+                                                                                          });
+                                                                                          prefs.setStringList('bookmarks', list);
+
+                                                                                          ///use to chunk bookmark list
+                                                                                          var lst = prefs.getStringList('bookmarks') ?? [];
+                                                                                          var chunks = [];
+                                                                                          int chunkSize = 4;
+                                                                                          for (var i = 0; i < lst.length; i += chunkSize) {
+                                                                                            chunks.add(lst.sublist(i, i + chunkSize > lst.length ? lst.length : i + chunkSize));
+                                                                                          }
+                                                                                          print(chunks);
+                                                                                        } else {}
+                                                                                      },
+                                                                                      child: Container(
+                                                                                        margin: const EdgeInsets.only(left: 10),
+                                                                                        padding: const EdgeInsets.symmetric(vertical: 10),
+                                                                                        child: Text(
+                                                                                          item.text,
+                                                                                          style: TextStyle(
+                                                                                            color: Theme.of(context).textSelectionColor,
+                                                                                            fontSize: 12,
+                                                                                          ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        )
+                                                                        .toList(),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        pressType: PressType
+                                                            .singleClick,
+                                                        child: Container(
                                                           decoration:
                                                               BoxDecoration(
                                                             borderRadius:
@@ -402,216 +522,91 @@ class _SurahScreenState extends State<SurahScreen> {
                                                                 : const Color(
                                                                     0xffFFEEB0),
                                                           ),
-                                                          width: 70,
-                                                          child: Center(
-                                                            child: Text(
-                                                              '${widget.sura_id}:${start! + index}',
-                                                              style: TextStyle(
-                                                                  fontSize:
-                                                                      fontsize
-                                                                          .value,
-                                                                  color: Theme.of(
-                                                                          context)
-                                                                      .textSelectionColor),
-                                                            ),
+                                                          width: 40,
+                                                          child: Icon(
+                                                            Icons.more_horiz,
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .textSelectionColor,
                                                           ),
                                                         ),
-                                                        const SizedBox(
-                                                            width: 8),
-                                                        CustomPopupMenu(
-                                                          menuBuilder: () =>
-                                                              ClipRRect(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            child: Container(
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .primaryColor,
-                                                              child:
-                                                                  IntrinsicWidth(
-                                                                child: Column(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .stretch,
-                                                                  children:
-                                                                      menuItems
-                                                                          .map(
-                                                                            (item) =>
-                                                                                GestureDetector(
-                                                                              behavior: HitTestBehavior.translucent,
-                                                                              onTap: _controller.hideMenu,
-                                                                              child: Container(
-                                                                                height: 40,
-                                                                                padding: const EdgeInsets.symmetric(horizontal: 20),
-                                                                                child: Row(
-                                                                                  children: <Widget>[
-                                                                                    Icon(
-                                                                                      item.icon,
-                                                                                      size: 15,
-                                                                                      color: Theme.of(context).textSelectionColor,
-                                                                                    ),
-                                                                                    Expanded(
-                                                                                      child: InkWell(
-                                                                                        onTap: () async {
-                                                                                          // Obtain shared preferences.
-                                                                                          final prefs = await SharedPreferences.getInstance();
-                                                                                          if (item.text == 'Bookmark') {
-                                                                                            List<String> list = prefs.getStringList('bookmarks') ?? [];
-                                                                                            setState(() {
-                                                                                              if (list.contains(
-                                                                                                    '${widget.sura_id}:${start! + index}',
-                                                                                                  ) ==
-                                                                                                  false) {
-                                                                                                list.addAll([
-                                                                                                  '${widget.sura_id}:${start! + index}',
-                                                                                                  widget.sura_id,
-                                                                                                  widget.name,
-                                                                                                  widget.detail
-                                                                                                ]);
-                                                                                              }
-                                                                                            });
-                                                                                            prefs.setStringList('bookmarks', list);
-
-                                                                                            ///use to chunk bookmark list
-                                                                                            var lst = prefs.getStringList('bookmarks') ?? [];
-                                                                                            var chunks = [];
-                                                                                            int chunkSize = 4;
-                                                                                            for (var i = 0; i < lst.length; i += chunkSize) {
-                                                                                              chunks.add(lst.sublist(i, i + chunkSize > lst.length ? lst.length : i + chunkSize));
-                                                                                            }
-                                                                                            print(chunks);
-                                                                                          } else {}
-                                                                                        },
-                                                                                        child: Container(
-                                                                                          margin: const EdgeInsets.only(left: 10),
-                                                                                          padding: const EdgeInsets.symmetric(vertical: 10),
-                                                                                          child: Text(
-                                                                                            item.text,
-                                                                                            style: TextStyle(
-                                                                                              color: Theme.of(context).textSelectionColor,
-                                                                                              fontSize: 12,
-                                                                                            ),
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          )
-                                                                          .toList(),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          pressType: PressType
-                                                              .singleClick,
-                                                          child: Container(
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          8),
-                                                              color: (themeProvider
-                                                                      .isDarkMode)
-                                                                  ? const Color(
-                                                                      0xff67748E)
-                                                                  : const Color(
-                                                                      0xffFFEEB0),
-                                                            ),
-                                                            width: 40,
-                                                            child: Icon(
-                                                              Icons.more_horiz,
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .textSelectionColor,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                  Padding(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        horizontal: 16.0,
-                                                        vertical: 8),
-                                                    child: Container(
-                                                      color: themeProvider
-                                                              .isDarkMode
-                                                          ? const Color(
-                                                              0xffC4C4C4)
-                                                          : const Color(
-                                                              0xffFFF5EC),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Flexible(
-                                                            child: Text(
-                                                              _translate[index],
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .justify,
-                                                              style: TextStyle(
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 16.0,
+                                                      vertical: 8),
+                                                  child: Container(
+                                                    color:
+                                                        themeProvider.isDarkMode
+                                                            ? const Color(
+                                                                0xffC4C4C4)
+                                                            : const Color(
+                                                                0xffFFF5EC),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Flexible(
+                                                          child: Text(
+                                                            _translate[index],
+                                                            textAlign: TextAlign
+                                                                .justify,
+                                                            style: TextStyle(
+                                                              fontSize: fontsize
+                                                                  .value,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 16,
+                                                        ),
+                                                        Flexible(
+                                                          child: Text(
+                                                            _list[index]
+                                                                .trim()
+                                                                .replaceAll(
+                                                                    'b', ''),
+                                                            textDirection:
+                                                                TextDirection
+                                                                    .rtl,
+                                                            style: TextStyle(
                                                                 fontSize:
                                                                     fontsize
                                                                         .value,
-                                                              ),
-                                                            ),
+                                                                fontFamily:
+                                                                    'MeQuran2',
+                                                                color: Colors
+                                                                    .black),
                                                           ),
-                                                          SizedBox(
-                                                            width: 16,
-                                                          ),
-                                                          Flexible(
-                                                            child: Text(
-                                                              _list[index]
-                                                                  .trim()
-                                                                  .replaceAll(
-                                                                      'b', ''),
-                                                              textDirection:
-                                                                  TextDirection
-                                                                      .rtl,
-                                                              style: TextStyle(
-                                                                  fontSize:
-                                                                      fontsize
-                                                                          .value,
-                                                                  fontFamily:
-                                                                      'MeQuran2',
-                                                                  color: Colors
-                                                                      .black),
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
+                                                        )
+                                                      ],
                                                     ),
                                                   ),
-                                                ],
-                                              ),
-                                            );
-                                          },
-                                        ),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        },
                                       ),
                                     ),
                                   ),
-                                ],
-                              )
-                            : const Center(child: Text('Loading...')),
-                      ),
-
-                      Consumer<AyaProvider>(builder: (context, aya, child) {
-                        return Slice2("${aya.page}");
-                      }),
-                    ],
-                  ),
+                                ),
+                              ],
+                            )
+                          : const Center(child: Text('Loading...')),
+                    ),
+                    Consumer<AyaProvider>(builder: (context, aya, child) {
+                      return Slice2("${aya.page}");
+                    }),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -639,18 +634,20 @@ class _SurahScreenState extends State<SurahScreen> {
                           ? const Color(0xff808BA1)
                           : const Color(0xfffcd77a)),
                   onPressed: widget.allpages[i] != widget.allpages.first
-                      ? () {
+                      ? () async {
                           Provider.of<AyaProvider>(context, listen: false)
                               .previousPage();
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SurahScreen(
-                                      widget.allpages,
-                                      widget.sura_id,
-                                      widget.name,
-                                      widget.detail)),
-                              (route) => false);
+
+                          if (i < int.parse(widget.allpages.last)) {
+                            setState(() {
+                              i--;
+                            });
+                            await getStartAyah(widget.allpages[i]);
+                            await nextPage(widget.allpages[i]);
+                          } else {
+                            await getStartAyah(widget.allpages.first);
+                            await nextPage(widget.allpages.first);
+                          }
                         }
                       : null,
                   child: Text('Previous page')),
@@ -670,18 +667,28 @@ class _SurahScreenState extends State<SurahScreen> {
                           ? const Color(0xff808BA1)
                           : const Color(0xfffcd77a)),
                   onPressed: widget.allpages[i] != widget.allpages.last
-                      ? () {
+                      ? () async {
                           Provider.of<AyaProvider>(context, listen: false)
                               .nextPage();
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SurahScreen(
-                                      widget.allpages,
-                                      widget.sura_id,
-                                      widget.name,
-                                      widget.detail)),
-                              (route) => false);
+                          // Navigator.pushAndRemoveUntil(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => SurahScreen(
+                          //             widget.allpages,
+                          //             widget.sura_id,
+                          //             widget.name,
+                          //             widget.detail)),
+                          //     (route) => false);
+                          if (i < int.parse(widget.allpages.last)) {
+                            setState(() {
+                              i++;
+                            });
+                            await getStartAyah(widget.allpages[i]);
+                            await nextPage(widget.allpages[i]);
+                          } else {
+                            await getStartAyah(widget.allpages.last);
+                            await nextPage(widget.allpages.last);
+                          }
                         }
                       : null,
                   child: Text('Next page')),
