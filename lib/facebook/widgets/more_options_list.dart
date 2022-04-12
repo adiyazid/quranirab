@@ -79,7 +79,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                 if (index == 0) {
                   final fontsize = Provider.of<AyaProvider>(context);
                   return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Align(
                         alignment: Alignment.topRight,
@@ -100,6 +100,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                             child: Text(
                               widget.surah,
                               style: TextStyle(
+                                fontFamily: 'MeQuran2',
                                 fontSize: fontsize.value,
                                 color: Theme.of(context).textSelectionColor,
                               ),
@@ -107,6 +108,30 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                       ),
                       const Divider(
                         thickness: 1,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Row(
+                          children: [
+                            Text(
+                              name[index].name!,
+                              style: TextStyle(
+                                fontFamily: 'MeQuran2',
+                                fontSize: 24,
+                                color: checkColor(aya.category),
+                              ),
+                            ),
+                            Spacer(),
+                            Text(
+                              'نوع الكلمة',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontFamily: 'MeQuran2',
+                                  color: Theme.of(context).textSelectionColor,
+                                  fontSize: 20),
+                            ),
+                          ],
+                        ),
                       )
                     ],
                   );
@@ -153,7 +178,8 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                               "${name[index].name}",
                               style: TextStyle(
                                 fontFamily: 'MeQuran2',
-                                fontSize: 20,
+                                fontSize:
+                                    name[index].type == 'main-label' ? 24 : 20,
                                 color: name[index].type == 'main-label'
                                     ? checkMainColor(name[index].id)
                                     : Theme.of(context).textSelectionColor,
@@ -189,5 +215,12 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
       return 24;
     }
     return 20;
+  }
+
+  checkColor(String category) {
+    if (category == 'Ism') return Colors.blue;
+    if (category == 'Harf') return Colors.red;
+    if (category == 'Fi‘l') return Colors.green;
+    return Colors.black;
   }
 }

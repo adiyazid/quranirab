@@ -1,6 +1,5 @@
 import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:quranirab/models/font.size.dart';
 import 'package:quranirab/widget/menu.dart';
 import 'package:quranirab/widget/search.popup.dart';
 import 'package:quranirab/widget/setting.popup.dart';
@@ -132,6 +131,9 @@ class _DataFromFirestoreState extends State<DataFromFirestore> {
                                         Provider.of<AyaProvider>(context,
                                                 listen: false)
                                             .getPage(int.parse(a.first));
+                                        // Provider.of<AyaProvider>(context,
+                                        //     listen: false)
+                                        //     .getPage(58);
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(

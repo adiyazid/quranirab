@@ -14,7 +14,6 @@ import 'package:quranirab/widget/TranslationPopup.dart';
 import 'package:quranirab/widget/responsive.dart' as w;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../facebook/widgets/more_options_list.dart';
 import '../provider/ayah.number.provider.dart';
 import '../theme/theme_provider.dart';
 import '../widget/LanguagePopup.dart';
@@ -578,7 +577,10 @@ class _SurahScreenState extends State<SurahScreen>
                             )
                           : const Center(child: Text('Loading...')),
                     ),
-                    Slice2("${Provider.of<AyaProvider>(context).page}"),
+                    Align(
+                        alignment: Alignment.centerRight,
+                        child: Slice2(
+                            "${Provider.of<AyaProvider>(context).page}")),
                   ],
                 ),
               ),
