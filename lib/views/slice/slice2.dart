@@ -45,8 +45,6 @@ class _Slice2State extends State<Slice2> {
 
   double all = 0;
 
-  bool _visible = false;
-
   @override
   void initState() {
     loadProvider();
@@ -109,9 +107,14 @@ class _Slice2State extends State<Slice2> {
                                                         : const Color(
                                                             0xfffff3ca),
                                                   ),
-                                                  child: MoreOptionsList(
-                                                    surah: aya.words ?? '',
-                                                    nukKalimah: 'c',
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: 18.0),
+                                                    child: MoreOptionsList(
+                                                      surah: aya.words ?? '',
+                                                      nukKalimah: 'c',
+                                                    ),
                                                   ),
                                                 ),
                                               ),
@@ -162,7 +165,6 @@ class _Slice2State extends State<Slice2> {
                                                                                 style: TextStyle(
                                                                                   fontFamily: 'MeQuran2',
                                                                                   fontSize: aya.value,
-                                                                                  color: aya.getBoolean(i) ? aya.getColor(aya.slice![i].wordId) : null,
                                                                                 )),
                                                                             InkWell(
                                                                               onTap: aya.visible
@@ -274,19 +276,57 @@ class _Slice2State extends State<Slice2> {
                                                             )
                                                           : Row(
                                                               children: [
-                                                                Consumer<
-                                                                        AyaProvider>(
-                                                                    builder:
-                                                                        (context,
-                                                                            aya,
-                                                                            child) {
-                                                                  return aya.checkSymbol(aya
-                                                                          .slice![
-                                                                              i]
-                                                                          .start)
-                                                                      ? Row(
-                                                                          children: [
-                                                                            Text(" ﲿ ",
+                                                                aya.checkSymbol(aya
+                                                                        .slice![
+                                                                            i]
+                                                                        .start)
+                                                                    ? Row(
+                                                                        children: [
+                                                                          Text(
+                                                                              " ﲿ ",
+                                                                              textDirection: TextDirection.rtl,
+                                                                              softWrap: true,
+                                                                              style: TextStyle(
+                                                                                fontFamily: 'MeQuran2',
+                                                                                fontSize: aya.value,
+                                                                                // aya.getBoolean(_slice[i]['start'] - 1)
+                                                                                //     ? aya.getColor(_slice[i]['word_id'])
+                                                                                //     : Colors.black)),
+                                                                              )),
+                                                                          InkWell(
+                                                                            onTap: aya.visible
+                                                                                ? null
+                                                                                : () {
+                                                                                    print(aya.slice![i].end);
+                                                                                    Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.slice![i].wordId, Provider.of<LangProvider>(context, listen: false).langId);
+                                                                                    aya.setWords(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
+                                                                                    if (size.width < 1400) {
+                                                                                      showPopover(
+                                                                                        backgroundColor: Color(0xffFFF3CA),
+                                                                                        context: context,
+                                                                                        transitionDuration: const Duration(milliseconds: 200),
+                                                                                        bodyBuilder: (context) {
+                                                                                          return ListItems(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
+                                                                                        },
+                                                                                        onPop: () {
+                                                                                          Provider.of<AyaProvider>(context, listen: false).clear();
+                                                                                        },
+                                                                                        direction: PopoverDirection.bottom,
+                                                                                        width: 450,
+                                                                                        height: 400,
+                                                                                        arrowHeight: 15,
+                                                                                        arrowWidth: 30,
+                                                                                      );
+                                                                                    } else {
+                                                                                      if (mounted) {
+                                                                                        setState(() {
+                                                                                          aya.updateValue(i);
+                                                                                          aya.set();
+                                                                                        });
+                                                                                      }
+                                                                                    }
+                                                                                  },
+                                                                            child: Text(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join(),
                                                                                 textDirection: TextDirection.rtl,
                                                                                 softWrap: true,
                                                                                 style: TextStyle(
@@ -297,96 +337,54 @@ class _Slice2State extends State<Slice2> {
                                                                                   //     ? aya.getColor(_slice[i]['word_id'])
                                                                                   //     : Colors.black)),
                                                                                 )),
-                                                                            InkWell(
-                                                                              onTap: aya.visible
-                                                                                  ? null
-                                                                                  : () {
-                                                                                      print(aya.slice![i].end);
-                                                                                      Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.slice![i].wordId, Provider.of<LangProvider>(context, listen: false).langId);
-                                                                                      aya.setWords(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
-                                                                                      if (size.width < 1400) {
-                                                                                        showPopover(
-                                                                                          backgroundColor: Color(0xffFFF3CA),
-                                                                                          context: context,
-                                                                                          transitionDuration: const Duration(milliseconds: 200),
-                                                                                          bodyBuilder: (context) {
-                                                                                            return ListItems(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
-                                                                                          },
-                                                                                          onPop: () {
-                                                                                            Provider.of<AyaProvider>(context, listen: false).clear();
-                                                                                          },
-                                                                                          direction: PopoverDirection.bottom,
-                                                                                          width: 450,
-                                                                                          height: 400,
-                                                                                          arrowHeight: 15,
-                                                                                          arrowWidth: 30,
-                                                                                        );
-                                                                                      } else {
-                                                                                        if (mounted) {
-                                                                                          setState(() {
-                                                                                            aya.updateValue(i);
-                                                                                            aya.set();
-                                                                                          });
-                                                                                        }
-                                                                                      }
+                                                                          ),
+                                                                        ],
+                                                                      )
+                                                                    : InkWell(
+                                                                        onTap: aya.visible
+                                                                            ? null
+                                                                            : () {
+                                                                                print(aya.slice![i].end);
+                                                                                Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.slice![i].wordId, Provider.of<LangProvider>(context, listen: false).langId);
+                                                                                aya.setWords(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
+                                                                                if (size.width < 1400) {
+                                                                                  showPopover(
+                                                                                    backgroundColor: Color(0xffFFF3CA),
+                                                                                    context: context,
+                                                                                    transitionDuration: const Duration(milliseconds: 200),
+                                                                                    bodyBuilder: (context) {
+                                                                                      return ListItems(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
                                                                                     },
-                                                                              child: Text(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join(),
-                                                                                  textDirection: TextDirection.rtl,
-                                                                                  softWrap: true,
-                                                                                  style: TextStyle(
-                                                                                    fontFamily: 'MeQuran2',
-                                                                                    fontSize: aya.value,
-                                                                                    color: aya.getBoolean(i) ? aya.getColor(aya.slice![i].wordId) : null,
-                                                                                    // aya.getBoolean(_slice[i]['start'] - 1)
-                                                                                    //     ? aya.getColor(_slice[i]['word_id'])
-                                                                                    //     : Colors.black)),
-                                                                                  )),
-                                                                            ),
-                                                                          ],
-                                                                        )
-                                                                      : InkWell(
-                                                                          onTap: aya.visible
-                                                                              ? null
-                                                                              : () {
-                                                                                  print(aya.slice![i].end);
-                                                                                  Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.slice![i].wordId, Provider.of<LangProvider>(context, listen: false).langId);
-                                                                                  aya.setWords(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
-                                                                                  if (size.width < 1400) {
-                                                                                    showPopover(
-                                                                                      backgroundColor: Color(0xffFFF3CA),
-                                                                                      context: context,
-                                                                                      transitionDuration: const Duration(milliseconds: 200),
-                                                                                      bodyBuilder: (context) {
-                                                                                        return ListItems(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
-                                                                                      },
-                                                                                      onPop: () {
-                                                                                        Provider.of<AyaProvider>(context, listen: false).clear();
-                                                                                      },
-                                                                                      direction: PopoverDirection.bottom,
-                                                                                      width: 450,
-                                                                                      height: 400,
-                                                                                      arrowHeight: 15,
-                                                                                      arrowWidth: 30,
-                                                                                    );
-                                                                                  } else {
-                                                                                    if (mounted) {
-                                                                                      setState(() {
-                                                                                        aya.updateValue(i);
-                                                                                        aya.set();
-                                                                                      });
-                                                                                    }
+                                                                                    onPop: () {
+                                                                                      Provider.of<AyaProvider>(context, listen: false).clear();
+                                                                                    },
+                                                                                    direction: PopoverDirection.bottom,
+                                                                                    width: 450,
+                                                                                    height: 400,
+                                                                                    arrowHeight: 15,
+                                                                                    arrowWidth: 30,
+                                                                                  );
+                                                                                } else {
+                                                                                  if (mounted) {
+                                                                                    setState(() {
+                                                                                      aya.updateValue(i);
+                                                                                      aya.set();
+                                                                                    });
                                                                                   }
-                                                                                },
-                                                                          child: Text(
-                                                                              aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join().replaceAll('ﲿ', ''),
-                                                                              softWrap: true,
-                                                                              style: TextStyle(
-                                                                                fontFamily: 'MeQuran2',
-                                                                                fontSize: aya.value,
-                                                                                color: aya.getBoolean(i) ? aya.getColor(aya.slice![i].wordId) : null,
-                                                                              )),
-                                                                        );
-                                                                }),
+                                                                                }
+                                                                              },
+                                                                        child: Text(
+                                                                            aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join().replaceAll(
+                                                                                'ﲿ', ''),
+                                                                            softWrap:
+                                                                                true,
+                                                                            style:
+                                                                                TextStyle(
+                                                                              fontFamily: 'MeQuran2',
+                                                                              fontSize: aya.value,
+                                                                              color: aya.getBoolean(i) ? aya.getColor(aya.slice![i].wordId) : null,
+                                                                            )),
+                                                                      ),
                                                                 Text(
                                                                   "${aya.ayaNumber[aya.nums != 0 ? aya.nums - 1 : aya.nums]} ",
                                                                   softWrap:
@@ -405,14 +403,6 @@ class _Slice2State extends State<Slice2> {
                                                   ],
                                                 ),
                                               ),
-                                            // for (int i = 0;
-                                            //     i < aya.ayaPosition.length;
-                                            //     i++)
-                                            //   Text(
-                                            //     aya.ayaPosition[i].toString(),
-                                            //     style: TextStyle(
-                                            //         fontFamily: 'MeQuran2'),
-                                            //   )
                                           ],
                                         ),
                                       ),
@@ -456,5 +446,8 @@ class _Slice2State extends State<Slice2> {
     await Provider.of<AyaProvider>(context, listen: false).readJsonData();
     await Provider.of<AyaProvider>(context, listen: false).readSliceData();
     await Provider.of<AyaProvider>(context, listen: false).readAya();
+    if (Provider.of<AyaProvider>(context, listen: false).visible == true) {
+      await Provider.of<AyaProvider>(context, listen: false).set();
+    }
   }
 }

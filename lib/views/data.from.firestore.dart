@@ -133,7 +133,7 @@ class _DataFromFirestoreState extends State<DataFromFirestore> {
                                             .getPage(int.parse(a.first));
                                         // Provider.of<AyaProvider>(context,
                                         //     listen: false)
-                                        //     .getPage(58);
+                                        //     .getPage(184);
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(

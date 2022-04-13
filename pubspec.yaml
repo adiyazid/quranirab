@@ -60,6 +60,7 @@ dependencies:
   async: ^2.8.1
   responsive: ^0.3.11+11
   popover: ^0.2.6+3
+  skeleton_loader: ^2.0.0+4
 
 dev_dependencies:
   flutter_test:

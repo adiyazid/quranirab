@@ -52,7 +52,7 @@ class AyaProvider extends ChangeNotifier {
   bool visible = false;
 
   void increment() {
-    if (_value != 40) {
+    if (_value != 35) {
       _value = _value + 5;
       notifyListeners();
     }
@@ -70,6 +70,8 @@ class AyaProvider extends ChangeNotifier {
 
   void getPage(int no) {
     page = no;
+    _sPos.clear();
+    if (visible == true) visible = !visible;
     notifyListeners();
   }
 
@@ -448,6 +450,118 @@ class AyaProvider extends ChangeNotifier {
       breakIndex = _index?.page165 ?? <int>[];
     } else if (page == 166) {
       breakIndex = _index?.page166 ?? <int>[];
+    } else if (page == 167) {
+      breakIndex = _index?.page167 ?? <int>[];
+    } else if (page == 168) {
+      breakIndex = _index?.page168 ?? <int>[];
+    } else if (page == 169) {
+      breakIndex = _index?.page169 ?? <int>[];
+    } else if (page == 170) {
+      breakIndex = _index?.page170 ?? <int>[];
+    } else if (page == 171) {
+      breakIndex = _index?.page171 ?? <int>[];
+    } else if (page == 172) {
+      breakIndex = _index?.page172 ?? <int>[];
+    } else if (page == 173) {
+      breakIndex = _index?.page173 ?? <int>[];
+    } else if (page == 174) {
+      breakIndex = _index?.page174 ?? <int>[];
+    } else if (page == 175) {
+      breakIndex = _index?.page175 ?? <int>[];
+    } else if (page == 176) {
+      breakIndex = _index?.page176 ?? <int>[];
+    } else if (page == 177) {
+      breakIndex = _index?.page177 ?? <int>[];
+    } else if (page == 178) {
+      breakIndex = _index?.page178 ?? <int>[];
+    } else if (page == 179) {
+      breakIndex = _index?.page179 ?? <int>[];
+    } else if (page == 180) {
+      breakIndex = _index?.page180 ?? <int>[];
+    } else if (page == 181) {
+      breakIndex = _index?.page181 ?? <int>[];
+    } else if (page == 182) {
+      breakIndex = _index?.page182 ?? <int>[];
+    } else if (page == 183) {
+      breakIndex = _index?.page183 ?? <int>[];
+    } else if (page == 184) {
+      breakIndex = _index?.page184 ?? <int>[];
+    } else if (page == 185) {
+      breakIndex = _index?.page185 ?? <int>[];
+    } else if (page == 186) {
+      breakIndex = _index?.page186 ?? <int>[];
+    } else if (page == 187) {
+      breakIndex = _index?.page187 ?? <int>[];
+    } else if (page == 188) {
+      breakIndex = _index?.page188 ?? <int>[];
+    } else if (page == 189) {
+      breakIndex = _index?.page189 ?? <int>[];
+    } else if (page == 190) {
+      breakIndex = _index?.page190 ?? <int>[];
+    } else if (page == 191) {
+      breakIndex = _index?.page191 ?? <int>[];
+    } else if (page == 192) {
+      breakIndex = _index?.page192 ?? <int>[];
+    } else if (page == 193) {
+      breakIndex = _index?.page193 ?? <int>[];
+    } else if (page == 194) {
+      breakIndex = _index?.page194 ?? <int>[];
+    } else if (page == 195) {
+      breakIndex = _index?.page195 ?? <int>[];
+    } else if (page == 196) {
+      breakIndex = _index?.page196 ?? <int>[];
+    } else if (page == 197) {
+      breakIndex = _index?.page197 ?? <int>[];
+    } else if (page == 198) {
+      breakIndex = _index?.page198 ?? <int>[];
+    } else if (page == 199) {
+      breakIndex = _index?.page199 ?? <int>[];
+    } else if (page == 200) {
+      breakIndex = _index?.page200 ?? <int>[];
+    } else if (page == 201) {
+      breakIndex = _index?.page201 ?? <int>[];
+    } else if (page == 202) {
+      breakIndex = _index?.page202 ?? <int>[];
+    } else if (page == 203) {
+      breakIndex = _index?.page203 ?? <int>[];
+    } else if (page == 204) {
+      breakIndex = _index?.page204 ?? <int>[];
+    } else if (page == 205) {
+      breakIndex = _index?.page205 ?? <int>[];
+    } else if (page == 206) {
+      breakIndex = _index?.page206 ?? <int>[];
+    } else if (page == 207) {
+      breakIndex = _index?.page207 ?? <int>[];
+    } else if (page == 208) {
+      breakIndex = _index?.page208 ?? <int>[];
+    } else if (page == 209) {
+      breakIndex = _index?.page209 ?? <int>[];
+    } else if (page == 210) {
+      breakIndex = _index?.page210 ?? <int>[];
+    } else if (page == 211) {
+      breakIndex = _index?.page211 ?? <int>[];
+    } else if (page == 212) {
+      breakIndex = _index?.page212 ?? <int>[];
+    } else if (page == 213) {
+      breakIndex = _index?.page213 ?? <int>[];
+    } else if (page == 214) {
+      breakIndex = _index?.page214 ?? <int>[];
+    } else if (page == 215) {
+      breakIndex = _index?.page215 ?? <int>[];
+    } else if (page == 216) {
+      breakIndex = _index?.page216 ?? <int>[];
+    } else if (page == 217) {
+      breakIndex = _index?.page217 ?? <int>[];
+    } else if (page == 218) {
+      breakIndex = _index?.page218 ?? <int>[];
+    } else if (page == 219) {
+      breakIndex = _index?.page219 ?? <int>[];
+    } else if (page == 220) {
+      breakIndex = _index?.page220 ?? <int>[];
+    } else if (page == 221) {
+      breakIndex = _index?.page221 ?? <int>[];
+    } else if (page == 222) {
+      breakIndex = _index?.page222 ?? <int>[];
     } else if (page == 223) {
       breakIndex = _index?.page223 ?? <int>[];
     } else if (page == 224) {
@@ -583,7 +697,6 @@ class AyaProvider extends ChangeNotifier {
     for (int i = 0; i < slice!.length; i++) {
       if (slice![i != slice!.length - 1 ? i + 1 : i].start - slice![i].end ==
           1) {
-        print('data fix');
       } else {
         var a =
             slice![i != slice!.length - 1 ? i + 1 : i].start - slice![i].end;
@@ -625,6 +738,7 @@ class AyaProvider extends ChangeNotifier {
   void nextPage() {
     if (page != 604) {
       page = page + 1;
+      _sPos.clear();
       notifyListeners();
       getPage(page);
     }
@@ -633,7 +747,9 @@ class AyaProvider extends ChangeNotifier {
   void previousPage() {
     if (page != 1) {
       page = page - 1;
+      _sPos.clear();
       notifyListeners();
+      getPage(page);
     }
   }
 
@@ -655,7 +771,6 @@ class AyaProvider extends ChangeNotifier {
         .then((QuerySnapshot querySnapshot) {
       wordTypeDetail.clear();
       wordName.clear();
-      _sPos.clear();
       clear();
       notifyListeners();
       for (var doc in querySnapshot.docs) {
@@ -813,6 +928,7 @@ class AyaProvider extends ChangeNotifier {
 
   checkSymbol(int end) {
     if (_sPos.contains(end - 3)) {
+      print('t $end');
       return true;
     } else {
       return false;

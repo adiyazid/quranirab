@@ -264,7 +264,7 @@ class _SettingPopupState extends State<SettingPopup>
                                           setState(() {
                                             // fontData.index = 2;
                                             // fontData.size = 60;
-                                            if (fontData.size != 40) {
+                                            if (fontData.size != 35) {
                                               fontData.size = fontData.size + 5;
                                               Provider.of<AyaProvider>(context,
                                                       listen: false)

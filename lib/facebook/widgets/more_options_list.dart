@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
+import 'package:skeleton_loader/skeleton_loader.dart';
 
 import '../../models/word.detail.dart';
 
@@ -28,7 +29,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
   @override
   void initState() {
     // TODO: implement initState
-    Future.delayed(Duration(seconds: 5), loading);
+    Future.delayed(Duration(seconds: 6), loading);
     super.initState();
   }
 
@@ -191,7 +192,85 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
               },
             );
           })
-        : Center(child: Text('loading'));
+        : Column(
+          children: [
+            SkeletonLoader(
+                builder: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Align(
+                  alignment: Alignment.topRight,
+                  child:
+                      IconButton(onPressed: () {}, icon: Icon(Icons.clear)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: Container(
+                        height: 30,
+                        width: 100,
+                      )),
+                ),
+                const Divider(
+                  thickness: 1,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Row(
+                    children: [
+                      Container(
+                        height: 30,
+                        width: 100,
+                      ),
+                      Spacer(),
+                      Container(
+                        height: 30,
+                        width: 100,
+                      )
+                    ],
+                  ),
+                )
+              ],
+            )),
+            SkeletonLoader(
+              builder: Container(
+                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            width: double.infinity,
+                            height: 40,
+                            color: Colors.white,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Spacer(),
+                    Expanded(
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            width: double.infinity,
+                            height: 40,
+                            color: Colors.white,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              items: 15,
+              period: Duration(seconds: 2),
+              highlightColor: Colors.lightBlue,
+              direction: SkeletonDirection.rtl,
+            ),
+          ],
+        );
   }
 
   void loading() {
