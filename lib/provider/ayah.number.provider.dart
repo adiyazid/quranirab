@@ -928,7 +928,6 @@ class AyaProvider extends ChangeNotifier {
 
   checkSymbol(int end) {
     if (_sPos.contains(end - 3)) {
-      print('t $end');
       return true;
     } else {
       return false;
