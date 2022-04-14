@@ -111,11 +111,10 @@ class _SurahScreenState extends State<SurahScreen>
         .then((QuerySnapshot querySnapshot) {
       for (var doc in querySnapshot.docs) {
         setState(() {
-          _list.add(doc['text1']);
+          _list.add(doc['text']);
         });
       }
     });
-    _list.any((e) => e.contains('b'));
   }
 
   Future<void> nextPage(String id) async {
@@ -578,7 +577,7 @@ class _SurahScreenState extends State<SurahScreen>
                           : const Center(child: Text('Loading...')),
                     ),
                     Align(
-                        alignment: Alignment.centerRight,
+                        alignment: Alignment.center,
                         child: Slice2(
                             "${Provider.of<AyaProvider>(context).page}")),
                   ],

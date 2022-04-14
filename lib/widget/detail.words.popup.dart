@@ -81,7 +81,8 @@ class _ListItemsState extends State<ListItems> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Text(
-                                  widget.text,
+                                  widget.text.replaceAll('ﲿ', '')
+                                      .replaceAll('ﲹ', ''),
                                   style: TextStyle(
                                       color: checkColor(aya.category),
                                       fontSize: 24,

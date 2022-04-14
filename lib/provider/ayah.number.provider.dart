@@ -108,7 +108,6 @@ class AyaProvider extends ChangeNotifier {
         }
         old = select;
       } else if (select.isNotEmpty) {
-        print("${select.length} ${old.length}");
         if (select.contains(true)) {
           select.clear();
           for (int i = 0; i < list!.join().split('').length; i++) {
@@ -1162,6 +1161,118 @@ class AyaProvider extends ChangeNotifier {
       breakIndex = _index?.page389 ?? <int>[];
     } else if (page == 390) {
       breakIndex = _index?.page390 ?? <int>[];
+    } else if (page == 391) {
+      breakIndex = _index?.page391 ?? <int>[];
+    } else if (page == 392) {
+      breakIndex = _index?.page392 ?? <int>[];
+    } else if (page == 393) {
+      breakIndex = _index?.page393 ?? <int>[];
+    } else if (page == 394) {
+      breakIndex = _index?.page394 ?? <int>[];
+    } else if (page == 395) {
+      breakIndex = _index?.page395 ?? <int>[];
+    } else if (page == 396) {
+      breakIndex = _index?.page396 ?? <int>[];
+    } else if (page == 397) {
+      breakIndex = _index?.page397 ?? <int>[];
+    } else if (page == 398) {
+      breakIndex = _index?.page398 ?? <int>[];
+    } else if (page == 399) {
+      breakIndex = _index?.page399 ?? <int>[];
+    } else if (page == 400) {
+      breakIndex = _index?.page400 ?? <int>[];
+    } else if (page == 401) {
+      breakIndex = _index?.page401 ?? <int>[];
+    } else if (page == 402) {
+      breakIndex = _index?.page402 ?? <int>[];
+    } else if (page == 403) {
+      breakIndex = _index?.page403 ?? <int>[];
+    } else if (page == 404) {
+      breakIndex = _index?.page404 ?? <int>[];
+    } else if (page == 405) {
+      breakIndex = _index?.page405 ?? <int>[];
+    } else if (page == 406) {
+      breakIndex = _index?.page406 ?? <int>[];
+    } else if (page == 407) {
+      breakIndex = _index?.page407 ?? <int>[];
+    } else if (page == 408) {
+      breakIndex = _index?.page408 ?? <int>[];
+    } else if (page == 409) {
+      breakIndex = _index?.page409 ?? <int>[];
+    } else if (page == 410) {
+      breakIndex = _index?.page410 ?? <int>[];
+    } else if (page == 411) {
+      breakIndex = _index?.page411 ?? <int>[];
+    } else if (page == 412) {
+      breakIndex = _index?.page412 ?? <int>[];
+    } else if (page == 413) {
+      breakIndex = _index?.page413 ?? <int>[];
+    } else if (page == 414) {
+      breakIndex = _index?.page414 ?? <int>[];
+    } else if (page == 415) {
+      breakIndex = _index?.page415 ?? <int>[];
+    } else if (page == 416) {
+      breakIndex = _index?.page416 ?? <int>[];
+    } else if (page == 417) {
+      breakIndex = _index?.page417 ?? <int>[];
+    } else if (page == 418) {
+      breakIndex = _index?.page418 ?? <int>[];
+    } else if (page == 419) {
+      breakIndex = _index?.page419 ?? <int>[];
+    } else if (page == 420) {
+      breakIndex = _index?.page420 ?? <int>[];
+    } else if (page == 421) {
+      breakIndex = _index?.page421 ?? <int>[];
+    } else if (page == 422) {
+      breakIndex = _index?.page422 ?? <int>[];
+    } else if (page == 423) {
+      breakIndex = _index?.page423 ?? <int>[];
+    } else if (page == 424) {
+      breakIndex = _index?.page424 ?? <int>[];
+    } else if (page == 425) {
+      breakIndex = _index?.page425 ?? <int>[];
+    } else if (page == 426) {
+      breakIndex = _index?.page426 ?? <int>[];
+    } else if (page == 427) {
+      breakIndex = _index?.page427 ?? <int>[];
+    } else if (page == 428) {
+      breakIndex = _index?.page428 ?? <int>[];
+    } else if (page == 429) {
+      breakIndex = _index?.page429 ?? <int>[];
+    } else if (page == 430) {
+      breakIndex = _index?.page430 ?? <int>[];
+    } else if (page == 431) {
+      breakIndex = _index?.page431 ?? <int>[];
+    } else if (page == 432) {
+      breakIndex = _index?.page432 ?? <int>[];
+    } else if (page == 433) {
+      breakIndex = _index?.page433 ?? <int>[];
+    } else if (page == 434) {
+      breakIndex = _index?.page434 ?? <int>[];
+    } else if (page == 435) {
+      breakIndex = _index?.page435 ?? <int>[];
+    } else if (page == 436) {
+      breakIndex = _index?.page436 ?? <int>[];
+    } else if (page == 437) {
+      breakIndex = _index?.page437 ?? <int>[];
+    } else if (page == 438) {
+      breakIndex = _index?.page438 ?? <int>[];
+    } else if (page == 439) {
+      breakIndex = _index?.page439 ?? <int>[];
+    } else if (page == 440) {
+      breakIndex = _index?.page440 ?? <int>[];
+    } else if (page == 441) {
+      breakIndex = _index?.page441 ?? <int>[];
+    } else if (page == 442) {
+      breakIndex = _index?.page442 ?? <int>[];
+    } else if (page == 443) {
+      breakIndex = _index?.page443 ?? <int>[];
+    } else if (page == 444) {
+      breakIndex = _index?.page444 ?? <int>[];
+    } else if (page == 445) {
+      breakIndex = _index?.page445 ?? <int>[];
+    } else if (page == 446) {
+      breakIndex = _index?.page446 ?? <int>[];
     } else {
       breakIndex = <int>[];
       notifyListeners();

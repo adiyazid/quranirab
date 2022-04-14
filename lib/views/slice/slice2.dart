@@ -67,8 +67,7 @@ class _Slice2State extends State<Slice2> {
                             ? Column(
                                 children: [
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       if (size.width > 1400)
                                         Visibility(
@@ -121,6 +120,7 @@ class _Slice2State extends State<Slice2> {
                                             ),
                                           ),
                                         ),
+                                      Spacer(),
                                       Padding(
                                         padding:
                                             const EdgeInsets.only(top: 80.0),
@@ -406,6 +406,7 @@ class _Slice2State extends State<Slice2> {
                                           ],
                                         ),
                                       ),
+                                      Spacer(),
                                       SizedBox(
                                         height: 30,
                                       ),
