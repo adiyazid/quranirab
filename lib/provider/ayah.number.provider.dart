@@ -46,6 +46,8 @@ class AyaProvider extends ChangeNotifier {
 
   String? words;
 
+  bool loading = false;
+
   get value => _value;
 
   get sliceData => _sliceData;
@@ -64,7 +66,8 @@ class AyaProvider extends ChangeNotifier {
   }
 
   void setDefault() {
-    select = old;
+    loading = false;
+
     notifyListeners();
   }
 
@@ -123,6 +126,8 @@ class AyaProvider extends ChangeNotifier {
         }
       }
     });
+    loading = true;
+    notifyListeners();
   }
 
   Future<void> readSliceData() async {
@@ -153,6 +158,7 @@ class AyaProvider extends ChangeNotifier {
                   : slice![i].end,
               wordId: slice![i].wordId)
         ]);
+
         notifyListeners();
       }
     }

@@ -246,12 +246,15 @@ class _SurahScreenState extends State<SurahScreen>
                             SizedBox(width: 16),
                             hizb != null
                                 ? Flexible(
-                                    child: Text(
-                                      'Juz ${getJuzNumber(int.parse(widget.sura_id), start!)} / Hizb $hizb - Page ${widget.allpages[i]}',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                      ),
-                                    ),
+                                    child: Consumer<AyaProvider>(
+                                        builder: (context, aya, child) {
+                                      return Text(
+                                        'Juz ${getJuzNumber(int.parse(widget.sura_id), start!)} / Hizb $hizb - Page ${aya.page}',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                        ),
+                                      );
+                                    }),
                                   )
                                 : Container(),
                           ],
@@ -578,8 +581,10 @@ class _SurahScreenState extends State<SurahScreen>
                     ),
                     Align(
                         alignment: Alignment.center,
-                        child: Slice2(
-                            "${Provider.of<AyaProvider>(context).page}")),
+                        child: SizedBox(
+                          child: Slice2(
+                              "${Provider.of<AyaProvider>(context).page}"),
+                        )),
                   ],
                 ),
               ),
@@ -615,6 +620,8 @@ class _SurahScreenState extends State<SurahScreen>
                           Provider.of<AyaProvider>(context, listen: false)
                               .previousPage();
                           Provider.of<AyaProvider>(context, listen: false)
+                              .setDefault();
+                          Provider.of<AyaProvider>(context, listen: false)
                               .readJsonData();
                           Provider.of<AyaProvider>(context, listen: false)
                               .readSliceData();
@@ -646,12 +653,20 @@ class _SurahScreenState extends State<SurahScreen>
                         ? null
                         : () async {
                             Provider.of<AyaProvider>(context, listen: false)
-                                .getPage(number.page);
+                                .getPage(int.parse(widget.allpages.first));
+                            Provider.of<AyaProvider>(context, listen: false)
+                                .setDefault();
+                            await Provider.of<AyaProvider>(context,
+                                    listen: false)
+                                .readJsonData();
+                            await Provider.of<AyaProvider>(context,
+                                    listen: false)
+                                .readSliceData();
+                            await Provider.of<AyaProvider>(context,
+                                    listen: false)
+                                .readAya();
                             await getStartAyah(widget.allpages.first);
                             await nextPage(widget.allpages.first);
-                            setState(() {
-                              i = 0;
-                            });
                           },
                     style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
@@ -676,6 +691,8 @@ class _SurahScreenState extends State<SurahScreen>
                       ? () async {
                           Provider.of<AyaProvider>(context, listen: false)
                               .nextPage();
+                          Provider.of<AyaProvider>(context, listen: false)
+                              .setDefault();
                           Provider.of<AyaProvider>(context, listen: false)
                               .readJsonData();
                           Provider.of<AyaProvider>(context, listen: false)

@@ -131,6 +131,9 @@ class _DataFromFirestoreState extends State<DataFromFirestore> {
                                         Provider.of<AyaProvider>(context,
                                                 listen: false)
                                             .getPage(int.parse(a.first));
+                                        Provider.of<AyaProvider>(context,
+                                            listen: false)
+                                            .setDefault();
                                         // Provider.of<AyaProvider>(context,
                                         //     listen: false)
                                         //     .getPage(379);
