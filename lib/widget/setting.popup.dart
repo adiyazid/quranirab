@@ -6,7 +6,6 @@ import 'package:quranirab/models/font.size.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 
-import '../views/surah.screen.dart';
 
 class SettingPopup extends StatefulWidget {
   const SettingPopup({Key? key}) : super(key: key);
@@ -22,6 +21,8 @@ class _SettingPopupState extends State<SettingPopup>
   int no = 0;
 
   var visible = true;
+
+  final _custom = CustomPopupMenuController();
 
   bool get indexIsChanging => _indexIsChangingCount != 0;
 
@@ -91,6 +92,7 @@ class _SettingPopupState extends State<SettingPopup>
     final brightness = SchedulerBinding.instance!.window.platformBrightness;
     return StatefulBuilder(builder: (context, setState) {
       return CustomPopupMenu(
+        controller: _custom,
         child: const Icon(Icons.settings),
         pressType: PressType.singleClick,
         showArrow: false,
@@ -138,7 +140,7 @@ class _SettingPopupState extends State<SettingPopup>
                                     const EdgeInsets.fromLTRB(450, 0, 0, 0),
                                 child: IconButton(
                                   onPressed: () async {
-                                    Navigator.of(context).maybePop();
+                                    _custom.hideMenu();
                                   },
                                   icon: const Icon(Icons.close),
                                   color: Theme.of(context).textSelectionColor,

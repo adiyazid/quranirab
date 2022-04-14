@@ -7,7 +7,7 @@ import 'package:quranirab/models/font.size.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
 import 'package:quranirab/provider/language.provider.dart';
 
-import '../../facebook/widgets/more_options_list.dart';
+import '../more_options_list.dart';
 import '../../theme/theme_provider.dart';
 import '../../widget/detail.words.popup.dart';
 

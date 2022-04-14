@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quranirab/facebook/widgets/more_options_list.dart';
+import 'package:quranirab/views/more_options_list.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 
 class SurahPage extends StatefulWidget {

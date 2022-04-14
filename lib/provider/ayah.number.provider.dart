@@ -102,8 +102,21 @@ class AyaProvider extends ChangeNotifier {
         total = total + doc["text"].split('').length;
         notifyListeners();
       }
-      for (int i = 0; i < list!.join().split('').length; i++) {
-        select.add(false);
+      if (select.isEmpty) {
+        for (int i = 0; i < list!.join().split('').length; i++) {
+          select.add(false);
+        }
+        old = select;
+      } else if (select.isNotEmpty) {
+        print("${select.length} ${old.length}");
+        if (select.contains(true)) {
+          select.clear();
+          for (int i = 0; i < list!.join().split('').length; i++) {
+            select.add(false);
+          }
+          print('[set to default]');
+        }
+        notifyListeners();
       }
       for (int i = 0; i < list!.join().split('').length; i++) {
         if (list!.join().split('')[i] == 'ﲿ') {
@@ -111,6 +124,257 @@ class AyaProvider extends ChangeNotifier {
         }
       }
     });
+  }
+
+  Future<void> readSliceData() async {
+    await sliceData
+        .where('id', isEqualTo: "${page}")
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        ///todo:parse json list to object list
+        Iterable l = json.decode(doc["slicing_data"]);
+        List<SlicingDatum> _slice = List<SlicingDatum>.from(
+            l.map((model) => SlicingDatum.fromJson(model)));
+        slice = _slice;
+        notifyListeners();
+      }
+    });
+    for (int i = 0; i < slice!.length; i++) {
+      if (slice![i != slice!.length - 1 ? i + 1 : i].start - slice![i].end ==
+          1) {
+      } else {
+        var a =
+            slice![i != slice!.length - 1 ? i + 1 : i].start - slice![i].end;
+        slice!.setAll(i, [
+          SlicingDatum(
+              start: slice![i].start,
+              end: i != slice!.length - 1
+                  ? slice![i].end + a - 1
+                  : slice![i].end,
+              wordId: slice![i].wordId)
+        ]);
+        notifyListeners();
+      }
+    }
+  }
+
+  getWordTypeList() {
+    if (wordTypeDetail.isNotEmpty) {
+      return wordTypeDetail;
+    } else {
+      return null;
+    }
+  }
+
+  getWordNameList() {
+    if (wordName.isNotEmpty) {
+      return wordName;
+    } else {
+      return null;
+    }
+  }
+
+  void loadList(List<bool> list) {
+    select = list;
+    old = list;
+    notifyListeners();
+  }
+
+  void nextPage() {
+    if (page != 604) {
+      page = page + 1;
+      _sPos.clear();
+      notifyListeners();
+      getPage(page);
+    }
+  }
+
+  void previousPage() {
+    if (page != 1) {
+      page = page - 1;
+      _sPos.clear();
+      notifyListeners();
+      getPage(page);
+    }
+  }
+
+  void clear() {
+    isim.clear();
+    haraf.clear();
+    fail.clear();
+    notifyListeners();
+  }
+
+  void setWords(word) {
+    words = word;
+  }
+
+  Future<void> getCategoryName(wordId, langId) async {
+    await wordRelationship
+        .where('word_id', isEqualTo: wordId.toString())
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      wordTypeDetail.clear();
+      wordName.clear();
+      clear();
+      notifyListeners();
+      for (var doc in querySnapshot.docs) {
+        // getCategoryNameTranslation(doc["word_category_id"].trim(), langId);
+        getMainCategoryName(doc["word_category_id"].trim(), wordId, langId);
+        getLabelCategoryName(doc["word_category_id"].trim(), langId);
+      }
+    });
+  }
+
+  Future<void> getMainCategoryName(wordCategoryId, wordId, langId) async {
+    await wordCategory
+        .where('word_type', isEqualTo: 'main')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        if (doc["id"] == wordCategoryId.toString()) {
+          category = doc["tname"].trim();
+          if (doc["tname"].trim() == 'Ism') isim.add(wordId);
+          if (doc["tname"].trim() == 'Fi‘l') fail.add(wordId);
+          if (doc["tname"].trim() == 'Harf') haraf.add(wordId);
+          notifyListeners();
+        }
+      }
+    });
+  }
+
+  Color? getColor(wordId) {
+    if (isim.contains(wordId)) {
+      return Colors.blueAccent;
+    } else if (haraf.contains(wordId)) {
+      return Colors.redAccent;
+    } else if (fail.contains(wordId)) {
+      return Colors.green[400];
+    }
+    return null;
+  }
+
+  void checkRebuilt(no) {
+    if (no != 0) nums = 0;
+  }
+
+  getBoolean(index) {
+    return select.elementAt(index);
+  }
+
+  void updateValue(int index) {
+    var value = select.elementAt(index);
+    if (select.contains(true)) {
+      select = old;
+      notifyListeners();
+    }
+    select.replaceRange(index, index + 1, [!value]);
+  }
+
+  Future<void> getLabelCategoryName(wordCategoryId, String langId) async {
+    await wordCategory
+        .where('word_type', isEqualTo: 'label')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        if (doc["id"] == wordCategoryId.toString()) {
+          wordTypeDetail.add(WordDetail(
+              categoryId: int.parse(doc["id"].trim()),
+              name: doc["tname"].trim(),
+              type: doc["word_type"].trim()));
+          notifyListeners();
+        }
+      }
+    });
+    await wordCategory
+        .where('word_type', isEqualTo: 'main-label')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        if (doc["id"] == wordCategoryId.toString()) {
+          wordTypeDetail.add(WordDetail(
+              categoryId: int.parse(doc["id"].trim()),
+              name: doc["tname"].trim(),
+              type: doc["word_type"].trim()));
+          notifyListeners();
+        }
+      }
+    });
+    await wordCategoryTranslation
+        .where('language_id', isEqualTo: langId)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        if (doc["word_category_id"] == wordCategoryId.toString()) {
+          wordName.add(WordDetail(
+              id: int.parse(doc["id"].trim()),
+              categoryId: int.parse(doc["word_category_id"].trim()),
+              name: doc["name"].trim(),
+              type: ''));
+          notifyListeners();
+        }
+      }
+    });
+  }
+
+  Future<void> getCategoryNameTranslation(categoryId, langId) async {
+    await wordCategoryTranslation
+        .where('word_category_id', isEqualTo: categoryId)
+        .get()
+        .then((QuerySnapshot querySnapshot) =>
+            querySnapshot.docs.forEach((element) {
+              if (element['language_id'] == langId) {
+                print('${element['name']} ${element['word_category_id']}');
+              }
+            }));
+  }
+
+  void clearPrevAya() {
+    list!.clear();
+    ayaPosition.clear();
+    ayaNumber.clear();
+    notifyListeners();
+  }
+
+  checkAya(index) {
+    var total = list!.length - 1;
+    var lengthAya1 = list![0].split(' ').length;
+    var d = _sPos.contains(index - 2);
+    var a = ayaPosition.contains(index != 0 ? index - 1 : index);
+    var b = ayaPosition.contains(index);
+    var c = ayaPosition.contains(index + 1);
+    if (d) {
+      nums = nums + 1;
+      print(index);
+      return false;
+    }
+    if (!a) {
+      return true;
+    }
+    if (!a && !b) {
+      return true;
+    }
+    if (!a && !b && !c) {
+      return true;
+    }
+    if (nums < total && index > lengthAya1) {
+      nums = nums + 1;
+    }
+    return false;
+  }
+
+  set() {
+    visible = !visible;
+    notifyListeners();
+  }
+
+  checkSymbol(int end) {
+    if (_sPos.contains(end - 3)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   Future<void> readJsonData() async {
@@ -674,263 +938,233 @@ class AyaProvider extends ChangeNotifier {
       breakIndex = _index?.page277 ?? <int>[];
     } else if (page == 278) {
       breakIndex = _index?.page278 ?? <int>[];
+    } else if (page == 279) {
+      breakIndex = _index?.page279 ?? <int>[];
+    } else if (page == 280) {
+      breakIndex = _index?.page280 ?? <int>[];
+    } else if (page == 281) {
+      breakIndex = _index?.page281 ?? <int>[];
+    } else if (page == 282) {
+      breakIndex = _index?.page282 ?? <int>[];
+    } else if (page == 283) {
+      breakIndex = _index?.page283 ?? <int>[];
+    } else if (page == 284) {
+      breakIndex = _index?.page284 ?? <int>[];
+    } else if (page == 285) {
+      breakIndex = _index?.page285 ?? <int>[];
+    } else if (page == 286) {
+      breakIndex = _index?.page286 ?? <int>[];
+    } else if (page == 287) {
+      breakIndex = _index?.page287 ?? <int>[];
+    } else if (page == 288) {
+      breakIndex = _index?.page288 ?? <int>[];
+    } else if (page == 289) {
+      breakIndex = _index?.page289 ?? <int>[];
+    } else if (page == 290) {
+      breakIndex = _index?.page290 ?? <int>[];
+    } else if (page == 291) {
+      breakIndex = _index?.page291 ?? <int>[];
+    } else if (page == 292) {
+      breakIndex = _index?.page292 ?? <int>[];
+    } else if (page == 293) {
+      breakIndex = _index?.page293 ?? <int>[];
+    } else if (page == 294) {
+      breakIndex = _index?.page294 ?? <int>[];
+    } else if (page == 295) {
+      breakIndex = _index?.page295 ?? <int>[];
+    } else if (page == 296) {
+      breakIndex = _index?.page296 ?? <int>[];
+    } else if (page == 297) {
+      breakIndex = _index?.page297 ?? <int>[];
+    } else if (page == 298) {
+      breakIndex = _index?.page298 ?? <int>[];
+    } else if (page == 299) {
+      breakIndex = _index?.page299 ?? <int>[];
+    } else if (page == 300) {
+      breakIndex = _index?.page300 ?? <int>[];
+    } else if (page == 301) {
+      breakIndex = _index?.page301 ?? <int>[];
+    } else if (page == 302) {
+      breakIndex = _index?.page302 ?? <int>[];
+    } else if (page == 303) {
+      breakIndex = _index?.page303 ?? <int>[];
+    } else if (page == 304) {
+      breakIndex = _index?.page304 ?? <int>[];
+    } else if (page == 305) {
+      breakIndex = _index?.page305 ?? <int>[];
+    } else if (page == 306) {
+      breakIndex = _index?.page306 ?? <int>[];
+    } else if (page == 307) {
+      breakIndex = _index?.page307 ?? <int>[];
+    } else if (page == 308) {
+      breakIndex = _index?.page308 ?? <int>[];
+    } else if (page == 309) {
+      breakIndex = _index?.page309 ?? <int>[];
+    } else if (page == 310) {
+      breakIndex = _index?.page310 ?? <int>[];
+    } else if (page == 311) {
+      breakIndex = _index?.page311 ?? <int>[];
+    } else if (page == 312) {
+      breakIndex = _index?.page312 ?? <int>[];
+    } else if (page == 313) {
+      breakIndex = _index?.page313 ?? <int>[];
+    } else if (page == 314) {
+      breakIndex = _index?.page314 ?? <int>[];
+    } else if (page == 315) {
+      breakIndex = _index?.page315 ?? <int>[];
+    } else if (page == 316) {
+      breakIndex = _index?.page316 ?? <int>[];
+    } else if (page == 317) {
+      breakIndex = _index?.page317 ?? <int>[];
+    } else if (page == 318) {
+      breakIndex = _index?.page318 ?? <int>[];
+    } else if (page == 319) {
+      breakIndex = _index?.page319 ?? <int>[];
+    } else if (page == 320) {
+      breakIndex = _index?.page320 ?? <int>[];
+    } else if (page == 321) {
+      breakIndex = _index?.page321 ?? <int>[];
+    } else if (page == 322) {
+      breakIndex = _index?.page322 ?? <int>[];
+    } else if (page == 323) {
+      breakIndex = _index?.page323 ?? <int>[];
+    } else if (page == 324) {
+      breakIndex = _index?.page324 ?? <int>[];
+    } else if (page == 325) {
+      breakIndex = _index?.page325 ?? <int>[];
+    } else if (page == 326) {
+      breakIndex = _index?.page326 ?? <int>[];
+    } else if (page == 327) {
+      breakIndex = _index?.page327 ?? <int>[];
+    } else if (page == 328) {
+      breakIndex = _index?.page328 ?? <int>[];
+    } else if (page == 329) {
+      breakIndex = _index?.page329 ?? <int>[];
+    } else if (page == 330) {
+      breakIndex = _index?.page330 ?? <int>[];
+    } else if (page == 331) {
+      breakIndex = _index?.page331 ?? <int>[];
+    } else if (page == 332) {
+      breakIndex = _index?.page332 ?? <int>[];
+    } else if (page == 333) {
+      breakIndex = _index?.page333 ?? <int>[];
+    } else if (page == 334) {
+      breakIndex = _index?.page334 ?? <int>[];
+    } else if (page == 335) {
+      breakIndex = _index?.page335 ?? <int>[];
+    } else if (page == 336) {
+      breakIndex = _index?.page336 ?? <int>[];
+    } else if (page == 337) {
+      breakIndex = _index?.page337 ?? <int>[];
+    } else if (page == 338) {
+      breakIndex = _index?.page338 ?? <int>[];
+    } else if (page == 339) {
+      breakIndex = _index?.page339 ?? <int>[];
+    } else if (page == 340) {
+      breakIndex = _index?.page340 ?? <int>[];
+    } else if (page == 341) {
+      breakIndex = _index?.page341 ?? <int>[];
+    } else if (page == 342) {
+      breakIndex = _index?.page342 ?? <int>[];
+    } else if (page == 343) {
+      breakIndex = _index?.page343 ?? <int>[];
+    } else if (page == 344) {
+      breakIndex = _index?.page344 ?? <int>[];
+    } else if (page == 345) {
+      breakIndex = _index?.page345 ?? <int>[];
+    } else if (page == 346) {
+      breakIndex = _index?.page346 ?? <int>[];
+    } else if (page == 347) {
+      breakIndex = _index?.page347 ?? <int>[];
+    } else if (page == 348) {
+      breakIndex = _index?.page348 ?? <int>[];
+    } else if (page == 349) {
+      breakIndex = _index?.page349 ?? <int>[];
+    } else if (page == 350) {
+      breakIndex = _index?.page350 ?? <int>[];
+    } else if (page == 351) {
+      breakIndex = _index?.page351 ?? <int>[];
+    } else if (page == 352) {
+      breakIndex = _index?.page352 ?? <int>[];
+    } else if (page == 353) {
+      breakIndex = _index?.page353 ?? <int>[];
+    } else if (page == 354) {
+      breakIndex = _index?.page354 ?? <int>[];
+    } else if (page == 355) {
+      breakIndex = _index?.page355 ?? <int>[];
+    } else if (page == 356) {
+      breakIndex = _index?.page356 ?? <int>[];
+    } else if (page == 357) {
+      breakIndex = _index?.page357 ?? <int>[];
+    } else if (page == 358) {
+      breakIndex = _index?.page358 ?? <int>[];
+    } else if (page == 359) {
+      breakIndex = _index?.page359 ?? <int>[];
+    } else if (page == 360) {
+      breakIndex = _index?.page360 ?? <int>[];
+    } else if (page == 361) {
+      breakIndex = _index?.page361 ?? <int>[];
+    } else if (page == 362) {
+      breakIndex = _index?.page362 ?? <int>[];
+    } else if (page == 363) {
+      breakIndex = _index?.page363 ?? <int>[];
+    } else if (page == 364) {
+      breakIndex = _index?.page364 ?? <int>[];
+    } else if (page == 365) {
+      breakIndex = _index?.page365 ?? <int>[];
+    } else if (page == 366) {
+      breakIndex = _index?.page366 ?? <int>[];
+    } else if (page == 367) {
+      breakIndex = _index?.page367 ?? <int>[];
+    } else if (page == 368) {
+      breakIndex = _index?.page368 ?? <int>[];
+    } else if (page == 369) {
+      breakIndex = _index?.page369 ?? <int>[];
+    } else if (page == 370) {
+      breakIndex = _index?.page370 ?? <int>[];
+    } else if (page == 371) {
+      breakIndex = _index?.page371 ?? <int>[];
+    } else if (page == 372) {
+      breakIndex = _index?.page372 ?? <int>[];
+    } else if (page == 373) {
+      breakIndex = _index?.page373 ?? <int>[];
+    } else if (page == 374) {
+      breakIndex = _index?.page374 ?? <int>[];
+    } else if (page == 375) {
+      breakIndex = _index?.page375 ?? <int>[];
+    } else if (page == 376) {
+      breakIndex = _index?.page376 ?? <int>[];
+    } else if (page == 377) {
+      breakIndex = _index?.page377 ?? <int>[];
+    } else if (page == 378) {
+      breakIndex = _index?.page378 ?? <int>[];
+    } else if (page == 379) {
+      breakIndex = _index?.page379 ?? <int>[];
+    } else if (page == 380) {
+      breakIndex = _index?.page380 ?? <int>[];
+    } else if (page == 381) {
+      breakIndex = _index?.page381 ?? <int>[];
+    } else if (page == 382) {
+      breakIndex = _index?.page382 ?? <int>[];
+    } else if (page == 383) {
+      breakIndex = _index?.page383 ?? <int>[];
+    } else if (page == 384) {
+      breakIndex = _index?.page384 ?? <int>[];
+    } else if (page == 385) {
+      breakIndex = _index?.page385 ?? <int>[];
+    } else if (page == 386) {
+      breakIndex = _index?.page386 ?? <int>[];
+    } else if (page == 387) {
+      breakIndex = _index?.page387 ?? <int>[];
+    } else if (page == 388) {
+      breakIndex = _index?.page388 ?? <int>[];
+    } else if (page == 389) {
+      breakIndex = _index?.page389 ?? <int>[];
+    } else if (page == 390) {
+      breakIndex = _index?.page390 ?? <int>[];
     } else {
       breakIndex = <int>[];
       notifyListeners();
-    }
-  }
-
-  Future<void> readSliceData() async {
-    await sliceData
-        .where('id', isEqualTo: "${page}")
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      for (var doc in querySnapshot.docs) {
-        ///todo:parse json list to object list
-        Iterable l = json.decode(doc["slicing_data"]);
-        List<SlicingDatum> _slice = List<SlicingDatum>.from(
-            l.map((model) => SlicingDatum.fromJson(model)));
-        slice = _slice;
-        notifyListeners();
-      }
-    });
-    for (int i = 0; i < slice!.length; i++) {
-      if (slice![i != slice!.length - 1 ? i + 1 : i].start - slice![i].end ==
-          1) {
-      } else {
-        var a =
-            slice![i != slice!.length - 1 ? i + 1 : i].start - slice![i].end;
-        slice!.setAll(i, [
-          SlicingDatum(
-              start: slice![i].start,
-              end: i != slice!.length - 1
-                  ? slice![i].end + a - 1
-                  : slice![i].end,
-              wordId: slice![i].wordId)
-        ]);
-        notifyListeners();
-      }
-    }
-  }
-
-  getWordTypeList() {
-    if (wordTypeDetail.isNotEmpty) {
-      return wordTypeDetail;
-    } else {
-      return null;
-    }
-  }
-
-  getWordNameList() {
-    if (wordName.isNotEmpty) {
-      return wordName;
-    } else {
-      return null;
-    }
-  }
-
-  void loadList(List<bool> list) {
-    select = list;
-    old = list;
-    notifyListeners();
-  }
-
-  void nextPage() {
-    if (page != 604) {
-      page = page + 1;
-      _sPos.clear();
-      notifyListeners();
-      getPage(page);
-    }
-  }
-
-  void previousPage() {
-    if (page != 1) {
-      page = page - 1;
-      _sPos.clear();
-      notifyListeners();
-      getPage(page);
-    }
-  }
-
-  void clear() {
-    isim.clear();
-    haraf.clear();
-    fail.clear();
-    notifyListeners();
-  }
-
-  void setWords(word) {
-    words = word;
-  }
-
-  Future<void> getCategoryName(wordId, langId) async {
-    await wordRelationship
-        .where('word_id', isEqualTo: wordId.toString())
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      wordTypeDetail.clear();
-      wordName.clear();
-      clear();
-      notifyListeners();
-      for (var doc in querySnapshot.docs) {
-        // getCategoryNameTranslation(doc["word_category_id"].trim(), langId);
-        getMainCategoryName(doc["word_category_id"].trim(), wordId, langId);
-        getLabelCategoryName(doc["word_category_id"].trim(), langId);
-      }
-    });
-  }
-
-  Future<void> getMainCategoryName(wordCategoryId, wordId, langId) async {
-    await wordCategory
-        .where('word_type', isEqualTo: 'main')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      for (var doc in querySnapshot.docs) {
-        if (doc["id"] == wordCategoryId.toString()) {
-          category = doc["tname"].trim();
-          if (doc["tname"].trim() == 'Ism') isim.add(wordId);
-          if (doc["tname"].trim() == 'Fi‘l') fail.add(wordId);
-          if (doc["tname"].trim() == 'Harf') haraf.add(wordId);
-          notifyListeners();
-        }
-      }
-    });
-  }
-
-  Color? getColor(wordId) {
-    if (isim.contains(wordId)) {
-      return Colors.blueAccent;
-    } else if (haraf.contains(wordId)) {
-      return Colors.redAccent;
-    } else if (fail.contains(wordId)) {
-      return Colors.green[400];
-    }
-  }
-
-  void checkRebuilt(no) {
-    if (no != 0) nums = 0;
-  }
-
-  getBoolean(index) {
-    return select.elementAt(index);
-  }
-
-  void updateValue(int index) {
-    var value = select.elementAt(index);
-    if (select.contains(true)) {
-      var initial = <bool>[];
-      for (int i = 0; i < select.length; i++) {
-        initial.add(false);
-      }
-      select.replaceRange(0, select.length, initial);
-    }
-    select.replaceRange(index, index, [!value]);
-  }
-
-  Future<void> getLabelCategoryName(wordCategoryId, String langId) async {
-    await wordCategory
-        .where('word_type', isEqualTo: 'label')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      for (var doc in querySnapshot.docs) {
-        if (doc["id"] == wordCategoryId.toString()) {
-          wordTypeDetail.add(WordDetail(
-              categoryId: int.parse(doc["id"].trim()),
-              name: doc["tname"].trim(),
-              type: doc["word_type"].trim()));
-          notifyListeners();
-        }
-      }
-    });
-    await wordCategory
-        .where('word_type', isEqualTo: 'main-label')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      for (var doc in querySnapshot.docs) {
-        if (doc["id"] == wordCategoryId.toString()) {
-          wordTypeDetail.add(WordDetail(
-              categoryId: int.parse(doc["id"].trim()),
-              name: doc["tname"].trim(),
-              type: doc["word_type"].trim()));
-          notifyListeners();
-        }
-      }
-    });
-    await wordCategoryTranslation
-        .where('language_id', isEqualTo: langId)
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      for (var doc in querySnapshot.docs) {
-        if (doc["word_category_id"] == wordCategoryId.toString()) {
-          wordName.add(WordDetail(
-              id: int.parse(doc["id"].trim()),
-              categoryId: int.parse(doc["word_category_id"].trim()),
-              name: doc["name"].trim(),
-              type: ''));
-          notifyListeners();
-        }
-      }
-    });
-  }
-
-  Future<void> getCategoryNameTranslation(categoryId, langId) async {
-    await wordCategoryTranslation
-        .where('word_category_id', isEqualTo: categoryId)
-        .get()
-        .then((QuerySnapshot querySnapshot) =>
-            querySnapshot.docs.forEach((element) {
-              if (element['language_id'] == langId) {
-                print('${element['name']} ${element['word_category_id']}');
-              }
-            }));
-  }
-
-  void clearPrevAya() {
-    list!.clear();
-    ayaPosition.clear();
-    ayaNumber.clear();
-    notifyListeners();
-  }
-
-  checkAya(index) {
-    var total = list!.length - 1;
-    var lengthAya1 = list![0].split(' ').length;
-    var d = _sPos.contains(index - 2);
-    var a = ayaPosition.contains(index != 0 ? index - 1 : index);
-    var b = ayaPosition.contains(index);
-    var c = ayaPosition.contains(index + 1);
-    if (d) {
-      if (nums < total && nums < lengthAya1) {
-        nums = nums + 1;
-      }
-      return false;
-    }
-    if (!a) {
-      return true;
-    }
-    if (!a && !b) {
-      return true;
-    }
-    if (!a && !b && !c) {
-      return true;
-    }
-    if (nums < total && index > lengthAya1) {
-      nums = nums + 1;
-    }
-    return false;
-  }
-
-  set() {
-    visible = !visible;
-    notifyListeners();
-  }
-
-  checkSymbol(int end) {
-    if (_sPos.contains(end - 3)) {
-      return true;
-    } else {
-      return false;
     }
   }
 }
