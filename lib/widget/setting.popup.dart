@@ -122,23 +122,19 @@ class _SettingPopupState extends State<SettingPopup>
                         padding: padding,
                         children: <Widget>[
                           const SizedBox(height: 10),
-                          Stack(
-                            children: <Widget>[
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(35, 16, 0, 15),
-                                child: Text(
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Row(
+                              children: <Widget>[
+                                Text(
                                   'Setting',
                                   style: TextStyle(
                                       color:
                                           Theme.of(context).textSelectionColor,
                                       fontSize: 16),
                                 ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(450, 0, 0, 0),
-                                child: IconButton(
+                                Spacer(),
+                                IconButton(
                                   onPressed: () async {
                                     _custom.hideMenu();
                                   },
@@ -147,8 +143,8 @@ class _SettingPopupState extends State<SettingPopup>
                                   iconSize: 20,
                                   splashRadius: 15,
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                           const SizedBox(height: 5),
                           Center(
@@ -168,67 +164,71 @@ class _SettingPopupState extends State<SettingPopup>
                                     color: Theme.of(context).dividerColor,
                                     width: 1,
                                   )),
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        0, 10, 380, 16),
-                                    child: Text('Theme',
-                                        style: TextStyle(
-                                          color: Theme.of(context)
-                                              .textSelectionColor,
-                                          fontSize: 16,
-                                        )),
-                                  ),
-                                  TabBar(
-                                    indicatorColor:
-                                        Theme.of(context).iconTheme.color,
-                                    onTap: (index) async {
-                                      if (_controller.index == 1) {
-                                        themeProvider.toggleTheme(false);
-                                      } else if (_controller.index == 2) {
-                                        themeProvider.toggleTheme(true);
-                                      } else {
-                                        if (brightness.toString() ==
-                                                "Brightness.light" &&
-                                            themeProvider.isDarkMode == true) {
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Text('Theme',
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .textSelectionColor,
+                                            fontSize: 16,
+                                          )),
+                                    ),
+                                    TabBar(
+                                      indicatorColor:
+                                          Theme.of(context).iconTheme.color,
+                                      onTap: (index) async {
+                                        if (_controller.index == 1) {
                                           themeProvider.toggleTheme(false);
-                                        }
-                                        if (brightness.toString() ==
-                                            "Brightness.dark") {
+                                        } else if (_controller.index == 2) {
                                           themeProvider.toggleTheme(true);
+                                        } else {
+                                          if (brightness.toString() ==
+                                                  "Brightness.light" &&
+                                              themeProvider.isDarkMode == true) {
+                                            themeProvider.toggleTheme(false);
+                                          }
+                                          if (brightness.toString() ==
+                                              "Brightness.dark") {
+                                            themeProvider.toggleTheme(true);
+                                          }
                                         }
-                                      }
-                                    },
-                                    controller: _controller,
-                                    tabs: list,
-                                  ),
-                                ],
+                                      },
+                                      controller: _controller,
+                                      tabs: list,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                          Center(
-                            child: Container(
-                              width: 500,
-                              height: 130,
-                              margin: const EdgeInsets.all(10),
-                              padding: const EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.only(
-                                      topRight: Radius.circular(10.0),
-                                      bottomRight: Radius.circular(10.0),
-                                      topLeft: Radius.circular(10.0),
-                                      bottomLeft: Radius.circular(10.0)),
-                                  color: Theme.of(context).focusColor,
-                                  border: Border.all(
-                                    color: Theme.of(context).dividerColor,
-                                    width: 1,
-                                  )),
+                          Container(
+                            width: 500,
+                            height: 130,
+                            margin: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                borderRadius: const BorderRadius.only(
+                                    topRight: Radius.circular(10.0),
+                                    bottomRight: Radius.circular(10.0),
+                                    topLeft: Radius.circular(10.0),
+                                    bottomLeft: Radius.circular(10.0)),
+                                color: Theme.of(context).focusColor,
+                                border: Border.all(
+                                  color: Theme.of(context).dividerColor,
+                                  width: 1,
+                                )),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        0, 10, 370, 16),
+                                  Align(
+                                    alignment: Alignment.topLeft,
                                     child: Text('Font Size',
                                         style: TextStyle(
                                             color: Theme.of(context)

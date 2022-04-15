@@ -199,73 +199,71 @@ class _SurahScreenState extends State<SurahScreen>
                     child: SettingPopup()),
               ],
               bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(120),
+                preferredSize: Size.fromHeight(140),
                 child: Column(
                   children: [
-                    Row(children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.3,
-                        child: ListTile(
-                          title: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                widget.name,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.4,
+                            child: ListTile(
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    widget.name,
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  Text(
+                                    widget.detail,
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                widget.detail,
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ],
+                              trailing: const Icon(Icons.keyboard_arrow_down),
+                            ),
                           ),
-                          trailing: const Icon(Icons.keyboard_arrow_down),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                        height: 40,
-                        child: VerticalDivider(
-                          thickness: 2,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 320,
-                        child: Row(
-                          children: [
-                            VerticalDivider(
+                          const SizedBox(
+                            width: 5,
+                            height: 40,
+                            child: VerticalDivider(
                               thickness: 2,
                               color: Colors.grey,
                             ),
-                            SizedBox(width: 16),
-                            hizb != null
-                                ? Flexible(
-                                    child: Consumer<AyaProvider>(
-                                        builder: (context, aya, child) {
-                                      return Text(
-                                        'Juz ${getJuzNumber(int.parse(widget.sura_id), start!)} / Hizb $hizb - Page ${aya.page}',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                        ),
-                                      );
-                                    }),
-                                  )
-                                : Container(),
-                          ],
-                        ),
-                      ),
-                      const Spacer(),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 20, right: 8),
-                        child: TransPopup(),
-                      ),
-                    ]),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.4,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                VerticalDivider(
+                                  thickness: 2,
+                                  color: Colors.grey,
+                                ),
+                                hizb != null
+                                    ? Flexible(
+                                        child: Consumer<AyaProvider>(
+                                            builder: (context, aya, child) {
+                                          return Text(
+                                            'Juz ${getJuzNumber(int.parse(widget.sura_id), start!)} / Hizb $hizb - Page ${aya.page}',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                            ),
+                                          );
+                                        }),
+                                      )
+                                    : Container(),
+                              ],
+                            ),
+                          ),
+                          TransPopup(),
+                        ]),
                     Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal:
@@ -604,48 +602,81 @@ class _SurahScreenState extends State<SurahScreen>
         height: MediaQuery.of(context).size.height * 0.1,
         child: Align(
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Spacer(),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 32, vertical: 18),
-                      primary: (themeProvider.isDarkMode)
-                          ? const Color(0xff808BA1)
-                          : const Color(0xfffcd77a)),
-                  onPressed: widget.allpages[i] != widget.allpages.first
-                      ? () async {
-                          Provider.of<AyaProvider>(context, listen: false)
-                              .previousPage();
-                          Provider.of<AyaProvider>(context, listen: false)
-                              .setDefault();
-                          Provider.of<AyaProvider>(context, listen: false)
-                              .readJsonData();
-                          Provider.of<AyaProvider>(context, listen: false)
-                              .readSliceData();
-                          Provider.of<AyaProvider>(context, listen: false)
-                              .readAya();
-                          if (i < int.parse(widget.allpages.last)) {
-                            setState(() {
-                              i--;
-                            });
-                            await getStartAyah(widget.allpages[i]);
-                            await nextPage(widget.allpages[i]);
-                          } else {
-                            await getStartAyah(widget.allpages.first);
-                            await nextPage(widget.allpages.first);
-                          }
-                        }
-                      : null,
-                  child: Text(
-                    'Previous page',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
+              MediaQuery.of(context).size.width < 600
+                  ? IconButton(
+                      icon: Icon(Icons.arrow_back_ios),
+                      onPressed: widget.allpages[i] != widget.allpages.first
+                          ? () async {
+                              Provider.of<AyaProvider>(context, listen: false)
+                                  .previousPage();
+                              Provider.of<AyaProvider>(context, listen: false)
+                                  .setDefault();
+                              Provider.of<AyaProvider>(context, listen: false)
+                                  .readJsonData();
+                              Provider.of<AyaProvider>(context, listen: false)
+                                  .readSliceData();
+                              Provider.of<AyaProvider>(context, listen: false)
+                                  .readAya();
+                              if (i < int.parse(widget.allpages.last)) {
+                                setState(() {
+                                  i--;
+                                });
+                                await getStartAyah(widget.allpages[i]);
+                                await nextPage(widget.allpages[i]);
+                              } else {
+                                await getStartAyah(widget.allpages.first);
+                                await nextPage(widget.allpages.first);
+                              }
+                            }
+                          : null,
+                    )
+                  : Flexible(
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 32, vertical: 18),
+                              primary: (themeProvider.isDarkMode)
+                                  ? const Color(0xff808BA1)
+                                  : const Color(0xfffcd77a)),
+                          onPressed: widget.allpages[i] != widget.allpages.first
+                              ? () async {
+                                  Provider.of<AyaProvider>(context,
+                                          listen: false)
+                                      .previousPage();
+                                  Provider.of<AyaProvider>(context,
+                                          listen: false)
+                                      .setDefault();
+                                  Provider.of<AyaProvider>(context,
+                                          listen: false)
+                                      .readJsonData();
+                                  Provider.of<AyaProvider>(context,
+                                          listen: false)
+                                      .readSliceData();
+                                  Provider.of<AyaProvider>(context,
+                                          listen: false)
+                                      .readAya();
+                                  if (i < int.parse(widget.allpages.last)) {
+                                    setState(() {
+                                      i--;
+                                    });
+                                    await getStartAyah(widget.allpages[i]);
+                                    await nextPage(widget.allpages[i]);
+                                  } else {
+                                    await getStartAyah(widget.allpages.first);
+                                    await nextPage(widget.allpages.first);
+                                  }
+                                }
+                              : null,
+                          child: Text(
+                            'Previous page',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.black,
+                            ),
+                          )),
                     ),
-                  )),
-              Spacer(),
               Consumer<AyaProvider>(builder: (context, number, child) {
                 return ElevatedButton(
                     onPressed: number.page == int.parse(widget.allpages.first)
@@ -678,46 +709,79 @@ class _SurahScreenState extends State<SurahScreen>
                       style: TextStyle(color: Colors.black, fontSize: 18),
                     ));
               }),
-              Spacer(),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 32, vertical: 18),
-                      primary: (themeProvider.isDarkMode)
-                          ? const Color(0xff808BA1)
-                          : const Color(0xfffcd77a)),
-                  onPressed: widget.allpages[i] != widget.allpages.last
-                      ? () async {
-                          Provider.of<AyaProvider>(context, listen: false)
-                              .nextPage();
-                          Provider.of<AyaProvider>(context, listen: false)
-                              .setDefault();
-                          Provider.of<AyaProvider>(context, listen: false)
-                              .readJsonData();
-                          Provider.of<AyaProvider>(context, listen: false)
-                              .readSliceData();
-                          Provider.of<AyaProvider>(context, listen: false)
-                              .readAya();
-                          if (i < int.parse(widget.allpages.last)) {
-                            setState(() {
-                              i++;
-                            });
-                            await getStartAyah(widget.allpages[i]);
-                            await nextPage(widget.allpages[i]);
-                          } else {
-                            await getStartAyah(widget.allpages.last);
-                            await nextPage(widget.allpages.last);
-                          }
-                        }
-                      : null,
-                  child: Text(
-                    'Next page',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
+              MediaQuery.of(context).size.width < 600
+                  ? IconButton(
+                      icon: Icon(Icons.arrow_forward_ios),
+                      onPressed: widget.allpages[i] != widget.allpages.last
+                          ? () async {
+                              Provider.of<AyaProvider>(context, listen: false)
+                                  .nextPage();
+                              Provider.of<AyaProvider>(context, listen: false)
+                                  .setDefault();
+                              Provider.of<AyaProvider>(context, listen: false)
+                                  .readJsonData();
+                              Provider.of<AyaProvider>(context, listen: false)
+                                  .readSliceData();
+                              Provider.of<AyaProvider>(context, listen: false)
+                                  .readAya();
+                              if (i < int.parse(widget.allpages.last)) {
+                                setState(() {
+                                  i++;
+                                });
+                                await getStartAyah(widget.allpages[i]);
+                                await nextPage(widget.allpages[i]);
+                              } else {
+                                await getStartAyah(widget.allpages.last);
+                                await nextPage(widget.allpages.last);
+                              }
+                            }
+                          : null,
+                    )
+                  : Flexible(
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 32, vertical: 18),
+                              primary: (themeProvider.isDarkMode)
+                                  ? const Color(0xff808BA1)
+                                  : const Color(0xfffcd77a)),
+                          onPressed: widget.allpages[i] != widget.allpages.last
+                              ? () async {
+                                  Provider.of<AyaProvider>(context,
+                                          listen: false)
+                                      .nextPage();
+                                  Provider.of<AyaProvider>(context,
+                                          listen: false)
+                                      .setDefault();
+                                  Provider.of<AyaProvider>(context,
+                                          listen: false)
+                                      .readJsonData();
+                                  Provider.of<AyaProvider>(context,
+                                          listen: false)
+                                      .readSliceData();
+                                  Provider.of<AyaProvider>(context,
+                                          listen: false)
+                                      .readAya();
+                                  if (i < int.parse(widget.allpages.last)) {
+                                    setState(() {
+                                      i++;
+                                    });
+                                    await getStartAyah(widget.allpages[i]);
+                                    await nextPage(widget.allpages[i]);
+                                  } else {
+                                    await getStartAyah(widget.allpages.last);
+                                    await nextPage(widget.allpages.last);
+                                  }
+                                }
+                              : null,
+                          child: Text(
+                            'Next page',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.black,
+                            ),
+                          )),
                     ),
-                  )),
-              Spacer(),
             ],
           ),
           // Row(

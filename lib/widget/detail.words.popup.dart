@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../models/word.detail.dart';
 import '../provider/ayah.number.provider.dart';
+import '../theme/theme_provider.dart';
 
 class ListItems extends StatefulWidget {
   final String text;
@@ -81,7 +82,8 @@ class _ListItemsState extends State<ListItems> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Text(
-                                  widget.text.replaceAll('ﲿ', '')
+                                  widget.text
+                                      .replaceAll('ﲿ', '')
                                       .replaceAll('ﲹ', ''),
                                   style: TextStyle(
                                       color: checkColor(aya.category),
@@ -234,7 +236,9 @@ class _ListItemsState extends State<ListItems> {
               );
             }),
           )
-        : Center(child: CircularProgressIndicator());
+        : Center(child: CircularProgressIndicator(
+      color: Colors.orangeAccent,
+    ));
   }
 
   void loading() {
@@ -251,13 +255,15 @@ class _ListItemsState extends State<ListItems> {
   }
 
   checkMainColor(int? id) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     if (id == 3) {
       return Color(0xffFF6106);
     }
     if (id == 68) {
       return Color(0xffFF29DD);
     }
-    return Colors.black;
+
+    return (themeProvider.isDarkMode) ? Colors.white : Colors.black;
   }
 
   checkMainFontSize(int? id) {
