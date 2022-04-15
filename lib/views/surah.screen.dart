@@ -411,7 +411,7 @@ class _SurahScreenState extends State<SurahScreen>
                                                                                 children: <Widget>[
                                                                                   Icon(
                                                                                     item.icon,
-                                                                                    size: 15,
+                                                                                    size: 16,
                                                                                     color: Theme.of(context).textSelectionColor,
                                                                                   ),
                                                                                   Expanded(
@@ -453,7 +453,7 @@ class _SurahScreenState extends State<SurahScreen>
                                                                                           item.text,
                                                                                           style: TextStyle(
                                                                                             color: Theme.of(context).textSelectionColor,
-                                                                                            fontSize: 12,
+                                                                                            fontSize: 14,
                                                                                           ),
                                                                                         ),
                                                                                       ),
@@ -486,11 +486,18 @@ class _SurahScreenState extends State<SurahScreen>
                                                                     0xffFFEEB0),
                                                           ),
                                                           width: 40,
-                                                          child: Icon(
-                                                            Icons.more_horiz,
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .textSelectionColor,
+                                                          child: Center(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(4.0),
+                                                              child: Icon(
+                                                                Icons.more_horiz,
+                                                                size:
+                                                                    fontsize.value,
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .textSelectionColor,
+                                                              ),
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
