@@ -205,28 +205,23 @@ class _SurahScreenState extends State<SurahScreen>
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.4,
+                          Flexible(
                             child: ListTile(
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    widget.name,
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                  Text(
-                                    widget.detail,
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                ],
+                              title: Text(
+                                widget.name,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                ),
                               ),
-                              trailing: const Icon(Icons.keyboard_arrow_down),
+                              subtitle: Text(
+                                widget.detail,
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 20,
+                                ),
+                              ),
+                              trailing:
+                                  Icon(Icons.keyboard_arrow_down_outlined),
                             ),
                           ),
                           const SizedBox(
@@ -237,31 +232,22 @@ class _SurahScreenState extends State<SurahScreen>
                               color: Colors.grey,
                             ),
                           ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.4,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                VerticalDivider(
-                                  thickness: 2,
-                                  color: Colors.grey,
-                                ),
-                                hizb != null
-                                    ? Flexible(
-                                        child: Consumer<AyaProvider>(
-                                            builder: (context, aya, child) {
-                                          return Text(
-                                            'Juz ${getJuzNumber(int.parse(widget.sura_id), start!)} / Hizb $hizb - Page ${aya.page}',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                            ),
-                                          );
-                                        }),
-                                      )
-                                    : Container(),
-                              ],
-                            ),
-                          ),
+                          hizb != null
+                              ? Expanded(
+                                  child: Consumer<AyaProvider>(
+                                      builder: (context, aya, child) {
+                                    return Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        'Juz ${getJuzNumber(int.parse(widget.sura_id), start!)} / Hizb $hizb - Page ${aya.page}',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                )
+                              : Container(),
                           TransPopup(),
                         ]),
                     Padding(
