@@ -582,9 +582,8 @@ class _SurahScreenState extends State<SurahScreen>
                     Align(
                         alignment: Alignment.center,
                         child: SizedBox(
-                          child: Slice2(
-                              "${Provider.of<AyaProvider>(context).page}"),
-                        )),
+                            child: Slice2(
+                                "${Provider.of<AyaProvider>(context).page}"))),
                   ],
                 ),
               ),
@@ -845,5 +844,11 @@ class _SurahScreenState extends State<SurahScreen>
         });
       }
     });
+    await Provider.of<AyaProvider>(context, listen: false).readJsonData();
+    await Provider.of<AyaProvider>(context, listen: false).readSliceData();
+    await Provider.of<AyaProvider>(context, listen: false).readAya();
+    if (Provider.of<AyaProvider>(context, listen: false).visible == true) {
+      await Provider.of<AyaProvider>(context, listen: false).set();
+    }
   }
 }

@@ -495,11 +495,6 @@ class _Slice2State extends State<Slice2> {
   ///todo:avoid rebuild ayat number
 
   Future<void> loadProvider() async {
-    await Provider.of<AyaProvider>(context, listen: false).readJsonData();
-    await Provider.of<AyaProvider>(context, listen: false).readSliceData();
-    await Provider.of<AyaProvider>(context, listen: false).readAya();
-    if (Provider.of<AyaProvider>(context, listen: false).visible == true) {
-      await Provider.of<AyaProvider>(context, listen: false).set();
-    }
+
   }
 }

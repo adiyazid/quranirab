@@ -210,6 +210,9 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                     child: Directionality(
                         textDirection: TextDirection.rtl,
                         child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadiusDirectional.circular(16)),
                           height: 30,
                           width: 100,
                         )),
@@ -222,11 +225,17 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                     child: Row(
                       children: [
                         Container(
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadiusDirectional.circular(16)),
                           height: 30,
                           width: 100,
                         ),
                         Spacer(),
                         Container(
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadiusDirectional.circular(16)),
                           height: 30,
                           width: 100,
                         )
@@ -244,9 +253,12 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                         child: Column(
                           children: <Widget>[
                             Container(
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadiusDirectional.circular(16),
+                                  color: Colors.white),
                               width: double.infinity,
-                              height: 40,
-                              color: Colors.white,
+                              height: 35,
                             ),
                           ],
                         ),
@@ -257,8 +269,11 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                           children: <Widget>[
                             Container(
                               width: double.infinity,
-                              height: 40,
-                              color: Colors.white,
+                              height: 35,
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadiusDirectional.circular(16),
+                                  color: Colors.white),
                             ),
                           ],
                         ),
@@ -268,7 +283,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                 ),
                 items: 15,
                 period: Duration(seconds: 2),
-                highlightColor: Colors.lightBlue,
+                highlightColor: Color(0xffaa9f9f),
                 direction: SkeletonDirection.rtl,
               ),
             ],
