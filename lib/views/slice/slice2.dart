@@ -184,51 +184,9 @@ class _Slice2State extends State<Slice2> {
                                                                           .contains(' ')
                                                                       ? Row(
                                                                           children: [
-                                                                            // if (i != 0 &&
-                                                                            //     aya.list!.join().split('').getRange(aya.slice![i - 1].start - 1, aya.slice![i - 1].end).join() == 'ﺑﲐ')
-                                                                            //   InkWell(
-                                                                            //     onTap: aya.visible
-                                                                            //         ? null
-                                                                            //         : () {
-                                                                            //             print(aya.list!.join().split('').getRange(aya.slice![i - 1].start - 1, aya.slice![i - 1].end).join());
-                                                                            //             Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.slice![i - 1].wordId, Provider.of<LangProvider>(context, listen: false).langId);
-                                                                            //             aya.setWords(aya.list!.join().split('').getRange(aya.slice![i - 1].start - 1, aya.slice![i - 1].end).join());
-                                                                            //             if (size.width < 1400) {
-                                                                            //               showPopover(
-                                                                            //                 backgroundColor: (themeProvider.isDarkMode) ? const Color(0xffa0a7b7) : const Color(0xfffff3ca),
-                                                                            //                 context: context,
-                                                                            //                 transitionDuration: Duration(milliseconds: 200),
-                                                                            //                 bodyBuilder: (context) => ListItems(aya.list!.join().split('').getRange(aya.slice![i - 1].start - 1, aya.slice![i - 1].end).join()),
-                                                                            //                 onPop: () {
-                                                                            //                   Provider.of<AyaProvider>(context, listen: false).clear();
-                                                                            //                   aya.defaultSelect();
-                                                                            //                 },
-                                                                            //                 direction: PopoverDirection.bottom,
-                                                                            //                 width: 450,
-                                                                            //                 height: 400,
-                                                                            //                 arrowHeight: 15,
-                                                                            //                 arrowWidth: 30,
-                                                                            //               );
-                                                                            //             } else {
-                                                                            //               if (mounted) {
-                                                                            //                 setState(() {
-                                                                            //                   aya.updateValue(i - 1);
-                                                                            //                   aya.set();
-                                                                            //                 });
-                                                                            //               }
-                                                                            //             }
-                                                                            //           },
-                                                                            //     child: Text(aya.list!.join().split('').getRange(aya.slice![i - 1].start - 1, aya.slice![i - 1].end).join(),
-                                                                            //         textDirection: TextDirection.rtl,
-                                                                            //         softWrap: true,
-                                                                            //         style: TextStyle(
-                                                                            //           fontFamily: 'MeQuran2',
-                                                                            //           fontSize: aya.value,
-                                                                            //           color: aya.getBoolean(i - 1) ? aya.getColor(aya.slice![i - 1].wordId) : null,
-                                                                            //         )),
-                                                                            //   ),
-                                                                            if (i == 0 ||i>1&&aya.list!.join().split('').getRange(aya.slice![i-1].start - 1, aya.slice![i-1].end).join() !='ﺑﲐ'&&aya.list!.join().split('').getRange(aya.slice![i-2].start - 1, aya.slice![i-2].end).join() !='ﺑﲐ'&&
-                                                                                aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join() != 'ﺰﱺﺍﺩﱧ' && aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join() != 'ﺄﱁﺧﱹﺮﱺﺟﱺ' && aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join() != 'ﺄﱁﺯﱺﻟﱋ' && aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join() != 'ﻬﱻﻤﱧﺎ ' && aya.list!.join().split('').getRange(aya.slice![i - 1].start - 1, aya.slice![i - 1].end).join() != 'ﺳﱺﻤﱦﻌﲘ')
+                                                                            ///todo: initial position
+                                                                            if (i == 0 ||
+                                                                                i > 1 && aya.list!.join().split('').getRange(aya.slice![i - 1].start - 1, aya.slice![i - 1].end).join() != 'ﺑﲐ' && aya.list!.join().split('').getRange(aya.slice![i - 2].start - 1, aya.slice![i - 2].end).join() != 'ﺑﲐ' && aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join() != 'ﺰﱺﺍﺩﱧ' && aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join() != 'ﺄﱁﺧﱹﺮﱺﺟﱺ' && aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join() != 'ﺄﱁﺯﱺﻟﱋ' && aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join() != 'ﻬﱻﻤﱧﺎ ')
                                                                               InkWell(
                                                                                 onTap: aya.visible
                                                                                     ? null
@@ -270,9 +228,11 @@ class _Slice2State extends State<Slice2> {
                                                                                       color: aya.getBoolean(i) ? aya.getColor(aya.slice![i].wordId) : null,
                                                                                     )),
                                                                               ),
+
+                                                                            ///todo:+1 from initial position
                                                                             if (i < aya.breakIndex![index] - 1 && aya.list!.join().split('').getRange(aya.slice![i + 1].start - 1, aya.slice![i + 1].end).join() != 'ﻬﱻﻤﱧﺎ ' && aya.list!.join().split('').getRange(aya.slice![i + 1].start - 1, aya.slice![i + 1].end).join().contains(' ') ||
                                                                                 aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join() == 'ﻓﱁ' && aya.list!.join().split('').getRange(aya.slice![i + 1].start - 1, aya.slice![i + 1].end).join() != 'ﻬﱻﻤﱧﺎ ' ||
-                                                                                aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join() == 'ﺳﱺﻤﱦﻌﲘ'||aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join() == 'ﺑﲐ')
+                                                                                aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join() == 'ﺑﲐ')
                                                                               InkWell(
                                                                                 onTap: aya.visible
                                                                                     ? null
@@ -305,7 +265,7 @@ class _Slice2State extends State<Slice2> {
                                                                                           }
                                                                                         }
                                                                                       },
-                                                                                child: Text(aya.list!.join().split('').getRange(aya.slice![i + 1].start - 1, aya.slice![i + 1].end).join(),
+                                                                                child: Text(aya.list!.join().split('').getRange(aya.slice![i + 1].start - 1, aya.slice![i + 1].end).join().trim(),
                                                                                     textDirection: TextDirection.rtl,
                                                                                     softWrap: true,
                                                                                     style: TextStyle(
@@ -314,6 +274,8 @@ class _Slice2State extends State<Slice2> {
                                                                                       color: aya.getBoolean(i + 1) ? aya.getColor(aya.slice![i + 1].wordId) : null,
                                                                                     )),
                                                                               ),
+
+                                                                            ///todo:+2 from initial position
                                                                             if (i < aya.breakIndex![index] - 2 && aya.list!.join().split('').getRange(aya.slice![i + 2].start - 1, aya.slice![i + 2].end).join() == 'ﻬﱻﻤﱧﺎ ' && aya.list!.join().split('').getRange(aya.slice![i + 1].start - 1, aya.slice![i + 1].end).join() == 'ﺄﱁﺯﱺﻟﱋ' ||
                                                                                 i < aya.breakIndex![index] - 2 && aya.list!.join().split('').getRange(aya.slice![i + 2].start - 1, aya.slice![i + 2].end).join() == 'ﻬﱻﻤﱧﺎ ')
                                                                               InkWell(
@@ -348,14 +310,16 @@ class _Slice2State extends State<Slice2> {
                                                                                           }
                                                                                         }
                                                                                       },
-                                                                                child: Text(aya.list!.join().split('').getRange(aya.slice![i + 2].start - 1, aya.slice![i + 2].end).join(),
-                                                                                    textDirection: TextDirection.rtl,
-                                                                                    softWrap: true,
-                                                                                    style: TextStyle(
-                                                                                      fontFamily: 'MeQuran2',
-                                                                                      fontSize: aya.value,
-                                                                                      color: aya.getBoolean(i + 2) ? aya.getColor(aya.slice![i + 2].wordId) : null,
-                                                                                    )),
+                                                                                child: aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join() != 'ﻭﱺ' && aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join() != 'ﺃﱁﺑﱦﺼﱺ﮳ﺮﱺ'
+                                                                                    ? Text(aya.list!.join().split('').getRange(aya.slice![i + 2].start - 1, aya.slice![i + 2].end).join().trim(),
+                                                                                        textDirection: TextDirection.rtl,
+                                                                                        softWrap: true,
+                                                                                        style: TextStyle(
+                                                                                          fontFamily: 'MeQuran2',
+                                                                                          fontSize: aya.value,
+                                                                                          color: aya.getBoolean(i + 2) ? aya.getColor(aya.slice![i + 2].wordId) : null,
+                                                                                        ))
+                                                                                    : Text(''),
                                                                               ),
                                                                           ],
                                                                         )
