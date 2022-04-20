@@ -47,6 +47,7 @@ class AyaProvider extends ChangeNotifier {
   String? words;
 
   bool loading = false;
+  bool loadingCategory = false;
 
   get value => _value;
 
@@ -208,6 +209,7 @@ class AyaProvider extends ChangeNotifier {
     isim.clear();
     haraf.clear();
     fail.clear();
+    loadingCategory = false;
     notifyListeners();
   }
 
@@ -1375,5 +1377,20 @@ class AyaProvider extends ChangeNotifier {
       breakIndex = <int>[];
       notifyListeners();
     }
+  }
+
+  void updateLoad() {
+    loadingCategory = true;
+  }
+
+  void defaultSelect() {
+    if (select.contains(true)) {
+      select.clear();
+      for (int i = 0; i < list!.join().split('').length; i++) {
+        select.add(false);
+      }
+      print('[set to default]');
+    }
+    notifyListeners();
   }
 }

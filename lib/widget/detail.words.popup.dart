@@ -26,44 +26,45 @@ class _ListItemsState extends State<ListItems> {
 
   @override
   Widget build(BuildContext context) {
-    return loaded
-        ? Scrollbar(
-            child: Consumer<AyaProvider>(builder: (context, aya, child) {
-              List<WordDetail> word = aya.getWordTypeList() ?? <WordDetail>[];
-              List<WordDetail> name = aya.getWordNameList() ?? <WordDetail>[];
-
-              for (var item in name) {
-                for (var element in word) {
-                  if (element.categoryId == item.categoryId) {
-                    if (item.categoryId == 68) {}
-                    item.type = element.type;
-                  }
-                }
-              }
-              name.sort((a, b) => a.categoryId!.compareTo(b.categoryId!));
-              var newPosition;
-              var newPosition2;
-              WordDetail old;
-              WordDetail old2;
-              for (int i = 0; i < name.length; i++) {
-                if (name[i].categoryId == 68) {
-                  newPosition = i + 1;
-                }
-                if (name[i].categoryId == 429) {
-                  newPosition2 = i + 1;
-                }
-                if (name[i].categoryId == 495) {
-                  old2 = name[i];
-                  name.removeAt(i);
-                  name.insertAll(newPosition2, [old2]);
-                }
-                if (name[i].id == 1426) {
-                  old = name[i];
-                  name.removeAt(i);
-                  name.insertAll(newPosition, [old]);
-                }
-              }
-              return Column(
+    return Scrollbar(
+      child: Consumer<AyaProvider>(builder: (context, aya, child) {
+        List<WordDetail> word = aya.getWordTypeList() ?? <WordDetail>[];
+        List<WordDetail> name = aya.getWordNameList() ?? <WordDetail>[];
+        for (var item in name) {
+          for (var element in word) {
+            if (element.categoryId == item.categoryId) {
+              item.type = element.type;
+            }
+          }
+        }
+        name.sort((a, b) => a.categoryId!.compareTo(b.categoryId!));
+        var newPosition;
+        var newPosition2;
+        WordDetail old;
+        WordDetail old2;
+        if (name.isNotEmpty) {
+          for (int i = 0; i < name.length; i++) {
+            if (name[i].categoryId == 68) {
+              newPosition = i + 1;
+            }
+            if (name[i].categoryId == 429) {
+              newPosition2 = i + 1;
+            }
+            if (name[i].categoryId == 495 && newPosition2 != null) {
+              old2 = name[i];
+              name.removeAt(i);
+              name.insertAll(newPosition2, [old2]);
+            }
+            if (name[i].id == 1426 && newPosition != null) {
+              old = name[i];
+              name.removeAt(i);
+              name.insertAll(newPosition, [old]);
+            }
+          }
+          aya.updateLoad();
+        }
+        return aya.loadingCategory
+            ? Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -97,7 +98,6 @@ class _ListItemsState extends State<ListItems> {
                   ),
                   Divider(
                     thickness: 2,
-                    color: Colors.black,
                   ),
                   SizedBox(
                     height: 300,
@@ -233,12 +233,13 @@ class _ListItemsState extends State<ListItems> {
                     ),
                   ),
                 ],
-              );
-            }),
-          )
-        : Center(child: CircularProgressIndicator(
-      color: Colors.orangeAccent,
-    ));
+              )
+            : Center(
+                child: CircularProgressIndicator(
+                color: Colors.orangeAccent,
+              ));
+      }),
+    );
   }
 
   void loading() {
