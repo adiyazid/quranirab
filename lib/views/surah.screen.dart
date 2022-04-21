@@ -574,7 +574,7 @@ class _SurahScreenState extends State<SurahScreen>
                         alignment: Alignment.center,
                         child: SizedBox(
                             child: Slice2(
-                                "${Provider.of<AyaProvider>(context).page}"))),
+                                "${Provider.of<AyaProvider>(context).page}",widget.sura_id))),
                   ],
                 ),
               ),

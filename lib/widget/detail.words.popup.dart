@@ -87,9 +87,7 @@ class _ListItemsState extends State<ListItems> {
                                       .replaceAll('ﲿ', '')
                                       .replaceAll('ﲹ', ''),
                                   style: TextStyle(
-                                      color: checkColor(aya.category),
-                                      fontSize: 24,
-                                      fontFamily: 'MeQuran2'),
+                                      fontSize: 24, fontFamily: 'MeQuran2'),
                                 ),
                               ),
                             ),
@@ -100,7 +98,7 @@ class _ListItemsState extends State<ListItems> {
                     thickness: 2,
                   ),
                   SizedBox(
-                    height: 300,
+                    height: MediaQuery.of(context).size.width < 600 ? 150 : 300,
                     child: ListView.builder(
                       itemCount: name.last.type != "label"
                           ? name.length - 1
@@ -161,6 +159,8 @@ class _ListItemsState extends State<ListItems> {
                                                       child: Text(
                                                         "${name[index].name}",
                                                         style: TextStyle(
+                                                            color: checkColor(
+                                                                aya.category),
                                                             fontFamily:
                                                                 'MeQuran2',
                                                             fontSize: 20),

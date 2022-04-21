@@ -134,9 +134,9 @@ class _DataFromFirestoreState extends State<DataFromFirestore> {
                                         Provider.of<AyaProvider>(context,
                                             listen: false)
                                             .setDefault();
-                                        Provider.of<AyaProvider>(context,
-                                            listen: false)
-                                            .getPage(4);
+                                        // Provider.of<AyaProvider>(context,
+                                        //     listen: false)
+                                        //     .getPage(214);
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(

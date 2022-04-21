@@ -33,12 +33,12 @@ class SlicingDatum {
 
   int start;
   int end;
-  int wordId;
+  int? wordId;
 
   factory SlicingDatum.fromJson(Map<String, dynamic> json) => SlicingDatum(
     start: json["start"],
     end: json["end"],
-    wordId: json["word_id"],
+    wordId: json["word_id"]??0,
   );
 
   Map<String, dynamic> toJson() => {

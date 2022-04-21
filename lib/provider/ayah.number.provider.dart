@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:quranirab/models/font.size.dart';
@@ -8,6 +9,7 @@ import 'package:quranirab/models/word.detail.dart';
 
 import '../models/break.index.model.dart';
 import '../models/slicing.data.model.dart';
+import '../models/surah.split.model.dart';
 
 class AyaProvider extends ChangeNotifier {
   var data = 'No data..';
@@ -15,7 +17,8 @@ class AyaProvider extends ChangeNotifier {
   var category = 'Waiting to retrieve data...';
 
   double _value = fontData.size;
-
+  int? start;
+  int? end;
   int nums = 0;
 
   BreakIndex? _index;
@@ -48,6 +51,12 @@ class AyaProvider extends ChangeNotifier {
 
   bool loading = false;
   bool loadingCategory = false;
+
+  int? newNum;
+
+  int? numStart;
+
+  List pageFix = [];
 
   get value => _value;
 
@@ -263,7 +272,13 @@ class AyaProvider extends ChangeNotifier {
   }
 
   void checkRebuilt(no) {
-    if (no != 0) nums = 0;
+    if (no != 0 && pageFix.contains(page)) {
+      nums = numStart ?? 0;
+    } else {
+      nums = 0;
+    }
+    if (start == null) nums = 0;
+    if (no == 0) nums = numStart ?? 0;
   }
 
   getBoolean(index) {
@@ -1392,5 +1407,44 @@ class AyaProvider extends ChangeNotifier {
       print('[set to default]');
     }
     notifyListeners();
+  }
+
+  checkSurahStart(int page) {
+    if (pageFix.contains(page)) {
+      return start;
+    } else {
+      return 0;
+    }
+  }
+
+  checkSurahEnd(int page) {
+    if (pageFix.contains(page)) {
+      return end;
+    } else if (breakIndex!.isNotEmpty) {
+      return breakIndex!.length;
+    }
+  }
+
+  getStart(int id) async {
+    String jsonString =
+        await rootBundle.loadString("break_index/surah_split.json");
+    final surahSplitList = surahSplitFromJson(jsonString);
+    for (var element in surahSplitList.splitSura) {
+      pageFix.add(element.page);
+      notifyListeners();
+      if (element.suraId == id) {
+        if (kDebugMode) {
+          print(true);
+        }
+        start = element.start;
+        end = element.end;
+        numStart = element.numStart;
+        notifyListeners();
+      } else {
+        if (kDebugMode) {
+          print(false);
+        }
+      }
+    }
   }
 }
