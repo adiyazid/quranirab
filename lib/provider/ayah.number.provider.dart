@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -57,6 +58,8 @@ class AyaProvider extends ChangeNotifier {
   int? numStart;
 
   List pageFix = [];
+
+  bool nodata = false;
 
   get value => _value;
 
@@ -219,6 +222,7 @@ class AyaProvider extends ChangeNotifier {
     haraf.clear();
     fail.clear();
     loadingCategory = false;
+    nodata = false;
     notifyListeners();
   }
 
@@ -231,14 +235,22 @@ class AyaProvider extends ChangeNotifier {
         .where('word_id', isEqualTo: wordId.toString())
         .get()
         .then((QuerySnapshot querySnapshot) {
-      wordTypeDetail.clear();
-      wordName.clear();
-      clear();
-      notifyListeners();
-      for (var doc in querySnapshot.docs) {
-        // getCategoryNameTranslation(doc["word_category_id"].trim(), langId);
-        getMainCategoryName(doc["word_category_id"].trim(), wordId, langId);
-        getLabelCategoryName(doc["word_category_id"].trim(), langId);
+      if (querySnapshot.docs.isEmpty) {
+        wordTypeDetail.clear();
+        wordName.clear();
+        clear();
+        nodata = true;
+        notifyListeners();
+      } else {
+        wordTypeDetail.clear();
+        wordName.clear();
+        clear();
+        notifyListeners();
+        for (var doc in querySnapshot.docs) {
+          // getCategoryNameTranslation(doc["word_category_id"].trim(), langId);
+          getMainCategoryName(doc["word_category_id"].trim(), wordId, langId);
+          getLabelCategoryName(doc["word_category_id"].trim(), langId);
+        }
       }
     });
   }
@@ -1425,26 +1437,29 @@ class AyaProvider extends ChangeNotifier {
     }
   }
 
-  getStart(int id) async {
+  getStart(int id,int currentPage) async {
     String jsonString =
         await rootBundle.loadString("break_index/surah_split.json");
     final surahSplitList = surahSplitFromJson(jsonString);
     for (var element in surahSplitList.splitSura) {
-      pageFix.add(element.page);
+      if (!pageFix.contains(element.page)) {
+        pageFix.add(element.page);
+      }
       notifyListeners();
-      if (element.suraId == id) {
-        if (kDebugMode) {
-          print(true);
-        }
+      if (element.suraId == id && element.page==currentPage) {
         start = element.start;
         end = element.end;
         numStart = element.numStart;
         notifyListeners();
-      } else {
-        if (kDebugMode) {
-          print(false);
-        }
       }
+    }
+  }
+
+  getNoData() {
+    if (wordTypeDetail.isEmpty || wordName.isNotEmpty) {
+      return false;
+    } else {
+      return true;
     }
   }
 }

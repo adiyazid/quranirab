@@ -119,12 +119,13 @@ class _DataFromFirestoreState extends State<DataFromFirestore> {
                           shrinkWrap: true,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 4,
-                            crossAxisSpacing: 5.0,
-                            mainAxisSpacing: 5.0,
-                          ),
+                                  crossAxisCount: 4,
+                                  crossAxisSpacing: 5.0,
+                                  mainAxisSpacing: 5.0,
+                                  childAspectRatio: 2.8),
                           children: _list
                               .map((data) => Card(
+                                    margin: EdgeInsets.all(8),
                                     child: InkWell(
                                       onTap: () async {
                                         var a = await getTotalPage(data["id"]);
@@ -132,11 +133,11 @@ class _DataFromFirestoreState extends State<DataFromFirestore> {
                                                 listen: false)
                                             .getPage(int.parse(a.first));
                                         Provider.of<AyaProvider>(context,
-                                            listen: false)
+                                                listen: false)
                                             .setDefault();
                                         // Provider.of<AyaProvider>(context,
                                         //     listen: false)
-                                        //     .getPage(214);
+                                        //     .getPage(384);
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(

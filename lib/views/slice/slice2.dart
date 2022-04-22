@@ -121,9 +121,17 @@ class _Slice2State extends State<Slice2> {
                                     // width: MediaQuery.of(context).size.width*0.35,
                                     child: Column(
                                       children: [
-                                        for (int index =
-                                                aya.checkSurahStart(Provider.of<AyaProvider>(context,listen: false).page);
-                                            index < aya.checkSurahEnd(Provider.of<AyaProvider>(context,listen: false).page);
+                                        for (int index = aya.checkSurahStart(
+                                                Provider.of<AyaProvider>(
+                                                        context,
+                                                        listen: false)
+                                                    .page);
+                                            index <
+                                                aya.checkSurahEnd(
+                                                    Provider.of<AyaProvider>(
+                                                            context,
+                                                            listen: false)
+                                                        .page);
                                             index++)
                                           Directionality(
                                             textDirection: TextDirection.rtl,
@@ -168,7 +176,7 @@ class _Slice2State extends State<Slice2> {
                                                                           onTap: aya.visible
                                                                               ? null
                                                                               : () {
-                                                                                  print(aya.slice![i].end);
+                                                                                  print(aya.slice![i].wordId);
                                                                                   Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.slice![i].wordId, Provider.of<LangProvider>(context, listen: false).langId);
                                                                                   aya.setWords(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
                                                                                   if (size.width < 1400) {
@@ -182,7 +190,7 @@ class _Slice2State extends State<Slice2> {
                                                                                       },
                                                                                       direction: PopoverDirection.bottom,
                                                                                       width: 450,
-                                                                                      height: MediaQuery.of(context).size.width<600 ? 250:400,
+                                                                                      height: MediaQuery.of(context).size.width < 600 ? 250 : 400,
                                                                                       arrowHeight: 15,
                                                                                       arrowWidth: 30,
                                                                                     );
@@ -215,7 +223,7 @@ class _Slice2State extends State<Slice2> {
                                                                               .visible
                                                                           ? null
                                                                           : () {
-                                                                              print(aya.slice![i].end);
+                                                                              print(aya.slice![i].wordId);
                                                                               Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.slice![i].wordId, Provider.of<LangProvider>(context, listen: false).langId);
                                                                               aya.setWords(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
                                                                               if (size.width < 1400) {
@@ -229,7 +237,7 @@ class _Slice2State extends State<Slice2> {
                                                                                   },
                                                                                   direction: PopoverDirection.bottom,
                                                                                   width: 450,
-                                                                                  height: MediaQuery.of(context).size.width<600 ? 250:400,
+                                                                                  height: MediaQuery.of(context).size.width < 600 ? 250 : 400,
                                                                                   arrowHeight: 15,
                                                                                   arrowWidth: 30,
                                                                                 );
@@ -321,7 +329,7 @@ class _Slice2State extends State<Slice2> {
                                                                           onTap: aya.visible
                                                                               ? null
                                                                               : () {
-                                                                                  print(aya.slice![i].end);
+                                                                                  print(aya.slice![i].wordId);
                                                                                   Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.slice![i].wordId, Provider.of<LangProvider>(context, listen: false).langId);
                                                                                   aya.setWords(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
                                                                                   if (size.width < 1400) {
@@ -337,7 +345,7 @@ class _Slice2State extends State<Slice2> {
                                                                                       },
                                                                                       direction: PopoverDirection.bottom,
                                                                                       width: 450,
-                                                                                      height: MediaQuery.of(context).size.width<600 ? 250:400,
+                                                                                      height: MediaQuery.of(context).size.width < 600 ? 250 : 400,
                                                                                       arrowHeight: 15,
                                                                                       arrowWidth: 30,
                                                                                     );
@@ -370,7 +378,7 @@ class _Slice2State extends State<Slice2> {
                                                                               .visible
                                                                           ? null
                                                                           : () {
-                                                                              print(aya.slice![i].end);
+                                                                              print(aya.slice![i].wordId);
                                                                               Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.slice![i].wordId, Provider.of<LangProvider>(context, listen: false).langId);
                                                                               aya.setWords(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
                                                                               if (size.width < 1400) {
@@ -386,7 +394,7 @@ class _Slice2State extends State<Slice2> {
                                                                                   },
                                                                                   direction: PopoverDirection.bottom,
                                                                                   width: 450,
-                                                                                  height: MediaQuery.of(context).size.width<600 ? 250:400,
+                                                                                  height: MediaQuery.of(context).size.width < 600 ? 250 : 400,
                                                                                   arrowHeight: 15,
                                                                                   arrowWidth: 30,
                                                                                 );
@@ -476,6 +484,6 @@ class _Slice2State extends State<Slice2> {
 
   Future<void> init() async {
     await Provider.of<AyaProvider>(context, listen: false)
-        .getStart(int.parse(widget.suraId));
+        .getStart(int.parse(widget.suraId),int.parse(widget.page));
   }
 }

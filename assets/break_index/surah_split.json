@@ -43,6 +43,118 @@
       "numStart": 6
     },
     {
+      "page": 255,
+      "sura_id": 13,
+      "start": 0,
+      "end": 2,
+      "numStart": 0
+    },
+    {
+      "page": 255,
+      "sura_id": 14,
+      "start": 2,
+      "end": 13,
+      "numStart": 1
+    },
+    {
+      "page": 267,
+      "sura_id": 15,
+      "start": 0,
+      "end": 6,
+      "numStart": 0
+    },
+    {
+      "page": 267,
+      "sura_id": 16,
+      "start": 6,
+      "end": 13,
+      "numStart": 9
+    },
+    {
+      "page": 293,
+      "sura_id": 17,
+      "start": 0,
+      "end": 9,
+      "numStart": 0
+    },
+    {
+      "page": 293,
+      "sura_id": 18,
+      "start": 9,
+      "end": 13,
+      "numStart": 7
+    },
+    {
+      "page": 312,
+      "sura_id": 19,
+      "start": 0,
+      "end": 4,
+      "numStart": 0
+    },
+    {
+      "page": 312,
+      "sura_id": 20,
+      "start": 4,
+      "end": 13,
+      "numStart": 3
+    },
+    {
+      "page": 359,
+      "sura_id": 24,
+      "start": 0,
+      "end": 10,
+      "numStart": 0
+    },
+    {
+      "page": 359,
+      "sura_id": 25,
+      "start": 10,
+      "end": 13,
+      "numStart": 3
+    },
+    {
+      "page": 385,
+      "sura_id": 27,
+      "start": 0,
+      "end": 7,
+      "numStart": 0
+    },
+    {
+      "page": 385,
+      "sura_id": 28,
+      "start": 7,
+      "end": 13,
+      "numStart": 5
+    },
+    {
+      "page": 396,
+      "sura_id": 28,
+      "start": 0,
+      "end": 7,
+      "numStart": 0
+    },
+    {
+      "page": 396,
+      "sura_id": 29,
+      "start": 7,
+      "end": 13,
+      "numStart": 4
+    },
+    {
+      "page": 404,
+      "sura_id": 29,
+      "start": 0,
+      "end": 9,
+      "numStart": 0
+    },
+    {
+      "page": 404,
+      "sura_id": 30,
+      "start": 9,
+      "end": 13,
+      "numStart": 6
+    },
+    {
       "page": 604,
       "sura_id": 112,
       "start": 0,

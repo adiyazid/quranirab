@@ -488,11 +488,14 @@ class _SurahScreenState extends State<SurahScreen>
                                                           width: 40,
                                                           child: Center(
                                                             child: Padding(
-                                                              padding: const EdgeInsets.all(4.0),
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(4.0),
                                                               child: Icon(
-                                                                Icons.more_horiz,
-                                                                size:
-                                                                    fontsize.value,
+                                                                Icons
+                                                                    .more_horiz,
+                                                                size: fontsize
+                                                                    .value,
                                                                 color: Theme.of(
                                                                         context)
                                                                     .textSelectionColor,
@@ -574,7 +577,8 @@ class _SurahScreenState extends State<SurahScreen>
                         alignment: Alignment.center,
                         child: SizedBox(
                             child: Slice2(
-                                "${Provider.of<AyaProvider>(context).page}",widget.sura_id))),
+                                "${Provider.of<AyaProvider>(context, listen: false).page}",
+                                widget.sura_id))),
                   ],
                 ),
               ),
@@ -612,6 +616,13 @@ class _SurahScreenState extends State<SurahScreen>
                                   .readSliceData();
                               Provider.of<AyaProvider>(context, listen: false)
                                   .readAya();
+                              await Provider.of<AyaProvider>(context,
+                                      listen: false)
+                                  .getStart(
+                                      int.parse(widget.sura_id),
+                                      Provider.of<AyaProvider>(context,
+                                              listen: false)
+                                          .page);
                               if (i < int.parse(widget.allpages.last)) {
                                 setState(() {
                                   i--;
@@ -650,6 +661,13 @@ class _SurahScreenState extends State<SurahScreen>
                                   Provider.of<AyaProvider>(context,
                                           listen: false)
                                       .readAya();
+                                  await Provider.of<AyaProvider>(context,
+                                          listen: false)
+                                      .getStart(
+                                          int.parse(widget.sura_id),
+                                          Provider.of<AyaProvider>(context,
+                                                  listen: false)
+                                              .page);
                                   if (i < int.parse(widget.allpages.last)) {
                                     setState(() {
                                       i--;
@@ -688,6 +706,13 @@ class _SurahScreenState extends State<SurahScreen>
                             await Provider.of<AyaProvider>(context,
                                     listen: false)
                                 .readAya();
+                            await Provider.of<AyaProvider>(context,
+                                    listen: false)
+                                .getStart(
+                                    int.parse(widget.sura_id),
+                                    Provider.of<AyaProvider>(context,
+                                            listen: false)
+                                        .page);
                             await getStartAyah(widget.allpages.first);
                             await nextPage(widget.allpages.first);
                           },
@@ -717,6 +742,13 @@ class _SurahScreenState extends State<SurahScreen>
                                   .readSliceData();
                               Provider.of<AyaProvider>(context, listen: false)
                                   .readAya();
+                              await Provider.of<AyaProvider>(context,
+                                      listen: false)
+                                  .getStart(
+                                      int.parse(widget.sura_id),
+                                      Provider.of<AyaProvider>(context,
+                                              listen: false)
+                                          .page);
                               if (i < int.parse(widget.allpages.last)) {
                                 setState(() {
                                   i++;
@@ -755,6 +787,13 @@ class _SurahScreenState extends State<SurahScreen>
                                   Provider.of<AyaProvider>(context,
                                           listen: false)
                                       .readAya();
+                                  await Provider.of<AyaProvider>(context,
+                                          listen: false)
+                                      .getStart(
+                                          int.parse(widget.sura_id),
+                                          Provider.of<AyaProvider>(context,
+                                                  listen: false)
+                                              .page);
                                   if (i < int.parse(widget.allpages.last)) {
                                     setState(() {
                                       i++;

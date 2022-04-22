@@ -85,7 +85,9 @@ class _ListItemsState extends State<ListItems> {
                                 child: Text(
                                   widget.text
                                       .replaceAll('ﲿ', '')
-                                      .replaceAll('ﲹ', ''),
+                                      .replaceAll('ﲹ', '')
+                                      .replaceAll('ﲬ', '')
+                                      .replaceAll('ﲨ', ''),
                                   style: TextStyle(
                                       fontSize: 24, fontFamily: 'MeQuran2'),
                                 ),

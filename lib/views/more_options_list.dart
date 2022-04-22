@@ -81,6 +81,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
               itemBuilder: (BuildContext context, int index) {
                 if (index == 0) {
                   final fontsize = Provider.of<AyaProvider>(context);
+                  print(widget.surah);
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
@@ -104,7 +105,9 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                             child: Text(
                               widget.surah
                                   .replaceAll('ﲿ', '')
-                                  .replaceAll('ﲹ', ''),
+                                  .replaceAll('ﲹ', '')
+                                  .replaceAll('ﲬ', '')
+                                  .replaceAll('ﲨ', ''),
                               style: TextStyle(
                                 fontFamily: 'MeQuran2',
                                 fontSize: fontsize.value,
@@ -196,100 +199,126 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                 );
               },
             )
-          : Column(
-              children: [
-                SkeletonLoader(
-                    builder: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+          : aya.nodata
+              ? Column(
                   children: [
                     Align(
                       alignment: Alignment.topRight,
-                      child:
-                          IconButton(onPressed: () {}, icon: Icon(Icons.clear)),
+                      child: IconButton(
+                          onPressed: aya.visible == true
+                              ? () {
+                                  setState(() {
+                                    aya.set();
+                                    aya.defaultSelect();
+                                  });
+                                }
+                              : null,
+                          icon: Icon(Icons.clear)),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Directionality(
-                          textDirection: TextDirection.rtl,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadiusDirectional.circular(16)),
-                            height: 30,
-                            width: 100,
-                          )),
-                    ),
-                    const Divider(
-                      thickness: 1,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadiusDirectional.circular(16)),
-                            height: 30,
-                            width: 100,
-                          ),
-                          Spacer(),
-                          Container(
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadiusDirectional.circular(16)),
-                            height: 30,
-                            width: 100,
-                          )
-                        ],
-                      ),
-                    )
+                    Spacer(),
+                    Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Text('No data')),
+                    Spacer(),
                   ],
-                )),
-                SkeletonLoader(
-                  builder: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Column(
-                            children: <Widget>[
+                )
+              : Column(
+                  children: [
+                    SkeletonLoader(
+                        builder: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: IconButton(
+                              onPressed: () {}, icon: Icon(Icons.clear)),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Directionality(
+                              textDirection: TextDirection.rtl,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadiusDirectional.circular(16)),
+                                height: 30,
+                                width: 100,
+                              )),
+                        ),
+                        const Divider(
+                          thickness: 1,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Row(
+                            children: [
                               Container(
                                 decoration: BoxDecoration(
                                     borderRadius:
-                                        BorderRadiusDirectional.circular(16),
-                                    color: Colors.white),
-                                width: double.infinity,
-                                height: 35,
+                                        BorderRadiusDirectional.circular(16)),
+                                height: 30,
+                                width: 100,
                               ),
-                            ],
-                          ),
-                        ),
-                        Spacer(),
-                        Expanded(
-                          child: Column(
-                            children: <Widget>[
+                              Spacer(),
                               Container(
-                                width: double.infinity,
-                                height: 35,
                                 decoration: BoxDecoration(
                                     borderRadius:
-                                        BorderRadiusDirectional.circular(16),
-                                    color: Colors.white),
-                              ),
+                                        BorderRadiusDirectional.circular(16)),
+                                height: 30,
+                                width: 100,
+                              )
                             ],
                           ),
-                        ),
+                        )
                       ],
+                    )),
+                    SkeletonLoader(
+                      builder: Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: Column(
+                                children: <Widget>[
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadiusDirectional.circular(
+                                                16),
+                                        color: Colors.white),
+                                    width: double.infinity,
+                                    height: 35,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Spacer(),
+                            Expanded(
+                              child: Column(
+                                children: <Widget>[
+                                  Container(
+                                    width: double.infinity,
+                                    height: 35,
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadiusDirectional.circular(
+                                                16),
+                                        color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      items: 15,
+                      period: Duration(seconds: 2),
+                      highlightColor: Color(0xffaa9f9f),
+                      direction: SkeletonDirection.rtl,
                     ),
-                  ),
-                  items: 15,
-                  period: Duration(seconds: 2),
-                  highlightColor: Color(0xffaa9f9f),
-                  direction: SkeletonDirection.rtl,
-                ),
-              ],
-            );
+                  ],
+                );
     });
   }
 
