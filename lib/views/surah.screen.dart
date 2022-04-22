@@ -208,7 +208,7 @@ class _SurahScreenState extends State<SurahScreen>
                           Flexible(
                             child: ListTile(
                               title: Text(
-                                widget.name,
+                                "(${widget.sura_id}) ${widget.name}",
                                 style: TextStyle(
                                   fontSize: 20,
                                 ),
@@ -715,6 +715,9 @@ class _SurahScreenState extends State<SurahScreen>
                                         .page);
                             await getStartAyah(widget.allpages.first);
                             await nextPage(widget.allpages.first);
+                            setState(() {
+                              i = 0;
+                            });
                           },
                     style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(

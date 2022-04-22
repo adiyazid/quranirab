@@ -80,7 +80,6 @@ class AyaProvider extends ChangeNotifier {
 
   void setDefault() {
     loading = false;
-
     notifyListeners();
   }
 
@@ -1437,7 +1436,7 @@ class AyaProvider extends ChangeNotifier {
     }
   }
 
-  getStart(int id,int currentPage) async {
+  getStart(int id, int currentPage) async {
     String jsonString =
         await rootBundle.loadString("break_index/surah_split.json");
     final surahSplitList = surahSplitFromJson(jsonString);
@@ -1446,7 +1445,7 @@ class AyaProvider extends ChangeNotifier {
         pageFix.add(element.page);
       }
       notifyListeners();
-      if (element.suraId == id && element.page==currentPage) {
+      if (element.suraId == id && element.page == currentPage) {
         start = element.start;
         end = element.end;
         numStart = element.numStart;

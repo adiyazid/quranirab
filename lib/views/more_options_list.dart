@@ -86,7 +86,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Align(
-                        alignment: Alignment.topRight,
+                        alignment: Alignment.topLeft,
                         child: IconButton(
                             onPressed: aya.visible == true
                                 ? () {
@@ -99,7 +99,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                             icon: Icon(Icons.clear)),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 16),
                         child: Directionality(
                             textDirection: TextDirection.rtl,
                             child: Text(
@@ -229,7 +229,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Align(
-                          alignment: Alignment.topRight,
+                          alignment: Alignment.topLeft,
                           child: IconButton(
                               onPressed: () {}, icon: Icon(Icons.clear)),
                         ),
