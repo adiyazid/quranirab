@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quranirab/facebook/screens/home_screen_1.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 
 class SurahGrid extends StatefulWidget {
@@ -196,12 +195,7 @@ class _SurahGridState extends State<SurahGrid> {
                     ),
                   ),
                 ),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const FacebookHomeScreen()));
-                },
+                onTap: () {},
               );
             })),
       ),

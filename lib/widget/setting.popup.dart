@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/models/font.size.dart';
+import 'package:quranirab/provider/ayah.number.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
+
 
 class SettingPopup extends StatefulWidget {
   const SettingPopup({Key? key}) : super(key: key);
@@ -19,6 +21,8 @@ class _SettingPopupState extends State<SettingPopup>
   int no = 0;
 
   var visible = true;
+
+  final _custom = CustomPopupMenuController();
 
   bool get indexIsChanging => _indexIsChangingCount != 0;
 
@@ -88,6 +92,7 @@ class _SettingPopupState extends State<SettingPopup>
     final brightness = SchedulerBinding.instance!.window.platformBrightness;
     return StatefulBuilder(builder: (context, setState) {
       return CustomPopupMenu(
+        controller: _custom,
         child: const Icon(Icons.settings),
         pressType: PressType.singleClick,
         showArrow: false,
@@ -117,33 +122,29 @@ class _SettingPopupState extends State<SettingPopup>
                         padding: padding,
                         children: <Widget>[
                           const SizedBox(height: 10),
-                          Stack(
-                            children: <Widget>[
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(35, 16, 0, 15),
-                                child: Text(
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Row(
+                              children: <Widget>[
+                                Text(
                                   'Setting',
                                   style: TextStyle(
                                       color:
                                           Theme.of(context).textSelectionColor,
                                       fontSize: 16),
                                 ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(450, 0, 0, 0),
-                                child: IconButton(
+                                Spacer(),
+                                IconButton(
                                   onPressed: () async {
-                                    Navigator.of(context).maybePop();
+                                    _custom.hideMenu();
                                   },
                                   icon: const Icon(Icons.close),
                                   color: Theme.of(context).textSelectionColor,
                                   iconSize: 20,
                                   splashRadius: 15,
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                           const SizedBox(height: 5),
                           Center(
@@ -163,67 +164,71 @@ class _SettingPopupState extends State<SettingPopup>
                                     color: Theme.of(context).dividerColor,
                                     width: 1,
                                   )),
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        0, 10, 380, 16),
-                                    child: Text('Theme',
-                                        style: TextStyle(
-                                          color: Theme.of(context)
-                                              .textSelectionColor,
-                                          fontSize: 16,
-                                        )),
-                                  ),
-                                  TabBar(
-                                    indicatorColor:
-                                        Theme.of(context).iconTheme.color,
-                                    onTap: (index) async {
-                                      if (_controller.index == 1) {
-                                        themeProvider.toggleTheme(false);
-                                      } else if (_controller.index == 2) {
-                                        themeProvider.toggleTheme(true);
-                                      } else {
-                                        if (brightness.toString() ==
-                                                "Brightness.light" &&
-                                            themeProvider.isDarkMode == true) {
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Text('Theme',
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .textSelectionColor,
+                                            fontSize: 16,
+                                          )),
+                                    ),
+                                    TabBar(
+                                      indicatorColor:
+                                          Theme.of(context).iconTheme.color,
+                                      onTap: (index) async {
+                                        if (_controller.index == 1) {
                                           themeProvider.toggleTheme(false);
-                                        }
-                                        if (brightness.toString() ==
-                                            "Brightness.dark") {
+                                        } else if (_controller.index == 2) {
                                           themeProvider.toggleTheme(true);
+                                        } else {
+                                          if (brightness.toString() ==
+                                                  "Brightness.light" &&
+                                              themeProvider.isDarkMode == true) {
+                                            themeProvider.toggleTheme(false);
+                                          }
+                                          if (brightness.toString() ==
+                                              "Brightness.dark") {
+                                            themeProvider.toggleTheme(true);
+                                          }
                                         }
-                                      }
-                                    },
-                                    controller: _controller,
-                                    tabs: list,
-                                  ),
-                                ],
+                                      },
+                                      controller: _controller,
+                                      tabs: list,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                          Center(
-                            child: Container(
-                              width: 500,
-                              height: 130,
-                              margin: const EdgeInsets.all(10),
-                              padding: const EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.only(
-                                      topRight: Radius.circular(10.0),
-                                      bottomRight: Radius.circular(10.0),
-                                      topLeft: Radius.circular(10.0),
-                                      bottomLeft: Radius.circular(10.0)),
-                                  color: Theme.of(context).focusColor,
-                                  border: Border.all(
-                                    color: Theme.of(context).dividerColor,
-                                    width: 1,
-                                  )),
+                          Container(
+                            width: 500,
+                            height: 130,
+                            margin: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                borderRadius: const BorderRadius.only(
+                                    topRight: Radius.circular(10.0),
+                                    bottomRight: Radius.circular(10.0),
+                                    topLeft: Radius.circular(10.0),
+                                    bottomLeft: Radius.circular(10.0)),
+                                color: Theme.of(context).focusColor,
+                                border: Border.all(
+                                  color: Theme.of(context).dividerColor,
+                                  width: 1,
+                                )),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        0, 10, 370, 16),
+                                  Align(
+                                    alignment: Alignment.topLeft,
                                     child: Text('Font Size',
                                         style: TextStyle(
                                             color: Theme.of(context)
@@ -248,10 +253,10 @@ class _SettingPopupState extends State<SettingPopup>
                                       onPressed: (int newIndex) {
                                         if (newIndex == 0) {
                                           setState(() {
-                                            if (fontData.size != 0) {
-                                              fontData.size = fontData.size - 1;
-                                              Provider.of<FontSizeController>(
-                                                      context,
+                                            if (fontData.size != 0 &&
+                                                fontData.size > 20) {
+                                              fontData.size = fontData.size - 5;
+                                              Provider.of<AyaProvider>(context,
                                                       listen: false)
                                                   .decrement();
                                             }
@@ -261,10 +266,9 @@ class _SettingPopupState extends State<SettingPopup>
                                           setState(() {
                                             // fontData.index = 2;
                                             // fontData.size = 60;
-                                            if (fontData.size != 38) {
-                                              fontData.size = fontData.size + 1;
-                                              Provider.of<FontSizeController>(
-                                                      context,
+                                            if (fontData.size != 35) {
+                                              fontData.size = fontData.size + 5;
+                                              Provider.of<AyaProvider>(context,
                                                       listen: false)
                                                   .increment();
                                               no++;

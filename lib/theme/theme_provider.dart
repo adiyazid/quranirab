@@ -62,20 +62,3 @@ class QuranThemes {
   );
 }
 
-class FontSizeController with ChangeNotifier {
-  double _value = fontData.size;
-
-  double get value => _value;
-
-  void increment() {
-    if (_value != 38) {
-      _value++;
-      notifyListeners();
-    }
-  }
-
-  void decrement() {
-    _value--;
-    notifyListeners();
-  }
-}

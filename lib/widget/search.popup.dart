@@ -4,7 +4,9 @@ import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
-import 'package:quranirab/views/data.from.firestore.dart';
+
+import '../provider/ayah.number.provider.dart';
+import '../views/surah.screen.dart';
 
 class SearchPopup extends StatefulWidget {
   const SearchPopup({Key? key}) : super(key: key);
@@ -73,6 +75,8 @@ class _SearchPopupState extends State<SearchPopup>
   final CollectionReference _collectionRef =
       FirebaseFirestore.instance.collection('suras');
 
+  final _custom = CustomPopupMenuController();
+
   @override
   void initState() {
     _memoizer = AsyncMemoizer();
@@ -89,122 +93,131 @@ class _SearchPopupState extends State<SearchPopup>
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return CustomPopupMenu(
+      controller: _custom,
       child: const Icon(Icons.search),
       pressType: PressType.singleClick,
       showArrow: false,
       horizontalMargin: 10,
       menuBuilder: () {
-        return StatefulBuilder(builder: (context, setState) {
-          return ClipRRect(
-            borderRadius: BorderRadius.circular(5),
-            child: Container(
-              decoration: BoxDecoration(
-                  color: themeProvider.isDarkMode
-                      ? const Color(0xFF67748E)
-                      : const Color(0xFFFFC692),
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(12.0),
-                  ),
-                  border: Border.all(
-                    color: Theme.of(context).dividerColor,
-                    width: 1,
-                  )),
-              child: SizedBox(
-                height: 320,
-                width: 500,
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 24.0, vertical: 8),
-                      child: TextField(
-                        cursorColor: themeProvider.isDarkMode
-                            ? Colors.white
-                            : Colors.black,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              Icons.clear,
-                              color: themeProvider.isDarkMode
-                                  ? Colors.white
-                                  : Colors.black,
-                            ),
-                            onPressed: () {
-                              myController.clear();
-
-                              setState(() {
-                                visible = true;
-                                _list = all;
-                              });
-                            },
-                          ),
-                          prefixIcon: Icon(
-                            Icons.search,
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(5),
+          child: Container(
+            decoration: BoxDecoration(
+                color: themeProvider.isDarkMode
+                    ? const Color(0xFF67748E)
+                    : const Color(0xFFFFC692),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(12.0),
+                ),
+                border: Border.all(
+                  color: Theme.of(context).dividerColor,
+                  width: 1,
+                )),
+            child: SizedBox(
+              height: 320,
+              width: 500,
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24.0, vertical: 8),
+                    child: TextField(
+                      cursorColor: themeProvider.isDarkMode
+                          ? Colors.white
+                          : Colors.black,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            Icons.clear,
                             color: themeProvider.isDarkMode
                                 ? Colors.white
                                 : Colors.black,
                           ),
-                          hintText: 'Search',
+                          onPressed: () {
+                            myController.clear();
+                            _custom.hideMenu();
+                            setState(() {
+                              visible = true;
+                              _list = all;
+                            });
+                          },
                         ),
-                        controller: myController,
-                        onChanged: _search,
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: themeProvider.isDarkMode
+                              ? Colors.white
+                              : Colors.black,
+                        ),
+                        hintText: 'Search',
                       ),
+                      controller: myController,
+                      onChanged: _search,
                     ),
-                    Flexible(
-                        flex: 1,
-                        child: Visibility(
-                          visible: visible,
-                          child: Text('Popular Searches'),
-                        )),
-                    Expanded(
-                      flex: 4,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 24.0, vertical: 8),
-                        child: ListView.builder(
-                          itemCount: visible ? pop.length : _list.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return InkWell(
+                  ),
+                  Flexible(
+                      flex: 1,
+                      child: Visibility(
+                        visible: visible,
+                        child: Text('Popular Searches'),
+                      )),
+                  Expanded(
+                    flex: 4,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 24.0, vertical: 8),
+                      child: ListView.builder(
+                        itemCount: visible ? pop.length : _list.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return ListTile(
+                            title: InkWell(
                               onTap: () async {
                                 var a = await getTotalPage(_list[index]["id"]);
                                 var b = await getTotalPage(pop[index]["id"]);
-                                visible
-                                    ? Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => SurahScreen(
-                                                  b,
-                                                  pop[index]["id"],
-                                                  pop[index]["tname"],
-                                                  pop[index]["ename"],
-                                                )))
-                                    : Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => SurahScreen(
-                                                  a,
-                                                  _list[index]["id"],
-                                                  _list[index]["tname"],
-                                                  _list[index]["ename"],
-                                                )));
+                                Provider.of<AyaProvider>(context, listen: false)
+                                    .setDefault();
+                                if (visible) {
+                                  Provider.of<AyaProvider>(context,
+                                          listen: false)
+                                      .getPage(int.parse(b.first));
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => SurahScreen(
+                                                b,
+                                                pop[index]["id"],
+                                                pop[index]["tname"],
+                                                pop[index]["ename"],
+                                              )));
+                                } else {
+                                  Provider.of<AyaProvider>(context,
+                                          listen: false)
+                                      .getPage(int.parse(a.first));
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => SurahScreen(
+                                                a,
+                                                _list[index]["id"],
+                                                _list[index]["tname"],
+                                                _list[index]["ename"],
+                                              )));
+                                }
                               },
-                              child: ListTile(
-                                title: Text(visible
-                                    ? pop[index]['tname']
-                                    : _list[index]['tname']),
-                              ),
-                            );
-                          },
-                        ),
+                              child: Text(visible
+                                  ? pop[index]['tname']
+                                  : _list[index]['tname']),
+                            ),
+                          );
+                        },
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          );
-        });
+          ),
+        );
       },
     );
   }

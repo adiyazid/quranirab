@@ -110,7 +110,8 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                                   ? Colors.white
                                   : const Color.fromRGBO(0, 0, 0, 1),
                               fontFamily: 'Source Serif Pro',
-                              fontSize: 72,
+                              fontSize:
+                                  MediaQuery.of(context).size.width * 0.05,
                               letterSpacing:
                                   0 /*percentages not used in flutter. defaulting to zero*/,
                               fontWeight: FontWeight.normal,
@@ -135,7 +136,7 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                     },
                     child: Container(
                       width: 600,
-                      height: 130,
+                      height: MediaQuery.of(context).size.height * 0.15,
                       decoration: BoxDecoration(
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(30),
@@ -150,28 +151,27 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 30.0),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Image.asset(
                               'assets/Image7.png',
                               scale: 4,
                             ),
-                            const SizedBox(
-                              width: 104,
+                            Spacer(),
+                            Text(
+                              'Overall',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Color.fromRGBO(0, 0, 0, 1),
+                                  fontFamily: 'Source Serif Pro',
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * 0.03,
+                                  letterSpacing:
+                                      0 /*percentages not used in flutter. defaulting to zero*/,
+                                  fontWeight: FontWeight.normal,
+                                  height: 1),
                             ),
-                            const Flexible(
-                              child: Text(
-                                'Overall',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Color.fromRGBO(0, 0, 0, 1),
-                                    fontFamily: 'Source Serif Pro',
-                                    fontSize: 56,
-                                    letterSpacing:
-                                        0 /*percentages not used in flutter. defaulting to zero*/,
-                                    fontWeight: FontWeight.normal,
-                                    height: 1),
-                              ),
-                            ),
+                            Spacer(),
                           ],
                         ),
                       ),
@@ -193,7 +193,7 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                     },
                     child: Container(
                       width: 600,
-                      height: 130,
+                      height: MediaQuery.of(context).size.height * 0.15,
                       decoration: BoxDecoration(
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(30),
@@ -209,28 +209,28 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 30.0),
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Image.asset(
                                 'assets/Image7.png',
                                 scale: 4,
                               ),
-                              const SizedBox(
-                                width: 56,
+                              Spacer(),
+                              Text(
+                                'Page 1 - 201',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Color.fromRGBO(0, 0, 0, 1),
+                                    fontFamily: 'Source Serif Pro',
+                                    fontSize:
+                                        MediaQuery.of(context).size.width *
+                                            0.03,
+                                    letterSpacing:
+                                        0 /*percentages not used in flutter. defaulting to zero*/,
+                                    fontWeight: FontWeight.normal,
+                                    height: 1),
                               ),
-                              const Flexible(
-                                child: Text(
-                                  'Page 1 - 201',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(0, 0, 0, 1),
-                                      fontFamily: 'Source Serif Pro',
-                                      fontSize: 56,
-                                      letterSpacing:
-                                          0 /*percentages not used in flutter. defaulting to zero*/,
-                                      fontWeight: FontWeight.normal,
-                                      height: 1),
-                                ),
-                              ),
+                              Spacer(),
                             ],
                           ),
                         ),
@@ -253,7 +253,7 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                     },
                     child: Container(
                       width: 600,
-                      height: 130,
+                      height: MediaQuery.of(context).size.height * 0.15,
                       decoration: BoxDecoration(
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(30),
@@ -269,24 +269,28 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Image.asset(
-                              'assets/Image7.png',
-                              scale: 4,
-                            ),
-                            const Flexible(
-                              child: Text(
-                                'Page 202 - 402',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Color.fromRGBO(0, 0, 0, 1),
-                                    fontFamily: 'Source Serif Pro',
-                                    fontSize: 56,
-                                    letterSpacing:
-                                        0 /*percentages not used in flutter. defaulting to zero*/,
-                                    fontWeight: FontWeight.normal,
-                                    height: 1),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 30.0),
+                              child: Image.asset(
+                                'assets/Image7.png',
+                                scale: 4,
                               ),
                             ),
+                            Spacer(),
+                            Text(
+                              'Page 202 - 402',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Color.fromRGBO(0, 0, 0, 1),
+                                  fontFamily: 'Source Serif Pro',
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * 0.03,
+                                  letterSpacing:
+                                      0 /*percentages not used in flutter. defaulting to zero*/,
+                                  fontWeight: FontWeight.normal,
+                                  height: 1),
+                            ),
+                            Spacer(),
                           ],
                         ),
                       ),
@@ -308,7 +312,7 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                     },
                     child: Container(
                       width: 600,
-                      height: 130,
+                      height: MediaQuery.of(context).size.height * 0.15,
                       decoration: BoxDecoration(
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(30),
@@ -324,24 +328,28 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Image.asset(
-                              'assets/Image7.png',
-                              scale: 4,
-                            ),
-                            const Flexible(
-                              child: Text(
-                                'Page 403 - 604',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Color.fromRGBO(0, 0, 0, 1),
-                                    fontFamily: 'Source Serif Pro',
-                                    fontSize: 56,
-                                    letterSpacing:
-                                        0 /*percentages not used in flutter. defaulting to zero*/,
-                                    fontWeight: FontWeight.normal,
-                                    height: 1),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 30.0),
+                              child: Image.asset(
+                                'assets/Image7.png',
+                                scale: 4,
                               ),
                             ),
+                            Spacer(),
+                            Text(
+                              'Page 403 - 604',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Color.fromRGBO(0, 0, 0, 1),
+                                  fontFamily: 'Source Serif Pro',
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * 0.03,
+                                  letterSpacing:
+                                      0 /*percentages not used in flutter. defaulting to zero*/,
+                                  fontWeight: FontWeight.normal,
+                                  height: 1),
+                            ),
+                            Spacer(),
                           ],
                         ),
                       ),

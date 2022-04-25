@@ -1,16 +1,16 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:quranirab/facebook/screens/home_screen_1.dart';
 import 'package:quranirab/quiz_module/quiz.home.dart';
+import 'package:quranirab/widget/appbar.widget.dart';
 import 'package:quranirab/widget/menu.dart';
 import 'package:quranirab/widget/setting.dart';
-import 'package:quranirab/facebook/screens/Appbar/appbar.dart';
 import 'package:quranirab/quiz_module/utils/button182.dart';
 import 'package:quranirab/quiz_module/LeaderBoard.Menu.dart';
 
 class QuizScore extends StatefulWidget {
-  QuizScore(this.score, this.questionsCount,this.page, {Key? key}) : super(key: key);
+  QuizScore(this.score, this.questionsCount, this.page, {Key? key})
+      : super(key: key);
   int score;
   int questionsCount;
   int page;
@@ -95,7 +95,8 @@ class _QuizScoreState extends State<QuizScore> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => QuizHome(widget.page)));
+                                            builder: (context) =>
+                                                QuizHome(widget.page)));
                                   }, true),
                                   //insert route to play again at quiz screen
                                   const SizedBox(
@@ -106,11 +107,7 @@ class _QuizScoreState extends State<QuizScore> {
                                       const TextStyle(fontSize: 28),
                                       const Color(0xffffb55f),
                                       10, () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const FacebookHomeScreen()));
+                                    Navigator.pop(context);
                                   }, true),
                                   //insert route to return to back to surah page
                                   const SizedBox(
