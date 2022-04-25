@@ -418,7 +418,7 @@ class AyaProvider extends ChangeNotifier {
   }
 
   Future<void> readJsonData() async {
-    String jsonData = await rootBundle.loadString("break_index/break.json");
+    String jsonData = await rootBundle.loadString("data/break.json");
     _index = BreakIndex.fromJson(json.decode(jsonData));
     if (page == 1) {
       breakIndex = _index?.page1 ?? <int>[];
@@ -1445,7 +1445,7 @@ class AyaProvider extends ChangeNotifier {
 
   getStart(int id, int currentPage) async {
     String jsonString =
-        await rootBundle.loadString("break_index/surah_split.json");
+        await rootBundle.loadString("data/surah_split.json");
     final surahSplitList = surahSplitFromJson(jsonString);
     for (var element in surahSplitList.splitSura) {
       if (!pageFix.contains(element.page)) {
