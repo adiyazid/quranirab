@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:quranirab/views/nav.draw.dart';
 import 'package:quranirab/widget/text.widget.dart';
 
-import 'surah_model.dart';
+import '../views/surah_model.dart';
 
 class Surah extends StatefulWidget {
   const Surah({Key? key}) : super(key: key);

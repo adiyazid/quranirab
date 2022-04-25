@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:quranirab/models/surah.model.dart';
 
 
-import 'nav.draw.dart';
+import '../views/nav.draw.dart';
 
 class Split extends StatefulWidget {
   const Split({Key? key}) : super(key: key);

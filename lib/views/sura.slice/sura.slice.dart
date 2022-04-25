@@ -8,21 +8,21 @@ import 'package:quranirab/models/font.size.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
 import 'package:quranirab/provider/language.provider.dart';
 
-import '../more_options_list.dart';
+import '../../widget/more_options_list.dart';
 import '../../theme/theme_provider.dart';
 import '../../widget/detail.words.popup.dart';
 
-class Slice2 extends StatefulWidget {
+class SuraSlice extends StatefulWidget {
   final String page;
   final String suraId;
 
-  const Slice2(this.page, this.suraId, {Key? key}) : super(key: key);
+  const SuraSlice(this.page, this.suraId, {Key? key}) : super(key: key);
 
   @override
-  _Slice2State createState() => _Slice2State();
+  _SuraSliceState createState() => _SuraSliceState();
 }
 
-class _Slice2State extends State<Slice2> {
+class _SuraSliceState extends State<SuraSlice> {
   CollectionReference quranText =
       FirebaseFirestore.instance.collection('quran_texts');
   CollectionReference rawText =

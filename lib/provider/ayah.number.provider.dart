@@ -27,7 +27,7 @@ class AyaProvider extends ChangeNotifier {
   List ayaPosition = [];
   List ayaNumber = [];
   List<int>? breakIndex;
-  List<SlicingDatum>? slice = <SlicingDatum>[];
+  List<SlicingData>? slice = <SlicingData>[];
   List<bool> select = [];
   List<bool> old = [];
   List isim = [];
@@ -139,12 +139,12 @@ class AyaProvider extends ChangeNotifier {
     if (slice!.last.end != list!.join().split('').length) {
       var last = slice!.last;
       slice!.remove(last);
-      slice!.add(SlicingDatum(
+      slice!.add(SlicingData(
           start: last.start,
           end: list!.join().split('').length,
           wordId: last.wordId));
       notifyListeners();
-      print("[fix last slice data]");
+      print("[fix last sura.slice data]");
     }
     loading = true;
     notifyListeners();
@@ -158,8 +158,8 @@ class AyaProvider extends ChangeNotifier {
       for (var doc in querySnapshot.docs) {
         ///todo:parse json list to object list
         Iterable l = json.decode(doc["slicing_data"]);
-        List<SlicingDatum> _slice = List<SlicingDatum>.from(
-            l.map((model) => SlicingDatum.fromJson(model)));
+        List<SlicingData> _slice = List<SlicingData>.from(
+            l.map((model) => SlicingData.fromJson(model)));
         slice = _slice;
         notifyListeners();
       }
@@ -171,7 +171,7 @@ class AyaProvider extends ChangeNotifier {
         var a =
             slice![i != slice!.length - 1 ? i + 1 : i].start - slice![i].end;
         slice!.setAll(i, [
-          SlicingDatum(
+          SlicingData(
               start: slice![i].start,
               end: i != slice!.length - 1
                   ? slice![i].end + a - 1

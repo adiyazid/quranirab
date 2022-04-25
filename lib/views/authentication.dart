@@ -12,7 +12,6 @@ String? name;
 String? imageUrl;
 
 Future<User?> registerWithEmailPassword(String email, String password) async {
-
   await Firebase.initializeApp();
   User? user;
 
@@ -37,6 +36,7 @@ Future<User?> registerWithEmailPassword(String email, String password) async {
   } catch (e) {
     print(e);
   }
+  return null;
 }
 
 Future<User?> signInWithEmailPassword(String email, String password) async {

@@ -97,7 +97,7 @@
 //                                       i < aya.breakIndex![index];
 //                                       i++)
 //                                         aya.checkAya(
-//                                           aya.slice![i].end,
+//                                           aya.sura.slice![i].end,
 //                                         )
 //                                             ? Row(
 //                                           children: [
@@ -108,7 +108,7 @@
 //                                                     aya,
 //                                                     child) {
 //                                                   return aya.checkSymbol(aya
-//                                                       .slice![i]
+//                                                       .sura.slice![i]
 //                                                       .start)
 //                                                       ? Row(
 //                                                     children: [
@@ -127,15 +127,15 @@
 //                                                         onTap: aya.visible
 //                                                             ? null
 //                                                             : () {
-//                                                           print(aya.slice![i].end);
-//                                                           Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.slice![i].wordId, Provider.of<LangProvider>(context, listen: false).langId);
-//                                                           aya.setWords(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
+//                                                           print(aya.sura.slice![i].end);
+//                                                           Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.sura.slice![i].wordId, Provider.of<LangProvider>(context, listen: false).langId);
+//                                                           aya.setWords(aya.list!.join().split('').getRange(aya.sura.slice![i].start - 1, aya.sura.slice![i].end).join());
 //                                                           if (size.width < 1400) {
 //                                                             showPopover(
 //                                                               backgroundColor: (themeProvider.isDarkMode) ? const Color(0xffa0a7b7) : const Color(0xfffff3ca),
 //                                                               context: context,
 //                                                               transitionDuration: Duration(milliseconds: 200),
-//                                                               bodyBuilder: (context) => ListItems(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join()),
+//                                                               bodyBuilder: (context) => ListItems(aya.list!.join().split('').getRange(aya.sura.slice![i].start - 1, aya.sura.slice![i].end).join()),
 //                                                               onPop: () {
 //                                                                 Provider.of<AyaProvider>(context, listen: false).clear();
 //                                                                 aya.defaultSelect();
@@ -159,14 +159,14 @@
 //                                                         Row(
 //                                                           children: [
 //                                                             ///todo:space around text
-//                                                             if (aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join().contains(' '))
-//                                                               Text(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join(),
+//                                                             if (aya.list!.join().split('').getRange(aya.sura.slice![i].start - 1, aya.sura.slice![i].end).join().contains(' '))
+//                                                               Text(aya.list!.join().split('').getRange(aya.sura.slice![i].start - 1, aya.sura.slice![i].end).join(),
 //                                                                   textDirection: TextDirection.rtl,
 //                                                                   softWrap: true,
 //                                                                   style: TextStyle(
 //                                                                     fontFamily: 'MeQuran2',
 //                                                                     fontSize: aya.value,
-//                                                                     color: aya.getBoolean(i) ? aya.getColor(aya.slice![i].wordId) : null,
+//                                                                     color: aya.getBoolean(i) ? aya.getColor(aya.sura.slice![i].wordId) : null,
 //                                                                   )),
 //                                                           ],
 //                                                         ),
@@ -178,28 +178,28 @@
 //                                                       .split(
 //                                                       '')
 //                                                       .getRange(
-//                                                       aya.slice![i].start - 1,
-//                                                       aya.slice![i].end)
+//                                                       aya.sura.slice![i].start - 1,
+//                                                       aya.sura.slice![i].end)
 //                                                       .join()
 //                                                       .contains(' ')
 //                                                       ? Row(
 //                                                     children: [
 //                                                       ///todo: initial position
 //                                                       if (i == 0 ||
-//                                                           i > 1 && aya.list!.join().split('').getRange(aya.slice![i - 1].start - 1, aya.slice![i - 1].end).join() != 'ﺑﲐ' && aya.list!.join().split('').getRange(aya.slice![i - 2].start - 1, aya.slice![i - 2].end).join() != 'ﺑﲐ' && aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join() != 'ﺰﱺﺍﺩﱧ' && aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join() != 'ﺄﱁﺧﱹﺮﱺﺟﱺ' && aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join() != 'ﺄﱁﺯﱺﻟﱋ' && aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join() != 'ﻬﱻﻤﱧﺎ ')
+//                                                           i > 1 && aya.list!.join().split('').getRange(aya.sura.slice![i - 1].start - 1, aya.sura.slice![i - 1].end).join() != 'ﺑﲐ' && aya.list!.join().split('').getRange(aya.sura.slice![i - 2].start - 1, aya.sura.slice![i - 2].end).join() != 'ﺑﲐ' && aya.list!.join().split('').getRange(aya.sura.slice![i].start - 1, aya.sura.slice![i].end).join() != 'ﺰﱺﺍﺩﱧ' && aya.list!.join().split('').getRange(aya.sura.slice![i].start - 1, aya.sura.slice![i].end).join() != 'ﺄﱁﺧﱹﺮﱺﺟﱺ' && aya.list!.join().split('').getRange(aya.sura.slice![i].start - 1, aya.sura.slice![i].end).join() != 'ﺄﱁﺯﱺﻟﱋ' && aya.list!.join().split('').getRange(aya.sura.slice![i].start - 1, aya.sura.slice![i].end).join() != 'ﻬﱻﻤﱧﺎ ')
 //                                                         InkWell(
 //                                                           onTap: aya.visible
 //                                                               ? null
 //                                                               : () {
-//                                                             print(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
-//                                                             Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.slice![i].wordId, Provider.of<LangProvider>(context, listen: false).langId);
-//                                                             aya.setWords(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
+//                                                             print(aya.list!.join().split('').getRange(aya.sura.slice![i].start - 1, aya.sura.slice![i].end).join());
+//                                                             Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.sura.slice![i].wordId, Provider.of<LangProvider>(context, listen: false).langId);
+//                                                             aya.setWords(aya.list!.join().split('').getRange(aya.sura.slice![i].start - 1, aya.sura.slice![i].end).join());
 //                                                             if (size.width < 1400) {
 //                                                               showPopover(
 //                                                                 backgroundColor: (themeProvider.isDarkMode) ? const Color(0xffa0a7b7) : const Color(0xfffff3ca),
 //                                                                 context: context,
 //                                                                 transitionDuration: Duration(milliseconds: 200),
-//                                                                 bodyBuilder: (context) => ListItems(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join()),
+//                                                                 bodyBuilder: (context) => ListItems(aya.list!.join().split('').getRange(aya.sura.slice![i].start - 1, aya.sura.slice![i].end).join()),
 //                                                                 onPop: () {
 //                                                                   Provider.of<AyaProvider>(context, listen: false).clear();
 //                                                                   aya.defaultSelect();
@@ -219,33 +219,33 @@
 //                                                               }
 //                                                             }
 //                                                           },
-//                                                           child: Text(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join(),
+//                                                           child: Text(aya.list!.join().split('').getRange(aya.sura.slice![i].start - 1, aya.sura.slice![i].end).join(),
 //                                                               textDirection: TextDirection.rtl,
 //                                                               softWrap: true,
 //                                                               style: TextStyle(
 //                                                                 fontFamily: 'MeQuran2',
 //                                                                 fontSize: aya.value,
-//                                                                 color: aya.getBoolean(i) ? aya.getColor(aya.slice![i].wordId) : null,
+//                                                                 color: aya.getBoolean(i) ? aya.getColor(aya.sura.slice![i].wordId) : null,
 //                                                               )),
 //                                                         ),
 //
 //                                                       ///todo:+1 from initial position
-//                                                       if (i < aya.breakIndex![index] - 1 && aya.list!.join().split('').getRange(aya.slice![i + 1].start - 1, aya.slice![i + 1].end).join() != 'ﻬﱻﻤﱧﺎ ' && aya.list!.join().split('').getRange(aya.slice![i + 1].start - 1, aya.slice![i + 1].end).join().contains(' ') ||
-//                                                           aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join() == 'ﻓﱁ' && aya.list!.join().split('').getRange(aya.slice![i + 1].start - 1, aya.slice![i + 1].end).join() != 'ﻬﱻﻤﱧﺎ ' ||
-//                                                           aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join() == 'ﺑﲐ')
+//                                                       if (i < aya.breakIndex![index] - 1 && aya.list!.join().split('').getRange(aya.sura.slice![i + 1].start - 1, aya.sura.slice![i + 1].end).join() != 'ﻬﱻﻤﱧﺎ ' && aya.list!.join().split('').getRange(aya.sura.slice![i + 1].start - 1, aya.sura.slice![i + 1].end).join().contains(' ') ||
+//                                                           aya.list!.join().split('').getRange(aya.sura.slice![i].start - 1, aya.sura.slice![i].end).join() == 'ﻓﱁ' && aya.list!.join().split('').getRange(aya.sura.slice![i + 1].start - 1, aya.sura.slice![i + 1].end).join() != 'ﻬﱻﻤﱧﺎ ' ||
+//                                                           aya.list!.join().split('').getRange(aya.sura.slice![i].start - 1, aya.sura.slice![i].end).join() == 'ﺑﲐ')
 //                                                         InkWell(
 //                                                           onTap: aya.visible
 //                                                               ? null
 //                                                               : () {
-//                                                             print(aya.list!.join().split('').getRange(aya.slice![i + 1].start - 1, aya.slice![i + 1].end).join());
-//                                                             Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.slice![i + 1].wordId, Provider.of<LangProvider>(context, listen: false).langId);
-//                                                             aya.setWords(aya.list!.join().split('').getRange(aya.slice![i + 1].start - 1, aya.slice![i + 1].end).join());
+//                                                             print(aya.list!.join().split('').getRange(aya.sura.slice![i + 1].start - 1, aya.sura.slice![i + 1].end).join());
+//                                                             Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.sura.slice![i + 1].wordId, Provider.of<LangProvider>(context, listen: false).langId);
+//                                                             aya.setWords(aya.list!.join().split('').getRange(aya.sura.slice![i + 1].start - 1, aya.sura.slice![i + 1].end).join());
 //                                                             if (size.width < 1400) {
 //                                                               showPopover(
 //                                                                 backgroundColor: (themeProvider.isDarkMode) ? const Color(0xffa0a7b7) : const Color(0xfffff3ca),
 //                                                                 context: context,
 //                                                                 transitionDuration: Duration(milliseconds: 200),
-//                                                                 bodyBuilder: (context) => ListItems(aya.list!.join().split('').getRange(aya.slice![i + 1].start - 1, aya.slice![i + 1].end).join()),
+//                                                                 bodyBuilder: (context) => ListItems(aya.list!.join().split('').getRange(aya.sura.slice![i + 1].start - 1, aya.sura.slice![i + 1].end).join()),
 //                                                                 onPop: () {
 //                                                                   Provider.of<AyaProvider>(context, listen: false).clear();
 //                                                                   aya.defaultSelect();
@@ -265,32 +265,32 @@
 //                                                               }
 //                                                             }
 //                                                           },
-//                                                           child: Text(aya.list!.join().split('').getRange(aya.slice![i + 1].start - 1, aya.slice![i + 1].end).join().trim(),
+//                                                           child: Text(aya.list!.join().split('').getRange(aya.sura.slice![i + 1].start - 1, aya.sura.slice![i + 1].end).join().trim(),
 //                                                               textDirection: TextDirection.rtl,
 //                                                               softWrap: true,
 //                                                               style: TextStyle(
 //                                                                 fontFamily: 'MeQuran2',
 //                                                                 fontSize: aya.value,
-//                                                                 color: aya.getBoolean(i + 1) ? aya.getColor(aya.slice![i + 1].wordId) : null,
+//                                                                 color: aya.getBoolean(i + 1) ? aya.getColor(aya.sura.slice![i + 1].wordId) : null,
 //                                                               )),
 //                                                         ),
 //
 //                                                       ///todo:+2 from initial position
-//                                                       if (i < aya.breakIndex![index] - 2 && aya.list!.join().split('').getRange(aya.slice![i + 2].start - 1, aya.slice![i + 2].end).join() == 'ﻬﱻﻤﱧﺎ ' && aya.list!.join().split('').getRange(aya.slice![i + 1].start - 1, aya.slice![i + 1].end).join() == 'ﺄﱁﺯﱺﻟﱋ' ||
-//                                                           i < aya.breakIndex![index] - 2 && aya.list!.join().split('').getRange(aya.slice![i + 2].start - 1, aya.slice![i + 2].end).join() == 'ﻬﱻﻤﱧﺎ ')
+//                                                       if (i < aya.breakIndex![index] - 2 && aya.list!.join().split('').getRange(aya.sura.slice![i + 2].start - 1, aya.sura.slice![i + 2].end).join() == 'ﻬﱻﻤﱧﺎ ' && aya.list!.join().split('').getRange(aya.sura.slice![i + 1].start - 1, aya.sura.slice![i + 1].end).join() == 'ﺄﱁﺯﱺﻟﱋ' ||
+//                                                           i < aya.breakIndex![index] - 2 && aya.list!.join().split('').getRange(aya.sura.slice![i + 2].start - 1, aya.sura.slice![i + 2].end).join() == 'ﻬﱻﻤﱧﺎ ')
 //                                                         InkWell(
 //                                                           onTap: aya.visible
 //                                                               ? null
 //                                                               : () {
-//                                                             print(aya.list!.join().split('').getRange(aya.slice![i + 2].start - 1, aya.slice![i + 2].end).join());
-//                                                             Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.slice![i + 2].wordId, Provider.of<LangProvider>(context, listen: false).langId);
-//                                                             aya.setWords(aya.list!.join().split('').getRange(aya.slice![i + 2].start - 1, aya.slice![i + 2].end).join());
+//                                                             print(aya.list!.join().split('').getRange(aya.sura.slice![i + 2].start - 1, aya.sura.slice![i + 2].end).join());
+//                                                             Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.sura.slice![i + 2].wordId, Provider.of<LangProvider>(context, listen: false).langId);
+//                                                             aya.setWords(aya.list!.join().split('').getRange(aya.sura.slice![i + 2].start - 1, aya.sura.slice![i + 2].end).join());
 //                                                             if (size.width < 1400) {
 //                                                               showPopover(
 //                                                                 backgroundColor: (themeProvider.isDarkMode) ? const Color(0xffa0a7b7) : const Color(0xfffff3ca),
 //                                                                 context: context,
 //                                                                 transitionDuration: Duration(milliseconds: 200),
-//                                                                 bodyBuilder: (context) => ListItems(aya.list!.join().split('').getRange(aya.slice![i + 2].start - 1, aya.slice![i + 2].end).join()),
+//                                                                 bodyBuilder: (context) => ListItems(aya.list!.join().split('').getRange(aya.sura.slice![i + 2].start - 1, aya.sura.slice![i + 2].end).join()),
 //                                                                 onPop: () {
 //                                                                   Provider.of<AyaProvider>(context, listen: false).clear();
 //                                                                   aya.defaultSelect();
@@ -310,14 +310,14 @@
 //                                                               }
 //                                                             }
 //                                                           },
-//                                                           child: aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join() != 'ﻭﱺ' && aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join() != 'ﺃﱁﺑﱦﺼﱺ﮳ﺮﱺ'
-//                                                               ? Text(aya.list!.join().split('').getRange(aya.slice![i + 2].start - 1, aya.slice![i + 2].end).join().trim(),
+//                                                           child: aya.list!.join().split('').getRange(aya.sura.slice![i].start - 1, aya.sura.slice![i].end).join() != 'ﻭﱺ' && aya.list!.join().split('').getRange(aya.sura.slice![i].start - 1, aya.sura.slice![i].end).join() != 'ﺃﱁﺑﱦﺼﱺ﮳ﺮﱺ'
+//                                                               ? Text(aya.list!.join().split('').getRange(aya.sura.slice![i + 2].start - 1, aya.sura.slice![i + 2].end).join().trim(),
 //                                                               textDirection: TextDirection.rtl,
 //                                                               softWrap: true,
 //                                                               style: TextStyle(
 //                                                                 fontFamily: 'MeQuran2',
 //                                                                 fontSize: aya.value,
-//                                                                 color: aya.getBoolean(i + 2) ? aya.getColor(aya.slice![i + 2].wordId) : null,
+//                                                                 color: aya.getBoolean(i + 2) ? aya.getColor(aya.sura.slice![i + 2].wordId) : null,
 //                                                               ))
 //                                                               : Text(''),
 //                                                         ),
@@ -326,22 +326,22 @@
 //                                                       : Row(
 //                                                     children: [
 //                                                       if (i == 0 ||
-//                                                           aya.list!.join().split('').getRange(aya.slice![i - 1].start - 1, aya.slice![i - 1].end).join().contains(' '))
-//                                                         aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join() == 'ﺄﱁﺯﱺﻟﱋ' && aya.list!.join().split('').getRange(aya.slice![i - 1].start - 1, aya.slice![i - 1].end).join() == 'ﺄﱁﺯﱺﻟﱋ'
+//                                                           aya.list!.join().split('').getRange(aya.sura.slice![i - 1].start - 1, aya.sura.slice![i - 1].end).join().contains(' '))
+//                                                         aya.list!.join().split('').getRange(aya.sura.slice![i].start - 1, aya.sura.slice![i].end).join() == 'ﺄﱁﺯﱺﻟﱋ' && aya.list!.join().split('').getRange(aya.sura.slice![i - 1].start - 1, aya.sura.slice![i - 1].end).join() == 'ﺄﱁﺯﱺﻟﱋ'
 //                                                             ? Container()
 //                                                             : InkWell(
 //                                                           onTap: aya.visible
 //                                                               ? null
 //                                                               : () {
-//                                                             print(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
-//                                                             Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.slice![i].wordId, Provider.of<LangProvider>(context, listen: false).langId);
-//                                                             aya.setWords(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
+//                                                             print(aya.list!.join().split('').getRange(aya.sura.slice![i].start - 1, aya.sura.slice![i].end).join());
+//                                                             Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.sura.slice![i].wordId, Provider.of<LangProvider>(context, listen: false).langId);
+//                                                             aya.setWords(aya.list!.join().split('').getRange(aya.sura.slice![i].start - 1, aya.sura.slice![i].end).join());
 //                                                             if (size.width < 1400) {
 //                                                               showPopover(
 //                                                                 backgroundColor: (themeProvider.isDarkMode) ? const Color(0xffa0a7b7) : const Color(0xfffff3ca),
 //                                                                 context: context,
 //                                                                 transitionDuration: Duration(milliseconds: 200),
-//                                                                 bodyBuilder: (context) => ListItems(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join()),
+//                                                                 bodyBuilder: (context) => ListItems(aya.list!.join().split('').getRange(aya.sura.slice![i].start - 1, aya.sura.slice![i].end).join()),
 //                                                                 onPop: () {
 //                                                                   Provider.of<AyaProvider>(context, listen: false).clear();
 //                                                                   aya.defaultSelect();
@@ -361,13 +361,13 @@
 //                                                               }
 //                                                             }
 //                                                           },
-//                                                           child: Text(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join(),
+//                                                           child: Text(aya.list!.join().split('').getRange(aya.sura.slice![i].start - 1, aya.sura.slice![i].end).join(),
 //                                                               textDirection: TextDirection.rtl,
 //                                                               softWrap: true,
 //                                                               style: TextStyle(
 //                                                                 fontFamily: 'MeQuran2',
 //                                                                 fontSize: aya.value,
-//                                                                 color: aya.getBoolean(i) ? aya.getColor(aya.slice![i].wordId) : null,
+//                                                                 color: aya.getBoolean(i) ? aya.getColor(aya.sura.slice![i].wordId) : null,
 //                                                               )),
 //                                                         )
 //                                                     ],
@@ -378,11 +378,11 @@
 //                                                 .split(
 //                                                 '')
 //                                                 .length -
-//                                                 aya.slice![i]
+//                                                 aya.sura.slice![i]
 //                                                     .end <
 //                                                 3
 //                                                 ? Text(
-//                                               " ${aya.list!.join().split('').length - aya.slice![i].end < 3 ? aya.ayaNumber.last : ""}",
+//                                               " ${aya.list!.join().split('').length - aya.sura.slice![i].end < 3 ? aya.ayaNumber.last : ""}",
 //                                               softWrap:
 //                                               true,
 //                                               style:
@@ -408,7 +408,7 @@
 //                                                     aya,
 //                                                     child) {
 //                                                   return aya.checkSymbol(aya
-//                                                       .slice![i]
+//                                                       .sura.slice![i]
 //                                                       .start)
 //                                                       ? Row(
 //                                                     children: [
@@ -427,16 +427,16 @@
 //                                                         onTap: aya.visible
 //                                                             ? null
 //                                                             : () {
-//                                                           print(aya.slice![i].end);
-//                                                           Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.slice![i].wordId, Provider.of<LangProvider>(context, listen: false).langId);
-//                                                           aya.setWords(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
+//                                                           print(aya.sura.slice![i].end);
+//                                                           Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.sura.slice![i].wordId, Provider.of<LangProvider>(context, listen: false).langId);
+//                                                           aya.setWords(aya.list!.join().split('').getRange(aya.sura.slice![i].start - 1, aya.sura.slice![i].end).join());
 //                                                           if (size.width < 1400) {
 //                                                             showPopover(
 //                                                               backgroundColor: (themeProvider.isDarkMode) ? const Color(0xffa0a7b7) : const Color(0xfffff3ca),
 //                                                               context: context,
 //                                                               transitionDuration: const Duration(milliseconds: 200),
 //                                                               bodyBuilder: (context) {
-//                                                                 return ListItems(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
+//                                                                 return ListItems(aya.list!.join().split('').getRange(aya.sura.slice![i].start - 1, aya.sura.slice![i].end).join());
 //                                                               },
 //                                                               onPop: () {
 //                                                                 Provider.of<AyaProvider>(context, listen: false).clear();
@@ -458,13 +458,13 @@
 //                                                           }
 //                                                         },
 //                                                         child: Text(
-//                                                             aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join(),
+//                                                             aya.list!.join().split('').getRange(aya.sura.slice![i].start - 1, aya.sura.slice![i].end).join(),
 //                                                             textDirection: TextDirection.rtl,
 //                                                             softWrap: true,
 //                                                             style: TextStyle(
 //                                                               fontFamily: 'MeQuran2',
 //                                                               fontSize: aya.value,
-//                                                               color: aya.getBoolean(i) ? aya.getColor(aya.slice![i].wordId) : null,
+//                                                               color: aya.getBoolean(i) ? aya.getColor(aya.sura.slice![i].wordId) : null,
 //                                                             )),
 //                                                       ),
 //                                                     ],
@@ -474,15 +474,15 @@
 //                                                         .visible
 //                                                         ? null
 //                                                         : () {
-//                                                       Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.slice![i].wordId, Provider.of<LangProvider>(context, listen: false).langId);
-//                                                       aya.setWords(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
+//                                                       Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.sura.slice![i].wordId, Provider.of<LangProvider>(context, listen: false).langId);
+//                                                       aya.setWords(aya.list!.join().split('').getRange(aya.sura.slice![i].start - 1, aya.sura.slice![i].end).join());
 //                                                       if (size.width < 1400) {
 //                                                         showPopover(
 //                                                           backgroundColor: (themeProvider.isDarkMode) ? const Color(0xffa0a7b7) : const Color(0xfffff3ca),
 //                                                           context: context,
 //                                                           transitionDuration: const Duration(milliseconds: 200),
 //                                                           bodyBuilder: (context) {
-//                                                             return ListItems(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
+//                                                             return ListItems(aya.list!.join().split('').getRange(aya.sura.slice![i].start - 1, aya.sura.slice![i].end).join());
 //                                                           },
 //                                                           onPop: () {
 //                                                             Provider.of<AyaProvider>(context, listen: false).clear();
@@ -503,16 +503,16 @@
 //                                                         }
 //                                                       }
 //                                                     },
-//                                                     child: i != 0 && aya.list!.join().split('').getRange(aya.slice![i - 1].start - 1, aya.slice![i - 1].end).join().replaceAll('ﲿ', '') != 'ﺑﲐ' && aya.list!.join().split('').getRange(aya.slice![i - 1].start - 1, aya.slice![i - 1].end).join().replaceAll('ﲿ', '') != 'ﻟﱊﲘ' ||
+//                                                     child: i != 0 && aya.list!.join().split('').getRange(aya.sura.slice![i - 1].start - 1, aya.sura.slice![i - 1].end).join().replaceAll('ﲿ', '') != 'ﺑﲐ' && aya.list!.join().split('').getRange(aya.sura.slice![i - 1].start - 1, aya.sura.slice![i - 1].end).join().replaceAll('ﲿ', '') != 'ﻟﱊﲘ' ||
 //                                                         i ==
 //                                                             0
 //                                                         ? Text(
-//                                                         aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join().replaceAll('ﲿ', ''),
+//                                                         aya.list!.join().split('').getRange(aya.sura.slice![i].start - 1, aya.sura.slice![i].end).join().replaceAll('ﲿ', ''),
 //                                                         softWrap: true,
 //                                                         style: TextStyle(
 //                                                           fontFamily: 'MeQuran2',
 //                                                           fontSize: aya.value,
-//                                                           color: aya.getBoolean(i) ? aya.getColor(aya.slice![i].wordId) : null,
+//                                                           color: aya.getBoolean(i) ? aya.getColor(aya.sura.slice![i].wordId) : null,
 //                                                         ))
 //                                                         : Text(''),
 //                                                   );

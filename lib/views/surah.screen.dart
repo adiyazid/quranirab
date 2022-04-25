@@ -4,10 +4,10 @@ import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:provider/provider.dart';
 
 import 'package:quran/quran.dart';
-import 'package:quranirab/facebook/screens/home_screen_1.dart';
 import 'package:quranirab/models/font.size.dart';
+import 'package:quranirab/models/item.model.dart';
+import 'package:quranirab/views/sura.slice/sura.slice.dart';
 
-import 'package:quranirab/views/slice/slice2.dart';
 
 import 'package:quranirab/widget/TranslationPopup.dart';
 
@@ -576,7 +576,7 @@ class _SurahScreenState extends State<SurahScreen>
                     Align(
                         alignment: Alignment.center,
                         child: SizedBox(
-                            child: Slice2(
+                            child: SuraSlice(
                                 "${Provider.of<AyaProvider>(context, listen: false).page}",
                                 widget.sura_id))),
                   ],

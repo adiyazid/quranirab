@@ -4,19 +4,19 @@
 
 import 'dart:convert';
 
-SliceData sliceDataFromJson(String str) => SliceData.fromJson(json.decode(str));
+SliceDataList sliceDataFromJson(String str) => SliceDataList.fromJson(json.decode(str));
 
-String sliceDataToJson(SliceData data) => json.encode(data.toJson());
+String sliceDataToJson(SliceDataList data) => json.encode(data.toJson());
 
-class SliceData {
-  SliceData({
+class SliceDataList {
+  SliceDataList({
     required this.slicingData,
   });
 
-  List<SlicingDatum> slicingData;
+  List<SlicingData> slicingData;
 
-  factory SliceData.fromJson(Map<String, dynamic> json) => SliceData(
-    slicingData: List<SlicingDatum>.from(json["slicing_data"].map((x) => SlicingDatum.fromJson(x))),
+  factory SliceDataList.fromJson(Map<String, dynamic> json) => SliceDataList(
+    slicingData: List<SlicingData>.from(json["slicing_data"].map((x) => SlicingData.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -24,8 +24,8 @@ class SliceData {
   };
 }
 
-class SlicingDatum {
-  SlicingDatum({
+class SlicingData {
+  SlicingData({
     required this.start,
     required this.end,
     required this.wordId,
@@ -35,7 +35,7 @@ class SlicingDatum {
   int end;
   int? wordId;
 
-  factory SlicingDatum.fromJson(Map<String, dynamic> json) => SlicingDatum(
+  factory SlicingData.fromJson(Map<String, dynamic> json) => SlicingData(
     start: json["start"],
     end: json["end"],
     wordId: json["word_id"]??0,
