@@ -94,7 +94,6 @@ class AyaProvider extends ChangeNotifier {
     clearPrevAya();
     notifyListeners();
     var prev = 0;
-    num total = 0;
     var text = '';
 
     // List<int> indexBreak = [];
@@ -114,7 +113,6 @@ class AyaProvider extends ChangeNotifier {
             prev = prev + i;
           }
         }
-        total = total + doc["text"].split('').length;
         notifyListeners();
       }
       if (select.isEmpty) {
@@ -138,6 +136,16 @@ class AyaProvider extends ChangeNotifier {
         }
       }
     });
+    if (slice!.last.end != list!.join().split('').length) {
+      var last = slice!.last;
+      slice!.remove(last);
+      slice!.add(SlicingDatum(
+          start: last.start,
+          end: list!.join().split('').length,
+          wordId: last.wordId));
+      notifyListeners();
+      print("[fix last slice data]");
+    }
     loading = true;
     notifyListeners();
   }
@@ -371,7 +379,7 @@ class AyaProvider extends ChangeNotifier {
   }
 
   checkAya(index) {
-    var total = list!.length - 1;
+    var total = list!.length;
     var lengthAya1 = list![0].split(' ').length;
     var d = _sPos.contains(index - 2);
     var a = ayaPosition.contains(index != 0 ? index - 1 : index);
@@ -379,7 +387,6 @@ class AyaProvider extends ChangeNotifier {
     var c = ayaPosition.contains(index + 1);
     if (d) {
       nums = nums + 1;
-      print(index);
       return false;
     }
     if (!a) {

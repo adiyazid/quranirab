@@ -176,7 +176,7 @@ class _Slice2State extends State<Slice2> {
                                                                           onTap: aya.visible
                                                                               ? null
                                                                               : () {
-                                                                                  print(aya.slice![i].wordId);
+                                                                                  print(aya.slice![i].end);
                                                                                   Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.slice![i].wordId, Provider.of<LangProvider>(context, listen: false).langId);
                                                                                   aya.setWords(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
                                                                                   if (size.width < 1400) {
@@ -223,7 +223,7 @@ class _Slice2State extends State<Slice2> {
                                                                               .visible
                                                                           ? null
                                                                           : () {
-                                                                              print(aya.slice![i].wordId);
+                                                                              print(aya.slice![i].end);
                                                                               Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.slice![i].wordId, Provider.of<LangProvider>(context, listen: false).langId);
                                                                               aya.setWords(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
                                                                               if (size.width < 1400) {
@@ -321,15 +321,12 @@ class _Slice2State extends State<Slice2> {
                                                                                 TextStyle(
                                                                               fontFamily: 'MeQuran2',
                                                                               fontSize: aya.value,
-                                                                              // aya.getBoolean(_slice[i]['start'] - 1)
-                                                                              //     ? aya.getColor(_slice[i]['word_id'])
-                                                                              //     : Colors.black)),
                                                                             )),
                                                                         InkWell(
                                                                           onTap: aya.visible
                                                                               ? null
                                                                               : () {
-                                                                                  print(aya.slice![i].wordId);
+                                                                                  print(aya.slice![i].end);
                                                                                   Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.slice![i].wordId, Provider.of<LangProvider>(context, listen: false).langId);
                                                                                   aya.setWords(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
                                                                                   if (size.width < 1400) {
@@ -378,7 +375,7 @@ class _Slice2State extends State<Slice2> {
                                                                               .visible
                                                                           ? null
                                                                           : () {
-                                                                              print(aya.slice![i].wordId);
+                                                                              print(aya.slice![i].end);
                                                                               Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.slice![i].wordId, Provider.of<LangProvider>(context, listen: false).langId);
                                                                               aya.setWords(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
                                                                               if (size.width < 1400) {
@@ -484,6 +481,6 @@ class _Slice2State extends State<Slice2> {
 
   Future<void> init() async {
     await Provider.of<AyaProvider>(context, listen: false)
-        .getStart(int.parse(widget.suraId),int.parse(widget.page));
+        .getStart(int.parse(widget.suraId), int.parse(widget.page));
   }
 }

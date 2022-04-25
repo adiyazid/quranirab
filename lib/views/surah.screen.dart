@@ -208,7 +208,7 @@ class _SurahScreenState extends State<SurahScreen>
                           Flexible(
                             child: ListTile(
                               title: Text(
-                                "(${widget.sura_id}) ${widget.name}",
+                                "${widget.name}",
                                 style: TextStyle(
                                   fontSize: 20,
                                 ),
