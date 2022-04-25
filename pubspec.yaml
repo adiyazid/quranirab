@@ -52,7 +52,7 @@ dependencies:
   top_snackbar_flutter: 1.0.0
   flutter_search_bar: ^2.1.0
   cool_dropdown: ^1.4.1
-  flutter_svg :
+  flutter_svg:
   cached_network_image: 3.0.0
   material_design_icons_flutter: ^5.0.5955-rc.1
   arabic_numbers: ^1.0.0
@@ -61,6 +61,8 @@ dependencies:
   responsive: ^0.3.11+11
   popover: ^0.2.6+3
   skeleton_loader: ^2.0.0+4
+  firebase_storage: ^10.2.13
+  dio: ^4.0.6
 
 dev_dependencies:
   flutter_test:
@@ -87,6 +89,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/data/
+    - assets/break.json
+    - assets/surah_split.json
     - assets/Image3.png
     - assets/Image1.png
     - assets/Image2.png
@@ -115,12 +119,12 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-   - family: MeQuran2
-     fonts:
-      - asset: fonts/me_quran2.ttf
-   - family: Poppins
-     fonts:
-      - asset: fonts/Poppins-Regular.ttf
+    - family: MeQuran2
+      fonts:
+        - asset: fonts/me_quran2.ttf
+    - family: Poppins
+      fonts:
+        - asset: fonts/Poppins-Regular.ttf
 
 
   #

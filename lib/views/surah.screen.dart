@@ -8,7 +8,6 @@ import 'package:quranirab/models/font.size.dart';
 import 'package:quranirab/models/item.model.dart';
 import 'package:quranirab/views/sura.slice/sura.slice.dart';
 
-
 import 'package:quranirab/widget/TranslationPopup.dart';
 
 import 'package:quranirab/widget/responsive.dart' as w;
@@ -578,7 +577,8 @@ class _SurahScreenState extends State<SurahScreen>
                         child: SizedBox(
                             child: SuraSlice(
                                 "${Provider.of<AyaProvider>(context, listen: false).page}",
-                                widget.sura_id))),
+                                widget.sura_id))
+                    ),
                   ],
                 ),
               ),
@@ -819,109 +819,6 @@ class _SurahScreenState extends State<SurahScreen>
                     ),
             ],
           ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: [
-          //     const Spacer(),
-          //     const Spacer(),
-          //     ElevatedButton(
-          //       onPressed: widget.allpages[i] != widget.allpages.first
-          //           ? () async {
-          //               if (i < int.parse(widget.allpages.last)) {
-          //                 setState(() {
-          //                   i--;
-          //                 });
-          //                 await getStartAyah(widget.allpages[i]);
-          //                 await nextPage(widget.allpages[i]);
-          //               } else {
-          //                 await getStartAyah(widget.allpages.first);
-          //                 await nextPage(widget.allpages.first);
-          //               }
-          //               print('${widget.allpages[i]}/${widget.allpages.last}');
-          //             }
-          //           : null,
-          //       style: ElevatedButton.styleFrom(
-          //           padding: const EdgeInsets.symmetric(
-          //               horizontal: 32, vertical: 18),
-          //           primary: (themeProvider.isDarkMode)
-          //               ? const Color(0xff808BA1)
-          //               : const Color(0xfffcd77a)),
-          //       child: const Text(
-          //         'Previous Page',
-          //         style: TextStyle(color: Colors.black, fontSize: 18),
-          //       ),
-          //     ),
-          //     const SizedBox(width: 25),
-          //     ElevatedButton(
-          //         onPressed: () async {
-          //           await getStartAyah(widget.allpages.first);
-          //           await nextPage(widget.allpages.first);
-          //           setState(() {
-          //             i = 0;
-          //           });
-          //         },
-          //         style: ElevatedButton.styleFrom(
-          //             padding: const EdgeInsets.symmetric(
-          //                 horizontal: 32, vertical: 18),
-          //             primary: (themeProvider.isDarkMode)
-          //                 ? const Color(0xff4C6A7A)
-          //                 : const Color(0xffffeeb0)),
-          //         child: const Text(
-          //           'Beginning Surah',
-          //           style: TextStyle(color: Colors.black, fontSize: 18),
-          //         )),
-          //     const SizedBox(width: 25),
-          //     ElevatedButton(
-          //         onPressed: widget.allpages[i] != widget.allpages.last
-          //             ? () async {
-          //                 if (i < int.parse(widget.allpages.last)) {
-          //                   setState(() {
-          //                     i++;
-          //                   });
-          //                   await getStartAyah(widget.allpages[i]);
-          //                   await nextPage(widget.allpages[i]);
-          //                 } else {
-          //                   await getStartAyah(widget.allpages.last);
-          //                   await nextPage(widget.allpages.last);
-          //                 }
-          //                 print(
-          //                     '${widget.allpages[i]}/${widget.allpages.last}');
-          //               }
-          //             : null,
-          //         style: ElevatedButton.styleFrom(
-          //             padding: const EdgeInsets.symmetric(
-          //                 horizontal: 32, vertical: 18),
-          //             primary: (themeProvider.isDarkMode)
-          //                 ? const Color(0xff808BA1)
-          //                 : const Color(0xfffcd77a)),
-          //         child: const Text(
-          //           'Next Page',
-          //           style: TextStyle(color: Colors.black, fontSize: 18),
-          //         )),
-          //     const Spacer(),
-          //     Padding(
-          //       padding: const EdgeInsets.only(right: 80.0),
-          //       child: ElevatedButton(
-          //           onPressed: () {
-          //             Navigator.push(
-          //                 context,
-          //                 MaterialPageRoute(
-          //                     builder: (context) =>
-          //                         QuizHome(int.parse(widget.allpages[i]))));
-          //           },
-          //           style: ElevatedButton.styleFrom(
-          //               padding: const EdgeInsets.symmetric(
-          //                   horizontal: 32, vertical: 18),
-          //               primary: (themeProvider.isDarkMode)
-          //                   ? const Color(0xff808BA1)
-          //                   : const Color(0xfffcd77a)),
-          //           child: const Text(
-          //             'Quiz',
-          //             style: TextStyle(color: Colors.black, fontSize: 18),
-          //           )),
-          //     ),
-          //   ],
-          // ),
         ),
       ),
     );
@@ -943,9 +840,13 @@ class _SurahScreenState extends State<SurahScreen>
         });
       }
     });
+    Provider.of<AyaProvider>(context, listen: false).setDefault();
     await Provider.of<AyaProvider>(context, listen: false).readJsonData();
     await Provider.of<AyaProvider>(context, listen: false).readSliceData();
     await Provider.of<AyaProvider>(context, listen: false).readAya();
+    await Provider.of<AyaProvider>(context, listen: false).getStart(
+        int.parse(widget.sura_id),
+        Provider.of<AyaProvider>(context, listen: false).page);
     if (Provider.of<AyaProvider>(context, listen: false).visible == true) {
       await Provider.of<AyaProvider>(context, listen: false).set();
     }

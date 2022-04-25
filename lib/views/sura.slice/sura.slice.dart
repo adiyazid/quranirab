@@ -34,7 +34,6 @@ class _SuraSliceState extends State<SuraSlice> {
   CollectionReference wordCategory =
       FirebaseFirestore.instance.collection('word_categories');
 
-  bool loading = true;
   var word = [];
   final category = [];
   var totalLine = 0;
@@ -50,16 +49,19 @@ class _SuraSliceState extends State<SuraSlice> {
   @override
   void initState() {
     init();
+    Provider.of<AyaProvider>(context, listen: false)
+        .getStart(int.parse(widget.suraId), int.parse(widget.page));
+    print('sura id ${widget.suraId}');
+    print('page ${widget.page}');
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // final themeProvider = Provider.of<ThemeProvider>(context);
     return Consumer<AyaProvider>(builder: (context, aya, child) {
-      aya.checkRebuilt(aya.nums);
       final size = MediaQuery.of(context).size;
-      final themeProvider = Provider.of<ThemeProvider>(context);
+      final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+      aya.checkRebuilt(aya.nums);
 
       return aya.loading
           ? Scaffold(
@@ -473,14 +475,5 @@ class _SuraSliceState extends State<SuraSlice> {
     });
   }
 
-  void cancelLoad() {
-    setState(() {
-      loading = false;
-    });
-  }
-
-  Future<void> init() async {
-    await Provider.of<AyaProvider>(context, listen: false)
-        .getStart(int.parse(widget.suraId), int.parse(widget.page));
-  }
+  Future<void> init() async {}
 }

@@ -7,6 +7,7 @@ import 'package:quranirab/widget/language.dart';
 import 'package:quranirab/widget/menu.dart';
 import 'package:quranirab/widget/setting.dart';
 
+import '../provider/ayah.number.provider.dart';
 import 'Juz.dart';
 import 'Surah.dart';
 
@@ -39,7 +40,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   void initState() {
     // TODO: implement initState
     getData();
-
+    init();
     super.initState();
   }
 
@@ -53,135 +54,134 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     final themeProvider = Provider.of<ThemeProvider>(context);
     TabController _tabController = TabController(length: 2, vsync: this);
 
-      return Scaffold(
-        resizeToAvoidBottomInset: false,
-        drawer: Menu(),
-        endDrawer: Setting(),
-        appBar: AppBar(
-          iconTheme: Theme.of(context).iconTheme,
-          title: const CircleAvatar(
-            backgroundImage: AssetImage('assets/quranirab.png'),
-            radius: 18.0,
-          ),
-          elevation: 0,
-          centerTitle: false,
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          actions: <Widget>[
-            IconButton(
-              tooltip: MaterialLocalizations.of(context).searchFieldLabel,
-              onPressed: () => setState(() {
-                isSearch = true;
-              }),
-              icon: Icon(
-                Icons.search,
-                color: Theme.of(context).iconTheme.color,
-              ),
-            ),
-            const SizedBox(width: 20),
-            Padding(
-                padding: const EdgeInsets.only(right: 20.0), child: Language()),
-            Builder(
-              builder: (context) => IconButton(
-                icon: const Icon(
-                  Icons.settings,
-                ),
-                onPressed: () => Scaffold.of(context).openEndDrawer(),
-                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-              ),
-            ),
-          ],
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      drawer: Menu(),
+      endDrawer: Setting(),
+      appBar: AppBar(
+        iconTheme: Theme.of(context).iconTheme,
+        title: const CircleAvatar(
+          backgroundImage: AssetImage('assets/quranirab.png'),
+          radius: 18.0,
         ),
-        body: Stack(
-          children: [
-            isSearch ? buildSuggestions(context) : Container(),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 89,
-                ),
-                Container(
-                    padding: const EdgeInsets.only(left: 50),
-                    child: RichText(
-                      text: TextSpan(children: [
-                        TextSpan(
-                          text: "Bookmark",
-                          style: TextStyle(
-                            shadows: [
-                              Shadow(
-                                  color: (themeProvider.isDarkMode)
-                                      ? const Color(0xFFFFFFFF)
-                                      : const Color(0xFF000000),
-                                  offset: const Offset(0, -10))
-                            ],
-                            color: Colors.transparent,
-                            fontSize: 20,
-                            decoration: TextDecoration.underline,
-                            // decorationColor: Colors.grey,
-                            decorationThickness: 2,
-                          ),
-                        ),
-                        TextSpan(
-                            text: "\nYou do not have any bookmark yet.",
-                            style: TextStyle(
-                                fontSize: 20,
+        elevation: 0,
+        centerTitle: false,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        actions: <Widget>[
+          IconButton(
+            tooltip: MaterialLocalizations.of(context).searchFieldLabel,
+            onPressed: () => setState(() {
+              isSearch = true;
+            }),
+            icon: Icon(
+              Icons.search,
+              color: Theme.of(context).iconTheme.color,
+            ),
+          ),
+          const SizedBox(width: 20),
+          Padding(
+              padding: const EdgeInsets.only(right: 20.0), child: Language()),
+          Builder(
+            builder: (context) => IconButton(
+              icon: const Icon(
+                Icons.settings,
+              ),
+              onPressed: () => Scaffold.of(context).openEndDrawer(),
+              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+            ),
+          ),
+        ],
+      ),
+      body: Stack(
+        children: [
+          isSearch ? buildSuggestions(context) : Container(),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 89,
+              ),
+              Container(
+                  padding: const EdgeInsets.only(left: 50),
+                  child: RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
+                        text: "Bookmark",
+                        style: TextStyle(
+                          shadows: [
+                            Shadow(
                                 color: (themeProvider.isDarkMode)
                                     ? const Color(0xFFFFFFFF)
-                                    : const Color(0xFF000000))),
-                      ]),
-                    )),
-                const SizedBox(
-                  height: 100,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 48.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: TabBar(
-                      labelColor: (themeProvider.isDarkMode)
-                          ? const Color(0xFFFFFFFF)
-                          : const Color(0xFF000000),
-                      unselectedLabelColor: (themeProvider.isDarkMode)
-                          ? const Color(0xFFFFFFFF)
-                          : const Color(0xFF000000),
-                      isScrollable: true,
-                      labelPadding: const EdgeInsets.only(left: 50, right: 50),
-                      indicatorSize: TabBarIndicatorSize.label,
-                      indicatorColor: (themeProvider.isDarkMode)
-                          ? const Color(0xFF263D4A)
-                          : const Color(0xFFE86F00),
-                      controller: _tabController,
-                      tabs: const [
-                        Tab(
-                          text: "Sura",
+                                    : const Color(0xFF000000),
+                                offset: const Offset(0, -10))
+                          ],
+                          color: Colors.transparent,
+                          fontSize: 20,
+                          decoration: TextDecoration.underline,
+                          // decorationColor: Colors.grey,
+                          decorationThickness: 2,
                         ),
-                        Tab(
-                          text: "Juz",
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 50),
-                  height: 650,
-                  child: TabBarView(
+                      ),
+                      TextSpan(
+                          text: "\nYou do not have any bookmark yet.",
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: (themeProvider.isDarkMode)
+                                  ? const Color(0xFFFFFFFF)
+                                  : const Color(0xFF000000))),
+                    ]),
+                  )),
+              const SizedBox(
+                height: 100,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 48.0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: TabBar(
+                    labelColor: (themeProvider.isDarkMode)
+                        ? const Color(0xFFFFFFFF)
+                        : const Color(0xFF000000),
+                    unselectedLabelColor: (themeProvider.isDarkMode)
+                        ? const Color(0xFFFFFFFF)
+                        : const Color(0xFF000000),
+                    isScrollable: true,
+                    labelPadding: const EdgeInsets.only(left: 50, right: 50),
+                    indicatorSize: TabBarIndicatorSize.label,
+                    indicatorColor: (themeProvider.isDarkMode)
+                        ? const Color(0xFF263D4A)
+                        : const Color(0xFFE86F00),
                     controller: _tabController,
-                    children: const [
-                      SurahGrid(),
-                      JuzGrid(),
+                    tabs: const [
+                      Tab(
+                        text: "Sura",
+                      ),
+                      Tab(
+                        text: "Juz",
+                      ),
                     ],
                   ),
-                )
-              ],
-            ),
-          ],
-        ),
-      );
-
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Container(
+                padding: const EdgeInsets.only(left: 50),
+                height: 650,
+                child: TabBarView(
+                  controller: _tabController,
+                  children: const [
+                    SurahGrid(),
+                    JuzGrid(),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   buildSuggestions(BuildContext context) {
@@ -307,5 +307,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       detail = allData.first;
       arab = allData1.first;
     });
+  }
+
+  void init() {
+    Provider.of<AyaProvider>(context, listen: false).setDefault();
+    Provider.of<AyaProvider>(context, listen: false).clearPrevAya();
+    var num = Provider.of<AyaProvider>(context, listen: false).nums;
+    Provider.of<AyaProvider>(context, listen: false).checkRebuilt(num);
   }
 }
