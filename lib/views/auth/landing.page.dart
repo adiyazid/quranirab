@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:quranirab/provider/user.provider.dart';
 
 import '../data.from.firestore.dart';
+import '../home.page.dart';
 import 'login.screen.dart';
 
 class LandingPage extends StatelessWidget {
@@ -14,7 +15,7 @@ class LandingPage extends StatelessWidget {
 
     if (appUser.user != null) {
       print('Logged in');
-      return const DataFromFirestore();
+      return const HomePage();
       // return const DummyPage();
     } else {
       print('Not logged in');

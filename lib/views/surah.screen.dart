@@ -209,14 +209,18 @@ class _SurahScreenState extends State<SurahScreen>
                               title: Text(
                                 "${widget.name}",
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: widget.detail.length > 12 ? 18 : 20,
                                 ),
                               ),
                               subtitle: Text(
                                 widget.detail,
                                 style: TextStyle(
                                   color: Colors.grey,
-                                  fontSize: 20,
+                                  fontSize:
+                                      MediaQuery.of(context).size.width < 500 ||
+                                              widget.detail.length > 10
+                                          ? 18
+                                          : 20,
                                 ),
                               ),
                               trailing:
@@ -252,7 +256,7 @@ class _SurahScreenState extends State<SurahScreen>
                     Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal:
-                              w.Responsive.isDesktop(context) ? 400.0 : 80),
+                              w.Responsive.isDesktop(context) ? 400.0 : 40),
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width,
                         child: TabBar(
@@ -577,8 +581,7 @@ class _SurahScreenState extends State<SurahScreen>
                         child: SizedBox(
                             child: SuraSlice(
                                 "${Provider.of<AyaProvider>(context, listen: false).page}",
-                                widget.sura_id))
-                    ),
+                                widget.sura_id))),
                   ],
                 ),
               ),
