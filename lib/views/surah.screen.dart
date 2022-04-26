@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 
 import 'package:quran/quran.dart';
+import 'package:quranirab/models/bookmark.model.dart';
 import 'package:quranirab/models/font.size.dart';
 import 'package:quranirab/models/item.model.dart';
+import 'package:quranirab/provider/bookmark.provider.dart';
 import 'package:quranirab/views/sura.slice/sura.slice.dart';
 
 import 'package:quranirab/widget/TranslationPopup.dart';
@@ -421,33 +424,19 @@ class _SurahScreenState extends State<SurahScreen>
                                                                                     child: InkWell(
                                                                                       onTap: () async {
                                                                                         // Obtain shared preferences.
-                                                                                        final prefs = await SharedPreferences.getInstance();
                                                                                         if (item.text == 'Bookmark') {
-                                                                                          List<String> list = prefs.getStringList('bookmarks') ?? [];
-                                                                                          setState(() {
-                                                                                            if (list.contains(
-                                                                                                  '${widget.sura_id}:${start! + index}',
-                                                                                                ) ==
-                                                                                                false) {
-                                                                                              list.addAll([
-                                                                                                '${widget.sura_id}:${start! + index}',
-                                                                                                widget.sura_id,
-                                                                                                widget.name,
-                                                                                                widget.detail
-                                                                                              ]);
-                                                                                            }
-                                                                                          });
-                                                                                          prefs.setStringList('bookmarks', list);
-
-                                                                                          ///use to chunk bookmark list
-                                                                                          var lst = prefs.getStringList('bookmarks') ?? [];
-                                                                                          var chunks = [];
-                                                                                          int chunkSize = 4;
-                                                                                          for (var i = 0; i < lst.length; i += chunkSize) {
-                                                                                            chunks.add(lst.sublist(i, i + chunkSize > lst.length ? lst.length : i + chunkSize));
-                                                                                          }
-                                                                                          print(chunks);
-                                                                                        } else {}
+                                                                                          await Provider.of<BookMarkProvider>(context, listen: false).addtoBookmark("${widget.sura_id}:${start! + index}", widget.sura_id, widget.name, widget.detail);
+                                                                                          // prefs.setString('bookmarks', jsonList);
+                                                                                          //   ///use to chunk bookmark list
+                                                                                          //   var lst = prefs.getStringList('bookmarks') ?? [];
+                                                                                          //   var chunks = [];
+                                                                                          //   int chunkSize = 4;
+                                                                                          //   for (var i = 0; i < lst.length; i += chunkSize) {
+                                                                                          //     chunks.add(lst.sublist(i, i + chunkSize > lst.length ? lst.length : i + chunkSize));
+                                                                                          //   }
+                                                                                          //   print(chunks);
+                                                                                          // } else {}
+                                                                                        }
                                                                                       },
                                                                                       child: Container(
                                                                                         margin: const EdgeInsets.only(left: 10),

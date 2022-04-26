@@ -152,7 +152,7 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                       ? Colors.white
                                       : const Color.fromRGBO(0, 0, 0, 1),
                                   fontFamily: 'Source Serif Pro',
-                                  fontSize: 64,
+                                  fontSize: MediaQuery.of(context).size.width>600 ?64:40,
                                   letterSpacing:
                                       0 /*percentages not used in flutter. defaulting to zero*/,
                                   fontWeight: FontWeight.normal,
@@ -163,7 +163,7 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 20.0),
                             child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.35,
+                              width: MediaQuery.of(context).size.width>600 ?MediaQuery.of(context).size.width * 0.35:400,
                               child: TabBar(
                                   unselectedLabelColor: themeProvider.isDarkMode
                                       ? const Color(0xffD2D6DA)
@@ -175,35 +175,41 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                           ? const Color(0xffBABABA)
                                           : const Color(0xffFFFAD0)),
                                   tabs: [
-                                    Text(
-                                      'All time',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: themeProvider.isDarkMode
-                                              ? Colors.white
-                                              : const Color.fromRGBO(
-                                                  0, 0, 0, 1),
-                                          fontFamily: 'Source Serif Pro',
-                                          fontSize: 36,
-                                          letterSpacing:
-                                              0 /*percentages not used in flutter. defaulting to zero*/,
-                                          fontWeight: FontWeight.normal,
-                                          height: 1),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        'All time',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: themeProvider.isDarkMode
+                                                ? Colors.white
+                                                : const Color.fromRGBO(
+                                                    0, 0, 0, 1),
+                                            fontFamily: 'Source Serif Pro',
+                                            fontSize: MediaQuery.of(context).size.width>600 ?36:24,
+                                            letterSpacing:
+                                                0 /*percentages not used in flutter. defaulting to zero*/,
+                                            fontWeight: FontWeight.normal,
+                                            height: 1),
+                                      ),
                                     ),
-                                    Text(
-                                      'Last 30 days',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: themeProvider.isDarkMode
-                                              ? Colors.white
-                                              : const Color.fromRGBO(
-                                                  0, 0, 0, 1),
-                                          fontFamily: 'Source Serif Pro',
-                                          fontSize: 36,
-                                          letterSpacing:
-                                              0 /*percentages not used in flutter. defaulting to zero*/,
-                                          fontWeight: FontWeight.normal,
-                                          height: 1),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        'Last 30 days',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: themeProvider.isDarkMode
+                                                ? Colors.white
+                                                : const Color.fromRGBO(
+                                                    0, 0, 0, 1),
+                                            fontFamily: 'Source Serif Pro',
+                                            fontSize: MediaQuery.of(context).size.width>600 ?36:24,
+                                            letterSpacing:
+                                                0 /*percentages not used in flutter. defaulting to zero*/,
+                                            fontWeight: FontWeight.normal,
+                                            height: 1),
+                                      ),
                                     ),
                                   ]),
                             ),

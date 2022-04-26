@@ -5,6 +5,7 @@ import 'package:quranirab/quiz_module/LeaderBoard.Menu.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/auth/login.screen.dart';
 import 'package:quranirab/views/data.from.firestore.dart';
+import 'package:quranirab/views/home.page.dart';
 
 
 class Menu extends StatelessWidget {
@@ -62,7 +63,7 @@ class Menu extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const DataFromFirestore()));
+                          builder: (context) => const HomePage()));
                 },
                 darkMode: themeProvider.isDarkMode),
             const SizedBox(height: 16),
