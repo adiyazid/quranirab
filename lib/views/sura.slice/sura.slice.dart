@@ -136,8 +136,6 @@ class _SuraSliceState extends State<SuraSlice> {
                                           Directionality(
                                             textDirection: TextDirection.rtl,
                                             child: Row(
-                                              // mainAxisAlignment:
-                                              //     MainAxisAlignment.spaceEvenly,
                                               children: [
                                                 for (int i = 0 + index != 0
                                                         ? aya.breakIndex![

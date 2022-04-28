@@ -833,7 +833,7 @@ class _HomePageState extends State<HomePage>
                                                           MediaQuery.of(context)
                                                                   .size
                                                                   .height *
-                                                              0.63,
+                                                              0.5,
                                                       child: MediaQuery.of(context)
                                                           .size
                                                           .width >
@@ -1000,7 +1000,8 @@ class _HomePageState extends State<HomePage>
                                                             ),
                                                           );
                                                         },
-                                                      ): ListView.builder(
+                                                      )
+                                                          : ListView.builder(
                                                         itemCount: 114,
                                                         itemBuilder:
                                                             (BuildContext
@@ -1517,7 +1518,7 @@ class _HomePageState extends State<HomePage>
                                                           MediaQuery.of(context)
                                                                   .size
                                                                   .height *
-                                                              0.63,
+                                                              0.5,
                                                       child: GridView.builder(
                                                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                                             crossAxisCount:
