@@ -64,96 +64,113 @@ class _ListItemsState extends State<ListItems> {
           aya.updateLoad();
         }
         return aya.loadingCategory
-            ? Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Directionality(
-                          textDirection: TextDirection.rtl,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 16.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadiusDirectional.circular(8),
-                              ),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: Text(
-                                  widget.text
-                                      .replaceAll('ﲿ', '')
-                                      .replaceAll('ﲹ', '')
-                                      .replaceAll('ﲬ', '')
-                                      .replaceAll('ﲨ', ''),
-                                  style: TextStyle(
-                                      fontSize: 24, fontFamily: 'MeQuran2'),
+            ? SizedBox(
+                height: MediaQuery.of(context).size.height * 0.25,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 16.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadiusDirectional.circular(8),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: Text(
+                                    widget.text
+                                        .replaceAll('ﲿ', '')
+                                        .replaceAll('ﲹ', '')
+                                        .replaceAll('ﲬ', '')
+                                        .replaceAll('ﲨ', ''),
+                                    style: TextStyle(
+                                        fontSize: 24, fontFamily: 'MeQuran2'),
+                                  ),
                                 ),
                               ),
-                            ),
-                          )),
-                    ],
-                  ),
-                  Divider(
-                    thickness: 2,
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.width < 600 ? 150 : 300,
-                    child: ListView.builder(
-                      itemCount: name.last.type != "label"
-                          ? name.length - 1
-                          : name.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return name.isNotEmpty
-                            ? Row(
-                                children: [
-                                  name[index + 1 < name.length
-                                                      ? index + 1
-                                                      : index]
-                                                  .type !=
-                                              'label' &&
-                                          name[index + 1 < name.length
-                                                      ? index + 1
-                                                      : index]
-                                                  .type !=
-                                              'main-label'
-                                      ? Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Container(
-                                            height: 64,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadiusDirectional
-                                                      .circular(8),
-                                            ),
-                                            child: Center(
+                            )),
+                      ],
+                    ),
+                    Divider(
+                      thickness: 2,
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.2,
+                      child: ListView.builder(
+                        itemCount: name.last.type != "label"
+                            ? name.length - 1
+                            : name.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return name.isNotEmpty
+                              ? Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    name[index + 1 < name.length
+                                                        ? index + 1
+                                                        : index]
+                                                    .type !=
+                                                'label' &&
+                                            name[index + 1 < name.length
+                                                        ? index + 1
+                                                        : index]
+                                                    .type !=
+                                                'main-label'
+                                        ? Expanded(
+                                            flex: 3,
+                                            child: Align(
+                                              alignment: Alignment.centerLeft,
                                               child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Text(
-                                                    "${index + 1 < name.length ? name[index + 1].name : ''}",
-                                                    style: TextStyle(
-                                                        fontFamily: 'MeQuran2',
-                                                        fontSize: 20),
-                                                    textAlign: TextAlign.center,
-                                                  )),
-                                            ),
-                                          ),
-                                        )
-                                      : index == 0
-                                          ? Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Container(
-                                                height: 64,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadiusDirectional
-                                                          .circular(8),
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Container(
+                                                  height: 64,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadiusDirectional
+                                                            .circular(8),
+                                                  ),
+                                                  child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child:
+                                                          SingleChildScrollView(
+                                                        child: Text(
+                                                          "${index + 1 < name.length ? name[index + 1].name : ''}",
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  'MeQuran2',
+                                                              fontSize: 20),
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                        ),
+                                                        scrollDirection:
+                                                            Axis.horizontal,
+                                                        reverse: true,
+                                                      )),
                                                 ),
-                                                child: Center(
+                                              ),
+                                            ),
+                                          )
+                                        : index == 0
+                                            ? Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Container(
+                                                  height: 64,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadiusDirectional
+                                                            .circular(8),
+                                                  ),
                                                   child: Padding(
                                                       padding:
                                                           const EdgeInsets.all(
@@ -167,74 +184,83 @@ class _ListItemsState extends State<ListItems> {
                                                                 'MeQuran2',
                                                             fontSize: 20),
                                                         textAlign:
-                                                            TextAlign.center,
+                                                            TextAlign.left,
                                                       )),
                                                 ),
+                                              )
+                                            : Spacer(
+                                                flex: 3,
                                               ),
-                                            )
-                                          : Container(),
-                                  Spacer(),
-                                  index == 0
-                                      ? Padding(
+                                    // Spacer(),
+                                    index == 0
+                                        ? Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadiusDirectional
+                                                        .circular(8),
+                                              ),
+                                              height: 64,
+                                              child: Center(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Text(
+                                                    'نوع الكلمة',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontFamily: 'MeQuran2',
+                                                        fontSize: 20),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        : Container(),
+                                    if (name[index].type == 'label' ||
+                                        name[index].type == 'main-label')
+                                      Expanded(
+                                        flex: 3,
+                                        child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Container(
+                                            height: 64,
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadiusDirectional
                                                       .circular(8),
                                             ),
-                                            height: 64,
-                                            child: Center(
-                                              child: Padding(
+                                            child: Padding(
                                                 padding:
                                                     const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  'نوع الكلمة',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontFamily: 'MeQuran2',
-                                                      fontSize: 20),
-                                                ),
-                                              ),
-                                            ),
+                                                child: SingleChildScrollView(
+                                                  child: Text(
+                                                    "${name[index].name}",
+                                                    style: TextStyle(
+                                                        fontSize:
+                                                            checkMainFontSize(
+                                                                name[index].id),
+                                                        fontFamily: 'MeQuran2',
+                                                        color: checkMainColor(
+                                                            name[index].id)),
+                                                    textAlign: TextAlign.end,
+                                                  ),
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  reverse: true,
+                                                )),
                                           ),
-                                        )
-                                      : Container(),
-                                  if (name[index].type == 'label' ||
-                                      name[index].type == 'main-label')
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Container(
-                                        height: 64,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadiusDirectional.circular(
-                                                  8),
-                                        ),
-                                        child: Center(
-                                          child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Text(
-                                                "${name[index].name}",
-                                                style: TextStyle(
-                                                    fontSize: checkMainFontSize(
-                                                        name[index].id),
-                                                    fontFamily: 'MeQuran2',
-                                                    color: checkMainColor(
-                                                        name[index].id)),
-                                                textAlign: TextAlign.center,
-                                              )),
                                         ),
                                       ),
-                                    )
-                                ],
-                              )
-                            : Container();
-                      },
+                                  ],
+                                )
+                              : Container();
+                        },
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               )
             : Center(
                 child: CircularProgressIndicator(
