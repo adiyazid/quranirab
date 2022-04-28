@@ -85,7 +85,7 @@ class _SigninWidgetState extends State<SigninWidget> {
                   width: MediaQuery.of(context).size.width > 600
                       ? MediaQuery.of(context).size.width * 0.5
                       : MediaQuery.of(context).size.width * 0.9,
-                  height: MediaQuery.of(context).size.height * 0.7,
+                  height: MediaQuery.of(context).size.height * 0.9,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -114,7 +114,7 @@ class _SigninWidgetState extends State<SigninWidget> {
                                   ? const Color.fromRGBO(255, 255, 255, 1)
                                   : const Color.fromRGBO(0, 0, 0, 1),
                               fontFamily: 'Poppins',
-                              fontSize: 45,
+                              fontSize: 40,
                               letterSpacing:
                                   0 /*percentages not used in flutter. defaulting to zero*/,
                               fontWeight: FontWeight.normal,
