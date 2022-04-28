@@ -85,7 +85,6 @@ class _HomePageState extends State<HomePage>
           body: Center(
               child: Container(
                   width: MediaQuery.of(context).size.width * 0.9,
-                  height: 1024,
                   decoration: BoxDecoration(
                     color: themeProvider.isDarkMode
                         ? Color(0xff666666)
@@ -100,7 +99,7 @@ class _HomePageState extends State<HomePage>
                             width: MediaQuery.of(context).size.width < 600
                                 ? MediaQuery.of(context).size.width * 0.8
                                 : MediaQuery.of(context).size.width * 0.85,
-                            height: MediaQuery.of(context).size.height * 0.16,
+                            height: MediaQuery.of(context).size.height * 0.25,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(10),
@@ -153,7 +152,7 @@ class _HomePageState extends State<HomePage>
                                           height: MediaQuery.of(context)
                                                   .size
                                                   .height *
-                                              0.1,
+                                              0.15,
                                           child: ListView.builder(
                                             itemBuilder: (BuildContext context,
                                                 int index) {
@@ -391,7 +390,7 @@ class _HomePageState extends State<HomePage>
                           width: MediaQuery.of(context).size.width < 600
                               ? MediaQuery.of(context).size.width * 0.8
                               : MediaQuery.of(context).size.width * 0.85,
-                          height: MediaQuery.of(context).size.height * 0.7,
+                          height: MediaQuery.of(context).size.height * 0.63,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(10),
@@ -410,7 +409,7 @@ class _HomePageState extends State<HomePage>
                             ),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.only(top: 8.0,right: 8.0,left: 8.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -452,7 +451,7 @@ class _HomePageState extends State<HomePage>
                                 ),
                                 SizedBox(
                                   height:
-                                      MediaQuery.of(context).size.height * 0.63,
+                                      MediaQuery.of(context).size.height * 0.54,
                                   child: TabBarView(
                                       controller: _tabController,
                                       children: [
@@ -460,7 +459,7 @@ class _HomePageState extends State<HomePage>
                                             height: MediaQuery.of(context)
                                                     .size
                                                     .height *
-                                                0.63,
+                                                0.5,
                                             child: _list.isNotEmpty
                                                 ? MediaQuery.of(context)
                                                             .size

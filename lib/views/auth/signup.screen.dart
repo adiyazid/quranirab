@@ -91,7 +91,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                   width: MediaQuery.of(context).size.width > 818
                       ? MediaQuery.of(context).size.width * 0.55
                       : MediaQuery.of(context).size.width * 0.8,
-                  height: MediaQuery.of(context).size.height * 0.7,
+                  height: MediaQuery.of(context).size.height * 0.9,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -375,47 +375,41 @@ class _SignupWidgetState extends State<SignupWidget> {
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width > 818
-                                ? MediaQuery.of(context).size.width * 0.06
-                                : 0),
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width > 818
-                              ? MediaQuery.of(context).size.width * 0.5
-                              : MediaQuery.of(context).size.width * 0.8,
-                          child: Row(
-                            children: [
-                              Checkbox(
-                                activeColor: Colors.lightBlue,
-                                checkColor: Colors.white,
-                                tristate: false,
-                                value: _check,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    _check = value!;
-                                  });
-                                },
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width > 818
+                            ? MediaQuery.of(context).size.width * 0.4
+                            : MediaQuery.of(context).size.width * 0.8,
+                        child: Row(
+                          children: [
+                            Checkbox(
+                              activeColor: Colors.lightBlue,
+                              checkColor: Colors.white,
+                              tristate: false,
+                              value: _check,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  _check = value!;
+                                });
+                              },
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Expanded(
+                              child: const Text(
+                                'I accept the terms and conditions and I have read the privacy policy ',
+                                textAlign: TextAlign.left,
+                                maxLines: 3,
+                                style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    fontSize: 18,
+                                    letterSpacing:
+                                        0 /*percentages not used in flutter. defaulting to zero*/,
+                                    fontWeight: FontWeight.normal,
+                                    height: 1),
                               ),
-                              SizedBox(
-                                width: 8,
-                              ),
-                              Expanded(
-                                child: const Text(
-                                  'I accept the terms and conditions and I have read the privacy policy ',
-                                  textAlign: TextAlign.left,
-                                  maxLines: 2,
-                                  style: TextStyle(
-                                      fontFamily: 'Poppins',
-                                      fontSize: 18,
-                                      letterSpacing:
-                                          0 /*percentages not used in flutter. defaulting to zero*/,
-                                      fontWeight: FontWeight.normal,
-                                      height: 1),
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
 
