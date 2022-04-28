@@ -80,7 +80,7 @@ class _SigninWidgetState extends State<SigninWidget> {
                   : Alignment.center,
               child: Padding(
                 padding: EdgeInsets.only(
-                    right: MediaQuery.of(context).size.width * 0.06),
+                    right:  MediaQuery.of(context).size.width > 600 ?MediaQuery.of(context).size.width * 0.06:0),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width > 600
                       ? MediaQuery.of(context).size.width * 0.5

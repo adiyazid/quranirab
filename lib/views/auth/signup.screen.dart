@@ -81,12 +81,16 @@ class _SignupWidgetState extends State<SignupWidget> {
                 ),
               ),
             Align(
-              alignment: MediaQuery.of(context).size.width > 818 ? Alignment.centerLeft:Alignment.center,
+              alignment: MediaQuery.of(context).size.width > 818
+                  ? Alignment.centerLeft
+                  : Alignment.center,
               child: Padding(
                 padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width * 0.06),
+                    left: MediaQuery.of(context).size.width > 818 ?MediaQuery.of(context).size.width * 0.06:0),
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width > 818?MediaQuery.of(context).size.width * 0.55:MediaQuery.of(context).size.width * 0.8,
+                  width: MediaQuery.of(context).size.width > 818
+                      ? MediaQuery.of(context).size.width * 0.55
+                      : MediaQuery.of(context).size.width * 0.8,
                   height: MediaQuery.of(context).size.height * 0.7,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -122,12 +126,16 @@ class _SignupWidgetState extends State<SignupWidget> {
                       ),
                       Flexible(
                         child: SizedBox(
-                          width: MediaQuery.of(context).size.width > 818 ?MediaQuery.of(context).size.width * 0.37:MediaQuery.of(context).size.width*0.8,
+                          width: MediaQuery.of(context).size.width > 818
+                              ? MediaQuery.of(context).size.width * 0.37
+                              : MediaQuery.of(context).size.width * 0.8,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
-                                width: MediaQuery.of(context).size.width > 818 ? MediaQuery.of(context).size.width * 0.17:MediaQuery.of(context).size.width*0.37,
+                                width: MediaQuery.of(context).size.width > 818
+                                    ? MediaQuery.of(context).size.width * 0.17
+                                    : MediaQuery.of(context).size.width * 0.37,
                                 height: 54,
                                 decoration: BoxDecoration(
                                   borderRadius: const BorderRadius.only(
@@ -173,7 +181,9 @@ class _SignupWidgetState extends State<SignupWidget> {
                                 ),
                               ),
                               Container(
-                                width: MediaQuery.of(context).size.width > 818 ? MediaQuery.of(context).size.width * 0.17:MediaQuery.of(context).size.width*0.37,
+                                width: MediaQuery.of(context).size.width > 818
+                                    ? MediaQuery.of(context).size.width * 0.17
+                                    : MediaQuery.of(context).size.width * 0.37,
                                 height: 54,
                                 decoration: BoxDecoration(
                                   borderRadius: const BorderRadius.only(
@@ -223,7 +233,9 @@ class _SignupWidgetState extends State<SignupWidget> {
                         ),
                       ),
                       Container(
-                        width: MediaQuery.of(context).size.width > 818 ? MediaQuery.of(context).size.width * 0.37:MediaQuery.of(context).size.width*0.8,
+                        width: MediaQuery.of(context).size.width > 818
+                            ? MediaQuery.of(context).size.width * 0.37
+                            : MediaQuery.of(context).size.width * 0.8,
                         height: 54,
                         decoration: BoxDecoration(
                           borderRadius: const BorderRadius.only(
@@ -266,7 +278,9 @@ class _SignupWidgetState extends State<SignupWidget> {
                         ),
                       ),
                       Container(
-                        width: MediaQuery.of(context).size.width > 818? MediaQuery.of(context).size.width * 0.37:MediaQuery.of(context).size.width*0.8,
+                        width: MediaQuery.of(context).size.width > 818
+                            ? MediaQuery.of(context).size.width * 0.37
+                            : MediaQuery.of(context).size.width * 0.8,
                         height: 54,
                         decoration: BoxDecoration(
                           borderRadius: const BorderRadius.only(
@@ -313,7 +327,9 @@ class _SignupWidgetState extends State<SignupWidget> {
                         ),
                       ),
                       Container(
-                        width: MediaQuery.of(context).size.width > 818 ? MediaQuery.of(context).size.width * 0.37:MediaQuery.of(context).size.width*0.8,
+                        width: MediaQuery.of(context).size.width > 818
+                            ? MediaQuery.of(context).size.width * 0.37
+                            : MediaQuery.of(context).size.width * 0.8,
                         height: 54,
                         decoration: BoxDecoration(
                           borderRadius: const BorderRadius.only(
@@ -361,9 +377,13 @@ class _SignupWidgetState extends State<SignupWidget> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width * 0.06),
+                            left: MediaQuery.of(context).size.width > 818
+                                ? MediaQuery.of(context).size.width * 0.06
+                                : 0),
                         child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.5,
+                          width: MediaQuery.of(context).size.width > 818
+                              ? MediaQuery.of(context).size.width * 0.5
+                              : MediaQuery.of(context).size.width * 0.8,
                           child: Row(
                             children: [
                               Checkbox(
