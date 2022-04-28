@@ -151,7 +151,7 @@ class _DataFromFirestoreState extends State<DataFromFirestore> {
                                                       a,
                                                       data["id"],
                                                       data["tname"],
-                                                      data["ename"],
+                                                      data["ename"],0
                                                     )));
                                       },
                                       child: ListTile(

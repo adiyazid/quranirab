@@ -184,11 +184,11 @@ class _SearchPopupState extends State<SearchPopup>
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => SurahScreen(
-                                                b,
-                                                pop[index]["id"],
-                                                pop[index]["tname"],
-                                                pop[index]["ename"],
-                                              )));
+                                              b,
+                                              pop[index]["id"],
+                                              pop[index]["tname"],
+                                              pop[index]["ename"],
+                                              0)));
                                 } else {
                                   Provider.of<AyaProvider>(context,
                                           listen: false)
@@ -197,11 +197,11 @@ class _SearchPopupState extends State<SearchPopup>
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => SurahScreen(
-                                                a,
-                                                _list[index]["id"],
-                                                _list[index]["tname"],
-                                                _list[index]["ename"],
-                                              )));
+                                              a,
+                                              _list[index]["id"],
+                                              _list[index]["tname"],
+                                              _list[index]["ename"],
+                                              0)));
                                 }
                               },
                               child: Text(visible

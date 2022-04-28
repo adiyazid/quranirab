@@ -51,8 +51,6 @@ class _SuraSliceState extends State<SuraSlice> {
     init();
     Provider.of<AyaProvider>(context, listen: false)
         .getStart(int.parse(widget.suraId), int.parse(widget.page));
-    print('sura id ${widget.suraId}');
-    print('page ${widget.page}');
     super.initState();
   }
 

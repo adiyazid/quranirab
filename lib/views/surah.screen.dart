@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
@@ -14,7 +16,6 @@ import 'package:quranirab/views/sura.slice/sura.slice.dart';
 import 'package:quranirab/widget/TranslationPopup.dart';
 
 import 'package:quranirab/widget/responsive.dart' as w;
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../provider/ayah.number.provider.dart';
 import '../theme/theme_provider.dart';
@@ -28,8 +29,10 @@ class SurahScreen extends StatefulWidget {
   final String sura_id;
   final String name;
   final String detail;
+  final int index;
 
-  const SurahScreen(this.allpages, this.sura_id, this.name, this.detail,
+  const SurahScreen(
+      this.allpages, this.sura_id, this.name, this.detail, this.index,
       {Key? key})
       : super(key: key);
 
@@ -43,7 +46,7 @@ class _SurahScreenState extends State<SurahScreen>
   int? a = 0;
   String? b;
   var hizb;
-  int? start = 1;
+  int? start;
 
   List _translate = [];
   final CollectionReference _collectionTranslate =
@@ -67,7 +70,7 @@ class _SurahScreenState extends State<SurahScreen>
     setState(() {
       _translate = data;
     });
-    if (start != 1) {
+    if (start != 1 && start != null) {
       _translate.removeRange(0, start! - 1);
     }
   }
@@ -79,7 +82,7 @@ class _SurahScreenState extends State<SurahScreen>
   var scrollController = ScrollController();
   var page;
 
-  var i = 0;
+  late int i;
 
   List menuItems = [
     ItemModel('Share', Icons.share),
@@ -87,12 +90,17 @@ class _SurahScreenState extends State<SurahScreen>
   ];
   final CustomPopupMenuController _controller = CustomPopupMenuController();
 
+  @override
   void initState() {
     // TODO: implement initState
     _tabController = TabController(vsync: this, length: 2, initialIndex: 1);
+    i = widget.index;
+
     getHizb();
     getData();
     getTranslation();
+    getStartAyah(widget.allpages[i]);
+
     super.initState();
   }
 
@@ -106,7 +114,7 @@ class _SurahScreenState extends State<SurahScreen>
   Future<void> getData() async {
     // Get docs from collection reference
     await _collectionRef
-        .where('medina_mushaf_page_id', isEqualTo: widget.allpages.first)
+        .where('medina_mushaf_page_id', isEqualTo: widget.allpages[i])
         .where('sura_id', isEqualTo: widget.sura_id)
         .orderBy('created_at')
         .get()
@@ -245,7 +253,7 @@ class _SurahScreenState extends State<SurahScreen>
                                     return Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        'Juz ${getJuzNumber(int.parse(widget.sura_id), start!)} / Hizb $hizb - Page ${aya.page}',
+                                        'Juz ${getJuzNumber(int.parse(widget.sura_id), start ?? 1)} / Hizb $hizb - Page ${aya.page}',
                                         style: TextStyle(
                                           fontSize: 20,
                                         ),
@@ -404,55 +412,46 @@ class _SurahScreenState extends State<SurahScreen>
                                                                     menuItems
                                                                         .map(
                                                                           (item) =>
-                                                                              GestureDetector(
-                                                                            behavior:
-                                                                                HitTestBehavior.translucent,
-                                                                            onTap:
-                                                                                _controller.hideMenu,
+                                                                              Container(
+                                                                            height:
+                                                                                40,
+                                                                            padding:
+                                                                                const EdgeInsets.symmetric(horizontal: 20),
                                                                             child:
-                                                                                Container(
-                                                                              height: 40,
-                                                                              padding: const EdgeInsets.symmetric(horizontal: 20),
-                                                                              child: Row(
-                                                                                children: <Widget>[
-                                                                                  Icon(
-                                                                                    item.icon,
-                                                                                    size: 16,
-                                                                                    color: Theme.of(context).textSelectionColor,
-                                                                                  ),
-                                                                                  Expanded(
-                                                                                    child: InkWell(
-                                                                                      onTap: () async {
-                                                                                        // Obtain shared preferences.
-                                                                                        if (item.text == 'Bookmark') {
-                                                                                          await Provider.of<BookMarkProvider>(context, listen: false).addtoBookmark("${widget.sura_id}:${start! + index}", widget.sura_id, widget.name, widget.detail);
-                                                                                          // prefs.setString('bookmarks', jsonList);
-                                                                                          //   ///use to chunk bookmark list
-                                                                                          //   var lst = prefs.getStringList('bookmarks') ?? [];
-                                                                                          //   var chunks = [];
-                                                                                          //   int chunkSize = 4;
-                                                                                          //   for (var i = 0; i < lst.length; i += chunkSize) {
-                                                                                          //     chunks.add(lst.sublist(i, i + chunkSize > lst.length ? lst.length : i + chunkSize));
-                                                                                          //   }
-                                                                                          //   print(chunks);
-                                                                                          // } else {}
+                                                                                Row(
+                                                                              children: <Widget>[
+                                                                                Icon(
+                                                                                  item.icon,
+                                                                                  size: 16,
+                                                                                  color: Theme.of(context).textSelectionColor,
+                                                                                ),
+                                                                                Expanded(
+                                                                                  child: InkWell(
+                                                                                    onTap: () async {
+                                                                                      // Obtain shared preferences.
+                                                                                      if (item.text == 'Bookmark') {
+                                                                                        List pages = widget.allpages;
+                                                                                        if (i != 0) {
+                                                                                          pages.removeRange(0, i);
                                                                                         }
-                                                                                      },
-                                                                                      child: Container(
-                                                                                        margin: const EdgeInsets.only(left: 10),
-                                                                                        padding: const EdgeInsets.symmetric(vertical: 10),
-                                                                                        child: Text(
-                                                                                          item.text,
-                                                                                          style: TextStyle(
-                                                                                            color: Theme.of(context).textSelectionColor,
-                                                                                            fontSize: 14,
-                                                                                          ),
+                                                                                        String ayahNo = "${widget.sura_id}:${start! + index}";
+                                                                                        await Provider.of<BookMarkProvider>(context, listen: false).addtoBookmark(context, ayahNo, widget.sura_id, widget.name, widget.detail, pages);
+                                                                                      }
+                                                                                    },
+                                                                                    child: Container(
+                                                                                      margin: const EdgeInsets.only(left: 10),
+                                                                                      padding: const EdgeInsets.symmetric(vertical: 10),
+                                                                                      child: Text(
+                                                                                        item.text,
+                                                                                        style: TextStyle(
+                                                                                          color: Theme.of(context).textSelectionColor,
+                                                                                          fontSize: 14,
                                                                                         ),
                                                                                       ),
                                                                                     ),
                                                                                   ),
-                                                                                ],
-                                                                              ),
+                                                                                ),
+                                                                              ],
                                                                             ),
                                                                           ),
                                                                         )
@@ -622,8 +621,8 @@ class _SurahScreenState extends State<SurahScreen>
                                 await getStartAyah(widget.allpages[i]);
                                 await nextPage(widget.allpages[i]);
                               } else {
-                                await getStartAyah(widget.allpages.first);
-                                await nextPage(widget.allpages.first);
+                                await getStartAyah(widget.allpages[i]);
+                                await nextPage(widget.allpages[i]);
                               }
                             }
                           : null,

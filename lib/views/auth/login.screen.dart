@@ -34,52 +34,57 @@ class _SigninWidgetState extends State<SigninWidget> {
           ),
           child: Stack(children: <Widget>[
             ///assalamualaikum container
-            Positioned(
-                top: 0,
-                left: -6,
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 0.45,
-                  height: MediaQuery.of(context).size.height,
-                  decoration: theme.isDarkMode
-                      ? BoxDecoration(
-                          color: const Color.fromRGBO(127, 139, 161, 1),
-                          border: Border.all(
-                            color: const Color.fromRGBO(255, 255, 255, 1),
-                            width: 10,
+            if (MediaQuery.of(context).size.width > 600)
+              Positioned(
+                  top: 0,
+                  left: -6,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.45,
+                    height: MediaQuery.of(context).size.height,
+                    decoration: theme.isDarkMode
+                        ? BoxDecoration(
+                            color: const Color.fromRGBO(127, 139, 161, 1),
+                            border: Border.all(
+                              color: const Color.fromRGBO(255, 255, 255, 1),
+                              width: 10,
+                            ),
+                          )
+                        : BoxDecoration(
+                            color: const Color.fromRGBO(255, 243, 201, 1),
+                            border: Border.all(
+                              color: const Color.fromRGBO(255, 157, 11, 1),
+                              width: 10,
+                            ),
                           ),
-                        )
-                      : BoxDecoration(
-                          color: const Color.fromRGBO(255, 243, 201, 1),
-                          border: Border.all(
-                            color: const Color.fromRGBO(255, 157, 11, 1),
-                            width: 10,
-                          ),
-                        ),
-                  child: Center(
-                    child: Text(
-                      'Assalamualaikum',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: theme.isDarkMode
-                              ? Colors.white
-                              : const Color.fromRGBO(0, 0, 0, 1),
-                          fontFamily: 'Poppins',
-                          fontSize: 40,
-                          letterSpacing:
-                              0 /*percentages not used in flutter. defaulting to zero*/,
-                          fontWeight: FontWeight.normal,
-                          height: 1),
+                    child: Center(
+                      child: Text(
+                        'Assalamualaikum',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: theme.isDarkMode
+                                ? Colors.white
+                                : const Color.fromRGBO(0, 0, 0, 1),
+                            fontFamily: 'Poppins',
+                            fontSize: 40,
+                            letterSpacing:
+                                0 /*percentages not used in flutter. defaulting to zero*/,
+                            fontWeight: FontWeight.normal,
+                            height: 1),
+                      ),
                     ),
-                  ),
-                )),
+                  )),
 
             Align(
-              alignment: Alignment.centerRight,
+              alignment: MediaQuery.of(context).size.width > 600
+                  ? Alignment.centerRight
+                  : Alignment.center,
               child: Padding(
                 padding: EdgeInsets.only(
                     right: MediaQuery.of(context).size.width * 0.06),
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.5,
+                  width: MediaQuery.of(context).size.width > 600
+                      ? MediaQuery.of(context).size.width * 0.5
+                      : MediaQuery.of(context).size.width * 0.9,
                   height: MediaQuery.of(context).size.height * 0.7,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -118,7 +123,9 @@ class _SigninWidgetState extends State<SigninWidget> {
                       ),
                       Flexible(
                         child: Container(
-                            width: MediaQuery.of(context).size.width * 0.35,
+                            width: MediaQuery.of(context).size.width > 600
+                                ? MediaQuery.of(context).size.width * 0.4
+                                : MediaQuery.of(context).size.width * 0.7,
                             height: 64,
                             decoration: BoxDecoration(
                               borderRadius: const BorderRadius.only(
@@ -168,7 +175,9 @@ class _SigninWidgetState extends State<SigninWidget> {
                       ),
                       Flexible(
                         child: Container(
-                          width: MediaQuery.of(context).size.width * 0.35,
+                          width: MediaQuery.of(context).size.width > 600
+                              ? MediaQuery.of(context).size.width * 0.4
+                              : MediaQuery.of(context).size.width * 0.7,
                           height: 64,
                           decoration: BoxDecoration(
                             borderRadius: const BorderRadius.only(
@@ -255,9 +264,9 @@ class _SigninWidgetState extends State<SigninWidget> {
                                       message: 'Login Success',
                                     ),
                                     showOutAnimationDuration:
-                                    Duration(milliseconds: 200),
+                                        Duration(milliseconds: 200),
                                     hideOutAnimationDuration:
-                                    Duration(milliseconds: 250),
+                                        Duration(milliseconds: 250),
                                     displayDuration:
                                         Duration(milliseconds: 1000));
                               } catch (e) {
@@ -303,25 +312,46 @@ class _SigninWidgetState extends State<SigninWidget> {
                         ),
                       ),
                       Flexible(
-                        child: InkWell(
-                          onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const SignupWidget())),
-                          child: Text(
-                            'Don’t have account? Sign up ',
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                                color: theme.isDarkMode
-                                    ? const Color.fromRGBO(255, 255, 255, 1)
-                                    : const Color.fromRGBO(0, 0, 0, 1),
-                                fontFamily: 'Poppins',
-                                fontSize: 16,
-                                letterSpacing:
-                                    0 /*percentages not used in flutter. defaulting to zero*/,
-                                fontWeight: FontWeight.normal,
-                                height: 1),
-                          ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Don’t have account? ',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                  color: theme.isDarkMode
+                                      ? const Color.fromRGBO(255, 255, 255, 1)
+                                      : const Color.fromRGBO(0, 0, 0, 1),
+                                  fontFamily: 'Poppins',
+                                  fontSize: 16,
+                                  letterSpacing:
+                                      0 /*percentages not used in flutter. defaulting to zero*/,
+                                  fontWeight: FontWeight.normal,
+                                  height: 1),
+                            ),
+                            InkWell(
+                              onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const SignupWidget())),
+                              child: Text(
+                                'Sign up ',
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    color: theme.isDarkMode
+                                        ? const Color.fromRGBO(255, 255, 255, 1)
+                                        : const Color.fromRGBO(0, 0, 0, 1),
+                                    fontFamily: 'Poppins',
+                                    fontSize: 16,
+                                    letterSpacing:
+                                        0 /*percentages not used in flutter. defaulting to zero*/,
+                                    fontWeight: FontWeight.normal,
+                                    height: 1),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],

@@ -39,53 +39,54 @@ class _SignupWidgetState extends State<SignupWidget> {
                 : Colors.white,
           ),
           child: Stack(children: <Widget>[
-            Align(
-              alignment: Alignment.topRight,
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.37,
-                height: MediaQuery.of(context).size.height,
-                decoration: BoxDecoration(
-                  border: Border.all(
+            if (MediaQuery.of(context).size.width > 818)
+              Align(
+                alignment: Alignment.topRight,
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.37,
+                  height: MediaQuery.of(context).size.height,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: theme.isDarkMode
+                          ? const Color.fromRGBO(255, 255, 255, 1)
+                          : const Color(0xffFF9E0C),
+                      width: 10,
+                    ),
+                    boxShadow: const [
+                      BoxShadow(
+                          color: Color.fromRGBO(0, 0, 0, 0.25),
+                          offset: Offset(0, 4),
+                          blurRadius: 4)
+                    ],
                     color: theme.isDarkMode
-                        ? const Color.fromRGBO(255, 255, 255, 1)
-                        : const Color(0xffFF9E0C),
-                    width: 10,
+                        ? const Color(0xff808BA1)
+                        : const Color(0xffFFEEB0),
                   ),
-                  boxShadow: const [
-                    BoxShadow(
-                        color: Color.fromRGBO(0, 0, 0, 0.25),
-                        offset: Offset(0, 4),
-                        blurRadius: 4)
-                  ],
-                  color: theme.isDarkMode
-                      ? const Color(0xff808BA1)
-                      : const Color(0xffFFEEB0),
-                ),
-                child: const Center(
-                  child: SizedBox(
-                    width: 400,
-                    child: Text(
-                      'Welcome to QuranIrab official website',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontSize: 50,
-                          letterSpacing:
-                              0 /*percentages not used in flutter. defaulting to zero*/,
-                          fontWeight: FontWeight.normal,
-                          height: 1),
+                  child: const Center(
+                    child: SizedBox(
+                      width: 400,
+                      child: Text(
+                        'Welcome to QuranIrab official website',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontSize: 50,
+                            letterSpacing:
+                                0 /*percentages not used in flutter. defaulting to zero*/,
+                            fontWeight: FontWeight.normal,
+                            height: 1),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
             Align(
-              alignment: Alignment.centerLeft,
+              alignment: MediaQuery.of(context).size.width > 818 ? Alignment.centerLeft:Alignment.center,
               child: Padding(
                 padding: EdgeInsets.only(
                     left: MediaQuery.of(context).size.width * 0.06),
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.55,
+                  width: MediaQuery.of(context).size.width > 818?MediaQuery.of(context).size.width * 0.55:MediaQuery.of(context).size.width * 0.8,
                   height: MediaQuery.of(context).size.height * 0.7,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -121,12 +122,12 @@ class _SignupWidgetState extends State<SignupWidget> {
                       ),
                       Flexible(
                         child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.37,
+                          width: MediaQuery.of(context).size.width > 818 ?MediaQuery.of(context).size.width * 0.37:MediaQuery.of(context).size.width*0.8,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
-                                width: MediaQuery.of(context).size.width * 0.17,
+                                width: MediaQuery.of(context).size.width > 818 ? MediaQuery.of(context).size.width * 0.17:MediaQuery.of(context).size.width*0.37,
                                 height: 54,
                                 decoration: BoxDecoration(
                                   borderRadius: const BorderRadius.only(
@@ -172,7 +173,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                                 ),
                               ),
                               Container(
-                                width: MediaQuery.of(context).size.width * 0.17,
+                                width: MediaQuery.of(context).size.width > 818 ? MediaQuery.of(context).size.width * 0.17:MediaQuery.of(context).size.width*0.37,
                                 height: 54,
                                 decoration: BoxDecoration(
                                   borderRadius: const BorderRadius.only(
@@ -222,7 +223,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                         ),
                       ),
                       Container(
-                        width: MediaQuery.of(context).size.width * 0.37,
+                        width: MediaQuery.of(context).size.width > 818 ? MediaQuery.of(context).size.width * 0.37:MediaQuery.of(context).size.width*0.8,
                         height: 54,
                         decoration: BoxDecoration(
                           borderRadius: const BorderRadius.only(
@@ -265,7 +266,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                         ),
                       ),
                       Container(
-                        width: MediaQuery.of(context).size.width * 0.37,
+                        width: MediaQuery.of(context).size.width > 818? MediaQuery.of(context).size.width * 0.37:MediaQuery.of(context).size.width*0.8,
                         height: 54,
                         decoration: BoxDecoration(
                           borderRadius: const BorderRadius.only(
@@ -281,9 +282,8 @@ class _SignupWidgetState extends State<SignupWidget> {
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: TextFormField(
-                            cursorColor: theme.isDarkMode
-                                ? Colors.white
-                                : Colors.black,
+                            cursorColor:
+                                theme.isDarkMode ? Colors.white : Colors.black,
                             obscureText: true,
                             obscuringCharacter: '*',
                             controller: _pass1,
@@ -313,7 +313,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                         ),
                       ),
                       Container(
-                        width: MediaQuery.of(context).size.width * 0.37,
+                        width: MediaQuery.of(context).size.width > 818 ? MediaQuery.of(context).size.width * 0.37:MediaQuery.of(context).size.width*0.8,
                         height: 54,
                         decoration: BoxDecoration(
                           borderRadius: const BorderRadius.only(
@@ -329,9 +329,8 @@ class _SignupWidgetState extends State<SignupWidget> {
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: TextFormField(
-                            cursorColor: theme.isDarkMode
-                                ? Colors.white
-                                : Colors.black,
+                            cursorColor:
+                                theme.isDarkMode ? Colors.white : Colors.black,
                             obscureText: true,
                             obscuringCharacter: '*',
                             controller: _pass2,
