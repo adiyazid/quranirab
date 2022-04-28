@@ -3,7 +3,6 @@ class FontSize {
   double size = 25;
   int? index;
 
-
   factory FontSize() {
     return _fontData;
   }

@@ -220,7 +220,7 @@ class _SurahScreenState extends State<SurahScreen>
                               title: Text(
                                 "${widget.name}",
                                 style: TextStyle(
-                                  fontSize: widget.detail.length > 12 ? 18 : 20,
+                                  fontSize: MediaQuery.of(context).size.width < 500 ? 15 : 20,
                                 ),
                               ),
                               subtitle: Text(
@@ -228,9 +228,8 @@ class _SurahScreenState extends State<SurahScreen>
                                 style: TextStyle(
                                   color: Colors.grey,
                                   fontSize:
-                                      MediaQuery.of(context).size.width < 500 ||
-                                              widget.detail.length > 10
-                                          ? 18
+                                      MediaQuery.of(context).size.width < 500
+                                          ? 14
                                           : 20,
                                 ),
                               ),
@@ -255,7 +254,7 @@ class _SurahScreenState extends State<SurahScreen>
                                       child: Text(
                                         'Juz ${getJuzNumber(int.parse(widget.sura_id), start ?? 1)} / Hizb $hizb - Page ${aya.page}',
                                         style: TextStyle(
-                                          fontSize: 20,
+                                          fontSize: MediaQuery.of(context).size.width < 500 ? 15 : 20,
                                         ),
                                       ),
                                     );
@@ -267,7 +266,7 @@ class _SurahScreenState extends State<SurahScreen>
                     Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal:
-                              w.Responsive.isDesktop(context) ? 400.0 : 40),
+                              w.Responsive.isDesktop(context) ? 400.0 : 20),
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width,
                         child: TabBar(

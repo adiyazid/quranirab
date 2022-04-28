@@ -2,12 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dio/dio.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:quranirab/models/font.size.dart';
 import 'package:quranirab/models/word.detail.dart';
-import 'package:http/http.dart' as http;
 import '../models/break.index.model.dart';
 import '../models/slicing.data.model.dart';
 import '../models/surah.split.model.dart';
@@ -72,6 +70,14 @@ class AyaProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  // void getFontSize(BuildContext context) {
+  //   if (MediaQuery.of(context).size.width > 600) {
+  //     _value = 25;
+  //   } else {
+  //     _value = 17;
+  //   }
+  // }
 
   void decrement() {
     _value = _value - 5;
