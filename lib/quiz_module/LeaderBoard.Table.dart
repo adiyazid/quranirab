@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/models/category.dart';
@@ -31,6 +32,15 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
   _onSortId(int index, bool ascending) {
     setState(() {
       _sortAscending = ascending;
+      for (var element in dataTable) {
+        if (kDebugMode) {
+          print(element['scores'
+        ]);
+        }
+      }
+      oldDataTable.sort((a, b) => ascending
+          ? a['scores'].compareTo(b['scores'])
+          : b['scores'].compareTo(a['scores']));
       dataTable.sort((a, b) => ascending
           ? a['scores'].compareTo(b['scores'])
           : b['scores'].compareTo(a['scores']));
@@ -57,7 +67,7 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
         var time = DateTime.parse(doc['last-updated'].toDate().toString());
         setState(() {
           var diff = now.difference(time).inDays;
-          if (diff < 30) {
+          if (diff < 30&&doc['scores']!=0) {
             dataTable.add(doc);
           }
         });
@@ -304,7 +314,7 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                                               ? Colors.white
                                                               : Colors.black),
                                                     ),
-                                                    numeric: false,
+                                                    numeric: true,
                                                     onSort: _onSortId),
                                               ],
                                               rows: oldDataTable
