@@ -1,13 +1,10 @@
-import 'dart:html';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 
 import 'package:quran/quran.dart';
-import 'package:quranirab/models/bookmark.model.dart';
 import 'package:quranirab/models/font.size.dart';
 import 'package:quranirab/models/item.model.dart';
 import 'package:quranirab/provider/bookmark.provider.dart';
@@ -89,7 +86,6 @@ class _SurahScreenState extends State<SurahScreen>
     ItemModel('Share', Icons.share),
     ItemModel('Bookmark', Icons.bookmarks),
   ];
-  final CustomPopupMenuController _controller = CustomPopupMenuController();
 
   @override
   void initState() {

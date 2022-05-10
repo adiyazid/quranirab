@@ -1,8 +1,8 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
+import 'package:quranirab/views/data_correction/edit.data.dart';
 import 'package:skeleton_loader/skeleton_loader.dart';
 
 import '../models/word.detail.dart';
@@ -98,8 +98,19 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                                 : null,
                             icon: Icon(Icons.clear)),
                       ),
+                      Center(
+                        child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => EditData()));
+                            },
+                            child: Text('Edit')),
+                      ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 16),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 16),
                         child: Directionality(
                             textDirection: TextDirection.rtl,
                             child: Text(
@@ -312,7 +323,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                           ],
                         ),
                       ),
-                      items: 15,
+                      items: 13,
                       period: Duration(seconds: 2),
                       highlightColor: Color(0xffaa9f9f),
                       direction: SkeletonDirection.rtl,

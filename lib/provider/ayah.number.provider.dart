@@ -32,7 +32,7 @@ class AyaProvider extends ChangeNotifier {
   List haraf = [];
   List fail = [];
   final List<WordDetail> wordTypeDetail = [];
-  final List<WordDetail> wordName = [];
+  List<WordDetail> wordName = [];
 
   CollectionReference wordRelationship =
       FirebaseFirestore.instance.collection('word_relationships');
@@ -58,6 +58,8 @@ class AyaProvider extends ChangeNotifier {
   List pageFix = [];
 
   bool nodata = false;
+
+  List<WordDetail> allCategory = [];
 
   get value => _value;
 
@@ -354,6 +356,11 @@ class AyaProvider extends ChangeNotifier {
         .get()
         .then((QuerySnapshot querySnapshot) {
       for (var doc in querySnapshot.docs) {
+        allCategory.add(WordDetail(
+            id: int.parse(doc["id"].trim()),
+            categoryId: int.parse(doc["word_category_id"].trim()),
+            name: doc["name"].trim(),
+            type: ''));
         if (doc["word_category_id"] == wordCategoryId.toString()) {
           wordName.add(WordDetail(
               id: int.parse(doc["id"].trim()),
@@ -8943,5 +8950,29 @@ class AyaProvider extends ChangeNotifier {
     } else {
       return true;
     }
+  }
+
+  void removeDetail(int index) {
+    wordName.removeAt(index);
+    notifyListeners();
+  }
+
+  void addDetail(WordDetail detail) {
+    wordName.add(detail);
+    notifyListeners();
+  }
+
+  void replace(String? name, int index) {
+    var type;
+    var categoryId;
+    allCategory.forEach((element) {
+      if (element.name == name) {
+        type = element.type;
+        categoryId = element.categoryId;
+      }
+    });
+    wordName.replaceRange(index, index + 1,
+        [WordDetail(type: type, categoryId: categoryId, name: name)]);
+    notifyListeners();
   }
 }
