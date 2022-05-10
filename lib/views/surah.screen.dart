@@ -11,6 +11,7 @@ import 'package:quranirab/models/bookmark.model.dart';
 import 'package:quranirab/models/font.size.dart';
 import 'package:quranirab/models/item.model.dart';
 import 'package:quranirab/provider/bookmark.provider.dart';
+import 'package:quranirab/quiz_module/quiz.home.dart';
 import 'package:quranirab/views/sura.slice/sura.slice.dart';
 
 import 'package:quranirab/widget/TranslationPopup.dart';
@@ -220,7 +221,10 @@ class _SurahScreenState extends State<SurahScreen>
                               title: Text(
                                 "${widget.name}",
                                 style: TextStyle(
-                                  fontSize: MediaQuery.of(context).size.width < 500 ? 15 : 20,
+                                  fontSize:
+                                      MediaQuery.of(context).size.width < 500
+                                          ? 15
+                                          : 20,
                                 ),
                               ),
                               subtitle: Text(
@@ -254,7 +258,12 @@ class _SurahScreenState extends State<SurahScreen>
                                       child: Text(
                                         'Juz ${getJuzNumber(int.parse(widget.sura_id), start ?? 1)} / Hizb $hizb - Page ${aya.page}',
                                         style: TextStyle(
-                                          fontSize: MediaQuery.of(context).size.width < 500 ? 15 : 20,
+                                          fontSize: MediaQuery.of(context)
+                                                      .size
+                                                      .width <
+                                                  500
+                                              ? 15
+                                              : 20,
                                         ),
                                       ),
                                     );
@@ -807,6 +816,15 @@ class _SurahScreenState extends State<SurahScreen>
                             ),
                           )),
                     ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(primary: Colors.orangeAccent),
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => QuizHome(
+                              Provider.of<AyaProvider>(context, listen: false)
+                                  .page))),
+                  child: Text('Quiz'))
             ],
           ),
         ),
