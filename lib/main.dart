@@ -25,6 +25,7 @@ Future<void> main() async {
         appId: "1:422246535912:web:b9fb40db672516fa2cef5d",
         measurementId: "G-GF36EVS4JQ"),
   );
+
   final appUser = AppUser();
   runApp(MultiProvider(
     providers: [
