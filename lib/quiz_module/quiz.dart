@@ -51,6 +51,7 @@ class _QuizState extends State<Quiz> {
   String btnText = "Next";
   bool answered = false;
 
+
   @override
   void initState() {
     generateQuestions();
