@@ -159,7 +159,8 @@ class _HomePageState extends State<HomePage>
                                               if (index ==
                                                   bm.bookmarkList.length) {
                                                 return IconButton(
-                                                  onPressed: () => bm.deleteAll(),
+                                                  onPressed: () =>
+                                                      bm.deleteAll(),
                                                   icon:
                                                       Icon(Icons.delete_sharp),
                                                 );
@@ -409,7 +410,8 @@ class _HomePageState extends State<HomePage>
                             ),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 8.0,right: 8.0,left: 8.0),
+                            padding: const EdgeInsets.only(
+                                top: 8.0, right: 8.0, left: 8.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -449,140 +451,97 @@ class _HomePageState extends State<HomePage>
                                     ),
                                   ),
                                 ),
-                                SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.54,
+                                Expanded(
                                   child: TabBarView(
                                       controller: _tabController,
                                       children: [
-                                        SizedBox(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.5,
-                                            child: _list.isNotEmpty
-                                                ? MediaQuery.of(context)
-                                                            .size
-                                                            .width >
-                                                        600
-                                                    ? GridView.builder(
-                                                        controller:
-                                                            ScrollController(),
-                                                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                                            crossAxisCount:
-                                                                MediaQuery.of(context)
-                                                                            .size
-                                                                            .width <
-                                                                        1200
-                                                                    ? 2
-                                                                    : 3,
-                                                            crossAxisSpacing:
-                                                                5.0,
-                                                            mainAxisSpacing:
-                                                                5.0,
-                                                            childAspectRatio:
-                                                                4.5),
-                                                        itemCount: 114,
-                                                        itemBuilder:
-                                                            (BuildContext
-                                                                    context,
-                                                                int index) {
-                                                          return Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .symmetric(
-                                                                    horizontal:
-                                                                        16.0,
-                                                                    vertical:
-                                                                        8),
-                                                            child: InkWell(
-                                                              onTap: () async {
-                                                                var a = await getTotalPage(
-                                                                    _list[index]
-                                                                        ["id"]);
-                                                                Provider.of<AyaProvider>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .getPage(int
-                                                                        .parse(a
-                                                                            .first));
-                                                                Provider.of<AyaProvider>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .setDefault();
-                                                                Provider.of<AyaProvider>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .getStart(
-                                                                        int.parse(_list[index]
-                                                                            [
-                                                                            'id']),
-                                                                        int.parse(
-                                                                            a.first));
+                                        Column(
+                                          children: [
+                                            Expanded(
+                                              child: _list.isNotEmpty
+                                                  ? MediaQuery.of(context)
+                                                              .size
+                                                              .width >
+                                                          600
+                                                      ? GridView.builder(
+                                                          controller:
+                                                              ScrollController(),
+                                                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                                              crossAxisCount:
+                                                                  MediaQuery.of(context)
+                                                                              .size
+                                                                              .width <
+                                                                          1200
+                                                                      ? 2
+                                                                      : 3,
+                                                              crossAxisSpacing:
+                                                                  5.0,
+                                                              mainAxisSpacing:
+                                                                  5.0,
+                                                              childAspectRatio:
+                                                                  4.5),
+                                                          itemCount: 114,
+                                                          itemBuilder:
+                                                              (BuildContext
+                                                                      context,
+                                                                  int index) {
+                                                            return Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .symmetric(
+                                                                      horizontal:
+                                                                          16.0,
+                                                                      vertical:
+                                                                          8),
+                                                              child: InkWell(
+                                                                onTap: () async {
+                                                                  var a = await getTotalPage(
+                                                                      _list[index]
+                                                                          ["id"]);
+                                                                  Provider.of<AyaProvider>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .getPage(int
+                                                                          .parse(a
+                                                                              .first));
+                                                                  Provider.of<AyaProvider>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .setDefault();
+                                                                  Provider.of<AyaProvider>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .getStart(
+                                                                          int.parse(_list[index]
+                                                                              [
+                                                                              'id']),
+                                                                          int.parse(
+                                                                              a.first));
 
-                                                                // Provider.of<AyaProvider>(context,
-                                                                //     listen: false)
-                                                                //     .getPage(439);
-                                                                Navigator.push(
-                                                                    context,
-                                                                    MaterialPageRoute(
-                                                                        builder: (context) => SurahScreen(
-                                                                            a,
-                                                                            _list[index]["id"],
-                                                                            _list[index]["tname"],
-                                                                            _list[index]["ename"],
-                                                                            0)));
-                                                              },
-                                                              child: Container(
-                                                                width: 400,
-                                                                height: 100,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadius
-                                                                                .only(
-                                                                          topLeft:
-                                                                              Radius.circular(10),
-                                                                          topRight:
-                                                                              Radius.circular(10),
-                                                                          bottomLeft:
-                                                                              Radius.circular(10),
-                                                                          bottomRight:
-                                                                              Radius.circular(10),
-                                                                        ),
-                                                                        color: themeProvider.isDarkMode
-                                                                            ? Color(
-                                                                                0xff67748E)
-                                                                            : Color.fromRGBO(
-                                                                                255,
-                                                                                255,
-                                                                                255,
-                                                                                1),
-                                                                        border:
-                                                                            Border.all(
-                                                                          color: themeProvider.isDarkMode
-                                                                              ? Color(0xffD2D6DA)
-                                                                              : Color.fromRGBO(231, 111, 0, 1),
-                                                                          width:
-                                                                              1,
-                                                                        )),
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: [
-                                                                    Container(
-                                                                        width:
-                                                                            50,
-                                                                        height:
-                                                                            100,
-                                                                        decoration:
-                                                                            BoxDecoration(
+                                                                  // Provider.of<AyaProvider>(context,
+                                                                  //     listen: false)
+                                                                  //     .getPage(439);
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) => SurahScreen(
+                                                                              a,
+                                                                              _list[index]["id"],
+                                                                              _list[index]["tname"],
+                                                                              _list[index]["ename"],
+                                                                              0)));
+                                                                },
+                                                                child: Container(
+                                                                  width: 400,
+                                                                  height: 100,
+                                                                  decoration:
+                                                                      BoxDecoration(
                                                                           borderRadius:
-                                                                              BorderRadius.only(
+                                                                              BorderRadius
+                                                                                  .only(
                                                                             topLeft:
                                                                                 Radius.circular(10),
                                                                             topRight:
@@ -593,700 +552,961 @@ class _HomePageState extends State<HomePage>
                                                                                 Radius.circular(10),
                                                                           ),
                                                                           color: themeProvider.isDarkMode
-                                                                              ? Color(0xff808BA1)
-                                                                              : Color.fromRGBO(255, 181, 94, 1),
-                                                                        ),
-                                                                        child:
-                                                                            Center(
-                                                                          child:
-                                                                              Text(
-                                                                            '${index + 1}',
-                                                                            textAlign:
-                                                                                TextAlign.left,
-                                                                            style: TextStyle(
-                                                                                fontFamily: 'Open Sans',
-                                                                                fontSize: 24,
-                                                                                letterSpacing: -0.38723403215408325,
-                                                                                fontWeight: FontWeight.normal,
-                                                                                height: 1),
-                                                                          ),
-                                                                        )),
-                                                                    Spacer(),
-                                                                    Column(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
-                                                                      children: [
-                                                                        Text(
-                                                                          _list[index]
-                                                                              [
-                                                                              "tname"],
-                                                                          textAlign:
-                                                                              TextAlign.left,
-                                                                          style: TextStyle(
-                                                                              fontFamily: 'Open Sans',
-                                                                              fontSize: 24,
-                                                                              letterSpacing: -0.38723403215408325,
-                                                                              fontWeight: FontWeight.normal,
-                                                                              height: 1),
-                                                                        ),
-                                                                        Text(
-                                                                          _list[index]
-                                                                              [
-                                                                              "ename"],
-                                                                          textAlign:
-                                                                              TextAlign.left,
-                                                                          style: TextStyle(
-                                                                              color: Color.fromRGBO(151, 151, 151, 1),
-                                                                              fontFamily: 'Open Sans',
-                                                                              fontSize: 22,
-                                                                              letterSpacing: -0.38723403215408325,
-                                                                              fontWeight: FontWeight.normal,
-                                                                              height: 1),
-                                                                        )
-                                                                      ],
-                                                                    ),
-                                                                    Spacer()
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          );
-                                                        },
-                                                      )
-                                                    : ListView.builder(
-                                                        itemCount: 114,
-                                                        itemBuilder:
-                                                            (BuildContext
-                                                                    context,
-                                                                int index) {
-                                                          return Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .symmetric(
-                                                                    horizontal:
-                                                                        8.0,
-                                                                    vertical:
-                                                                        8),
-                                                            child: InkWell(
-                                                              onTap: () async {
-                                                                var a = await getTotalPage(
-                                                                    _list[index]
-                                                                        ["id"]);
-                                                                Provider.of<AyaProvider>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .getPage(int
-                                                                        .parse(a
-                                                                            .first));
-                                                                Provider.of<AyaProvider>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .setDefault();
-                                                                Provider.of<AyaProvider>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .getStart(
-                                                                        int.parse(_list[index]
-                                                                            [
-                                                                            'id']),
-                                                                        int.parse(
-                                                                            a.first));
-
-                                                                // Provider.of<AyaProvider>(context,
-                                                                //     listen: false)
-                                                                //     .getPage(439);
-                                                                Navigator.push(
-                                                                    context,
-                                                                    MaterialPageRoute(
-                                                                        builder: (context) => SurahScreen(
-                                                                            a,
-                                                                            _list[index]["id"],
-                                                                            _list[index]["tname"],
-                                                                            _list[index]["ename"],
-                                                                            0)));
-                                                              },
-                                                              child: Container(
-                                                                width: 400,
-                                                                height: 100,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadius
-                                                                                .only(
-                                                                          topLeft:
-                                                                              Radius.circular(10),
-                                                                          topRight:
-                                                                              Radius.circular(10),
-                                                                          bottomLeft:
-                                                                              Radius.circular(10),
-                                                                          bottomRight:
-                                                                              Radius.circular(10),
-                                                                        ),
-                                                                        color: themeProvider.isDarkMode
-                                                                            ? Color(
-                                                                                0xff67748E)
-                                                                            : Color.fromRGBO(
-                                                                                255,
-                                                                                255,
-                                                                                255,
-                                                                                1),
-                                                                        border:
-                                                                            Border.all(
-                                                                          color: themeProvider.isDarkMode
-                                                                              ? Color(0xffD2D6DA)
-                                                                              : Color.fromRGBO(231, 111, 0, 1),
-                                                                          width:
-                                                                              1,
-                                                                        )),
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: [
-                                                                    Container(
-                                                                        width:
-                                                                            50,
-                                                                        height:
-                                                                            100,
-                                                                        decoration:
-                                                                            BoxDecoration(
-                                                                          borderRadius:
-                                                                              BorderRadius.only(
-                                                                            topLeft:
-                                                                                Radius.circular(10),
-                                                                            topRight:
-                                                                                Radius.circular(10),
-                                                                            bottomLeft:
-                                                                                Radius.circular(10),
-                                                                            bottomRight:
-                                                                                Radius.circular(10),
-                                                                          ),
-                                                                          color: themeProvider.isDarkMode
-                                                                              ? Color(0xff808BA1)
-                                                                              : Color.fromRGBO(255, 181, 94, 1),
-                                                                        ),
-                                                                        child:
-                                                                            Center(
-                                                                          child:
-                                                                              Text(
-                                                                            '${index + 1}',
-                                                                            textAlign:
-                                                                                TextAlign.left,
-                                                                            style: TextStyle(
-                                                                                fontFamily: 'Open Sans',
-                                                                                fontSize: 24,
-                                                                                letterSpacing: -0.38723403215408325,
-                                                                                fontWeight: FontWeight.normal,
-                                                                                height: 1),
-                                                                          ),
-                                                                        )),
-                                                                    Spacer(),
-                                                                    Column(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
-                                                                      children: [
-                                                                        Text(
-                                                                          _list[index]
-                                                                              [
-                                                                              "tname"],
-                                                                          textAlign:
-                                                                              TextAlign.left,
-                                                                          style: TextStyle(
-                                                                              fontFamily: 'Open Sans',
-                                                                              fontSize: 24,
-                                                                              letterSpacing: -0.38723403215408325,
-                                                                              fontWeight: FontWeight.normal,
-                                                                              height: 1),
-                                                                        ),
-                                                                        Text(
-                                                                          _list[index]
-                                                                              [
-                                                                              "ename"],
-                                                                          textAlign:
-                                                                              TextAlign.left,
-                                                                          style: TextStyle(
-                                                                              color: Color.fromRGBO(151, 151, 151, 1),
-                                                                              fontFamily: 'Open Sans',
-                                                                              fontSize: MediaQuery.of(context).size.width < 600 ? 20 : 24,
-                                                                              letterSpacing: -0.38723403215408325,
-                                                                              fontWeight: FontWeight.normal,
-                                                                              height: 1),
-                                                                        )
-                                                                      ],
-                                                                    ),
-                                                                    Spacer()
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          );
-                                                        },
-                                                      )
-                                                : SkeletonLoader(
-                                                    builder: SizedBox(
-                                                      height:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .height *
-                                                              0.5,
-                                                      child: MediaQuery.of(context)
-                                                          .size
-                                                          .width >
-                                                          600 ?GridView.builder(
-                                                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                                            crossAxisCount:
-                                                                MediaQuery.of(context)
-                                                                            .size
-                                                                            .width <
-                                                                        1200
-                                                                    ? 2
-                                                                    : 3,
-                                                            crossAxisSpacing:
-                                                                5.0,
-                                                            mainAxisSpacing:
-                                                                5.0,
-                                                            childAspectRatio:
-                                                                4),
-                                                        itemCount: 114,
-                                                        itemBuilder:
-                                                            (BuildContext
-                                                                    context,
-                                                                int index) {
-                                                          return Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .symmetric(
-                                                                    horizontal:
-                                                                        32.0,
-                                                                    vertical:
-                                                                        8),
-                                                            child: Container(
-                                                              width: 400,
-                                                              height: 100,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                      borderRadius:
-                                                                          BorderRadius
-                                                                              .only(
-                                                                        topLeft:
-                                                                            Radius.circular(10),
-                                                                        topRight:
-                                                                            Radius.circular(10),
-                                                                        bottomLeft:
-                                                                            Radius.circular(10),
-                                                                        bottomRight:
-                                                                            Radius.circular(10),
-                                                                      ),
-                                                                      color: themeProvider
-                                                                              .isDarkMode
-                                                                          ? Color(
-                                                                              0xff67748E)
-                                                                          : Color.fromRGBO(
-                                                                              255,
-                                                                              255,
-                                                                              255,
-                                                                              1),
-                                                                      border:
-                                                                          Border
-                                                                              .all(
-                                                                        color: themeProvider.isDarkMode
-                                                                            ? Color(
-                                                                                0xffD2D6DA)
-                                                                            : Color.fromRGBO(
-                                                                                231,
-                                                                                111,
-                                                                                0,
-                                                                                1),
-                                                                        width:
-                                                                            1,
-                                                                      )),
-                                                              child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                children: [
-                                                                  Container(
-                                                                      width: 50,
-                                                                      height:
-                                                                          100,
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadius.only(
-                                                                          topLeft:
-                                                                              Radius.circular(10),
-                                                                          topRight:
-                                                                              Radius.circular(10),
-                                                                          bottomLeft:
-                                                                              Radius.circular(10),
-                                                                          bottomRight:
-                                                                              Radius.circular(10),
-                                                                        ),
-                                                                        color: themeProvider.isDarkMode
-                                                                            ? Color(
-                                                                                0xff808BA1)
-                                                                            : Color.fromRGBO(
-                                                                                255,
-                                                                                181,
-                                                                                94,
-                                                                                1),
-                                                                      ),
-                                                                      child:
-                                                                          Center(
-                                                                        child:
-                                                                            Text(
-                                                                          '',
-                                                                          textAlign:
-                                                                              TextAlign.left,
-                                                                          style: TextStyle(
-                                                                              fontFamily: 'Open Sans',
-                                                                              fontSize: 24,
-                                                                              letterSpacing: -0.38723403215408325,
-                                                                              fontWeight: FontWeight.normal,
-                                                                              height: 1),
-                                                                        ),
-                                                                      )),
-                                                                  Spacer(),
-                                                                  Column(
+                                                                              ? Color(
+                                                                                  0xff67748E)
+                                                                              : Color.fromRGBO(
+                                                                                  255,
+                                                                                  255,
+                                                                                  255,
+                                                                                  1),
+                                                                          border:
+                                                                              Border.all(
+                                                                            color: themeProvider.isDarkMode
+                                                                                ? Color(0xffD2D6DA)
+                                                                                : Color.fromRGBO(231, 111, 0, 1),
+                                                                            width:
+                                                                                1,
+                                                                          )),
+                                                                  child: Row(
                                                                     mainAxisAlignment:
                                                                         MainAxisAlignment
-                                                                            .center,
-                                                                    children: const [
-                                                                      Text(
-                                                                        '',
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: TextStyle(
-                                                                            fontFamily:
-                                                                                'Open Sans',
-                                                                            fontSize:
-                                                                                24,
-                                                                            letterSpacing:
-                                                                                -0.38723403215408325,
-                                                                            fontWeight:
-                                                                                FontWeight.normal,
-                                                                            height: 1),
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Container(
+                                                                          width:
+                                                                              50,
+                                                                          height:
+                                                                              100,
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            borderRadius:
+                                                                                BorderRadius.only(
+                                                                              topLeft:
+                                                                                  Radius.circular(10),
+                                                                              topRight:
+                                                                                  Radius.circular(10),
+                                                                              bottomLeft:
+                                                                                  Radius.circular(10),
+                                                                              bottomRight:
+                                                                                  Radius.circular(10),
+                                                                            ),
+                                                                            color: themeProvider.isDarkMode
+                                                                                ? Color(0xff808BA1)
+                                                                                : Color.fromRGBO(255, 181, 94, 1),
+                                                                          ),
+                                                                          child:
+                                                                              Center(
+                                                                            child:
+                                                                                Text(
+                                                                              '${index + 1}',
+                                                                              textAlign:
+                                                                                  TextAlign.left,
+                                                                              style: TextStyle(
+                                                                                  fontFamily: 'Open Sans',
+                                                                                  fontSize: 24,
+                                                                                  letterSpacing: -0.38723403215408325,
+                                                                                  fontWeight: FontWeight.normal,
+                                                                                  height: 1),
+                                                                            ),
+                                                                          )),
+                                                                      Spacer(),
+                                                                      Column(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment
+                                                                                .center,
+                                                                        children: [
+                                                                          Text(
+                                                                            _list[index]
+                                                                                [
+                                                                                "tname"],
+                                                                            textAlign:
+                                                                                TextAlign.left,
+                                                                            style: TextStyle(
+                                                                                fontFamily: 'Open Sans',
+                                                                                fontSize: 24,
+                                                                                letterSpacing: -0.38723403215408325,
+                                                                                fontWeight: FontWeight.normal,
+                                                                                height: 1),
+                                                                          ),
+                                                                          Text(
+                                                                            _list[index]
+                                                                                [
+                                                                                "ename"],
+                                                                            textAlign:
+                                                                                TextAlign.left,
+                                                                            style: TextStyle(
+                                                                                color: Color.fromRGBO(151, 151, 151, 1),
+                                                                                fontFamily: 'Open Sans',
+                                                                                fontSize: 22,
+                                                                                letterSpacing: -0.38723403215408325,
+                                                                                fontWeight: FontWeight.normal,
+                                                                                height: 1),
+                                                                          )
+                                                                        ],
                                                                       ),
-                                                                      Text(
-                                                                        '',
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: TextStyle(
-                                                                            color: Color.fromRGBO(
-                                                                                151,
-                                                                                151,
-                                                                                151,
-                                                                                1),
-                                                                            fontFamily:
-                                                                                'Open Sans',
-                                                                            fontSize:
-                                                                                24,
-                                                                            letterSpacing:
-                                                                                -0.38723403215408325,
-                                                                            fontWeight:
-                                                                                FontWeight.normal,
-                                                                            height: 1),
-                                                                      )
+                                                                      Spacer()
                                                                     ],
                                                                   ),
-                                                                  Spacer()
-                                                                ],
+                                                                ),
                                                               ),
-                                                            ),
-                                                          );
-                                                        },
-                                                      )
-                                                          : ListView.builder(
-                                                        itemCount: 114,
-                                                        itemBuilder:
-                                                            (BuildContext
-                                                        context,
-                                                            int index) {
-                                                          return Padding(
-                                                            padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                                horizontal:
-                                                                8.0,
-                                                                vertical:
-                                                                8),
-                                                            child: InkWell(
+                                                            );
+                                                          },
+                                                        )
+                                                      : ListView.builder(
+                                                          itemCount: 114,
+                                                          itemBuilder:
+                                                              (BuildContext
+                                                                      context,
+                                                                  int index) {
+                                                            return Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .symmetric(
+                                                                      horizontal:
+                                                                          8.0,
+                                                                      vertical:
+                                                                          8),
+                                                              child: InkWell(
+                                                                onTap: () async {
+                                                                  var a = await getTotalPage(
+                                                                      _list[index]
+                                                                          ["id"]);
+                                                                  Provider.of<AyaProvider>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .getPage(int
+                                                                          .parse(a
+                                                                              .first));
+                                                                  Provider.of<AyaProvider>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .setDefault();
+                                                                  Provider.of<AyaProvider>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .getStart(
+                                                                          int.parse(_list[index]
+                                                                              [
+                                                                              'id']),
+                                                                          int.parse(
+                                                                              a.first));
+
+                                                                  // Provider.of<AyaProvider>(context,
+                                                                  //     listen: false)
+                                                                  //     .getPage(439);
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) => SurahScreen(
+                                                                              a,
+                                                                              _list[index]["id"],
+                                                                              _list[index]["tname"],
+                                                                              _list[index]["ename"],
+                                                                              0)));
+                                                                },
+                                                                child: Container(
+                                                                  width: 400,
+                                                                  height: 100,
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                          borderRadius:
+                                                                              BorderRadius
+                                                                                  .only(
+                                                                            topLeft:
+                                                                                Radius.circular(10),
+                                                                            topRight:
+                                                                                Radius.circular(10),
+                                                                            bottomLeft:
+                                                                                Radius.circular(10),
+                                                                            bottomRight:
+                                                                                Radius.circular(10),
+                                                                          ),
+                                                                          color: themeProvider.isDarkMode
+                                                                              ? Color(
+                                                                                  0xff67748E)
+                                                                              : Color.fromRGBO(
+                                                                                  255,
+                                                                                  255,
+                                                                                  255,
+                                                                                  1),
+                                                                          border:
+                                                                              Border.all(
+                                                                            color: themeProvider.isDarkMode
+                                                                                ? Color(0xffD2D6DA)
+                                                                                : Color.fromRGBO(231, 111, 0, 1),
+                                                                            width:
+                                                                                1,
+                                                                          )),
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Container(
+                                                                          width:
+                                                                              50,
+                                                                          height:
+                                                                              100,
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            borderRadius:
+                                                                                BorderRadius.only(
+                                                                              topLeft:
+                                                                                  Radius.circular(10),
+                                                                              topRight:
+                                                                                  Radius.circular(10),
+                                                                              bottomLeft:
+                                                                                  Radius.circular(10),
+                                                                              bottomRight:
+                                                                                  Radius.circular(10),
+                                                                            ),
+                                                                            color: themeProvider.isDarkMode
+                                                                                ? Color(0xff808BA1)
+                                                                                : Color.fromRGBO(255, 181, 94, 1),
+                                                                          ),
+                                                                          child:
+                                                                              Center(
+                                                                            child:
+                                                                                Text(
+                                                                              '${index + 1}',
+                                                                              textAlign:
+                                                                                  TextAlign.left,
+                                                                              style: TextStyle(
+                                                                                  fontFamily: 'Open Sans',
+                                                                                  fontSize: 24,
+                                                                                  letterSpacing: -0.38723403215408325,
+                                                                                  fontWeight: FontWeight.normal,
+                                                                                  height: 1),
+                                                                            ),
+                                                                          )),
+                                                                      Spacer(),
+                                                                      Column(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment
+                                                                                .center,
+                                                                        children: [
+                                                                          Text(
+                                                                            _list[index]
+                                                                                [
+                                                                                "tname"],
+                                                                            textAlign:
+                                                                                TextAlign.left,
+                                                                            style: TextStyle(
+                                                                                fontFamily: 'Open Sans',
+                                                                                fontSize: 24,
+                                                                                letterSpacing: -0.38723403215408325,
+                                                                                fontWeight: FontWeight.normal,
+                                                                                height: 1),
+                                                                          ),
+                                                                          Text(
+                                                                            _list[index]
+                                                                                [
+                                                                                "ename"],
+                                                                            textAlign:
+                                                                                TextAlign.left,
+                                                                            style: TextStyle(
+                                                                                color: Color.fromRGBO(151, 151, 151, 1),
+                                                                                fontFamily: 'Open Sans',
+                                                                                fontSize: MediaQuery.of(context).size.width < 600 ? 20 : 24,
+                                                                                letterSpacing: -0.38723403215408325,
+                                                                                fontWeight: FontWeight.normal,
+                                                                                height: 1),
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                      Spacer()
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
+                                                        )
+                                                  : SkeletonLoader(
+                                                      builder: SizedBox(
+                                                        height:
+                                                            MediaQuery.of(context)
+                                                                    .size
+                                                                    .height *
+                                                                0.5,
+                                                        child:
+                                                            MediaQuery.of(context)
+                                                                        .size
+                                                                        .width >
+                                                                    600
+                                                                ? GridView
+                                                                    .builder(
+                                                                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                                                        crossAxisCount:
+                                                                            MediaQuery.of(context).size.width < 1200
+                                                                                ? 2
+                                                                                : 3,
+                                                                        crossAxisSpacing:
+                                                                            5.0,
+                                                                        mainAxisSpacing:
+                                                                            5.0,
+                                                                        childAspectRatio:
+                                                                            4),
+                                                                    itemCount:
+                                                                        114,
+                                                                    itemBuilder:
+                                                                        (BuildContext
+                                                                                context,
+                                                                            int index) {
+                                                                      return Padding(
+                                                                        padding: const EdgeInsets
+                                                                                .symmetric(
+                                                                            horizontal:
+                                                                                32.0,
+                                                                            vertical:
+                                                                                8),
+                                                                        child:
+                                                                            Container(
+                                                                          width:
+                                                                              400,
+                                                                          height:
+                                                                              100,
+                                                                          decoration: BoxDecoration(
+                                                                              borderRadius: BorderRadius.only(
+                                                                                topLeft: Radius.circular(10),
+                                                                                topRight: Radius.circular(10),
+                                                                                bottomLeft: Radius.circular(10),
+                                                                                bottomRight: Radius.circular(10),
+                                                                              ),
+                                                                              color: themeProvider.isDarkMode ? Color(0xff67748E) : Color.fromRGBO(255, 255, 255, 1),
+                                                                              border: Border.all(
+                                                                                color: themeProvider.isDarkMode ? Color(0xffD2D6DA) : Color.fromRGBO(231, 111, 0, 1),
+                                                                                width: 1,
+                                                                              )),
+                                                                          child:
+                                                                              Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceBetween,
+                                                                            children: [
+                                                                              Container(
+                                                                                  width: 50,
+                                                                                  height: 100,
+                                                                                  decoration: BoxDecoration(
+                                                                                    borderRadius: BorderRadius.only(
+                                                                                      topLeft: Radius.circular(10),
+                                                                                      topRight: Radius.circular(10),
+                                                                                      bottomLeft: Radius.circular(10),
+                                                                                      bottomRight: Radius.circular(10),
+                                                                                    ),
+                                                                                    color: themeProvider.isDarkMode ? Color(0xff808BA1) : Color.fromRGBO(255, 181, 94, 1),
+                                                                                  ),
+                                                                                  child: Center(
+                                                                                    child: Text(
+                                                                                      '',
+                                                                                      textAlign: TextAlign.left,
+                                                                                      style: TextStyle(fontFamily: 'Open Sans', fontSize: 24, letterSpacing: -0.38723403215408325, fontWeight: FontWeight.normal, height: 1),
+                                                                                    ),
+                                                                                  )),
+                                                                              Spacer(),
+                                                                              Column(
+                                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                                children: const [
+                                                                                  Text(
+                                                                                    '',
+                                                                                    textAlign: TextAlign.left,
+                                                                                    style: TextStyle(fontFamily: 'Open Sans', fontSize: 24, letterSpacing: -0.38723403215408325, fontWeight: FontWeight.normal, height: 1),
+                                                                                  ),
+                                                                                  Text(
+                                                                                    '',
+                                                                                    textAlign: TextAlign.left,
+                                                                                    style: TextStyle(color: Color.fromRGBO(151, 151, 151, 1), fontFamily: 'Open Sans', fontSize: 24, letterSpacing: -0.38723403215408325, fontWeight: FontWeight.normal, height: 1),
+                                                                                  )
+                                                                                ],
+                                                                              ),
+                                                                              Spacer()
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  )
+                                                                : ListView
+                                                                    .builder(
+                                                                    itemCount:
+                                                                        114,
+                                                                    itemBuilder:
+                                                                        (BuildContext
+                                                                                context,
+                                                                            int index) {
+                                                                      return Padding(
+                                                                        padding: const EdgeInsets
+                                                                                .symmetric(
+                                                                            horizontal:
+                                                                                8.0,
+                                                                            vertical:
+                                                                                8),
+                                                                        child:
+                                                                            InkWell(
+                                                                          child:
+                                                                              Container(
+                                                                            width:
+                                                                                400,
+                                                                            height:
+                                                                                100,
+                                                                            decoration: BoxDecoration(
+                                                                                borderRadius: BorderRadius.only(
+                                                                                  topLeft: Radius.circular(10),
+                                                                                  topRight: Radius.circular(10),
+                                                                                  bottomLeft: Radius.circular(10),
+                                                                                  bottomRight: Radius.circular(10),
+                                                                                ),
+                                                                                color: themeProvider.isDarkMode ? Color(0xff67748E) : Color.fromRGBO(255, 255, 255, 1),
+                                                                                border: Border.all(
+                                                                                  color: themeProvider.isDarkMode ? Color(0xffD2D6DA) : Color.fromRGBO(231, 111, 0, 1),
+                                                                                  width: 1,
+                                                                                )),
+                                                                            child:
+                                                                                Row(
+                                                                              mainAxisAlignment:
+                                                                                  MainAxisAlignment.spaceBetween,
+                                                                              children: [
+                                                                                Container(
+                                                                                    width: 50,
+                                                                                    height: 100,
+                                                                                    decoration: BoxDecoration(
+                                                                                      borderRadius: BorderRadius.only(
+                                                                                        topLeft: Radius.circular(10),
+                                                                                        topRight: Radius.circular(10),
+                                                                                        bottomLeft: Radius.circular(10),
+                                                                                        bottomRight: Radius.circular(10),
+                                                                                      ),
+                                                                                      color: themeProvider.isDarkMode ? Color(0xff808BA1) : Color.fromRGBO(255, 181, 94, 1),
+                                                                                    ),
+                                                                                    child: Center(
+                                                                                      child: Text(
+                                                                                        '',
+                                                                                        textAlign: TextAlign.left,
+                                                                                        style: TextStyle(fontFamily: 'Open Sans', fontSize: 24, letterSpacing: -0.38723403215408325, fontWeight: FontWeight.normal, height: 1),
+                                                                                      ),
+                                                                                    )),
+                                                                                Spacer(),
+                                                                                Column(
+                                                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                                                  children: [
+                                                                                    Text(
+                                                                                      '',
+                                                                                      textAlign: TextAlign.left,
+                                                                                      style: TextStyle(fontFamily: 'Open Sans', fontSize: 24, letterSpacing: -0.38723403215408325, fontWeight: FontWeight.normal, height: 1),
+                                                                                    ),
+                                                                                    Text(
+                                                                                      '',
+                                                                                      textAlign: TextAlign.left,
+                                                                                      style: TextStyle(color: Color.fromRGBO(151, 151, 151, 1), fontFamily: 'Open Sans', fontSize: MediaQuery.of(context).size.width < 600 ? 20 : 24, letterSpacing: -0.38723403215408325, fontWeight: FontWeight.normal, height: 1),
+                                                                                    )
+                                                                                  ],
+                                                                                ),
+                                                                                Spacer()
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  ),
+                                                      ),
+                                                      items: 1,
+                                                      period:
+                                                          Duration(seconds: 2),
+                                                      highlightColor:
+                                                          themeProvider.isDarkMode
+                                                              ? Colors.grey
+                                                              : Color(0xffaa9f9f),
+                                                      direction:
+                                                          SkeletonDirection.rtl,
+                                                    ),
+                                            ),
+                                          ],
+                                        ),
+                                        Column(
+                                          children: [
+                                            Expanded(
+                                              child: _list.isNotEmpty
+                                                  ? MediaQuery.of(context)
+                                                              .size
+                                                              .width >
+                                                          600
+                                                      ? GridView.builder(
+                                                          controller:
+                                                              ScrollController(),
+                                                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                                              crossAxisCount:
+                                                                  MediaQuery.of(context)
+                                                                              .size
+                                                                              .width <
+                                                                          1200
+                                                                      ? 2
+                                                                      : 3,
+                                                              crossAxisSpacing:
+                                                                  5.0,
+                                                              mainAxisSpacing:
+                                                                  5.0,
+                                                              childAspectRatio:
+                                                                  4.5),
+                                                          itemCount: 30,
+                                                          itemBuilder:
+                                                              (BuildContext
+                                                                      context,
+                                                                  int index) {
+                                                            return Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .symmetric(
+                                                                      horizontal:
+                                                                          16.0,
+                                                                      vertical:
+                                                                          8),
+                                                              child: InkWell(
+                                                                onTap: () async {
+                                                                  var a = await getTotalPage(
+                                                                      _list[index]
+                                                                          ["id"]);
+                                                                  Provider.of<AyaProvider>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .getPage(int
+                                                                          .parse(a
+                                                                              .first));
+                                                                  Provider.of<AyaProvider>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .setDefault();
+                                                                  Provider.of<AyaProvider>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .getStart(
+                                                                          int.parse(_list[index]
+                                                                              [
+                                                                              'id']),
+                                                                          int.parse(
+                                                                              a.first));
+
+                                                                  // Provider.of<AyaProvider>(context,
+                                                                  //     listen: false)
+                                                                  //     .getPage(439);
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) => SurahScreen(
+                                                                              a,
+                                                                              _list[index]["id"],
+                                                                              _list[index]["tname"],
+                                                                              _list[index]["ename"],
+                                                                              0)));
+                                                                },
+                                                                child: Container(
+                                                                  width: 400,
+                                                                  height: 100,
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                          borderRadius:
+                                                                              BorderRadius
+                                                                                  .only(
+                                                                            topLeft:
+                                                                                Radius.circular(10),
+                                                                            topRight:
+                                                                                Radius.circular(10),
+                                                                            bottomLeft:
+                                                                                Radius.circular(10),
+                                                                            bottomRight:
+                                                                                Radius.circular(10),
+                                                                          ),
+                                                                          color: themeProvider.isDarkMode
+                                                                              ? Color(
+                                                                                  0xff67748E)
+                                                                              : Color.fromRGBO(
+                                                                                  255,
+                                                                                  255,
+                                                                                  255,
+                                                                                  1),
+                                                                          border:
+                                                                              Border.all(
+                                                                            color: themeProvider.isDarkMode
+                                                                                ? Color(0xffD2D6DA)
+                                                                                : Color.fromRGBO(231, 111, 0, 1),
+                                                                            width:
+                                                                                1,
+                                                                          )),
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Container(
+                                                                          width:
+                                                                              50,
+                                                                          height:
+                                                                              100,
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            borderRadius:
+                                                                                BorderRadius.only(
+                                                                              topLeft:
+                                                                                  Radius.circular(10),
+                                                                              topRight:
+                                                                                  Radius.circular(10),
+                                                                              bottomLeft:
+                                                                                  Radius.circular(10),
+                                                                              bottomRight:
+                                                                                  Radius.circular(10),
+                                                                            ),
+                                                                            color: themeProvider.isDarkMode
+                                                                                ? Color(0xff808BA1)
+                                                                                : Color.fromRGBO(255, 181, 94, 1),
+                                                                          ),
+                                                                          child:
+                                                                              Center(
+                                                                            child:
+                                                                                Text(
+                                                                              '${index + 1}',
+                                                                              textAlign:
+                                                                                  TextAlign.left,
+                                                                              style: TextStyle(
+                                                                                  fontFamily: 'Open Sans',
+                                                                                  fontSize: 24,
+                                                                                  letterSpacing: -0.38723403215408325,
+                                                                                  fontWeight: FontWeight.normal,
+                                                                                  height: 1),
+                                                                            ),
+                                                                          )),
+                                                                      Spacer(),
+                                                                      Column(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment
+                                                                                .center,
+                                                                        children: [
+                                                                          Text(
+                                                                            _list[index]
+                                                                                [
+                                                                                "tname"],
+                                                                            textAlign:
+                                                                                TextAlign.left,
+                                                                            style: TextStyle(
+                                                                                fontFamily: 'Open Sans',
+                                                                                fontSize: 24,
+                                                                                letterSpacing: -0.38723403215408325,
+                                                                                fontWeight: FontWeight.normal,
+                                                                                height: 1),
+                                                                          ),
+                                                                          Text(
+                                                                            _list[index]
+                                                                                [
+                                                                                "ename"],
+                                                                            textAlign:
+                                                                                TextAlign.left,
+                                                                            style: TextStyle(
+                                                                                color: Color.fromRGBO(151, 151, 151, 1),
+                                                                                fontFamily: 'Open Sans',
+                                                                                fontSize: 22,
+                                                                                letterSpacing: -0.38723403215408325,
+                                                                                fontWeight: FontWeight.normal,
+                                                                                height: 1),
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                      Spacer()
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
+                                                        )
+                                                      : ListView.builder(
+                                                          itemCount: 114,
+                                                          itemBuilder:
+                                                              (BuildContext
+                                                                      context,
+                                                                  int index) {
+                                                            return Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .symmetric(
+                                                                      horizontal:
+                                                                          8.0,
+                                                                      vertical:
+                                                                          8),
+                                                              child: InkWell(
+                                                                onTap: () async {
+                                                                  var a = await getTotalPage(
+                                                                      _list[index]
+                                                                          ["id"]);
+                                                                  Provider.of<AyaProvider>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .getPage(int
+                                                                          .parse(a
+                                                                              .first));
+                                                                  Provider.of<AyaProvider>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .setDefault();
+                                                                  Provider.of<AyaProvider>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .getStart(
+                                                                          int.parse(_list[index]
+                                                                              [
+                                                                              'id']),
+                                                                          int.parse(
+                                                                              a.first));
+
+                                                                  // Provider.of<AyaProvider>(context,
+                                                                  //     listen: false)
+                                                                  //     .getPage(439);
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) => SurahScreen(
+                                                                              a,
+                                                                              _list[index]["id"],
+                                                                              _list[index]["tname"],
+                                                                              _list[index]["ename"],
+                                                                              0)));
+                                                                },
+                                                                child: Container(
+                                                                  width: 400,
+                                                                  height: 100,
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                          borderRadius:
+                                                                              BorderRadius
+                                                                                  .only(
+                                                                            topLeft:
+                                                                                Radius.circular(10),
+                                                                            topRight:
+                                                                                Radius.circular(10),
+                                                                            bottomLeft:
+                                                                                Radius.circular(10),
+                                                                            bottomRight:
+                                                                                Radius.circular(10),
+                                                                          ),
+                                                                          color: themeProvider.isDarkMode
+                                                                              ? Color(
+                                                                                  0xff67748E)
+                                                                              : Color.fromRGBO(
+                                                                                  255,
+                                                                                  255,
+                                                                                  255,
+                                                                                  1),
+                                                                          border:
+                                                                              Border.all(
+                                                                            color: themeProvider.isDarkMode
+                                                                                ? Color(0xffD2D6DA)
+                                                                                : Color.fromRGBO(231, 111, 0, 1),
+                                                                            width:
+                                                                                1,
+                                                                          )),
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Container(
+                                                                          width:
+                                                                              50,
+                                                                          height:
+                                                                              100,
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            borderRadius:
+                                                                                BorderRadius.only(
+                                                                              topLeft:
+                                                                                  Radius.circular(10),
+                                                                              topRight:
+                                                                                  Radius.circular(10),
+                                                                              bottomLeft:
+                                                                                  Radius.circular(10),
+                                                                              bottomRight:
+                                                                                  Radius.circular(10),
+                                                                            ),
+                                                                            color: themeProvider.isDarkMode
+                                                                                ? Color(0xff808BA1)
+                                                                                : Color.fromRGBO(255, 181, 94, 1),
+                                                                          ),
+                                                                          child:
+                                                                              Center(
+                                                                            child:
+                                                                                Text(
+                                                                              '${index + 1}',
+                                                                              textAlign:
+                                                                                  TextAlign.left,
+                                                                              style: TextStyle(
+                                                                                  fontFamily: 'Open Sans',
+                                                                                  fontSize: 24,
+                                                                                  letterSpacing: -0.38723403215408325,
+                                                                                  fontWeight: FontWeight.normal,
+                                                                                  height: 1),
+                                                                            ),
+                                                                          )),
+                                                                      Spacer(),
+                                                                      Column(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment
+                                                                                .center,
+                                                                        children: [
+                                                                          Text(
+                                                                            _list[index]
+                                                                                [
+                                                                                "tname"],
+                                                                            textAlign:
+                                                                                TextAlign.left,
+                                                                            style: TextStyle(
+                                                                                fontFamily: 'Open Sans',
+                                                                                fontSize: 24,
+                                                                                letterSpacing: -0.38723403215408325,
+                                                                                fontWeight: FontWeight.normal,
+                                                                                height: 1),
+                                                                          ),
+                                                                          Text(
+                                                                            _list[index]
+                                                                                [
+                                                                                "ename"],
+                                                                            textAlign:
+                                                                                TextAlign.left,
+                                                                            style: TextStyle(
+                                                                                color: Color.fromRGBO(151, 151, 151, 1),
+                                                                                fontFamily: 'Open Sans',
+                                                                                fontSize: MediaQuery.of(context).size.width < 600 ? 20 : 24,
+                                                                                letterSpacing: -0.38723403215408325,
+                                                                                fontWeight: FontWeight.normal,
+                                                                                height: 1),
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                      Spacer()
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
+                                                        )
+                                                  : SkeletonLoader(
+                                                      builder: SizedBox(
+                                                        height:
+                                                            MediaQuery.of(context)
+                                                                    .size
+                                                                    .height *
+                                                                0.5,
+                                                        child: GridView.builder(
+                                                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                                              crossAxisCount:
+                                                                  MediaQuery.of(context)
+                                                                              .size
+                                                                              .width <
+                                                                          1200
+                                                                      ? 2
+                                                                      : 3,
+                                                              crossAxisSpacing:
+                                                                  5.0,
+                                                              mainAxisSpacing:
+                                                                  5.0,
+                                                              childAspectRatio:
+                                                                  4),
+                                                          itemCount: 114,
+                                                          itemBuilder:
+                                                              (BuildContext
+                                                                      context,
+                                                                  int index) {
+                                                            return Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .symmetric(
+                                                                      horizontal:
+                                                                          32.0,
+                                                                      vertical:
+                                                                          8),
                                                               child: Container(
                                                                 width: 400,
                                                                 height: 100,
                                                                 decoration:
-                                                                BoxDecoration(
-                                                                    borderRadius:
-                                                                    BorderRadius
-                                                                        .only(
-                                                                      topLeft:
-                                                                      Radius.circular(10),
-                                                                      topRight:
-                                                                      Radius.circular(10),
-                                                                      bottomLeft:
-                                                                      Radius.circular(10),
-                                                                      bottomRight:
-                                                                      Radius.circular(10),
-                                                                    ),
-                                                                    color: themeProvider.isDarkMode
-                                                                        ? Color(
-                                                                        0xff67748E)
-                                                                        : Color.fromRGBO(
-                                                                        255,
-                                                                        255,
-                                                                        255,
-                                                                        1),
-                                                                    border:
-                                                                    Border.all(
-                                                                      color: themeProvider.isDarkMode
-                                                                          ? Color(0xffD2D6DA)
-                                                                          : Color.fromRGBO(231, 111, 0, 1),
-                                                                      width:
-                                                                      1,
-                                                                    )),
+                                                                    BoxDecoration(
+                                                                        borderRadius:
+                                                                            BorderRadius
+                                                                                .only(
+                                                                          topLeft:
+                                                                              Radius.circular(10),
+                                                                          topRight:
+                                                                              Radius.circular(10),
+                                                                          bottomLeft:
+                                                                              Radius.circular(10),
+                                                                          bottomRight:
+                                                                              Radius.circular(10),
+                                                                        ),
+                                                                        color: themeProvider
+                                                                                .isDarkMode
+                                                                            ? Color(
+                                                                                0xff67748E)
+                                                                            : Color.fromRGBO(
+                                                                                255,
+                                                                                255,
+                                                                                255,
+                                                                                1),
+                                                                        border:
+                                                                            Border
+                                                                                .all(
+                                                                          color: themeProvider.isDarkMode
+                                                                              ? Color(
+                                                                                  0xffD2D6DA)
+                                                                              : Color.fromRGBO(
+                                                                                  231,
+                                                                                  111,
+                                                                                  0,
+                                                                                  1),
+                                                                          width:
+                                                                              1,
+                                                                        )),
                                                                 child: Row(
                                                                   mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
                                                                   children: [
                                                                     Container(
-                                                                        width:
-                                                                        50,
+                                                                        width: 50,
                                                                         height:
-                                                                        100,
+                                                                            100,
                                                                         decoration:
-                                                                        BoxDecoration(
+                                                                            BoxDecoration(
                                                                           borderRadius:
-                                                                          BorderRadius.only(
+                                                                              BorderRadius.only(
                                                                             topLeft:
-                                                                            Radius.circular(10),
+                                                                                Radius.circular(10),
                                                                             topRight:
-                                                                            Radius.circular(10),
+                                                                                Radius.circular(10),
                                                                             bottomLeft:
-                                                                            Radius.circular(10),
+                                                                                Radius.circular(10),
                                                                             bottomRight:
-                                                                            Radius.circular(10),
+                                                                                Radius.circular(10),
                                                                           ),
                                                                           color: themeProvider.isDarkMode
-                                                                              ? Color(0xff808BA1)
-                                                                              : Color.fromRGBO(255, 181, 94, 1),
+                                                                              ? Color(
+                                                                                  0xff808BA1)
+                                                                              : Color.fromRGBO(
+                                                                                  255,
+                                                                                  181,
+                                                                                  94,
+                                                                                  1),
                                                                         ),
                                                                         child:
-                                                                        Center(
+                                                                            Center(
                                                                           child:
-                                                                          Text(
+                                                                              Text(
                                                                             '',
                                                                             textAlign:
-                                                                            TextAlign.left,
-                                                                            style: TextStyle(
-                                                                                fontFamily: 'Open Sans',
-                                                                                fontSize: 24,
-                                                                                letterSpacing: -0.38723403215408325,
-                                                                                fontWeight: FontWeight.normal,
-                                                                                height: 1),
-                                                                          ),
-                                                                        )),
-                                                                    Spacer(),
-                                                                    Column(
-                                                                      mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
-                                                                      children: [
-                                                                        Text('',
-                                                                          textAlign:
-                                                                          TextAlign.left,
-                                                                          style: TextStyle(
-                                                                              fontFamily: 'Open Sans',
-                                                                              fontSize: 24,
-                                                                              letterSpacing: -0.38723403215408325,
-                                                                              fontWeight: FontWeight.normal,
-                                                                              height: 1),
-                                                                        ),
-                                                                        Text(
-                                                                          '',
-                                                                          textAlign:
-                                                                          TextAlign.left,
-                                                                          style: TextStyle(
-                                                                              color: Color.fromRGBO(151, 151, 151, 1),
-                                                                              fontFamily: 'Open Sans',
-                                                                              fontSize: MediaQuery.of(context).size.width < 600 ? 20 : 24,
-                                                                              letterSpacing: -0.38723403215408325,
-                                                                              fontWeight: FontWeight.normal,
-                                                                              height: 1),
-                                                                        )
-                                                                      ],
-                                                                    ),
-                                                                    Spacer()
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          );
-                                                        },
-                                                      ),
-                                                    ),
-                                                    items: 1,
-                                                    period:
-                                                        Duration(seconds: 2),
-                                                    highlightColor:
-                                                        themeProvider.isDarkMode
-                                                            ? Colors.grey
-                                                            : Color(0xffaa9f9f),
-                                                    direction:
-                                                        SkeletonDirection.rtl,
-                                                  )),
-                                        SizedBox(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.63,
-                                            child: _list.isNotEmpty
-                                                ? MediaQuery.of(context)
-                                                            .size
-                                                            .width >
-                                                        600
-                                                    ? GridView.builder(
-                                                        controller:
-                                                            ScrollController(),
-                                                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                                            crossAxisCount:
-                                                                MediaQuery.of(context)
-                                                                            .size
-                                                                            .width <
-                                                                        1200
-                                                                    ? 2
-                                                                    : 3,
-                                                            crossAxisSpacing:
-                                                                5.0,
-                                                            mainAxisSpacing:
-                                                                5.0,
-                                                            childAspectRatio:
-                                                                4.5),
-                                                        itemCount: 30,
-                                                        itemBuilder:
-                                                            (BuildContext
-                                                                    context,
-                                                                int index) {
-                                                          return Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .symmetric(
-                                                                    horizontal:
-                                                                        16.0,
-                                                                    vertical:
-                                                                        8),
-                                                            child: InkWell(
-                                                              onTap: () async {
-                                                                var a = await getTotalPage(
-                                                                    _list[index]
-                                                                        ["id"]);
-                                                                Provider.of<AyaProvider>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .getPage(int
-                                                                        .parse(a
-                                                                            .first));
-                                                                Provider.of<AyaProvider>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .setDefault();
-                                                                Provider.of<AyaProvider>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .getStart(
-                                                                        int.parse(_list[index]
-                                                                            [
-                                                                            'id']),
-                                                                        int.parse(
-                                                                            a.first));
-
-                                                                // Provider.of<AyaProvider>(context,
-                                                                //     listen: false)
-                                                                //     .getPage(439);
-                                                                Navigator.push(
-                                                                    context,
-                                                                    MaterialPageRoute(
-                                                                        builder: (context) => SurahScreen(
-                                                                            a,
-                                                                            _list[index]["id"],
-                                                                            _list[index]["tname"],
-                                                                            _list[index]["ename"],
-                                                                            0)));
-                                                              },
-                                                              child: Container(
-                                                                width: 400,
-                                                                height: 100,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadius
-                                                                                .only(
-                                                                          topLeft:
-                                                                              Radius.circular(10),
-                                                                          topRight:
-                                                                              Radius.circular(10),
-                                                                          bottomLeft:
-                                                                              Radius.circular(10),
-                                                                          bottomRight:
-                                                                              Radius.circular(10),
-                                                                        ),
-                                                                        color: themeProvider.isDarkMode
-                                                                            ? Color(
-                                                                                0xff67748E)
-                                                                            : Color.fromRGBO(
-                                                                                255,
-                                                                                255,
-                                                                                255,
-                                                                                1),
-                                                                        border:
-                                                                            Border.all(
-                                                                          color: themeProvider.isDarkMode
-                                                                              ? Color(0xffD2D6DA)
-                                                                              : Color.fromRGBO(231, 111, 0, 1),
-                                                                          width:
-                                                                              1,
-                                                                        )),
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: [
-                                                                    Container(
-                                                                        width:
-                                                                            50,
-                                                                        height:
-                                                                            100,
-                                                                        decoration:
-                                                                            BoxDecoration(
-                                                                          borderRadius:
-                                                                              BorderRadius.only(
-                                                                            topLeft:
-                                                                                Radius.circular(10),
-                                                                            topRight:
-                                                                                Radius.circular(10),
-                                                                            bottomLeft:
-                                                                                Radius.circular(10),
-                                                                            bottomRight:
-                                                                                Radius.circular(10),
-                                                                          ),
-                                                                          color: themeProvider.isDarkMode
-                                                                              ? Color(0xff808BA1)
-                                                                              : Color.fromRGBO(255, 181, 94, 1),
-                                                                        ),
-                                                                        child:
-                                                                            Center(
-                                                                          child:
-                                                                              Text(
-                                                                            '${index + 1}',
-                                                                            textAlign:
                                                                                 TextAlign.left,
                                                                             style: TextStyle(
                                                                                 fontFamily: 'Open Sans',
@@ -1301,399 +1521,65 @@ class _HomePageState extends State<HomePage>
                                                                       mainAxisAlignment:
                                                                           MainAxisAlignment
                                                                               .center,
-                                                                      children: [
+                                                                      children: const [
                                                                         Text(
-                                                                          _list[index]
-                                                                              [
-                                                                              "tname"],
-                                                                          textAlign:
-                                                                              TextAlign.left,
-                                                                          style: TextStyle(
-                                                                              fontFamily: 'Open Sans',
-                                                                              fontSize: 24,
-                                                                              letterSpacing: -0.38723403215408325,
-                                                                              fontWeight: FontWeight.normal,
-                                                                              height: 1),
-                                                                        ),
-                                                                        Text(
-                                                                          _list[index]
-                                                                              [
-                                                                              "ename"],
-                                                                          textAlign:
-                                                                              TextAlign.left,
-                                                                          style: TextStyle(
-                                                                              color: Color.fromRGBO(151, 151, 151, 1),
-                                                                              fontFamily: 'Open Sans',
-                                                                              fontSize: 22,
-                                                                              letterSpacing: -0.38723403215408325,
-                                                                              fontWeight: FontWeight.normal,
-                                                                              height: 1),
-                                                                        )
-                                                                      ],
-                                                                    ),
-                                                                    Spacer()
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          );
-                                                        },
-                                                      )
-                                                    : ListView.builder(
-                                                        itemCount: 114,
-                                                        itemBuilder:
-                                                            (BuildContext
-                                                                    context,
-                                                                int index) {
-                                                          return Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .symmetric(
-                                                                    horizontal:
-                                                                        8.0,
-                                                                    vertical:
-                                                                        8),
-                                                            child: InkWell(
-                                                              onTap: () async {
-                                                                var a = await getTotalPage(
-                                                                    _list[index]
-                                                                        ["id"]);
-                                                                Provider.of<AyaProvider>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .getPage(int
-                                                                        .parse(a
-                                                                            .first));
-                                                                Provider.of<AyaProvider>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .setDefault();
-                                                                Provider.of<AyaProvider>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .getStart(
-                                                                        int.parse(_list[index]
-                                                                            [
-                                                                            'id']),
-                                                                        int.parse(
-                                                                            a.first));
-
-                                                                // Provider.of<AyaProvider>(context,
-                                                                //     listen: false)
-                                                                //     .getPage(439);
-                                                                Navigator.push(
-                                                                    context,
-                                                                    MaterialPageRoute(
-                                                                        builder: (context) => SurahScreen(
-                                                                            a,
-                                                                            _list[index]["id"],
-                                                                            _list[index]["tname"],
-                                                                            _list[index]["ename"],
-                                                                            0)));
-                                                              },
-                                                              child: Container(
-                                                                width: 400,
-                                                                height: 100,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadius
-                                                                                .only(
-                                                                          topLeft:
-                                                                              Radius.circular(10),
-                                                                          topRight:
-                                                                              Radius.circular(10),
-                                                                          bottomLeft:
-                                                                              Radius.circular(10),
-                                                                          bottomRight:
-                                                                              Radius.circular(10),
-                                                                        ),
-                                                                        color: themeProvider.isDarkMode
-                                                                            ? Color(
-                                                                                0xff67748E)
-                                                                            : Color.fromRGBO(
-                                                                                255,
-                                                                                255,
-                                                                                255,
-                                                                                1),
-                                                                        border:
-                                                                            Border.all(
-                                                                          color: themeProvider.isDarkMode
-                                                                              ? Color(0xffD2D6DA)
-                                                                              : Color.fromRGBO(231, 111, 0, 1),
-                                                                          width:
-                                                                              1,
-                                                                        )),
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: [
-                                                                    Container(
-                                                                        width:
-                                                                            50,
-                                                                        height:
-                                                                            100,
-                                                                        decoration:
-                                                                            BoxDecoration(
-                                                                          borderRadius:
-                                                                              BorderRadius.only(
-                                                                            topLeft:
-                                                                                Radius.circular(10),
-                                                                            topRight:
-                                                                                Radius.circular(10),
-                                                                            bottomLeft:
-                                                                                Radius.circular(10),
-                                                                            bottomRight:
-                                                                                Radius.circular(10),
-                                                                          ),
-                                                                          color: themeProvider.isDarkMode
-                                                                              ? Color(0xff808BA1)
-                                                                              : Color.fromRGBO(255, 181, 94, 1),
-                                                                        ),
-                                                                        child:
-                                                                            Center(
-                                                                          child:
-                                                                              Text(
-                                                                            '${index + 1}',
-                                                                            textAlign:
-                                                                                TextAlign.left,
-                                                                            style: TextStyle(
-                                                                                fontFamily: 'Open Sans',
-                                                                                fontSize: 24,
-                                                                                letterSpacing: -0.38723403215408325,
-                                                                                fontWeight: FontWeight.normal,
-                                                                                height: 1),
-                                                                          ),
-                                                                        )),
-                                                                    Spacer(),
-                                                                    Column(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
-                                                                      children: [
-                                                                        Text(
-                                                                          _list[index]
-                                                                              [
-                                                                              "tname"],
-                                                                          textAlign:
-                                                                              TextAlign.left,
-                                                                          style: TextStyle(
-                                                                              fontFamily: 'Open Sans',
-                                                                              fontSize: 24,
-                                                                              letterSpacing: -0.38723403215408325,
-                                                                              fontWeight: FontWeight.normal,
-                                                                              height: 1),
-                                                                        ),
-                                                                        Text(
-                                                                          _list[index]
-                                                                              [
-                                                                              "ename"],
-                                                                          textAlign:
-                                                                              TextAlign.left,
-                                                                          style: TextStyle(
-                                                                              color: Color.fromRGBO(151, 151, 151, 1),
-                                                                              fontFamily: 'Open Sans',
-                                                                              fontSize: MediaQuery.of(context).size.width < 600 ? 20 : 24,
-                                                                              letterSpacing: -0.38723403215408325,
-                                                                              fontWeight: FontWeight.normal,
-                                                                              height: 1),
-                                                                        )
-                                                                      ],
-                                                                    ),
-                                                                    Spacer()
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          );
-                                                        },
-                                                      )
-                                                : SkeletonLoader(
-                                                    builder: SizedBox(
-                                                      height:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .height *
-                                                              0.5,
-                                                      child: GridView.builder(
-                                                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                                            crossAxisCount:
-                                                                MediaQuery.of(context)
-                                                                            .size
-                                                                            .width <
-                                                                        1200
-                                                                    ? 2
-                                                                    : 3,
-                                                            crossAxisSpacing:
-                                                                5.0,
-                                                            mainAxisSpacing:
-                                                                5.0,
-                                                            childAspectRatio:
-                                                                4),
-                                                        itemCount: 114,
-                                                        itemBuilder:
-                                                            (BuildContext
-                                                                    context,
-                                                                int index) {
-                                                          return Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .symmetric(
-                                                                    horizontal:
-                                                                        32.0,
-                                                                    vertical:
-                                                                        8),
-                                                            child: Container(
-                                                              width: 400,
-                                                              height: 100,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                      borderRadius:
-                                                                          BorderRadius
-                                                                              .only(
-                                                                        topLeft:
-                                                                            Radius.circular(10),
-                                                                        topRight:
-                                                                            Radius.circular(10),
-                                                                        bottomLeft:
-                                                                            Radius.circular(10),
-                                                                        bottomRight:
-                                                                            Radius.circular(10),
-                                                                      ),
-                                                                      color: themeProvider
-                                                                              .isDarkMode
-                                                                          ? Color(
-                                                                              0xff67748E)
-                                                                          : Color.fromRGBO(
-                                                                              255,
-                                                                              255,
-                                                                              255,
-                                                                              1),
-                                                                      border:
-                                                                          Border
-                                                                              .all(
-                                                                        color: themeProvider.isDarkMode
-                                                                            ? Color(
-                                                                                0xffD2D6DA)
-                                                                            : Color.fromRGBO(
-                                                                                231,
-                                                                                111,
-                                                                                0,
-                                                                                1),
-                                                                        width:
-                                                                            1,
-                                                                      )),
-                                                              child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                children: [
-                                                                  Container(
-                                                                      width: 50,
-                                                                      height:
-                                                                          100,
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadius.only(
-                                                                          topLeft:
-                                                                              Radius.circular(10),
-                                                                          topRight:
-                                                                              Radius.circular(10),
-                                                                          bottomLeft:
-                                                                              Radius.circular(10),
-                                                                          bottomRight:
-                                                                              Radius.circular(10),
-                                                                        ),
-                                                                        color: themeProvider.isDarkMode
-                                                                            ? Color(
-                                                                                0xff808BA1)
-                                                                            : Color.fromRGBO(
-                                                                                255,
-                                                                                181,
-                                                                                94,
-                                                                                1),
-                                                                      ),
-                                                                      child:
-                                                                          Center(
-                                                                        child:
-                                                                            Text(
                                                                           '',
                                                                           textAlign:
                                                                               TextAlign.left,
                                                                           style: TextStyle(
-                                                                              fontFamily: 'Open Sans',
-                                                                              fontSize: 24,
-                                                                              letterSpacing: -0.38723403215408325,
-                                                                              fontWeight: FontWeight.normal,
+                                                                              fontFamily:
+                                                                                  'Open Sans',
+                                                                              fontSize:
+                                                                                  24,
+                                                                              letterSpacing:
+                                                                                  -0.38723403215408325,
+                                                                              fontWeight:
+                                                                                  FontWeight.normal,
                                                                               height: 1),
                                                                         ),
-                                                                      )),
-                                                                  Spacer(),
-                                                                  Column(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .center,
-                                                                    children: const [
-                                                                      Text(
-                                                                        '',
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: TextStyle(
-                                                                            fontFamily:
-                                                                                'Open Sans',
-                                                                            fontSize:
-                                                                                24,
-                                                                            letterSpacing:
-                                                                                -0.38723403215408325,
-                                                                            fontWeight:
-                                                                                FontWeight.normal,
-                                                                            height: 1),
-                                                                      ),
-                                                                      Text(
-                                                                        '',
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: TextStyle(
-                                                                            color: Color.fromRGBO(
-                                                                                151,
-                                                                                151,
-                                                                                151,
-                                                                                1),
-                                                                            fontFamily:
-                                                                                'Open Sans',
-                                                                            fontSize:
-                                                                                24,
-                                                                            letterSpacing:
-                                                                                -0.38723403215408325,
-                                                                            fontWeight:
-                                                                                FontWeight.normal,
-                                                                            height: 1),
-                                                                      )
-                                                                    ],
-                                                                  ),
-                                                                  Spacer()
-                                                                ],
+                                                                        Text(
+                                                                          '',
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: TextStyle(
+                                                                              color: Color.fromRGBO(
+                                                                                  151,
+                                                                                  151,
+                                                                                  151,
+                                                                                  1),
+                                                                              fontFamily:
+                                                                                  'Open Sans',
+                                                                              fontSize:
+                                                                                  24,
+                                                                              letterSpacing:
+                                                                                  -0.38723403215408325,
+                                                                              fontWeight:
+                                                                                  FontWeight.normal,
+                                                                              height: 1),
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                    Spacer()
+                                                                  ],
+                                                                ),
                                                               ),
-                                                            ),
-                                                          );
-                                                        },
+                                                            );
+                                                          },
+                                                        ),
                                                       ),
+                                                      items: 1,
+                                                      period:
+                                                          Duration(seconds: 2),
+                                                      highlightColor:
+                                                          themeProvider.isDarkMode
+                                                              ? Colors.grey
+                                                              : Color(0xffaa9f9f),
+                                                      direction:
+                                                          SkeletonDirection.rtl,
                                                     ),
-                                                    items: 1,
-                                                    period:
-                                                        Duration(seconds: 2),
-                                                    highlightColor:
-                                                        themeProvider.isDarkMode
-                                                            ? Colors.grey
-                                                            : Color(0xffaa9f9f),
-                                                    direction:
-                                                        SkeletonDirection.rtl,
-                                                  )),
+                                            ),
+                                          ],
+                                        ),
                                       ]),
                                 )
                               ],
