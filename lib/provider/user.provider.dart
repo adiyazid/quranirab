@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -15,8 +16,10 @@ class AppUser extends ChangeNotifier {
   User? get user => FirebaseAuth.instance.currentUser;
 
   factory AppUser() => AppUser._();
+  String role = 'None';
 
   static AppUser get instance => AppUser();
+  FirebaseFirestore db = FirebaseFirestore.instance;
 
   signOut() async {
     await FirebaseAuth.instance.signOut();
@@ -36,6 +39,18 @@ class AppUser extends ChangeNotifier {
         throw (e.toString());
       }
     }
+  }
+
+  Future<void> getRole() async {
+    final docRef =
+        db.collection("quranIrabUsers").doc(AppUser.instance.user!.uid);
+    role = await docRef.get().then(
+      (value) {
+        return value['role'] ?? 'None';
+      },
+      onError: (e) => print("Error completing: $e"),
+    );
+    notifyListeners();
   }
 
   Future<void> updateName(String name) async {

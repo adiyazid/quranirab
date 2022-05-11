@@ -5,7 +5,9 @@ import 'package:quranirab/models/word.detail.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
 
 class EditData extends StatefulWidget {
-  const EditData({Key? key}) : super(key: key);
+  final int wordId;
+
+  const EditData(this.wordId, {Key? key}) : super(key: key);
 
   @override
   State<EditData> createState() => _EditDataState();
@@ -22,7 +24,8 @@ class _EditDataState extends State<EditData> {
         appBar: AppBar(
           backgroundColor: Colors.orangeAccent,
           title: Consumer<AyaProvider>(builder: (context, no, child) {
-            return Text('No of word detail ${no.wordName.length}');
+            return Text(
+                'Total word detail ${no.wordName.length} | WORD ID = ${aya.wordID}');
           }),
           centerTitle: true,
         ),
@@ -47,6 +50,9 @@ class _EditDataState extends State<EditData> {
                           style:
                               TextStyle(fontFamily: 'MeQuran2', fontSize: 24),
                         ),
+                        subtitle: Text(aya.wordName[index].type != ''
+                            ? 'Position : right side'
+                            : 'Position : left side'),
                         trailing: SizedBox(
                           width: 80,
                           child: Row(
@@ -85,13 +91,6 @@ class _EditDataState extends State<EditData> {
                                                 selectedItem:
                                                     aya.wordName[index].name,
                                               ),
-                                              actions: [
-                                                ElevatedButton(
-                                                  onPressed: () =>
-                                                      Navigator.pop(context),
-                                                  child: Text('Back'),
-                                                ),
-                                              ],
                                             ),
                                           );
                                         });

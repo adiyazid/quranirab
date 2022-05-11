@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'package:provider/provider.dart';
+import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/surah.screen.dart';
 import 'package:skeleton_loader/skeleton_loader.dart';
@@ -29,6 +30,7 @@ class _HomePageState extends State<HomePage>
   void initState() {
     // TODO: implement initState
     getList();
+
     _tabController = TabController(length: 2, vsync: this);
     super.initState();
   }
@@ -42,6 +44,7 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     var themeProvider = Provider.of<ThemeProvider>(context);
+
     // Figma Flutter Generator Desktop31Widget - FRAME
     return Scaffold(
         backgroundColor:
@@ -468,7 +471,8 @@ class _HomePageState extends State<HomePage>
                                                               ScrollController(),
                                                           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                                               crossAxisCount:
-                                                                  MediaQuery.of(context)
+                                                                  MediaQuery.of(
+                                                                                  context)
                                                                               .size
                                                                               .width <
                                                                           1200
@@ -486,25 +490,25 @@ class _HomePageState extends State<HomePage>
                                                                       context,
                                                                   int index) {
                                                             return Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .symmetric(
-                                                                      horizontal:
-                                                                          16.0,
-                                                                      vertical:
-                                                                          8),
+                                                              padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      16.0,
+                                                                  vertical: 8),
                                                               child: InkWell(
-                                                                onTap: () async {
+                                                                onTap:
+                                                                    () async {
                                                                   var a = await getTotalPage(
                                                                       _list[index]
-                                                                          ["id"]);
+                                                                          [
+                                                                          "id"]);
                                                                   Provider.of<AyaProvider>(
                                                                           context,
                                                                           listen:
                                                                               false)
                                                                       .getPage(int
-                                                                          .parse(a
-                                                                              .first));
+                                                                          .parse(
+                                                                              a.first));
                                                                   Provider.of<AyaProvider>(
                                                                           context,
                                                                           listen:
@@ -534,14 +538,14 @@ class _HomePageState extends State<HomePage>
                                                                               _list[index]["ename"],
                                                                               0)));
                                                                 },
-                                                                child: Container(
+                                                                child:
+                                                                    Container(
                                                                   width: 400,
                                                                   height: 100,
                                                                   decoration:
                                                                       BoxDecoration(
-                                                                          borderRadius:
-                                                                              BorderRadius
-                                                                                  .only(
+                                                                          borderRadius: BorderRadius
+                                                                              .only(
                                                                             topLeft:
                                                                                 Radius.circular(10),
                                                                             topRight:
@@ -552,15 +556,9 @@ class _HomePageState extends State<HomePage>
                                                                                 Radius.circular(10),
                                                                           ),
                                                                           color: themeProvider.isDarkMode
-                                                                              ? Color(
-                                                                                  0xff67748E)
-                                                                              : Color.fromRGBO(
-                                                                                  255,
-                                                                                  255,
-                                                                                  255,
-                                                                                  1),
-                                                                          border:
-                                                                              Border.all(
+                                                                              ? Color(0xff67748E)
+                                                                              : Color.fromRGBO(255, 255, 255, 1),
+                                                                          border: Border.all(
                                                                             color: themeProvider.isDarkMode
                                                                                 ? Color(0xffD2D6DA)
                                                                                 : Color.fromRGBO(231, 111, 0, 1),
@@ -581,14 +579,10 @@ class _HomePageState extends State<HomePage>
                                                                               BoxDecoration(
                                                                             borderRadius:
                                                                                 BorderRadius.only(
-                                                                              topLeft:
-                                                                                  Radius.circular(10),
-                                                                              topRight:
-                                                                                  Radius.circular(10),
-                                                                              bottomLeft:
-                                                                                  Radius.circular(10),
-                                                                              bottomRight:
-                                                                                  Radius.circular(10),
+                                                                              topLeft: Radius.circular(10),
+                                                                              topRight: Radius.circular(10),
+                                                                              bottomLeft: Radius.circular(10),
+                                                                              bottomRight: Radius.circular(10),
                                                                             ),
                                                                             color: themeProvider.isDarkMode
                                                                                 ? Color(0xff808BA1)
@@ -599,26 +593,17 @@ class _HomePageState extends State<HomePage>
                                                                             child:
                                                                                 Text(
                                                                               '${index + 1}',
-                                                                              textAlign:
-                                                                                  TextAlign.left,
-                                                                              style: TextStyle(
-                                                                                  fontFamily: 'Open Sans',
-                                                                                  fontSize: 24,
-                                                                                  letterSpacing: -0.38723403215408325,
-                                                                                  fontWeight: FontWeight.normal,
-                                                                                  height: 1),
+                                                                              textAlign: TextAlign.left,
+                                                                              style: TextStyle(fontFamily: 'Open Sans', fontSize: 24, letterSpacing: -0.38723403215408325, fontWeight: FontWeight.normal, height: 1),
                                                                             ),
                                                                           )),
                                                                       Spacer(),
                                                                       Column(
                                                                         mainAxisAlignment:
-                                                                            MainAxisAlignment
-                                                                                .center,
+                                                                            MainAxisAlignment.center,
                                                                         children: [
                                                                           Text(
-                                                                            _list[index]
-                                                                                [
-                                                                                "tname"],
+                                                                            _list[index]["tname"],
                                                                             textAlign:
                                                                                 TextAlign.left,
                                                                             style: TextStyle(
@@ -629,9 +614,7 @@ class _HomePageState extends State<HomePage>
                                                                                 height: 1),
                                                                           ),
                                                                           Text(
-                                                                            _list[index]
-                                                                                [
-                                                                                "ename"],
+                                                                            _list[index]["ename"],
                                                                             textAlign:
                                                                                 TextAlign.left,
                                                                             style: TextStyle(
@@ -659,25 +642,25 @@ class _HomePageState extends State<HomePage>
                                                                       context,
                                                                   int index) {
                                                             return Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .symmetric(
-                                                                      horizontal:
-                                                                          8.0,
-                                                                      vertical:
-                                                                          8),
+                                                              padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      8.0,
+                                                                  vertical: 8),
                                                               child: InkWell(
-                                                                onTap: () async {
+                                                                onTap:
+                                                                    () async {
                                                                   var a = await getTotalPage(
                                                                       _list[index]
-                                                                          ["id"]);
+                                                                          [
+                                                                          "id"]);
                                                                   Provider.of<AyaProvider>(
                                                                           context,
                                                                           listen:
                                                                               false)
                                                                       .getPage(int
-                                                                          .parse(a
-                                                                              .first));
+                                                                          .parse(
+                                                                              a.first));
                                                                   Provider.of<AyaProvider>(
                                                                           context,
                                                                           listen:
@@ -707,14 +690,14 @@ class _HomePageState extends State<HomePage>
                                                                               _list[index]["ename"],
                                                                               0)));
                                                                 },
-                                                                child: Container(
+                                                                child:
+                                                                    Container(
                                                                   width: 400,
                                                                   height: 100,
                                                                   decoration:
                                                                       BoxDecoration(
-                                                                          borderRadius:
-                                                                              BorderRadius
-                                                                                  .only(
+                                                                          borderRadius: BorderRadius
+                                                                              .only(
                                                                             topLeft:
                                                                                 Radius.circular(10),
                                                                             topRight:
@@ -725,15 +708,9 @@ class _HomePageState extends State<HomePage>
                                                                                 Radius.circular(10),
                                                                           ),
                                                                           color: themeProvider.isDarkMode
-                                                                              ? Color(
-                                                                                  0xff67748E)
-                                                                              : Color.fromRGBO(
-                                                                                  255,
-                                                                                  255,
-                                                                                  255,
-                                                                                  1),
-                                                                          border:
-                                                                              Border.all(
+                                                                              ? Color(0xff67748E)
+                                                                              : Color.fromRGBO(255, 255, 255, 1),
+                                                                          border: Border.all(
                                                                             color: themeProvider.isDarkMode
                                                                                 ? Color(0xffD2D6DA)
                                                                                 : Color.fromRGBO(231, 111, 0, 1),
@@ -754,14 +731,10 @@ class _HomePageState extends State<HomePage>
                                                                               BoxDecoration(
                                                                             borderRadius:
                                                                                 BorderRadius.only(
-                                                                              topLeft:
-                                                                                  Radius.circular(10),
-                                                                              topRight:
-                                                                                  Radius.circular(10),
-                                                                              bottomLeft:
-                                                                                  Radius.circular(10),
-                                                                              bottomRight:
-                                                                                  Radius.circular(10),
+                                                                              topLeft: Radius.circular(10),
+                                                                              topRight: Radius.circular(10),
+                                                                              bottomLeft: Radius.circular(10),
+                                                                              bottomRight: Radius.circular(10),
                                                                             ),
                                                                             color: themeProvider.isDarkMode
                                                                                 ? Color(0xff808BA1)
@@ -772,26 +745,17 @@ class _HomePageState extends State<HomePage>
                                                                             child:
                                                                                 Text(
                                                                               '${index + 1}',
-                                                                              textAlign:
-                                                                                  TextAlign.left,
-                                                                              style: TextStyle(
-                                                                                  fontFamily: 'Open Sans',
-                                                                                  fontSize: 24,
-                                                                                  letterSpacing: -0.38723403215408325,
-                                                                                  fontWeight: FontWeight.normal,
-                                                                                  height: 1),
+                                                                              textAlign: TextAlign.left,
+                                                                              style: TextStyle(fontFamily: 'Open Sans', fontSize: 24, letterSpacing: -0.38723403215408325, fontWeight: FontWeight.normal, height: 1),
                                                                             ),
                                                                           )),
                                                                       Spacer(),
                                                                       Column(
                                                                         mainAxisAlignment:
-                                                                            MainAxisAlignment
-                                                                                .center,
+                                                                            MainAxisAlignment.center,
                                                                         children: [
                                                                           Text(
-                                                                            _list[index]
-                                                                                [
-                                                                                "tname"],
+                                                                            _list[index]["tname"],
                                                                             textAlign:
                                                                                 TextAlign.left,
                                                                             style: TextStyle(
@@ -802,9 +766,7 @@ class _HomePageState extends State<HomePage>
                                                                                 height: 1),
                                                                           ),
                                                                           Text(
-                                                                            _list[index]
-                                                                                [
-                                                                                "ename"],
+                                                                            _list[index]["ename"],
                                                                             textAlign:
                                                                                 TextAlign.left,
                                                                             style: TextStyle(
@@ -827,198 +789,205 @@ class _HomePageState extends State<HomePage>
                                                         )
                                                   : SkeletonLoader(
                                                       builder: SizedBox(
-                                                        height:
-                                                            MediaQuery.of(context)
+                                                        height: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height *
+                                                            0.5,
+                                                        child: MediaQuery.of(
+                                                                        context)
                                                                     .size
-                                                                    .height *
-                                                                0.5,
-                                                        child:
-                                                            MediaQuery.of(context)
-                                                                        .size
-                                                                        .width >
-                                                                    600
-                                                                ? GridView
-                                                                    .builder(
-                                                                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                                                        crossAxisCount:
-                                                                            MediaQuery.of(context).size.width < 1200
-                                                                                ? 2
-                                                                                : 3,
-                                                                        crossAxisSpacing:
-                                                                            5.0,
-                                                                        mainAxisSpacing:
-                                                                            5.0,
-                                                                        childAspectRatio:
-                                                                            4),
-                                                                    itemCount:
-                                                                        114,
-                                                                    itemBuilder:
-                                                                        (BuildContext
-                                                                                context,
-                                                                            int index) {
-                                                                      return Padding(
-                                                                        padding: const EdgeInsets
-                                                                                .symmetric(
-                                                                            horizontal:
-                                                                                32.0,
-                                                                            vertical:
-                                                                                8),
-                                                                        child:
-                                                                            Container(
-                                                                          width:
-                                                                              400,
-                                                                          height:
-                                                                              100,
-                                                                          decoration: BoxDecoration(
-                                                                              borderRadius: BorderRadius.only(
-                                                                                topLeft: Radius.circular(10),
-                                                                                topRight: Radius.circular(10),
-                                                                                bottomLeft: Radius.circular(10),
-                                                                                bottomRight: Radius.circular(10),
-                                                                              ),
-                                                                              color: themeProvider.isDarkMode ? Color(0xff67748E) : Color.fromRGBO(255, 255, 255, 1),
-                                                                              border: Border.all(
-                                                                                color: themeProvider.isDarkMode ? Color(0xffD2D6DA) : Color.fromRGBO(231, 111, 0, 1),
-                                                                                width: 1,
-                                                                              )),
-                                                                          child:
-                                                                              Row(
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.spaceBetween,
-                                                                            children: [
-                                                                              Container(
-                                                                                  width: 50,
-                                                                                  height: 100,
-                                                                                  decoration: BoxDecoration(
-                                                                                    borderRadius: BorderRadius.only(
-                                                                                      topLeft: Radius.circular(10),
-                                                                                      topRight: Radius.circular(10),
-                                                                                      bottomLeft: Radius.circular(10),
-                                                                                      bottomRight: Radius.circular(10),
-                                                                                    ),
-                                                                                    color: themeProvider.isDarkMode ? Color(0xff808BA1) : Color.fromRGBO(255, 181, 94, 1),
-                                                                                  ),
-                                                                                  child: Center(
-                                                                                    child: Text(
-                                                                                      '',
-                                                                                      textAlign: TextAlign.left,
-                                                                                      style: TextStyle(fontFamily: 'Open Sans', fontSize: 24, letterSpacing: -0.38723403215408325, fontWeight: FontWeight.normal, height: 1),
-                                                                                    ),
-                                                                                  )),
-                                                                              Spacer(),
-                                                                              Column(
-                                                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                                                children: const [
-                                                                                  Text(
-                                                                                    '',
-                                                                                    textAlign: TextAlign.left,
-                                                                                    style: TextStyle(fontFamily: 'Open Sans', fontSize: 24, letterSpacing: -0.38723403215408325, fontWeight: FontWeight.normal, height: 1),
-                                                                                  ),
-                                                                                  Text(
-                                                                                    '',
-                                                                                    textAlign: TextAlign.left,
-                                                                                    style: TextStyle(color: Color.fromRGBO(151, 151, 151, 1), fontFamily: 'Open Sans', fontSize: 24, letterSpacing: -0.38723403215408325, fontWeight: FontWeight.normal, height: 1),
-                                                                                  )
-                                                                                ],
-                                                                              ),
-                                                                              Spacer()
-                                                                            ],
+                                                                    .width >
+                                                                600
+                                                            ? GridView.builder(
+                                                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                                                    crossAxisCount:
+                                                                        MediaQuery.of(context).size.width <
+                                                                                1200
+                                                                            ? 2
+                                                                            : 3,
+                                                                    crossAxisSpacing:
+                                                                        5.0,
+                                                                    mainAxisSpacing:
+                                                                        5.0,
+                                                                    childAspectRatio:
+                                                                        4),
+                                                                itemCount: 114,
+                                                                itemBuilder:
+                                                                    (BuildContext
+                                                                            context,
+                                                                        int index) {
+                                                                  return Padding(
+                                                                    padding: const EdgeInsets
+                                                                            .symmetric(
+                                                                        horizontal:
+                                                                            32.0,
+                                                                        vertical:
+                                                                            8),
+                                                                    child:
+                                                                        Container(
+                                                                      width:
+                                                                          400,
+                                                                      height:
+                                                                          100,
+                                                                      decoration: BoxDecoration(
+                                                                          borderRadius: BorderRadius.only(
+                                                                            topLeft:
+                                                                                Radius.circular(10),
+                                                                            topRight:
+                                                                                Radius.circular(10),
+                                                                            bottomLeft:
+                                                                                Radius.circular(10),
+                                                                            bottomRight:
+                                                                                Radius.circular(10),
                                                                           ),
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  )
-                                                                : ListView
-                                                                    .builder(
-                                                                    itemCount:
-                                                                        114,
-                                                                    itemBuilder:
-                                                                        (BuildContext
-                                                                                context,
-                                                                            int index) {
-                                                                      return Padding(
-                                                                        padding: const EdgeInsets
-                                                                                .symmetric(
-                                                                            horizontal:
-                                                                                8.0,
-                                                                            vertical:
-                                                                                8),
-                                                                        child:
-                                                                            InkWell(
-                                                                          child:
-                                                                              Container(
+                                                                          color: themeProvider.isDarkMode ? Color(0xff67748E) : Color.fromRGBO(255, 255, 255, 1),
+                                                                          border: Border.all(
+                                                                            color: themeProvider.isDarkMode
+                                                                                ? Color(0xffD2D6DA)
+                                                                                : Color.fromRGBO(231, 111, 0, 1),
                                                                             width:
-                                                                                400,
-                                                                            height:
-                                                                                100,
-                                                                            decoration: BoxDecoration(
+                                                                                1,
+                                                                          )),
+                                                                      child:
+                                                                          Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.spaceBetween,
+                                                                        children: [
+                                                                          Container(
+                                                                              width: 50,
+                                                                              height: 100,
+                                                                              decoration: BoxDecoration(
                                                                                 borderRadius: BorderRadius.only(
                                                                                   topLeft: Radius.circular(10),
                                                                                   topRight: Radius.circular(10),
                                                                                   bottomLeft: Radius.circular(10),
                                                                                   bottomRight: Radius.circular(10),
                                                                                 ),
-                                                                                color: themeProvider.isDarkMode ? Color(0xff67748E) : Color.fromRGBO(255, 255, 255, 1),
-                                                                                border: Border.all(
-                                                                                  color: themeProvider.isDarkMode ? Color(0xffD2D6DA) : Color.fromRGBO(231, 111, 0, 1),
-                                                                                  width: 1,
-                                                                                )),
-                                                                            child:
-                                                                                Row(
-                                                                              mainAxisAlignment:
-                                                                                  MainAxisAlignment.spaceBetween,
-                                                                              children: [
-                                                                                Container(
-                                                                                    width: 50,
-                                                                                    height: 100,
-                                                                                    decoration: BoxDecoration(
-                                                                                      borderRadius: BorderRadius.only(
-                                                                                        topLeft: Radius.circular(10),
-                                                                                        topRight: Radius.circular(10),
-                                                                                        bottomLeft: Radius.circular(10),
-                                                                                        bottomRight: Radius.circular(10),
-                                                                                      ),
-                                                                                      color: themeProvider.isDarkMode ? Color(0xff808BA1) : Color.fromRGBO(255, 181, 94, 1),
-                                                                                    ),
-                                                                                    child: Center(
-                                                                                      child: Text(
-                                                                                        '',
-                                                                                        textAlign: TextAlign.left,
-                                                                                        style: TextStyle(fontFamily: 'Open Sans', fontSize: 24, letterSpacing: -0.38723403215408325, fontWeight: FontWeight.normal, height: 1),
-                                                                                      ),
-                                                                                    )),
-                                                                                Spacer(),
-                                                                                Column(
-                                                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                                                  children: [
-                                                                                    Text(
-                                                                                      '',
-                                                                                      textAlign: TextAlign.left,
-                                                                                      style: TextStyle(fontFamily: 'Open Sans', fontSize: 24, letterSpacing: -0.38723403215408325, fontWeight: FontWeight.normal, height: 1),
-                                                                                    ),
-                                                                                    Text(
-                                                                                      '',
-                                                                                      textAlign: TextAlign.left,
-                                                                                      style: TextStyle(color: Color.fromRGBO(151, 151, 151, 1), fontFamily: 'Open Sans', fontSize: MediaQuery.of(context).size.width < 600 ? 20 : 24, letterSpacing: -0.38723403215408325, fontWeight: FontWeight.normal, height: 1),
-                                                                                    )
-                                                                                  ],
+                                                                                color: themeProvider.isDarkMode ? Color(0xff808BA1) : Color.fromRGBO(255, 181, 94, 1),
+                                                                              ),
+                                                                              child: Center(
+                                                                                child: Text(
+                                                                                  '',
+                                                                                  textAlign: TextAlign.left,
+                                                                                  style: TextStyle(fontFamily: 'Open Sans', fontSize: 24, letterSpacing: -0.38723403215408325, fontWeight: FontWeight.normal, height: 1),
                                                                                 ),
-                                                                                Spacer()
+                                                                              )),
+                                                                          Spacer(),
+                                                                          Column(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.center,
+                                                                            children: const [
+                                                                              Text(
+                                                                                '',
+                                                                                textAlign: TextAlign.left,
+                                                                                style: TextStyle(fontFamily: 'Open Sans', fontSize: 24, letterSpacing: -0.38723403215408325, fontWeight: FontWeight.normal, height: 1),
+                                                                              ),
+                                                                              Text(
+                                                                                '',
+                                                                                textAlign: TextAlign.left,
+                                                                                style: TextStyle(color: Color.fromRGBO(151, 151, 151, 1), fontFamily: 'Open Sans', fontSize: 24, letterSpacing: -0.38723403215408325, fontWeight: FontWeight.normal, height: 1),
+                                                                              )
+                                                                            ],
+                                                                          ),
+                                                                          Spacer()
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              )
+                                                            : ListView.builder(
+                                                                itemCount: 114,
+                                                                itemBuilder:
+                                                                    (BuildContext
+                                                                            context,
+                                                                        int index) {
+                                                                  return Padding(
+                                                                    padding: const EdgeInsets
+                                                                            .symmetric(
+                                                                        horizontal:
+                                                                            8.0,
+                                                                        vertical:
+                                                                            8),
+                                                                    child:
+                                                                        InkWell(
+                                                                      child:
+                                                                          Container(
+                                                                        width:
+                                                                            400,
+                                                                        height:
+                                                                            100,
+                                                                        decoration: BoxDecoration(
+                                                                            borderRadius: BorderRadius.only(
+                                                                              topLeft: Radius.circular(10),
+                                                                              topRight: Radius.circular(10),
+                                                                              bottomLeft: Radius.circular(10),
+                                                                              bottomRight: Radius.circular(10),
+                                                                            ),
+                                                                            color: themeProvider.isDarkMode ? Color(0xff67748E) : Color.fromRGBO(255, 255, 255, 1),
+                                                                            border: Border.all(
+                                                                              color: themeProvider.isDarkMode ? Color(0xffD2D6DA) : Color.fromRGBO(231, 111, 0, 1),
+                                                                              width: 1,
+                                                                            )),
+                                                                        child:
+                                                                            Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceBetween,
+                                                                          children: [
+                                                                            Container(
+                                                                                width: 50,
+                                                                                height: 100,
+                                                                                decoration: BoxDecoration(
+                                                                                  borderRadius: BorderRadius.only(
+                                                                                    topLeft: Radius.circular(10),
+                                                                                    topRight: Radius.circular(10),
+                                                                                    bottomLeft: Radius.circular(10),
+                                                                                    bottomRight: Radius.circular(10),
+                                                                                  ),
+                                                                                  color: themeProvider.isDarkMode ? Color(0xff808BA1) : Color.fromRGBO(255, 181, 94, 1),
+                                                                                ),
+                                                                                child: Center(
+                                                                                  child: Text(
+                                                                                    '',
+                                                                                    textAlign: TextAlign.left,
+                                                                                    style: TextStyle(fontFamily: 'Open Sans', fontSize: 24, letterSpacing: -0.38723403215408325, fontWeight: FontWeight.normal, height: 1),
+                                                                                  ),
+                                                                                )),
+                                                                            Spacer(),
+                                                                            Column(
+                                                                              mainAxisAlignment: MainAxisAlignment.center,
+                                                                              children: [
+                                                                                Text(
+                                                                                  '',
+                                                                                  textAlign: TextAlign.left,
+                                                                                  style: TextStyle(fontFamily: 'Open Sans', fontSize: 24, letterSpacing: -0.38723403215408325, fontWeight: FontWeight.normal, height: 1),
+                                                                                ),
+                                                                                Text(
+                                                                                  '',
+                                                                                  textAlign: TextAlign.left,
+                                                                                  style: TextStyle(color: Color.fromRGBO(151, 151, 151, 1), fontFamily: 'Open Sans', fontSize: MediaQuery.of(context).size.width < 600 ? 20 : 24, letterSpacing: -0.38723403215408325, fontWeight: FontWeight.normal, height: 1),
+                                                                                )
                                                                               ],
                                                                             ),
-                                                                          ),
+                                                                            Spacer()
+                                                                          ],
                                                                         ),
-                                                                      );
-                                                                    },
-                                                                  ),
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ),
                                                       ),
                                                       items: 1,
                                                       period:
                                                           Duration(seconds: 2),
                                                       highlightColor:
-                                                          themeProvider.isDarkMode
+                                                          themeProvider
+                                                                  .isDarkMode
                                                               ? Colors.grey
-                                                              : Color(0xffaa9f9f),
+                                                              : Color(
+                                                                  0xffaa9f9f),
                                                       direction:
                                                           SkeletonDirection.rtl,
                                                     ),
@@ -1038,7 +1007,8 @@ class _HomePageState extends State<HomePage>
                                                               ScrollController(),
                                                           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                                               crossAxisCount:
-                                                                  MediaQuery.of(context)
+                                                                  MediaQuery.of(
+                                                                                  context)
                                                                               .size
                                                                               .width <
                                                                           1200
@@ -1056,25 +1026,25 @@ class _HomePageState extends State<HomePage>
                                                                       context,
                                                                   int index) {
                                                             return Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .symmetric(
-                                                                      horizontal:
-                                                                          16.0,
-                                                                      vertical:
-                                                                          8),
+                                                              padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      16.0,
+                                                                  vertical: 8),
                                                               child: InkWell(
-                                                                onTap: () async {
+                                                                onTap:
+                                                                    () async {
                                                                   var a = await getTotalPage(
                                                                       _list[index]
-                                                                          ["id"]);
+                                                                          [
+                                                                          "id"]);
                                                                   Provider.of<AyaProvider>(
                                                                           context,
                                                                           listen:
                                                                               false)
                                                                       .getPage(int
-                                                                          .parse(a
-                                                                              .first));
+                                                                          .parse(
+                                                                              a.first));
                                                                   Provider.of<AyaProvider>(
                                                                           context,
                                                                           listen:
@@ -1104,14 +1074,14 @@ class _HomePageState extends State<HomePage>
                                                                               _list[index]["ename"],
                                                                               0)));
                                                                 },
-                                                                child: Container(
+                                                                child:
+                                                                    Container(
                                                                   width: 400,
                                                                   height: 100,
                                                                   decoration:
                                                                       BoxDecoration(
-                                                                          borderRadius:
-                                                                              BorderRadius
-                                                                                  .only(
+                                                                          borderRadius: BorderRadius
+                                                                              .only(
                                                                             topLeft:
                                                                                 Radius.circular(10),
                                                                             topRight:
@@ -1122,15 +1092,9 @@ class _HomePageState extends State<HomePage>
                                                                                 Radius.circular(10),
                                                                           ),
                                                                           color: themeProvider.isDarkMode
-                                                                              ? Color(
-                                                                                  0xff67748E)
-                                                                              : Color.fromRGBO(
-                                                                                  255,
-                                                                                  255,
-                                                                                  255,
-                                                                                  1),
-                                                                          border:
-                                                                              Border.all(
+                                                                              ? Color(0xff67748E)
+                                                                              : Color.fromRGBO(255, 255, 255, 1),
+                                                                          border: Border.all(
                                                                             color: themeProvider.isDarkMode
                                                                                 ? Color(0xffD2D6DA)
                                                                                 : Color.fromRGBO(231, 111, 0, 1),
@@ -1151,14 +1115,10 @@ class _HomePageState extends State<HomePage>
                                                                               BoxDecoration(
                                                                             borderRadius:
                                                                                 BorderRadius.only(
-                                                                              topLeft:
-                                                                                  Radius.circular(10),
-                                                                              topRight:
-                                                                                  Radius.circular(10),
-                                                                              bottomLeft:
-                                                                                  Radius.circular(10),
-                                                                              bottomRight:
-                                                                                  Radius.circular(10),
+                                                                              topLeft: Radius.circular(10),
+                                                                              topRight: Radius.circular(10),
+                                                                              bottomLeft: Radius.circular(10),
+                                                                              bottomRight: Radius.circular(10),
                                                                             ),
                                                                             color: themeProvider.isDarkMode
                                                                                 ? Color(0xff808BA1)
@@ -1169,26 +1129,17 @@ class _HomePageState extends State<HomePage>
                                                                             child:
                                                                                 Text(
                                                                               '${index + 1}',
-                                                                              textAlign:
-                                                                                  TextAlign.left,
-                                                                              style: TextStyle(
-                                                                                  fontFamily: 'Open Sans',
-                                                                                  fontSize: 24,
-                                                                                  letterSpacing: -0.38723403215408325,
-                                                                                  fontWeight: FontWeight.normal,
-                                                                                  height: 1),
+                                                                              textAlign: TextAlign.left,
+                                                                              style: TextStyle(fontFamily: 'Open Sans', fontSize: 24, letterSpacing: -0.38723403215408325, fontWeight: FontWeight.normal, height: 1),
                                                                             ),
                                                                           )),
                                                                       Spacer(),
                                                                       Column(
                                                                         mainAxisAlignment:
-                                                                            MainAxisAlignment
-                                                                                .center,
+                                                                            MainAxisAlignment.center,
                                                                         children: [
                                                                           Text(
-                                                                            _list[index]
-                                                                                [
-                                                                                "tname"],
+                                                                            _list[index]["tname"],
                                                                             textAlign:
                                                                                 TextAlign.left,
                                                                             style: TextStyle(
@@ -1199,9 +1150,7 @@ class _HomePageState extends State<HomePage>
                                                                                 height: 1),
                                                                           ),
                                                                           Text(
-                                                                            _list[index]
-                                                                                [
-                                                                                "ename"],
+                                                                            _list[index]["ename"],
                                                                             textAlign:
                                                                                 TextAlign.left,
                                                                             style: TextStyle(
@@ -1229,25 +1178,25 @@ class _HomePageState extends State<HomePage>
                                                                       context,
                                                                   int index) {
                                                             return Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .symmetric(
-                                                                      horizontal:
-                                                                          8.0,
-                                                                      vertical:
-                                                                          8),
+                                                              padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      8.0,
+                                                                  vertical: 8),
                                                               child: InkWell(
-                                                                onTap: () async {
+                                                                onTap:
+                                                                    () async {
                                                                   var a = await getTotalPage(
                                                                       _list[index]
-                                                                          ["id"]);
+                                                                          [
+                                                                          "id"]);
                                                                   Provider.of<AyaProvider>(
                                                                           context,
                                                                           listen:
                                                                               false)
                                                                       .getPage(int
-                                                                          .parse(a
-                                                                              .first));
+                                                                          .parse(
+                                                                              a.first));
                                                                   Provider.of<AyaProvider>(
                                                                           context,
                                                                           listen:
@@ -1277,14 +1226,14 @@ class _HomePageState extends State<HomePage>
                                                                               _list[index]["ename"],
                                                                               0)));
                                                                 },
-                                                                child: Container(
+                                                                child:
+                                                                    Container(
                                                                   width: 400,
                                                                   height: 100,
                                                                   decoration:
                                                                       BoxDecoration(
-                                                                          borderRadius:
-                                                                              BorderRadius
-                                                                                  .only(
+                                                                          borderRadius: BorderRadius
+                                                                              .only(
                                                                             topLeft:
                                                                                 Radius.circular(10),
                                                                             topRight:
@@ -1295,15 +1244,9 @@ class _HomePageState extends State<HomePage>
                                                                                 Radius.circular(10),
                                                                           ),
                                                                           color: themeProvider.isDarkMode
-                                                                              ? Color(
-                                                                                  0xff67748E)
-                                                                              : Color.fromRGBO(
-                                                                                  255,
-                                                                                  255,
-                                                                                  255,
-                                                                                  1),
-                                                                          border:
-                                                                              Border.all(
+                                                                              ? Color(0xff67748E)
+                                                                              : Color.fromRGBO(255, 255, 255, 1),
+                                                                          border: Border.all(
                                                                             color: themeProvider.isDarkMode
                                                                                 ? Color(0xffD2D6DA)
                                                                                 : Color.fromRGBO(231, 111, 0, 1),
@@ -1324,14 +1267,10 @@ class _HomePageState extends State<HomePage>
                                                                               BoxDecoration(
                                                                             borderRadius:
                                                                                 BorderRadius.only(
-                                                                              topLeft:
-                                                                                  Radius.circular(10),
-                                                                              topRight:
-                                                                                  Radius.circular(10),
-                                                                              bottomLeft:
-                                                                                  Radius.circular(10),
-                                                                              bottomRight:
-                                                                                  Radius.circular(10),
+                                                                              topLeft: Radius.circular(10),
+                                                                              topRight: Radius.circular(10),
+                                                                              bottomLeft: Radius.circular(10),
+                                                                              bottomRight: Radius.circular(10),
                                                                             ),
                                                                             color: themeProvider.isDarkMode
                                                                                 ? Color(0xff808BA1)
@@ -1342,26 +1281,17 @@ class _HomePageState extends State<HomePage>
                                                                             child:
                                                                                 Text(
                                                                               '${index + 1}',
-                                                                              textAlign:
-                                                                                  TextAlign.left,
-                                                                              style: TextStyle(
-                                                                                  fontFamily: 'Open Sans',
-                                                                                  fontSize: 24,
-                                                                                  letterSpacing: -0.38723403215408325,
-                                                                                  fontWeight: FontWeight.normal,
-                                                                                  height: 1),
+                                                                              textAlign: TextAlign.left,
+                                                                              style: TextStyle(fontFamily: 'Open Sans', fontSize: 24, letterSpacing: -0.38723403215408325, fontWeight: FontWeight.normal, height: 1),
                                                                             ),
                                                                           )),
                                                                       Spacer(),
                                                                       Column(
                                                                         mainAxisAlignment:
-                                                                            MainAxisAlignment
-                                                                                .center,
+                                                                            MainAxisAlignment.center,
                                                                         children: [
                                                                           Text(
-                                                                            _list[index]
-                                                                                [
-                                                                                "tname"],
+                                                                            _list[index]["tname"],
                                                                             textAlign:
                                                                                 TextAlign.left,
                                                                             style: TextStyle(
@@ -1372,9 +1302,7 @@ class _HomePageState extends State<HomePage>
                                                                                 height: 1),
                                                                           ),
                                                                           Text(
-                                                                            _list[index]
-                                                                                [
-                                                                                "ename"],
+                                                                            _list[index]["ename"],
                                                                             textAlign:
                                                                                 TextAlign.left,
                                                                             style: TextStyle(
@@ -1397,15 +1325,16 @@ class _HomePageState extends State<HomePage>
                                                         )
                                                   : SkeletonLoader(
                                                       builder: SizedBox(
-                                                        height:
-                                                            MediaQuery.of(context)
-                                                                    .size
-                                                                    .height *
-                                                                0.5,
+                                                        height: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height *
+                                                            0.5,
                                                         child: GridView.builder(
                                                           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                                               crossAxisCount:
-                                                                  MediaQuery.of(context)
+                                                                  MediaQuery.of(
+                                                                                  context)
                                                                               .size
                                                                               .width <
                                                                           1200
@@ -1423,13 +1352,11 @@ class _HomePageState extends State<HomePage>
                                                                       context,
                                                                   int index) {
                                                             return Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .symmetric(
-                                                                      horizontal:
-                                                                          32.0,
-                                                                      vertical:
-                                                                          8),
+                                                              padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      32.0,
+                                                                  vertical: 8),
                                                               child: Container(
                                                                 width: 400,
                                                                 height: 100,
@@ -1447,8 +1374,7 @@ class _HomePageState extends State<HomePage>
                                                                           bottomRight:
                                                                               Radius.circular(10),
                                                                         ),
-                                                                        color: themeProvider
-                                                                                .isDarkMode
+                                                                        color: themeProvider.isDarkMode
                                                                             ? Color(
                                                                                 0xff67748E)
                                                                             : Color.fromRGBO(
@@ -1457,16 +1383,10 @@ class _HomePageState extends State<HomePage>
                                                                                 255,
                                                                                 1),
                                                                         border:
-                                                                            Border
-                                                                                .all(
+                                                                            Border.all(
                                                                           color: themeProvider.isDarkMode
-                                                                              ? Color(
-                                                                                  0xffD2D6DA)
-                                                                              : Color.fromRGBO(
-                                                                                  231,
-                                                                                  111,
-                                                                                  0,
-                                                                                  1),
+                                                                              ? Color(0xffD2D6DA)
+                                                                              : Color.fromRGBO(231, 111, 0, 1),
                                                                           width:
                                                                               1,
                                                                         )),
@@ -1476,7 +1396,8 @@ class _HomePageState extends State<HomePage>
                                                                           .spaceBetween,
                                                                   children: [
                                                                     Container(
-                                                                        width: 50,
+                                                                        width:
+                                                                            50,
                                                                         height:
                                                                             100,
                                                                         decoration:
@@ -1493,13 +1414,8 @@ class _HomePageState extends State<HomePage>
                                                                                 Radius.circular(10),
                                                                           ),
                                                                           color: themeProvider.isDarkMode
-                                                                              ? Color(
-                                                                                  0xff808BA1)
-                                                                              : Color.fromRGBO(
-                                                                                  255,
-                                                                                  181,
-                                                                                  94,
-                                                                                  1),
+                                                                              ? Color(0xff808BA1)
+                                                                              : Color.fromRGBO(255, 181, 94, 1),
                                                                         ),
                                                                         child:
                                                                             Center(
@@ -1527,14 +1443,10 @@ class _HomePageState extends State<HomePage>
                                                                           textAlign:
                                                                               TextAlign.left,
                                                                           style: TextStyle(
-                                                                              fontFamily:
-                                                                                  'Open Sans',
-                                                                              fontSize:
-                                                                                  24,
-                                                                              letterSpacing:
-                                                                                  -0.38723403215408325,
-                                                                              fontWeight:
-                                                                                  FontWeight.normal,
+                                                                              fontFamily: 'Open Sans',
+                                                                              fontSize: 24,
+                                                                              letterSpacing: -0.38723403215408325,
+                                                                              fontWeight: FontWeight.normal,
                                                                               height: 1),
                                                                         ),
                                                                         Text(
@@ -1542,19 +1454,11 @@ class _HomePageState extends State<HomePage>
                                                                           textAlign:
                                                                               TextAlign.left,
                                                                           style: TextStyle(
-                                                                              color: Color.fromRGBO(
-                                                                                  151,
-                                                                                  151,
-                                                                                  151,
-                                                                                  1),
-                                                                              fontFamily:
-                                                                                  'Open Sans',
-                                                                              fontSize:
-                                                                                  24,
-                                                                              letterSpacing:
-                                                                                  -0.38723403215408325,
-                                                                              fontWeight:
-                                                                                  FontWeight.normal,
+                                                                              color: Color.fromRGBO(151, 151, 151, 1),
+                                                                              fontFamily: 'Open Sans',
+                                                                              fontSize: 24,
+                                                                              letterSpacing: -0.38723403215408325,
+                                                                              fontWeight: FontWeight.normal,
                                                                               height: 1),
                                                                         )
                                                                       ],
@@ -1571,9 +1475,11 @@ class _HomePageState extends State<HomePage>
                                                       period:
                                                           Duration(seconds: 2),
                                                       highlightColor:
-                                                          themeProvider.isDarkMode
+                                                          themeProvider
+                                                                  .isDarkMode
                                                               ? Colors.grey
-                                                              : Color(0xffaa9f9f),
+                                                              : Color(
+                                                                  0xffaa9f9f),
                                                       direction:
                                                           SkeletonDirection.rtl,
                                                     ),

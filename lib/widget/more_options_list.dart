@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
@@ -6,13 +5,16 @@ import 'package:quranirab/views/data_correction/edit.data.dart';
 import 'package:skeleton_loader/skeleton_loader.dart';
 
 import '../models/word.detail.dart';
+import '../provider/user.provider.dart';
 
 class MoreOptionsList extends StatefulWidget {
   final String surah;
   final String nukKalimah;
+  final int wordId;
 
   const MoreOptionsList({
     Key? key,
+    required this.wordId,
     required this.nukKalimah,
     required this.surah,
   }) : super(key: key);
@@ -35,6 +37,8 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<AppUser>(context).getRole();
+    var role = Provider.of<AppUser>(context).role;
     return Consumer<AyaProvider>(builder: (context, aya, child) {
       List<WordDetail> word = aya.getWordTypeList() ?? <WordDetail>[];
       List<WordDetail> name = aya.getWordNameList() ?? <WordDetail>[];
@@ -98,16 +102,18 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                                 : null,
                             icon: Icon(Icons.clear)),
                       ),
-                      Center(
-                        child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => EditData()));
-                            },
-                            child: Text('Edit')),
-                      ),
+                      if (role == 'tester')
+                        Center(
+                          child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            EditData(widget.wordId)));
+                              },
+                              child: Text('Edit')),
+                        ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 8.0, horizontal: 16),

@@ -107,6 +107,7 @@ class _SuraSliceState extends State<SuraSlice> {
                                               child: MoreOptionsList(
                                                 surah: aya.words ?? '',
                                                 nukKalimah: 'c',
+                                                wordId: aya.wordID,
                                               ),
                                             ),
                                           ),
@@ -187,8 +188,8 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                                         Provider.of<AyaProvider>(context, listen: false).clear();
                                                                                       },
                                                                                       direction: PopoverDirection.bottom,
-                                                                                      width: MediaQuery.of(context).size.width < 600 ? MediaQuery.of(context).size.width*0.9:450,
-                                                                                      height: MediaQuery.of(context).size.height*0.35,
+                                                                                      width: MediaQuery.of(context).size.width < 600 ? MediaQuery.of(context).size.width * 0.9 : 450,
+                                                                                      height: MediaQuery.of(context).size.height * 0.35,
                                                                                       arrowHeight: 15,
                                                                                       arrowWidth: 30,
                                                                                     );
@@ -234,8 +235,8 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                                     Provider.of<AyaProvider>(context, listen: false).clear();
                                                                                   },
                                                                                   direction: PopoverDirection.bottom,
-                                                                                  width: MediaQuery.of(context).size.width < 600 ? MediaQuery.of(context).size.width*0.9:450,
-                                                                                  height: MediaQuery.of(context).size.height*0.35,
+                                                                                  width: MediaQuery.of(context).size.width < 600 ? MediaQuery.of(context).size.width * 0.9 : 450,
+                                                                                  height: MediaQuery.of(context).size.height * 0.35,
                                                                                   arrowHeight: 15,
                                                                                   arrowWidth: 30,
                                                                                 );
@@ -339,8 +340,8 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                                         Provider.of<AyaProvider>(context, listen: false).clear();
                                                                                       },
                                                                                       direction: PopoverDirection.bottom,
-                                                                                      width: MediaQuery.of(context).size.width < 600 ? MediaQuery.of(context).size.width*0.9:450,
-                                                                                      height: MediaQuery.of(context).size.height*0.35,
+                                                                                      width: MediaQuery.of(context).size.width < 600 ? MediaQuery.of(context).size.width * 0.9 : 450,
+                                                                                      height: MediaQuery.of(context).size.height * 0.35,
                                                                                       arrowHeight: 15,
                                                                                       arrowWidth: 30,
                                                                                     );
@@ -388,8 +389,8 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                                     Provider.of<AyaProvider>(context, listen: false).clear();
                                                                                   },
                                                                                   direction: PopoverDirection.bottom,
-                                                                                  width: MediaQuery.of(context).size.width < 600 ? MediaQuery.of(context).size.width*0.9:450,
-                                                                                  height: MediaQuery.of(context).size.height*0.35,
+                                                                                  width: MediaQuery.of(context).size.width < 600 ? MediaQuery.of(context).size.width * 0.9 : 450,
+                                                                                  height: MediaQuery.of(context).size.height * 0.35,
                                                                                   arrowHeight: 15,
                                                                                   arrowWidth: 30,
                                                                                 );

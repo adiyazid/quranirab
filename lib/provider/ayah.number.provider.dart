@@ -50,7 +50,7 @@ class AyaProvider extends ChangeNotifier {
   int? sura_id;
   bool loading = false;
   bool loadingCategory = false;
-
+  int wordID = 0;
   int? newNum;
 
   int? numStart;
@@ -247,6 +247,7 @@ class AyaProvider extends ChangeNotifier {
   }
 
   Future<void> getCategoryName(wordId, langId) async {
+    wordID=wordId;
     await wordRelationship
         .where('word_id', isEqualTo: wordId.toString())
         .get()
@@ -356,11 +357,21 @@ class AyaProvider extends ChangeNotifier {
         .get()
         .then((QuerySnapshot querySnapshot) {
       for (var doc in querySnapshot.docs) {
-        allCategory.add(WordDetail(
+        var value = WordDetail(
             id: int.parse(doc["id"].trim()),
             categoryId: int.parse(doc["word_category_id"].trim()),
             name: doc["name"].trim(),
-            type: ''));
+            type: '');
+        if (allCategory.isNotEmpty) {
+          bool duplicate =
+              allCategory.any((element) => element.name == doc['name'].trim());
+          if (!duplicate) {
+            allCategory.add(value);
+          }
+        } else {
+          allCategory.add(value);
+        }
+
         if (doc["word_category_id"] == wordCategoryId.toString()) {
           wordName.add(WordDetail(
               id: int.parse(doc["id"].trim()),
@@ -8973,6 +8984,7 @@ class AyaProvider extends ChangeNotifier {
     });
     wordName.replaceRange(index, index + 1,
         [WordDetail(type: type, categoryId: categoryId, name: name)]);
+    wordName.sort((a, b) => a.categoryId!.compareTo(b.categoryId!));
     notifyListeners();
   }
 }
