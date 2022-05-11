@@ -59,7 +59,9 @@ class AyaProvider extends ChangeNotifier {
 
   bool nodata = false;
 
-  List<WordDetail> allCategory = [];
+  List<WordDetail> noCategory = [];
+  List<WordDetail> mainCategory = [];
+  List<WordDetail> labelCategory = [];
 
   get value => _value;
 
@@ -247,7 +249,7 @@ class AyaProvider extends ChangeNotifier {
   }
 
   Future<void> getCategoryName(wordId, langId) async {
-    wordID=wordId;
+    wordID = wordId;
     await wordRelationship
         .where('word_id', isEqualTo: wordId.toString())
         .get()
@@ -264,9 +266,11 @@ class AyaProvider extends ChangeNotifier {
         clear();
         notifyListeners();
         for (var doc in querySnapshot.docs) {
+          var relationshipID = doc["id"];
           // getCategoryNameTranslation(doc["word_category_id"].trim(), langId);
           getMainCategoryName(doc["word_category_id"].trim(), wordId, langId);
-          getLabelCategoryName(doc["word_category_id"].trim(), langId);
+          getLabelCategoryName(
+              doc["word_category_id"].trim(), langId, relationshipID);
         }
       }
     });
@@ -323,7 +327,8 @@ class AyaProvider extends ChangeNotifier {
     select.replaceRange(index, index + 1, [!value]);
   }
 
-  Future<void> getLabelCategoryName(wordCategoryId, String langId) async {
+  Future<void> getLabelCategoryName(
+      wordCategoryId, String langId, String id) async {
     await wordCategory
         .where('word_type', isEqualTo: 'label')
         .get()
@@ -331,6 +336,7 @@ class AyaProvider extends ChangeNotifier {
       for (var doc in querySnapshot.docs) {
         if (doc["id"] == wordCategoryId.toString()) {
           wordTypeDetail.add(WordDetail(
+              id: int.parse(id),
               categoryId: int.parse(doc["id"].trim()),
               name: doc["tname"].trim(),
               type: doc["word_type"].trim()));
@@ -345,6 +351,7 @@ class AyaProvider extends ChangeNotifier {
       for (var doc in querySnapshot.docs) {
         if (doc["id"] == wordCategoryId.toString()) {
           wordTypeDetail.add(WordDetail(
+              id: int.parse(id),
               categoryId: int.parse(doc["id"].trim()),
               name: doc["tname"].trim(),
               type: doc["word_type"].trim()));
@@ -355,26 +362,21 @@ class AyaProvider extends ChangeNotifier {
     await wordCategoryTranslation
         .where('language_id', isEqualTo: langId)
         .get()
-        .then((QuerySnapshot querySnapshot) {
+        .then((QuerySnapshot querySnapshot) async {
       for (var doc in querySnapshot.docs) {
         var value = WordDetail(
-            id: int.parse(doc["id"].trim()),
+            id: int.parse(id),
             categoryId: int.parse(doc["word_category_id"].trim()),
             name: doc["name"].trim(),
             type: '');
-        if (allCategory.isNotEmpty) {
-          bool duplicate =
-              allCategory.any((element) => element.name == doc['name'].trim());
-          if (!duplicate) {
-            allCategory.add(value);
-          }
-        } else {
-          allCategory.add(value);
+        bool duplicate =
+            noCategory.any((element) => element.name == doc['name'].trim());
+        if (!duplicate) {
+          noCategory.add(value);
         }
-
         if (doc["word_category_id"] == wordCategoryId.toString()) {
           wordName.add(WordDetail(
-              id: int.parse(doc["id"].trim()),
+              id: int.parse(id),
               categoryId: int.parse(doc["word_category_id"].trim()),
               name: doc["name"].trim(),
               type: ''));
@@ -382,6 +384,14 @@ class AyaProvider extends ChangeNotifier {
         }
       }
     });
+    wordName.sort((a, b) => a.categoryId!.compareTo(b.categoryId!));
+    // for (var item in wordName) {
+    //   for (var element in wordTypeDetail) {
+    //     if (element.categoryId == item.categoryId) {
+    //       item.type = element.type;
+    //     }
+    //   }
+    // }
   }
 
   Future<void> getCategoryNameTranslation(categoryId, langId) async {
@@ -8973,18 +8983,44 @@ class AyaProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void replace(String? name, int index) {
-    var type;
+  void replace(String? name, int index, String? type, int? id) {
     var categoryId;
-    allCategory.forEach((element) {
+    noCategory.forEach((element) {
       if (element.name == name) {
-        type = element.type;
         categoryId = element.categoryId;
       }
     });
+
+    update("$id", categoryId);
+    print("update $id");
     wordName.replaceRange(index, index + 1,
         [WordDetail(type: type, categoryId: categoryId, name: name)]);
-    wordName.sort((a, b) => a.categoryId!.compareTo(b.categoryId!));
+    // update('18678668', categoryId);
     notifyListeners();
+  }
+
+  Future<String> getType(int id) async {
+    var obj = await wordCategory.where('id', isEqualTo: "$id").get();
+    var data = '';
+    obj.docs.forEach((element) {
+      data = element['word_type'] ?? '';
+    });
+    return data;
+  }
+
+  Future<void> update(String id, int wordId) async {
+    await wordRelationship
+        .doc(id)
+        .set({"word_category_id": '$wordId'}, SetOptions(merge: true));
+  }
+
+  checkMainColor(int? id) {
+    if (id == 3 || id == 329) {
+      return Color(0xffFF6106);
+    }
+    if (id == 68 || id == 384) {
+      return Color(0xffFF29DD);
+    }
+    return Colors.black;
   }
 }

@@ -37,8 +37,8 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<AppUser>(context).getRole();
-    var role = Provider.of<AppUser>(context).role;
+    Provider.of<AppUser>(context, listen: false).getRole();
+    var role = Provider.of<AppUser>(context, listen: false).role;
     return Consumer<AyaProvider>(builder: (context, aya, child) {
       List<WordDetail> word = aya.getWordTypeList() ?? <WordDetail>[];
       List<WordDetail> name = aya.getWordNameList() ?? <WordDetail>[];
@@ -49,7 +49,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
           }
         }
       }
-      name.sort((a, b) => a.categoryId!.compareTo(b.categoryId!));
+      // name.sort((a, b) => a.categoryId!.compareTo(b.categoryId!));
       var newPosition;
       var newPosition2;
       WordDetail old;
@@ -85,7 +85,6 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
               itemBuilder: (BuildContext context, int index) {
                 if (index == 0) {
                   final fontsize = Provider.of<AyaProvider>(context);
-                  print(widget.surah);
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
@@ -207,7 +206,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                                 fontSize:
                                     name[index].type == 'main-label' ? 24 : 20,
                                 color: name[index].type == 'main-label'
-                                    ? checkMainColor(name[index].id)
+                                    ? aya.checkMainColor(name[index].id)
                                     : Theme.of(context).textSelectionColor,
                               ),
                             ))
@@ -339,16 +338,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
     });
   }
 
-  checkMainColor(int? id) {
-    print(id);
-    if (id == 3 || id == 329) {
-      return Color(0xffFF6106);
-    }
-    if (id == 68 || id == 384) {
-      return Color(0xffFF29DD);
-    }
-    return Colors.black;
-  }
+
 
   checkColor(String category) {
     if (category == 'Ism') return Colors.blue;

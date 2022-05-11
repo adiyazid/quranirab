@@ -1,8 +1,9 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quranirab/models/word.detail.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
+
+import '../../provider/language.provider.dart';
 
 class EditData extends StatefulWidget {
   final int wordId;
@@ -15,6 +16,16 @@ class EditData extends StatefulWidget {
 
 class _EditDataState extends State<EditData> {
   var i = 0;
+
+  var _c1;
+  var _c2;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,100 +40,179 @@ class _EditDataState extends State<EditData> {
           }),
           centerTitle: true,
         ),
-        body: Center(
-          child: Column(
-            children: [
-              Spacer(),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.6,
-                height: MediaQuery.of(context).size.height * 0.55,
-                child: ListView.builder(
-                  itemCount: list.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Card(
-                      margin: EdgeInsets.all(16),
-                      child: ListTile(
-                        leading: Text(
-                          aya.wordName[index].categoryId.toString(),
-                        ),
-                        title: Text(
-                          aya.wordName[index].name!,
-                          style:
-                              TextStyle(fontFamily: 'MeQuran2', fontSize: 24),
-                        ),
-                        subtitle: Text(aya.wordName[index].type != ''
-                            ? 'Position : right side'
-                            : 'Position : left side'),
-                        trailing: SizedBox(
-                          width: 80,
-                          child: Row(
-                            children: [
-                              IconButton(
-                                  icon: Icon(Icons.edit),
-                                  onPressed: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          List<String> list = [];
-                                          aya.allCategory.forEach((element) {
-                                            list.add(element.name!);
-                                          });
-                                          return SizedBox(
-                                            height: 300,
-                                            child: AlertDialog(
-                                              content: DropdownSearch<String>(
-                                                dropdownSearchBaseStyle:
-                                                    TextStyle(
-                                                        fontFamily: 'MeQuran2'),
-                                                showSearchBox: true,
-                                                mode: Mode.DIALOG,
-                                                showSelectedItems: true,
-                                                dropdownBuilder: _style,
-                                                popupItemBuilder: _style1,
-                                                items: list,
-                                                dropdownSearchDecoration:
-                                                    InputDecoration(
-                                                  labelText: "Word Detail",
-                                                  hintText: "word type detail",
-                                                ),
-                                                onChanged: (String? value) {
-                                                  aya.replace(value, index);
-                                                },
-                                                selectedItem:
-                                                    aya.wordName[index].name,
-                                              ),
-                                            ),
-                                          );
-                                        });
-                                  }),
-                              IconButton(
-                                icon: Icon(Icons.delete),
-                                onPressed: () {
-                                  if (aya.wordName.length > 1) {
-                                    aya.removeDetail(index);
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 500,
+                  child: ListView.builder(
+                    controller: _c1,
+                    itemCount: list.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return aya.wordName[index].type != 'label'
+                          ? Card(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 8),
+                              child: ListTile(
+                                  leading: Text(
+                                    aya.wordName[index].categoryId.toString(),
+                                  ),
+                                  title: Text(
+                                    aya.wordName[index].name!,
+                                    style: TextStyle(
+                                        fontFamily: 'MeQuran2', fontSize: 24),
+                                  ),
+                                  subtitle: Text(
+                                      aya.wordName[index].type ?? 'Left-side'),
+                                  trailing: aya.wordName[index].type != 'main'
+                                      ? IconButton(
+                                          icon: Icon(Icons.edit),
+                                          onPressed: () {
+                                            showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  List<String> list = [];
+
+                                                  aya.noCategory
+                                                      .forEach((element) {
+                                                    list.add(element.name!);
+                                                  });
+                                                  return SizedBox(
+                                                    height: 300,
+                                                    child: AlertDialog(
+                                                      content: DropdownSearch<
+                                                          String>(
+                                                        dropdownSearchBaseStyle:
+                                                            TextStyle(
+                                                                fontFamily:
+                                                                    'MeQuran2'),
+                                                        showSearchBox: true,
+                                                        mode: Mode.DIALOG,
+                                                        showSelectedItems: true,
+                                                        dropdownBuilder: _style,
+                                                        popupItemBuilder:
+                                                            _style1,
+                                                        items: list,
+                                                        dropdownSearchDecoration:
+                                                            InputDecoration(
+                                                          labelText:
+                                                              "Word Detail",
+                                                          hintText:
+                                                              "word type detail",
+                                                        ),
+                                                        onChanged:
+                                                            (String? value) {
+                                                          aya.replace(
+                                                              value,
+                                                              index,
+                                                              aya
+                                                                  .wordName[
+                                                                      index]
+                                                                  .type,
+                                                              aya
+                                                                  .wordName[
+                                                                      index]
+                                                                  .id);
+                                                        },
+                                                        selectedItem: aya
+                                                            .wordName[index]
+                                                            .name,
+                                                      ),
+                                                    ),
+                                                  );
+                                                });
+                                          })
+                                      : null),
+                            )
+                          : Container();
+                    },
+                  ),
                 ),
-              ),
-              Expanded(
-                  child: IconButton(
-                icon: Icon(Icons.add),
-                onPressed: () {
-                  aya.addDetail(WordDetail(
-                      name: aya.allCategory[i].name,
-                      type: aya.allCategory[i].type,
-                      categoryId: aya.allCategory[i].categoryId));
-                  i++;
-                },
-              ))
-            ],
+                SizedBox(
+                  width: 500,
+                  child: ListView.builder(
+                    controller: _c2,
+                    itemCount: list.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return aya.wordName[index].type == 'label'
+                          ? Card(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 8),
+                              child: ListTile(
+                                leading: Text(
+                                  aya.wordName[index].categoryId.toString(),
+                                ),
+                                title: Text(
+                                  aya.wordName[index].name!,
+                                  style: TextStyle(
+                                      fontFamily: 'MeQuran2', fontSize: 24),
+                                ),
+                                subtitle: Text(
+                                    aya.wordName[index].type ?? 'Left-side'),
+                                trailing: aya.wordName[index].type != 'main'
+                                    ? IconButton(
+                                        icon: Icon(Icons.edit),
+                                        onPressed: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                List<String> list = [];
+                                                aya.noCategory
+                                                    .forEach((element) {
+                                                  list.add(element.name!);
+                                                });
+                                                return SizedBox(
+                                                  height: 300,
+                                                  child: AlertDialog(
+                                                    content:
+                                                        DropdownSearch<String>(
+                                                      dropdownSearchBaseStyle:
+                                                          TextStyle(
+                                                              fontFamily:
+                                                                  'MeQuran2'),
+                                                      showSearchBox: true,
+                                                      mode: Mode.DIALOG,
+                                                      showSelectedItems: true,
+                                                      dropdownBuilder: _style,
+                                                      popupItemBuilder: _style1,
+                                                      items: list,
+                                                      dropdownSearchDecoration:
+                                                          InputDecoration(
+                                                        labelText:
+                                                            "Word Detail",
+                                                        hintText:
+                                                            "word type detail",
+                                                      ),
+                                                      onChanged:
+                                                          (String? value) {
+                                                        aya.replace(
+                                                            value,
+                                                            index,
+                                                            aya.wordName[index]
+                                                                .type,
+                                                            aya.wordName[index]
+                                                                .id);
+                                                      },
+                                                      selectedItem: aya
+                                                          .wordName[index].name,
+                                                    ),
+                                                  ),
+                                                );
+                                              });
+                                        })
+                                    : null,
+                              ),
+                            )
+                          : Container();
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       );
