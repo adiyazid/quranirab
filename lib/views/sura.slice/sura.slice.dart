@@ -70,7 +70,7 @@ class _SuraSliceState extends State<SuraSlice> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                if (size.width > 1400)
+                                if (size.width > 600)
                                   Visibility(
                                     visible: aya.visible,
                                     child: Align(
@@ -175,15 +175,14 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                           onTap: aya.visible
                                                                               ? null
                                                                               : () {
-                                                                                  print(aya.slice![i].end);
                                                                                   Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.slice![i].wordId, Provider.of<LangProvider>(context, listen: false).langId);
                                                                                   aya.setWords(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
-                                                                                  if (size.width < 1400) {
+                                                                                  if (size.width < 600) {
                                                                                     showPopover(
                                                                                       backgroundColor: (themeProvider.isDarkMode) ? const Color(0xffa0a7b7) : const Color(0xfffff3ca),
                                                                                       context: context,
                                                                                       transitionDuration: Duration(milliseconds: 200),
-                                                                                      bodyBuilder: (context) => ListItems(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join()),
+                                                                                      bodyBuilder: (context) => ListItems(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join(), aya.slice![i].wordId!),
                                                                                       onPop: () {
                                                                                         Provider.of<AyaProvider>(context, listen: false).clear();
                                                                                       },
@@ -222,15 +221,14 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                               .visible
                                                                           ? null
                                                                           : () {
-                                                                              print(aya.slice![i].end);
                                                                               Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.slice![i].wordId, Provider.of<LangProvider>(context, listen: false).langId);
                                                                               aya.setWords(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
-                                                                              if (size.width < 1400) {
+                                                                              if (size.width < 600) {
                                                                                 showPopover(
                                                                                   backgroundColor: (themeProvider.isDarkMode) ? const Color(0xffa0a7b7) : const Color(0xfffff3ca),
                                                                                   context: context,
                                                                                   transitionDuration: Duration(milliseconds: 200),
-                                                                                  bodyBuilder: (context) => ListItems(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join()),
+                                                                                  bodyBuilder: (context) => ListItems(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join(), aya.slice![i].wordId!),
                                                                                   onPop: () {
                                                                                     Provider.of<AyaProvider>(context, listen: false).clear();
                                                                                   },
@@ -325,16 +323,15 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                           onTap: aya.visible
                                                                               ? null
                                                                               : () {
-                                                                                  print(aya.slice![i].end);
                                                                                   Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.slice![i].wordId, Provider.of<LangProvider>(context, listen: false).langId);
                                                                                   aya.setWords(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
-                                                                                  if (size.width < 1400) {
+                                                                                  if (size.width < 600) {
                                                                                     showPopover(
                                                                                       backgroundColor: (themeProvider.isDarkMode) ? const Color(0xffa0a7b7) : const Color(0xfffff3ca),
                                                                                       context: context,
                                                                                       transitionDuration: const Duration(milliseconds: 200),
                                                                                       bodyBuilder: (context) {
-                                                                                        return ListItems(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
+                                                                                        return ListItems(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join(), aya.slice![i].wordId!);
                                                                                       },
                                                                                       onPop: () {
                                                                                         Provider.of<AyaProvider>(context, listen: false).clear();
@@ -377,13 +374,13 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                               print(aya.slice![i].end);
                                                                               Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.slice![i].wordId, Provider.of<LangProvider>(context, listen: false).langId);
                                                                               aya.setWords(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
-                                                                              if (size.width < 1400) {
+                                                                              if (size.width < 600) {
                                                                                 showPopover(
                                                                                   backgroundColor: (themeProvider.isDarkMode) ? const Color(0xffa0a7b7) : const Color(0xfffff3ca),
                                                                                   context: context,
                                                                                   transitionDuration: const Duration(milliseconds: 200),
                                                                                   bodyBuilder: (context) {
-                                                                                    return ListItems(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
+                                                                                    return ListItems(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join(), aya.slice![i].wordId!);
                                                                                   },
                                                                                   onPop: () {
                                                                                     Provider.of<AyaProvider>(context, listen: false).clear();

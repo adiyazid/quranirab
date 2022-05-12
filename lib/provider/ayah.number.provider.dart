@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:quranirab/models/font.size.dart';
 import 'package:quranirab/models/word.detail.dart';
@@ -31,7 +31,7 @@ class AyaProvider extends ChangeNotifier {
   List isim = [];
   List haraf = [];
   List fail = [];
-  final List<WordDetail> wordTypeDetail = [];
+  final List<WordDetail> wordDetail = [];
   List<WordDetail> wordName = [];
 
   CollectionReference wordRelationship =
@@ -62,6 +62,10 @@ class AyaProvider extends ChangeNotifier {
   List<WordDetail> noCategory = [];
   List<WordDetail> mainCategory = [];
   List<WordDetail> labelCategory = [];
+
+  bool success = false;
+
+  List<WordDetail> parent = [];
 
   get value => _value;
 
@@ -196,8 +200,8 @@ class AyaProvider extends ChangeNotifier {
   }
 
   getWordTypeList() {
-    if (wordTypeDetail.isNotEmpty) {
-      return wordTypeDetail;
+    if (wordDetail.isNotEmpty) {
+      return wordDetail;
     } else {
       return null;
     }
@@ -254,36 +258,24 @@ class AyaProvider extends ChangeNotifier {
         .where('word_id', isEqualTo: wordId.toString())
         .get()
         .then((QuerySnapshot querySnapshot) {
-      if (querySnapshot.docs.isEmpty) {
-        wordTypeDetail.clear();
-        wordName.clear();
-        clear();
-        nodata = true;
-        notifyListeners();
-      } else {
-        wordTypeDetail.clear();
-        wordName.clear();
-        clear();
-        notifyListeners();
-        for (var doc in querySnapshot.docs) {
-          var relationshipID = doc["id"];
-          // getCategoryNameTranslation(doc["word_category_id"].trim(), langId);
-          getMainCategoryName(doc["word_category_id"].trim(), wordId, langId);
-          getLabelCategoryName(
-              doc["word_category_id"].trim(), langId, relationshipID);
-        }
+      for (var doc in querySnapshot.docs) {
+        var relationshipID = doc["id"];
+        var categoryID = doc["word_category_id"];
+        // getCategoryNameTranslation(doc["word_category_id"].trim(), langId);
+        getMainCategoryName(doc["word_category_id"], wordId, relationshipID);
+        getSubCategory(categoryID, relationshipID);
       }
     });
   }
 
-  Future<void> getMainCategoryName(wordCategoryId, wordId, langId) async {
+  Future<void> getMainCategoryName(wordCategoryId, wordId, id) async {
     await wordCategory
         .where('word_type', isEqualTo: 'main')
         .get()
         .then((QuerySnapshot querySnapshot) {
       for (var doc in querySnapshot.docs) {
         if (doc["id"] == wordCategoryId.toString()) {
-          category = doc["tname"].trim();
+          category = doc["tname"];
           if (doc["tname"].trim() == 'Ism') isim.add(wordId);
           if (doc["tname"].trim() == 'Fi‘l') fail.add(wordId);
           if (doc["tname"].trim() == 'Harf') haraf.add(wordId);
@@ -327,64 +319,64 @@ class AyaProvider extends ChangeNotifier {
     select.replaceRange(index, index + 1, [!value]);
   }
 
-  Future<void> getLabelCategoryName(
-      wordCategoryId, String langId, String id) async {
+  Future<void> getSubCategory(wordCategoryId, id) async {
     await wordCategory
-        .where('word_type', isEqualTo: 'label')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      for (var doc in querySnapshot.docs) {
-        if (doc["id"] == wordCategoryId.toString()) {
-          wordTypeDetail.add(WordDetail(
-              id: int.parse(id),
-              categoryId: int.parse(doc["id"].trim()),
-              name: doc["tname"].trim(),
-              type: doc["word_type"].trim()));
-          notifyListeners();
-        }
-      }
-    });
-    await wordCategory
-        .where('word_type', isEqualTo: 'main-label')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      for (var doc in querySnapshot.docs) {
-        if (doc["id"] == wordCategoryId.toString()) {
-          wordTypeDetail.add(WordDetail(
-              id: int.parse(id),
-              categoryId: int.parse(doc["id"].trim()),
-              name: doc["tname"].trim(),
-              type: doc["word_type"].trim()));
-          notifyListeners();
-        }
-      }
-    });
-    await wordCategoryTranslation
-        .where('language_id', isEqualTo: langId)
+        .where('id', isEqualTo: wordCategoryId)
         .get()
         .then((QuerySnapshot querySnapshot) async {
       for (var doc in querySnapshot.docs) {
-        var value = WordDetail(
+        wordDetail.add(WordDetail(
+            isparent: doc["ancestry"].split('/').last == '1' ? true : false,
+            hasChild: doc["ancestry"].split('/').last != '1' ? true : false,
+            parent: doc["ancestry"],
             id: int.parse(id),
-            categoryId: int.parse(doc["word_category_id"].trim()),
-            name: doc["name"].trim(),
-            type: '');
-        bool duplicate =
-            noCategory.any((element) => element.name == doc['name'].trim());
-        if (!duplicate) {
-          noCategory.add(value);
-        }
-        if (doc["word_category_id"] == wordCategoryId.toString()) {
-          wordName.add(WordDetail(
-              id: int.parse(id),
-              categoryId: int.parse(doc["word_category_id"].trim()),
-              name: doc["name"].trim(),
-              type: ''));
-          notifyListeners();
-        }
+            categoryId: int.parse(doc["id"]),
+            name: doc["tname"],
+            type: doc["word_type"]));
+        notifyListeners();
       }
     });
-    wordName.sort((a, b) => a.categoryId!.compareTo(b.categoryId!));
+    // await wordCategory
+    //     .where('word_type', isEqualTo: 'main-label')
+    //     .get()
+    //     .then((QuerySnapshot querySnapshot) {
+    //   for (var doc in querySnapshot.docs) {
+    //     if (doc["id"] == wordCategoryId.toString()) {
+    //       wordDetail.add(WordDetail(
+    //           parent: doc["ancestry"],
+    //           id: int.parse(id),
+    //           categoryId: int.parse(doc["id"].trim()),
+    //           name: doc["tname"].trim(),
+    //           type: doc["word_type"].trim()));
+    //       notifyListeners();
+    //     }
+    //   }
+    // });
+    // await wordCategoryTranslation
+    //     .where('language_id', isEqualTo: langId)
+    //     .get()
+    //     .then((QuerySnapshot querySnapshot) async {
+    //   for (var doc in querySnapshot.docs) {
+    //     var value = WordDetail(
+    //         id: int.parse(id),
+    //         categoryId: int.parse(doc["word_category_id"].trim()),
+    //         name: doc["name"].trim(),
+    //         type: '');
+    //     bool duplicate =
+    //         noCategory.any((element) => element.name == doc['name'].trim());
+    //     if (!duplicate) {
+    //       noCategory.add(value);
+    //     }
+    //     if (doc["word_category_id"] == wordCategoryId.toString()) {
+    //       wordName.add(WordDetail(
+    //           id: int.parse(id),
+    //           categoryId: int.parse(doc["word_category_id"].trim()),
+    //           name: doc["name"].trim(),
+    //           type: ''));
+    //       notifyListeners();
+    //     }
+    //   }
+    // });
     // for (var item in wordName) {
     //   for (var element in wordTypeDetail) {
     //     if (element.categoryId == item.categoryId) {
@@ -410,6 +402,7 @@ class AyaProvider extends ChangeNotifier {
     list!.clear();
     ayaPosition.clear();
     ayaNumber.clear();
+    parent.clear();
     notifyListeners();
   }
 
@@ -8966,7 +8959,7 @@ class AyaProvider extends ChangeNotifier {
   }
 
   getNoData() {
-    if (wordTypeDetail.isEmpty || wordName.isNotEmpty) {
+    if (wordDetail.isEmpty || wordName.isNotEmpty) {
       return false;
     } else {
       return true;
@@ -8983,19 +8976,46 @@ class AyaProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void replace(String? name, int index, String? type, int? id) {
+  Future<void> replace(String? name, int index, String? type, int? id,
+      BuildContext context) async {
     var categoryId;
-    noCategory.forEach((element) {
-      if (element.name == name) {
-        categoryId = element.categoryId;
-      }
-    });
+    var parent;
+    if (type == '') {
+      noCategory.forEach((element) {
+        if (element.name == name) {
+          categoryId = element.categoryId;
+          parent = element.parent;
+        }
+      });
+    } else if (type == 'label') {
+      labelCategory.forEach((element) {
+        if (element.name == name) {
+          categoryId = element.categoryId;
+          parent = element.parent;
+        }
+      });
+    } else if (type == 'main-label') {
+      mainCategory.forEach((element) {
+        if (element.name == name) {
+          categoryId = element.categoryId;
+          parent = element.parent;
+        }
+      });
+    }
+    wordName.replaceRange(index, index + 1, [
+      WordDetail(
+          isparent: parent.split('/').last == '1' ? true : false,
+          hasChild: parent.split('/').last != '1' ? true : false,
+          parent: parent,
+          id: id,
+          type: type,
+          categoryId: categoryId,
+          name: name)
+    ]);
 
-    update("$id", categoryId);
-    print("update $id");
-    wordName.replaceRange(index, index + 1,
-        [WordDetail(type: type, categoryId: categoryId, name: name)]);
-    // update('18678668', categoryId);
+    ///todo:update changes
+    await update("$id", categoryId, context);
+
     notifyListeners();
   }
 
@@ -9008,10 +9028,12 @@ class AyaProvider extends ChangeNotifier {
     return data;
   }
 
-  Future<void> update(String id, int wordId) async {
+  Future<void> update(String id, int wordId, BuildContext context) async {
     await wordRelationship
         .doc(id)
         .set({"word_category_id": '$wordId'}, SetOptions(merge: true));
+    success = true;
+    notifyListeners();
   }
 
   checkMainColor(int? id) {
@@ -9022,5 +9044,110 @@ class AyaProvider extends ChangeNotifier {
       return Color(0xffFF29DD);
     }
     return Colors.black;
+  }
+
+  Future<String> getLabelName(String id) async {
+    String name = '';
+    return await wordCategoryTranslation
+        .where('id', isEqualTo: id)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        if (doc['language_id'] == '1') {
+          name = doc['name'];
+          notifyListeners();
+        }
+      }
+      return name;
+    });
+  }
+
+  getAllLabel() async {
+    if (labelCategory.isEmpty) {
+      await wordCategory
+          .where('word_type', isEqualTo: 'label')
+          .get()
+          .then((QuerySnapshot querySnapshot) async {
+        for (var doc in querySnapshot.docs) {
+          var name = doc["tname"];
+          bool duplicate =
+              labelCategory.any((element) => element.name == name.trim());
+          if (!duplicate) {
+            if (name != '') {
+              String parent = doc["ancestry"] ?? '';
+              labelCategory.add(WordDetail(
+                  isparent: parent.split("/").last == '1' && parent == ''
+                      ? true
+                      : false,
+                  hasChild: parent.split("/").last != '1' && parent == ''
+                      ? true
+                      : false,
+                  parent: parent,
+                  categoryId: int.parse(doc["id"].trim()),
+                  name: name,
+                  type: doc["word_type"].trim()));
+            }
+          }
+        }
+      });
+    }
+    if (mainCategory.isEmpty) {
+      await wordCategory
+          .where('word_type', isEqualTo: 'main-label')
+          .get()
+          .then((QuerySnapshot querySnapshot) async {
+        for (var doc in querySnapshot.docs) {
+          var name = doc["tname"];
+          bool duplicate =
+              mainCategory.any((element) => element.name == name.trim());
+          if (!duplicate) {
+            if (name != '') {
+              String parent = doc["ancestry"];
+              mainCategory.add(WordDetail(
+                  isparent: parent.split('/').last == '1' ? true : false,
+                  hasChild: parent.split('/').last != '1' ? true : false,
+                  parent: parent,
+                  categoryId: int.parse(doc["id"].trim()),
+                  name: name,
+                  type: doc["word_type"].trim()));
+            }
+          }
+        }
+      });
+    }
+    for (var no in noCategory) {
+      for (var label in labelCategory) {
+        if (no.name == label.name) {
+          noCategory.remove(no);
+        }
+      }
+    }
+  }
+
+  List<WordDetail> getSubList(int childID, String parentID) {
+    String temp = '$parentID/$childID';
+    List<WordDetail> _list = [];
+    wordDetail.forEach((element) {
+      if (element.parent == temp) {
+        _list.add(element);
+      }
+    });
+    return _list;
+  }
+
+  List<WordDetail> getParent() {
+    wordDetail.forEach((element) {
+      if (element.isparent!) {
+        if (!parent.contains(element)) {
+          if (parent.isNotEmpty) {
+            parent.clear();
+            parent.add(element);
+          } else {
+            parent.add(element);
+          }
+        }
+      }
+    });
+    return parent;
   }
 }

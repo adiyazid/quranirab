@@ -1522,6 +1522,7 @@ class _HomePageState extends State<HomePage>
 
   Future<void> getList() async {
     await Provider.of<BookMarkProvider>(context, listen: false).getList();
+
     // Get docs from collection reference
     QuerySnapshot querySnapshot =
         await _collectionRef.orderBy('created_at').get();

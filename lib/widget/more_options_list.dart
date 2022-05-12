@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
-import 'package:quranirab/views/data_correction/edit.data.dart';
 import 'package:skeleton_loader/skeleton_loader.dart';
+import 'package:tree_view/tree_view.dart';
 
 import '../models/word.detail.dart';
 import '../provider/user.provider.dart';
+import '../theme/theme_provider.dart';
+import '../views/data_correction/edit.data.dart';
 
 class MoreOptionsList extends StatefulWidget {
   final String surah;
@@ -24,8 +26,6 @@ class MoreOptionsList extends StatefulWidget {
 }
 
 class _MoreOptionsListState extends State<MoreOptionsList> {
-  final ScrollController _controller = ScrollController();
-
   bool loaded = false;
 
   @override
@@ -39,181 +39,34 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
   Widget build(BuildContext context) {
     Provider.of<AppUser>(context, listen: false).getRole();
     var role = Provider.of<AppUser>(context, listen: false).role;
-    return Consumer<AyaProvider>(builder: (context, aya, child) {
-      List<WordDetail> word = aya.getWordTypeList() ?? <WordDetail>[];
-      List<WordDetail> name = aya.getWordNameList() ?? <WordDetail>[];
-      for (var item in name) {
-        for (var element in word) {
-          if (element.categoryId == item.categoryId) {
-            item.type = element.type;
-          }
-        }
-      }
-      // name.sort((a, b) => a.categoryId!.compareTo(b.categoryId!));
-      var newPosition;
-      var newPosition2;
-      WordDetail old;
-      WordDetail old2;
-      if (name.isNotEmpty) {
-        for (int i = 0; i < name.length; i++) {
-          if (name[i].categoryId == 68) {
-            newPosition = i + 1;
-          }
-          if (name[i].categoryId == 429) {
-            newPosition2 = i + 1;
-          }
-          if (name[i].categoryId == 495 && newPosition2 != null) {
-            old2 = name[i];
-            name.removeAt(i);
-            name.insertAll(newPosition2, [old2]);
-          }
-          if (name[i].id == 1426 && newPosition != null) {
-            old = name[i];
-            name.removeAt(i);
-            name.insertAll(newPosition, [old]);
-          }
-        }
-        aya.updateLoad();
-      }
 
+    return Consumer<AyaProvider>(builder: (context, aya, child) {
+      List<WordDetail> parent = aya.getParent();
+      aya.updateLoad();
       return aya.loadingCategory
-          ? ListView.builder(
-              controller: _controller,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount:
-                  name.last.type != "label" ? name.length - 1 : name.length,
-              itemBuilder: (BuildContext context, int index) {
-                if (index == 0) {
-                  final fontsize = Provider.of<AyaProvider>(context);
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: IconButton(
-                            onPressed: aya.visible == true
-                                ? () {
-                                    setState(() {
-                                      aya.set();
-                                      aya.defaultSelect();
-                                    });
-                                  }
-                                : null,
-                            icon: Icon(Icons.clear)),
-                      ),
-                      if (role == 'tester')
-                        Center(
-                          child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            EditData(widget.wordId)));
-                              },
-                              child: Text('Edit')),
-                        ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 16),
-                        child: Directionality(
-                            textDirection: TextDirection.rtl,
-                            child: Text(
-                              widget.surah
-                                  .replaceAll('ﲿ', '')
-                                  .replaceAll('ﲹ', '')
-                                  .replaceAll('ﲬ', '')
-                                  .replaceAll('ﲨ', ''),
-                              style: TextStyle(
-                                fontFamily: 'MeQuran2',
-                                fontSize: fontsize.value,
-                                color: Theme.of(context).textSelectionColor,
-                              ),
-                            )),
-                      ),
-                      const Divider(
-                        thickness: 1,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              name[index].name!,
-                              style: TextStyle(
-                                fontFamily: 'MeQuran2',
-                                fontSize: 24,
-                                color: checkColor(aya.category),
-                              ),
-                            ),
-                            Spacer(),
-                            Text(
-                              'نوع الكلمة',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontFamily: 'MeQuran2',
-                                  color: Theme.of(context).textSelectionColor,
-                                  fontSize: 20),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  );
-                }
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Row(
-                    children: [
-                      name[index + 1 < name.length ? index + 1 : index].type !=
-                                  'label' &&
-                              name[index + 1 < name.length ? index + 1 : index]
-                                      .type !=
-                                  'main-label'
-                          ? Container(
-                              height: aya.wordName.length < 35 ? 56 : 120,
-                              padding: const EdgeInsets.only(
-                                bottom: 0.2, // space between underline and text
-                              ),
-                              decoration: BoxDecoration(
-                                  border: Border(
-                                      bottom: BorderSide(
-                                color: Theme.of(context)
-                                    .textSelectionColor, // Text colour here
-                                width: 1, // Underline width
-                              ))),
-                              child: Text(
-                                "${index + 1 < name.length ? name[index + 1].name : ''}",
-                                maxLines: 2,
-                                style: TextStyle(
-                                  fontFamily: 'MeQuran2',
-                                  fontSize: 20,
-                                  color: Theme.of(context)
-                                      .textSelectionColor, // Text colour here
-                                ),
-                              ),
-                            )
-                          : Container(),
-                      Spacer(),
-                      if (name[index].type == 'label' ||
-                          name[index].type == 'main-label')
-                        Directionality(
-                            textDirection: TextDirection.rtl,
-                            child: Text(
-                              "${name[index].name}",
-                              style: TextStyle(
-                                fontFamily: 'MeQuran2',
-                                fontSize:
-                                    name[index].type == 'main-label' ? 24 : 20,
-                                color: name[index].type == 'main-label'
-                                    ? aya.checkMainColor(name[index].id)
-                                    : Theme.of(context).textSelectionColor,
-                              ),
-                            ))
-                    ],
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (role == 'tester')
+                  Center(
+                    child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      EditData(widget.wordId)));
+                        },
+                        child: Text('Edit')),
                   ),
-                );
-              },
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.8,
+                  child: TreeView(
+                    startExpanded: false,
+                    children: _getChildList(parent),
+                  ),
+                ),
+              ],
             )
           : aya.nodata
               ? Column(
@@ -338,12 +191,66 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
     });
   }
 
-
-
   checkColor(String category) {
     if (category == 'Ism') return Colors.blue;
     if (category == 'Harf') return Colors.red;
     if (category == 'Fi‘l') return Colors.green;
     return Colors.black;
   }
+
+  List<Widget> _getChildList(
+    List<WordDetail> childDocuments,
+  ) {
+    return childDocuments.map((document) {
+      if (document.isparent! || document.hasChild!) {
+        return Container(
+          margin: EdgeInsets.only(left: 8),
+          child: TreeViewChild(
+            parent: _getDocumentWidget(
+                document: document,
+                list: Provider.of<AyaProvider>(context, listen: false)
+                    .getSubList(document.categoryId!, document.parent!)),
+            children: _getChildList(
+              Provider.of<AyaProvider>(context, listen: false)
+                  .getSubList(document.categoryId!, document.parent!),
+            ),
+          ),
+        );
+      }
+      return Container(
+        margin: const EdgeInsets.only(left: 4.0),
+        child: _getDocumentWidget(document: document, list: []),
+      );
+    }).toList();
+  }
+
+  Widget _getDocumentWidget(
+          {required WordDetail document, required List<WordDetail> list}) =>
+      document.isparent!
+          ? Card(
+              color:
+                  Provider.of<ThemeProvider>(context, listen: false).isDarkMode
+                      ? Color(0xff4C6A7A)
+                      : Color(0xffE0BD61),
+              child: ListTile(
+                leading: Icon(Icons.navigate_next),
+                title: Text(document.name!),
+                trailing: Text("${list.length} items"),
+              ),
+            )
+          : list.isNotEmpty
+              ? Card(
+                  color: Provider.of<ThemeProvider>(context, listen: false)
+                          .isDarkMode
+                      ? Color(0xff808BA1)
+                      : Color(0xffFCD77A),
+                  child: ListTile(
+                      leading: Icon(Icons.arrow_right),
+                      title: Text(document.name!),
+                      trailing: Text("${list.length} items")),
+                )
+              : ListTile(
+                  leading: Icon(Icons.remove),
+                  title: Text(document.name!),
+                );
 }

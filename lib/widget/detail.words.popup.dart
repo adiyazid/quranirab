@@ -3,12 +3,15 @@ import 'package:provider/provider.dart';
 
 import '../models/word.detail.dart';
 import '../provider/ayah.number.provider.dart';
+import '../provider/user.provider.dart';
 import '../theme/theme_provider.dart';
+import '../views/data_correction/edit.data.dart';
 
 class ListItems extends StatefulWidget {
   final String text;
+  final int wordId;
 
-  const ListItems(this.text, {Key? key}) : super(key: key);
+  const ListItems(this.text, this.wordId, {Key? key}) : super(key: key);
 
   @override
   State<ListItems> createState() => _ListItemsState();
@@ -26,6 +29,8 @@ class _ListItemsState extends State<ListItems> {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<AppUser>(context, listen: false).getRole();
+    var role = Provider.of<AppUser>(context, listen: false).role;
     return Scrollbar(
       child: Consumer<AyaProvider>(builder: (context, aya, child) {
         List<WordDetail> word = aya.getWordTypeList() ?? <WordDetail>[];
@@ -37,7 +42,7 @@ class _ListItemsState extends State<ListItems> {
             }
           }
         }
-        name.sort((a, b) => a.categoryId!.compareTo(b.categoryId!));
+        // name.sort((a, b) => a.categoryId!.compareTo(b.categoryId!));
         var newPosition;
         var newPosition2;
         WordDetail old;
@@ -55,7 +60,7 @@ class _ListItemsState extends State<ListItems> {
               name.removeAt(i);
               name.insertAll(newPosition2, [old2]);
             }
-            if (name[i].id == 1426 && newPosition != null) {
+            if (name[i].categoryId == 1426 && newPosition != null) {
               old = name[i];
               name.removeAt(i);
               name.insertAll(newPosition, [old]);
@@ -68,6 +73,18 @@ class _ListItemsState extends State<ListItems> {
                 height: MediaQuery.of(context).size.height * 0.25,
                 child: Column(
                   children: [
+                    if (role == 'tester')
+                      Center(
+                        child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          EditData(widget.wordId)));
+                            },
+                            child: Text('Edit')),
+                      ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
