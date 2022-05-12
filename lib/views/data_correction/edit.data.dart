@@ -377,6 +377,7 @@ class _EditDataState extends State<EditData> {
     );
   }
 
+
   Widget _style1(BuildContext context, String? item, bool isSelected) {
     return Directionality(
       textDirection: TextDirection.rtl,
