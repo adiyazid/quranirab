@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:provider/provider.dart';
 import 'package:quranirab/models/option-model.dart';
 import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/quiz_module/quiz_list.dart';
@@ -8,8 +9,10 @@ import 'package:quranirab/quiz_module/quiz_model.dart';
 import 'package:quranirab/quiz_module/utils/AppColor.java';
 import 'package:quranirab/quiz_module/Quiz.Score.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:quranirab/quiz_module/utils/colors.dart';
 import 'package:quranirab/quiz_module/words.model.dart';
 
+import '../theme/theme_provider.dart';
 import '../word-relationship-model.dart';
 
 class Quiz extends StatefulWidget {
@@ -59,12 +62,12 @@ class _QuizState extends State<Quiz> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {var themeProvider = Provider.of<ThemeProvider>(context);
     windowWidth = MediaQuery.of(context).size.width;
     windowHeight = MediaQuery.of(context).size.height;
     windowSize = min(windowWidth, windowHeight);
     return Scaffold(
-      backgroundColor: Color(0xffffb55f),
+      backgroundColor: themeProvider.isDarkMode ? Color(0xff666666) : ManyColors.color17,
       body: dataReady
           ? PageView.builder(
               controller: _controller,
@@ -85,7 +88,7 @@ class _QuizState extends State<Quiz> {
                       height: 30.0,
                     ),
                     Container(
-                      color: const Color(0xffffb55f),
+                      color: themeProvider.isDarkMode ? Color(0xff666666) : ManyColors.color17,
                       padding: const EdgeInsets.all(10.0),
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height * 0.8,
@@ -226,12 +229,10 @@ class _QuizState extends State<Quiz> {
                                                               : !options_arabic[
                                                                           i]
                                                                       .isSelected
-                                                                  ? AppColor
-                                                                      .secondaryColor
+                                                                  ? themeProvider.isDarkMode ? AppColor.secondaryColor : AppColor.pripmaryColor
                                                                   : null
-                                                          : AppColor
-                                                              .secondaryColor
-                                                  : AppColor.secondaryColor,
+                                                          : themeProvider.isDarkMode ? AppColor.secondaryColor : AppColor.pripmaryColor
+                                                  : themeProvider.isDarkMode ? AppColor.secondaryColor : AppColor.pripmaryColor,
                                               onPressed: !answered
                                                   ? () {
                                                       selectedOption =
@@ -330,7 +331,7 @@ class _QuizState extends State<Quiz> {
                           },
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5)),
-                          fillColor: Colors.orange[200],
+                          fillColor: themeProvider.isDarkMode ? Color(0xff808ba1) : Colors.orange[200],
                           padding: const EdgeInsets.all(15.0),
                           elevation: 0.0,
                           child: Text(

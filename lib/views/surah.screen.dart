@@ -817,7 +817,8 @@ class _SurahScreenState extends State<SurahScreen>
                           )),
                     ),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(primary: Colors.orangeAccent),
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.orangeAccent),
                   onPressed: () => Navigator.push(
                       context,
                       MaterialPageRoute(
