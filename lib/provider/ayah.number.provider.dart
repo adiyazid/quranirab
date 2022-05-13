@@ -336,54 +336,7 @@ class AyaProvider extends ChangeNotifier {
         notifyListeners();
       }
     });
-    // await wordCategory
-    //     .where('word_type', isEqualTo: 'main-label')
-    //     .get()
-    //     .then((QuerySnapshot querySnapshot) {
-    //   for (var doc in querySnapshot.docs) {
-    //     if (doc["id"] == wordCategoryId.toString()) {
-    //       wordDetail.add(WordDetail(
-    //           parent: doc["ancestry"],
-    //           id: int.parse(id),
-    //           categoryId: int.parse(doc["id"].trim()),
-    //           name: doc["tname"].trim(),
-    //           type: doc["word_type"].trim()));
-    //       notifyListeners();
-    //     }
-    //   }
-    // });
-    // await wordCategoryTranslation
-    //     .where('language_id', isEqualTo: langId)
-    //     .get()
-    //     .then((QuerySnapshot querySnapshot) async {
-    //   for (var doc in querySnapshot.docs) {
-    //     var value = WordDetail(
-    //         id: int.parse(id),
-    //         categoryId: int.parse(doc["word_category_id"].trim()),
-    //         name: doc["name"].trim(),
-    //         type: '');
-    //     bool duplicate =
-    //         noCategory.any((element) => element.name == doc['name'].trim());
-    //     if (!duplicate) {
-    //       noCategory.add(value);
-    //     }
-    //     if (doc["word_category_id"] == wordCategoryId.toString()) {
-    //       wordName.add(WordDetail(
-    //           id: int.parse(id),
-    //           categoryId: int.parse(doc["word_category_id"].trim()),
-    //           name: doc["name"].trim(),
-    //           type: ''));
-    //       notifyListeners();
-    //     }
-    //   }
-    // });
-    // for (var item in wordName) {
-    //   for (var element in wordTypeDetail) {
-    //     if (element.categoryId == item.categoryId) {
-    //       item.type = element.type;
-    //     }
-    //   }
-    // }
+    wordDetail.sort((a, b) => a.categoryId!.compareTo(b.categoryId!));
   }
 
   Future<void> getCategoryNameTranslation(categoryId, langId) async {
@@ -433,6 +386,7 @@ class AyaProvider extends ChangeNotifier {
   }
 
   set() {
+    wordDetail.clear();
     visible = !visible;
     notifyListeners();
   }
@@ -8980,29 +8934,30 @@ class AyaProvider extends ChangeNotifier {
       BuildContext context) async {
     var categoryId;
     var parent;
-    if (type == '') {
-      noCategory.forEach((element) {
-        if (element.name == name) {
-          categoryId = element.categoryId;
-          parent = element.parent;
-        }
-      });
-    } else if (type == 'label') {
-      labelCategory.forEach((element) {
-        if (element.name == name) {
-          categoryId = element.categoryId;
-          parent = element.parent;
-        }
-      });
-    } else if (type == 'main-label') {
-      mainCategory.forEach((element) {
-        if (element.name == name) {
-          categoryId = element.categoryId;
-          parent = element.parent;
-        }
-      });
-    }
-    wordName.replaceRange(index, index + 1, [
+    labelCategory.forEach((element) {
+      if (element.name == name) {
+        categoryId = element.categoryId;
+        parent = element.parent;
+      }
+    });
+    // if (type == '') {
+    //   noCategory.forEach((element) {
+    //     if (element.name == name) {
+    //       categoryId = element.categoryId;
+    //       parent = element.parent;
+    //     }
+    //   });
+    // } else if (type == 'label') {
+    //
+    // } else if (type == 'main-label') {
+    //   mainCategory.forEach((element) {
+    //     if (element.name == name) {
+    //       categoryId = element.categoryId;
+    //       parent = element.parent;
+    //     }
+    //   });
+    // }
+    wordDetail.replaceRange(index, index + 1, [
       WordDetail(
           isparent: parent.split('/').last == '1' ? true : false,
           hasChild: parent.split('/').last != '1' ? true : false,
@@ -9091,37 +9046,37 @@ class AyaProvider extends ChangeNotifier {
         }
       });
     }
-    if (mainCategory.isEmpty) {
-      await wordCategory
-          .where('word_type', isEqualTo: 'main-label')
-          .get()
-          .then((QuerySnapshot querySnapshot) async {
-        for (var doc in querySnapshot.docs) {
-          var name = doc["tname"];
-          bool duplicate =
-              mainCategory.any((element) => element.name == name.trim());
-          if (!duplicate) {
-            if (name != '') {
-              String parent = doc["ancestry"];
-              mainCategory.add(WordDetail(
-                  isparent: parent.split('/').last == '1' ? true : false,
-                  hasChild: parent.split('/').last != '1' ? true : false,
-                  parent: parent,
-                  categoryId: int.parse(doc["id"].trim()),
-                  name: name,
-                  type: doc["word_type"].trim()));
-            }
-          }
-        }
-      });
-    }
-    for (var no in noCategory) {
-      for (var label in labelCategory) {
-        if (no.name == label.name) {
-          noCategory.remove(no);
-        }
-      }
-    }
+    // if (mainCategory.isEmpty) {
+    //   await wordCategory
+    //       .where('word_type', isEqualTo: 'main-label')
+    //       .get()
+    //       .then((QuerySnapshot querySnapshot) async {
+    //     for (var doc in querySnapshot.docs) {
+    //       var name = doc["tname"];
+    //       bool duplicate =
+    //           mainCategory.any((element) => element.name == name.trim());
+    //       if (!duplicate) {
+    //         if (name != '') {
+    //           String parent = doc["ancestry"];
+    //           mainCategory.add(WordDetail(
+    //               isparent: parent.split('/').last == '1' ? true : false,
+    //               hasChild: parent.split('/').last != '1' ? true : false,
+    //               parent: parent,
+    //               categoryId: int.parse(doc["id"].trim()),
+    //               name: name,
+    //               type: doc["word_type"].trim()));
+    //         }
+    //       }
+    //     }
+    //   });
+    // }
+    // for (var no in noCategory) {
+    //   for (var label in labelCategory) {
+    //     if (no.name == label.name) {
+    //       noCategory.remove(no);
+    //     }
+    //   }
+    // }
   }
 
   List<WordDetail> getSubList(int childID, String parentID) {

@@ -31,36 +31,46 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
   @override
   void initState() {
     // TODO: implement initState
-
+    Provider.of<AppUser>(context, listen: false).getRole();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<AppUser>(context, listen: false).getRole();
-    var role = Provider.of<AppUser>(context, listen: false).role;
+    var role = Provider.of<AppUser>(context).role;
 
     return Consumer<AyaProvider>(builder: (context, aya, child) {
       List<WordDetail> parent = aya.getParent();
       aya.updateLoad();
       return aya.loadingCategory
           ? Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (role == 'tester')
-                  Center(
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      EditData(widget.wordId)));
-                        },
-                        child: Text('Edit')),
-                  ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.8,
+                  height: MediaQuery.of(context).size.height * 0.1,
+                  child: Row(
+                    children: [
+                      TextButton(
+                          onPressed: () {
+                            aya.set();
+                          },
+                          child: Text('Close')),
+                      if (role == 'tester')
+                        Center(
+                          child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            EditData(widget.wordId)));
+                              },
+                              child: Text('Edit')),
+                        ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.7,
                   child: TreeView(
                     startExpanded: false,
                     children: _getChildList(parent),

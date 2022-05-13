@@ -39,6 +39,7 @@ class AppUser extends ChangeNotifier {
         throw (e.toString());
       }
     }
+
   }
 
   Future<void> getRole() async {
