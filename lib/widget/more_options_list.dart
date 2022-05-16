@@ -84,7 +84,9 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                       AsyncSnapshot<WordDetail> snapshot,
                     ) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator(color: Colors.orangeAccent,);
+                        return CircularProgressIndicator(
+                          color: Colors.orangeAccent,
+                        );
                       } else if (snapshot.connectionState ==
                               ConnectionState.active ||
                           snapshot.connectionState == ConnectionState.done) {
@@ -209,6 +211,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
         return Container(
           margin: EdgeInsets.only(left: 8),
           child: TreeViewChild(
+            startExpanded: document.hasChild! ? false : true,
             parent: _getDocumentWidget(
                 document: document,
                 list: Provider.of<AyaProvider>(context, listen: false)

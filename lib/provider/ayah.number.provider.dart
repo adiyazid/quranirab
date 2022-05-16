@@ -61,8 +61,6 @@ class AyaProvider extends ChangeNotifier {
 
   List<WordDetail> labelCategory = [];
 
-  bool success = false;
-
   List<WordDetail> parent = [];
 
   get value => _value;
@@ -338,7 +336,7 @@ class AyaProvider extends ChangeNotifier {
             id: int.parse(id),
             categoryId: int.parse(doc["id"]),
             name: doc["tname"],
-            type: doc["word_type"]??''));
+            type: doc["word_type"] ?? ''));
         notifyListeners();
       }
     });
@@ -8936,48 +8934,25 @@ class AyaProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> replace(String? name, int index, String? type, int? id,
-      BuildContext context) async {
-    var categoryId;
-    var parent;
-    labelCategory.forEach((element) {
-      if (element.name == name) {
-        categoryId = element.categoryId;
-        parent = element.parent;
-      }
-    });
-    // if (type == '') {
-    //   noCategory.forEach((element) {
-    //     if (element.name == name) {
-    //       categoryId = element.categoryId;
-    //       parent = element.parent;
-    //     }
-    //   });
-    // } else if (type == 'label') {
-    //
-    // } else if (type == 'main-label') {
-    //   mainCategory.forEach((element) {
-    //     if (element.name == name) {
-    //       categoryId = element.categoryId;
-    //       parent = element.parent;
-    //     }
-    //   });
-    // }
+  Future<void> replace(WordDetail data, int? id) async {
+    var index = wordDetail.indexWhere((element) => element.id == id);
     wordDetail.replaceRange(index, index + 1, [
       WordDetail(
-          isparent:
-              parent.split("/").length == 1 || parent == '' ? true : false,
-          hasChild: parent.split("/").length > 1 || parent == '' ? true : false,
-          parent: parent,
+          isparent: data.parent!.split("/").length == 1 || data.parent == ''
+              ? true
+              : false,
+          hasChild: data.parent!.split("/").length > 1 || data.parent == ''
+              ? true
+              : false,
+          parent: data.parent,
           id: id,
-          type: type,
-          categoryId: categoryId,
-          name: name)
+          type: data.type,
+          categoryId: data.categoryId,
+          name: data.name)
     ]);
 
     ///todo:update changes
-    await update("$id", categoryId, context);
-
+    await update("$id", data.categoryId!);
     notifyListeners();
   }
 
@@ -8990,11 +8965,11 @@ class AyaProvider extends ChangeNotifier {
     return data;
   }
 
-  Future<void> update(String id, int wordId, BuildContext context) async {
-    await wordRelationship
-        .doc(id)
-        .set({"word_category_id": '$wordId'}, SetOptions(merge: true));
-    success = true;
+  Future<void> update(String id, int wordId) async {
+    await wordRelationship.doc(id).set({
+      "updated_at": DateTime.now().toString(),
+      "word_category_id": '$wordId'
+    }, SetOptions(merge: true));
     notifyListeners();
   }
 
@@ -9024,36 +8999,36 @@ class AyaProvider extends ChangeNotifier {
     });
   }
 
-  getAllLabel() async {
-    if (labelCategory.isEmpty) {
-      await wordCategory
-          .where('word_type', isEqualTo: 'label')
-          .get()
-          .then((QuerySnapshot querySnapshot) async {
-        for (var doc in querySnapshot.docs) {
-          var name = doc["tname"];
-          bool duplicate =
-              labelCategory.any((element) => element.name == name.trim());
-          if (!duplicate) {
-            if (name != '') {
-              String parent = doc["ancestry"] ?? '';
-              labelCategory.add(WordDetail(
-                  isparent: parent.split("/").length == 1 || parent == ''
-                      ? true
-                      : false,
-                  hasChild: parent.split("/").length > 1 || parent == ''
-                      ? true
-                      : false,
-                  parent: parent,
-                  categoryId: int.parse(doc["id"].trim()),
-                  name: name,
-                  type: doc["word_type"].trim()));
-            }
-          }
-        }
-      });
-    }
-  }
+  // getAllLabel() async {
+  //   if (labelCategory.isEmpty) {
+  //     await wordCategory
+  //         .where('word_type', isEqualTo: 'label')
+  //         .get()
+  //         .then((QuerySnapshot querySnapshot) async {
+  //       for (var doc in querySnapshot.docs) {
+  //         var name = doc["tname"];
+  //         bool duplicate =
+  //             labelCategory.any((element) => element.name == name.trim());
+  //         if (!duplicate) {
+  //           if (name != '') {
+  //             String parent = doc["ancestry"] ?? '';
+  //             labelCategory.add(WordDetail(
+  //                 isparent: parent.split("/").length == 1 || parent == ''
+  //                     ? true
+  //                     : false,
+  //                 hasChild: parent.split("/").length > 1 || parent == ''
+  //                     ? true
+  //                     : false,
+  //                 parent: parent,
+  //                 categoryId: int.parse(doc["id"].trim()),
+  //                 name: name,
+  //                 type: doc["word_type"].trim()));
+  //           }
+  //         }
+  //       }
+  //     });
+  //   }
+  // }
 
   List<WordDetail> getSubList(int childID, String parentID) {
     String temp = '';
@@ -9104,11 +9079,29 @@ class AyaProvider extends ChangeNotifier {
               parent: parent,
               categoryId: int.parse(doc["id"].trim()),
               name: name,
-              type: doc["word_type"]??'');
+              type: doc["word_type"] ?? '');
         }
         return data;
       });
     }
     return obj;
+  }
+
+  Future<List<WordDetail>> getList(String parentID) async {
+    labelCategory.clear();
+    await wordCategory
+        .where('ancestry', isEqualTo: parentID)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        labelCategory.add(WordDetail(
+            parent: doc["ancestry"] ?? '',
+            name: doc["tname"] ?? '',
+            type: doc['word_type'] ?? '',
+            categoryId: int.parse(doc['id'])));
+      }
+    });
+    notifyListeners();
+    return labelCategory;
   }
 }
