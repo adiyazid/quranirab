@@ -1,7 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:quranirab/quiz_module/quiz.home.dart';
+import 'package:quranirab/quiz_module/utils/AppColor.java';
+import 'package:quranirab/quiz_module/utils/colors.dart';
+import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/widget/appbar.widget.dart';
 import 'package:quranirab/widget/menu.dart';
 import 'package:quranirab/widget/setting.dart';
@@ -29,9 +33,10 @@ class _QuizScoreState extends State<QuizScore> {
     windowWidth = MediaQuery.of(context).size.width;
     windowHeight = MediaQuery.of(context).size.height;
     windowSize = min(windowWidth, windowHeight);
+    var themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
-        backgroundColor: Colors.white12,
+        backgroundColor: themeProvider.isDarkMode ? Color(0xff666666) : Colors.white,
         drawer: const Menu(),
         endDrawer: const Setting(),
         body: DefaultTabController(
@@ -50,7 +55,7 @@ class _QuizScoreState extends State<QuizScore> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 40, vertical: 40),
                       child: Container(
-                        color: const Color(0xfffff5ec),
+                        color: themeProvider.isDarkMode ? Color(0xff808ba1) : Color(0xfffff5ec),
                         width: MediaQuery.of(context).size.width / 1.4,
                         height: MediaQuery.of(context).size.height / 1.4,
                         child: Column(
@@ -90,7 +95,7 @@ class _QuizScoreState extends State<QuizScore> {
                                   button182(
                                       'Play Again',
                                       const TextStyle(fontSize: 28),
-                                      const Color(0xffffb55f),
+                                      themeProvider.isDarkMode ? AppColor.secondaryColor : AppColor.pripmaryColor,
                                       10, () {
                                     Navigator.push(
                                         context,
@@ -105,7 +110,7 @@ class _QuizScoreState extends State<QuizScore> {
                                   button182(
                                       'Back to Page',
                                       const TextStyle(fontSize: 28),
-                                      const Color(0xffffb55f),
+                                      themeProvider.isDarkMode ? AppColor.secondaryColor : AppColor.pripmaryColor,
                                       10, () {
                                     Navigator.pop(context);
                                   }, true),
@@ -116,7 +121,7 @@ class _QuizScoreState extends State<QuizScore> {
                                   button182(
                                       'Leaderboard',
                                       const TextStyle(fontSize: 28),
-                                      const Color(0xffffb55f),
+                                      themeProvider.isDarkMode ? AppColor.secondaryColor : AppColor.pripmaryColor,
                                       10, () {
                                     Navigator.push(
                                         context,

@@ -3,6 +3,7 @@ import 'dart:ui';
 
 class ManyColors{
   //
+  static const Color color0 = Color(0xffffb55f);
   static const Color color1 = Color(0xff5cc3c2);
   static const Color color2 = Color(0xffd77071);
   static const Color color3 = Color(0xffffc3c5);
