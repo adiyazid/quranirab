@@ -313,12 +313,12 @@ class AyaProvider extends ChangeNotifier {
   }
 
   void updateValue(int index) {
-    var value = select.elementAt(index);
+    //var value = select.elementAt(index);
     if (select.contains(true)) {
       select = old;
       notifyListeners();
     }
-    select.replaceRange(index, index + 1, [!value]);
+    select.replaceRange(index, index + 1, [true]);
   }
 
   Future<void> getSubCategory(wordCategoryId, id) async {
