@@ -8998,38 +8998,6 @@ class AyaProvider extends ChangeNotifier {
       return name;
     });
   }
-
-  // getAllLabel() async {
-  //   if (labelCategory.isEmpty) {
-  //     await wordCategory
-  //         .where('word_type', isEqualTo: 'label')
-  //         .get()
-  //         .then((QuerySnapshot querySnapshot) async {
-  //       for (var doc in querySnapshot.docs) {
-  //         var name = doc["tname"];
-  //         bool duplicate =
-  //             labelCategory.any((element) => element.name == name.trim());
-  //         if (!duplicate) {
-  //           if (name != '') {
-  //             String parent = doc["ancestry"] ?? '';
-  //             labelCategory.add(WordDetail(
-  //                 isparent: parent.split("/").length == 1 || parent == ''
-  //                     ? true
-  //                     : false,
-  //                 hasChild: parent.split("/").length > 1 || parent == ''
-  //                     ? true
-  //                     : false,
-  //                 parent: parent,
-  //                 categoryId: int.parse(doc["id"].trim()),
-  //                 name: name,
-  //                 type: doc["word_type"].trim()));
-  //           }
-  //         }
-  //       }
-  //     });
-  //   }
-  // }
-
   List<WordDetail> getSubList(int childID, String parentID) {
     String temp = '';
     if (parentID == '') {
@@ -9084,6 +9052,7 @@ class AyaProvider extends ChangeNotifier {
         return data;
       });
     }
+    print(obj);
     return obj;
   }
 

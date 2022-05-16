@@ -24,6 +24,7 @@ class _EditDataState extends State<EditData> {
   @override
   void initState() {
     // TODO: implement initState
+
     init();
     super.initState();
   }
@@ -42,122 +43,6 @@ class _EditDataState extends State<EditData> {
           centerTitle: true,
         ),
         body: TreeView(startExpanded: true, children: _getChildList(parent)),
-        // ),Padding(
-        //   padding: const EdgeInsets.all(8.0),
-        //   child: Center(
-        //     child: Row(
-        //       mainAxisAlignment: MainAxisAlignment.center,
-        //       children: [
-        //         SizedBox(
-        //           width: MediaQuery.of(context).size.width * 0.4,
-        //           child: ListView.builder(
-        //             controller: _c1,
-        //             itemCount: list.length,
-        //             itemBuilder: (BuildContext context, int index) {
-        //               return Card(
-        //                 margin:
-        //                     EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-        //                 child: ListTile(
-        //                     leading: Text(
-        //                       aya.wordDetail[index].categoryId.toString(),
-        //                     ),
-        //                     title: Text(
-        //                       aya.wordDetail[index].name!,
-        //                       style: TextStyle(
-        //                           fontFamily: 'MeQuran2', fontSize: 24),
-        //                     ),
-        //                     subtitle:
-        //                         Text(aya.wordDetail[index].type ?? 'Left-side'),
-        //                     trailing: aya.wordDetail[index].type != 'main'
-        //                         ? IconButton(
-        //                             icon: Icon(Icons.edit),
-        //                             onPressed: () {
-        //                               showDialog(
-        //                                   context: context,
-        //                                   builder: (BuildContext context) {
-        //                                     List<String> list = [];
-        //                                     aya.labelCategory
-        //                                         .forEach((element) {
-        //                                       list.add(element.name!);
-        //                                     });
-        //                                     String? data = '';
-        //                                     return SizedBox(
-        //                                       height: MediaQuery.of(context)
-        //                                               .size
-        //                                               .height *
-        //                                           0.4,
-        //                                       child: AlertDialog(
-        //                                         content: DropdownSearch<String>(
-        //                                           dropdownSearchBaseStyle:
-        //                                               TextStyle(
-        //                                                   fontFamily:
-        //                                                       'MeQuran2'),
-        //                                           showSearchBox: true,
-        //                                           mode: Mode.DIALOG,
-        //                                           showSelectedItems: true,
-        //                                           dropdownBuilder: _style,
-        //                                           popupItemBuilder: _style1,
-        //                                           items: list,
-        //                                           dropdownSearchDecoration:
-        //                                               InputDecoration(
-        //                                             labelText: "Word Detail",
-        //                                             hintText:
-        //                                                 "word type detail",
-        //                                           ),
-        //                                           onChanged: (String? value) {
-        //                                             setState(() {
-        //                                               data = value;
-        //                                             });
-        //                                           },
-        //                                           selectedItem: aya
-        //                                               .wordDetail[index].name,
-        //                                         ),
-        //                                         actions: [
-        //                                           Center(
-        //                                             child: ElevatedButton(
-        //                                                 onPressed: () {
-        //                                                   aya.replace(
-        //                                                       data,
-        //                                                       index,
-        //                                                       aya
-        //                                                           .wordDetail[
-        //                                                               index]
-        //                                                           .type,
-        //                                                       aya
-        //                                                           .wordDetail[
-        //                                                               index]
-        //                                                           .id,
-        //                                                       context);
-        //                                                   Navigator.pop(
-        //                                                       context);
-        //                                                   if (aya.success) {
-        //                                                     showTopSnackBar(
-        //                                                       context,
-        //                                                       CustomSnackBar
-        //                                                           .success(
-        //                                                         message:
-        //                                                             'Update Success',
-        //                                                       ),
-        //                                                     );
-        //                                                   }
-        //                                                 },
-        //                                                 child: Text(
-        //                                                     'Confirm Changes')),
-        //                                           )
-        //                                         ],
-        //                                       ),
-        //                                     );
-        //                                   });
-        //                             })
-        //                         : null),
-        //               );
-        //             },
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // ),
       );
     });
   }

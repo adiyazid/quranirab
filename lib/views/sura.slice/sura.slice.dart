@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:popover/popover.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/models/font.size.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
@@ -10,7 +9,6 @@ import 'package:quranirab/provider/language.provider.dart';
 
 import '../../widget/more_options_list.dart';
 import '../../theme/theme_provider.dart';
-import '../../widget/detail.words.popup.dart';
 
 class SuraSlice extends StatefulWidget {
   final String page;
@@ -57,7 +55,6 @@ class _SuraSliceState extends State<SuraSlice> {
   @override
   Widget build(BuildContext context) {
     return Consumer<AyaProvider>(builder: (context, aya, child) {
-      final size = MediaQuery.of(context).size;
       final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
       aya.checkRebuilt(aya.nums);
 
@@ -159,59 +156,13 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                           aya.slice![i]
                                                                               .end)
                                                                       .join());
-                                                                  if (size.width <
-                                                                      600) {
-                                                                    showPopover(
-                                                                      backgroundColor: (themeProvider
-                                                                              .isDarkMode)
-                                                                          ? const Color(
-                                                                              0xffa0a7b7)
-                                                                          : const Color(
-                                                                              0xfffff3ca),
-                                                                      context:
-                                                                          context,
-                                                                      transitionDuration:
-                                                                          Duration(
-                                                                              milliseconds: 200),
-                                                                      bodyBuilder: (context) => ListItems(
-                                                                          aya.list!
-                                                                              .join()
-                                                                              .split('')
-                                                                              .getRange(aya.slice![i].start - 1, aya.slice![i].end)
-                                                                              .join(),
-                                                                          aya.slice![i].wordId!),
-                                                                      onPop:
-                                                                          () {
-                                                                        Provider.of<AyaProvider>(context,
-                                                                                listen: false)
-                                                                            .clearCategory();
-                                                                      },
-                                                                      direction:
-                                                                          PopoverDirection
-                                                                              .bottom,
-                                                                      width: MediaQuery.of(context).size.width <
-                                                                              600
-                                                                          ? MediaQuery.of(context).size.width *
-                                                                              0.9
-                                                                          : 450,
-                                                                      height: MediaQuery.of(context)
-                                                                              .size
-                                                                              .height *
-                                                                          0.35,
-                                                                      arrowHeight:
-                                                                          15,
-                                                                      arrowWidth:
-                                                                          30,
-                                                                    );
-                                                                  } else {
-                                                                    if (mounted) {
-                                                                      setState(
-                                                                          () {
-                                                                        aya.updateValue(
-                                                                            i);
-                                                                        aya.set();
-                                                                      });
-                                                                    }
+                                                                  if (mounted) {
+                                                                    setState(
+                                                                            () {
+                                                                          aya.updateValue(
+                                                                              i);
+                                                                          aya.set();
+                                                                        });
                                                                   }
                                                                 },
                                                                 child: Text(
@@ -281,68 +232,12 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                               i]
                                                                           .end)
                                                                   .join());
-                                                              if (size.width <
-                                                                  600) {
-                                                                showPopover(
-                                                                  backgroundColor: (themeProvider
-                                                                          .isDarkMode)
-                                                                      ? const Color(
-                                                                          0xffa0a7b7)
-                                                                      : const Color(
-                                                                          0xfffff3ca),
-                                                                  context:
-                                                                      context,
-                                                                  transitionDuration:
-                                                                      Duration(
-                                                                          milliseconds:
-                                                                              200),
-                                                                  bodyBuilder: (context) => ListItems(
-                                                                      aya.list!
-                                                                          .join()
-                                                                          .split(
-                                                                              '')
-                                                                          .getRange(
-                                                                              aya.slice![i].start - 1,
-                                                                              aya.slice![i].end)
-                                                                          .join(),
-                                                                      aya.slice![i].wordId!),
-                                                                  onPop: () {
-                                                                    Provider.of<AyaProvider>(
-                                                                            context,
-                                                                            listen:
-                                                                                false)
-                                                                        .clearCategory();
-                                                                  },
-                                                                  direction:
-                                                                      PopoverDirection
-                                                                          .bottom,
-                                                                  width: MediaQuery.of(context)
-                                                                              .size
-                                                                              .width <
-                                                                          600
-                                                                      ? MediaQuery.of(context)
-                                                                              .size
-                                                                              .width *
-                                                                          0.9
-                                                                      : 450,
-                                                                  height: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .height *
-                                                                      0.35,
-                                                                  arrowHeight:
-                                                                      15,
-                                                                  arrowWidth:
-                                                                      30,
-                                                                );
-                                                              } else {
-                                                                if (mounted) {
-                                                                  setState(() {
-                                                                    aya.updateValue(
-                                                                        i);
-                                                                    aya.set();
-                                                                  });
-                                                                }
+                                                              if (mounted) {
+                                                                setState(() {
+                                                                  aya.updateValue(
+                                                                      i);
+                                                                  aya.set();
+                                                                });
                                                               }
                                                             },
                                                             child: Text(
@@ -446,58 +341,13 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                           aya.slice![i]
                                                                               .end)
                                                                       .join());
-                                                                  if (size.width <
-                                                                      600) {
-                                                                    showPopover(
-                                                                      backgroundColor: (themeProvider
-                                                                              .isDarkMode)
-                                                                          ? const Color(
-                                                                              0xffa0a7b7)
-                                                                          : const Color(
-                                                                              0xfffff3ca),
-                                                                      context:
-                                                                          context,
-                                                                      transitionDuration:
-                                                                          const Duration(
-                                                                              milliseconds: 200),
-                                                                      bodyBuilder:
-                                                                          (context) {
-                                                                        return ListItems(
-                                                                            aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join(),
-                                                                            aya.slice![i].wordId!);
-                                                                      },
-                                                                      onPop:
-                                                                          () {
-                                                                        Provider.of<AyaProvider>(context,
-                                                                                listen: false)
-                                                                            .clearCategory();
-                                                                      },
-                                                                      direction:
-                                                                          PopoverDirection
-                                                                              .bottom,
-                                                                      width: MediaQuery.of(context).size.width <
-                                                                              600
-                                                                          ? MediaQuery.of(context).size.width *
-                                                                              0.9
-                                                                          : 450,
-                                                                      height: MediaQuery.of(context)
-                                                                              .size
-                                                                              .height *
-                                                                          0.35,
-                                                                      arrowHeight:
-                                                                          15,
-                                                                      arrowWidth:
-                                                                          30,
-                                                                    );
-                                                                  } else {
-                                                                    if (mounted) {
-                                                                      setState(
-                                                                          () {
-                                                                        aya.updateValue(
-                                                                            i);
-                                                                        aya.set();
-                                                                      });
-                                                                    }
+                                                                  if (mounted) {
+                                                                    setState(
+                                                                            () {
+                                                                          aya.updateValue(
+                                                                              i);
+                                                                          aya.set();
+                                                                        });
                                                                   }
                                                                 },
                                                                 child: Text(
@@ -567,70 +417,12 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                               i]
                                                                           .end)
                                                                   .join());
-                                                              if (size.width <
-                                                                  600) {
-                                                                showPopover(
-                                                                  backgroundColor: (themeProvider
-                                                                          .isDarkMode)
-                                                                      ? const Color(
-                                                                          0xffa0a7b7)
-                                                                      : const Color(
-                                                                          0xfffff3ca),
-                                                                  context:
-                                                                      context,
-                                                                  transitionDuration:
-                                                                      const Duration(
-                                                                          milliseconds:
-                                                                              200),
-                                                                  bodyBuilder:
-                                                                      (context) {
-                                                                    return ListItems(
-                                                                        aya.list!
-                                                                            .join()
-                                                                            .split(
-                                                                                '')
-                                                                            .getRange(aya.slice![i].start - 1,
-                                                                                aya.slice![i].end)
-                                                                            .join(),
-                                                                        aya.slice![i].wordId!);
-                                                                  },
-                                                                  onPop: () {
-                                                                    Provider.of<AyaProvider>(
-                                                                            context,
-                                                                            listen:
-                                                                                false)
-                                                                        .clearCategory();
-                                                                  },
-                                                                  direction:
-                                                                      PopoverDirection
-                                                                          .bottom,
-                                                                  width: MediaQuery.of(context)
-                                                                              .size
-                                                                              .width <
-                                                                          600
-                                                                      ? MediaQuery.of(context)
-                                                                              .size
-                                                                              .width *
-                                                                          0.9
-                                                                      : 450,
-                                                                  height: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .height *
-                                                                      0.35,
-                                                                  arrowHeight:
-                                                                      15,
-                                                                  arrowWidth:
-                                                                      30,
-                                                                );
-                                                              } else {
-                                                                if (mounted) {
-                                                                  setState(() {
-                                                                    aya.updateValue(
-                                                                        i);
-                                                                    aya.set();
-                                                                  });
-                                                                }
+                                                              if (mounted) {
+                                                                setState(() {
+                                                                  aya.updateValue(
+                                                                      i);
+                                                                  aya.set();
+                                                                });
                                                               }
                                                             },
                                                             child: Text(
