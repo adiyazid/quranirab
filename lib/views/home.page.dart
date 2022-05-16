@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 
 import 'package:provider/provider.dart';
-import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/surah.screen.dart';
 import 'package:skeleton_loader/skeleton_loader.dart';

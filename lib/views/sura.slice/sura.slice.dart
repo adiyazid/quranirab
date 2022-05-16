@@ -63,6 +63,27 @@ class _SuraSliceState extends State<SuraSlice> {
 
       return aya.loading
           ? Scaffold(
+              drawer: Drawer(
+                backgroundColor: themeProvider.isDarkMode
+                    ? const Color(0xff9A9A9A)
+                    : const Color(0xffFFF5EC),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: (themeProvider.isDarkMode)
+                            ? const Color(0xffffffff)
+                            : const Color(0xffFFB55F)),
+                    color: (themeProvider.isDarkMode)
+                        ? const Color(0xffa0a7b7)
+                        : const Color(0xfffff3ca),
+                  ),
+                  child: MoreOptionsList(
+                    surah: aya.words ?? '',
+                    nukKalimah: 'c',
+                    wordId: aya.wordID,
+                  ),
+                ),
+              ),
               body: aya.breakIndex!.isNotEmpty
                   ? Stack(
                       children: [
@@ -116,38 +137,83 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                         .value,
                                                                   )),
                                                               InkWell(
-                                                                onTap:
-                                                                    aya.visible
-                                                                        ? null
-                                                                        : () {
-                                                                            Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.slice![i].wordId,
-                                                                                Provider.of<LangProvider>(context, listen: false).langId);
-                                                                            aya.setWords(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
-                                                                            if (size.width <
-                                                                                600) {
-                                                                              showPopover(
-                                                                                backgroundColor: (themeProvider.isDarkMode) ? const Color(0xffa0a7b7) : const Color(0xfffff3ca),
-                                                                                context: context,
-                                                                                transitionDuration: Duration(milliseconds: 200),
-                                                                                bodyBuilder: (context) => ListItems(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join(), aya.slice![i].wordId!),
-                                                                                onPop: () {
-                                                                                  Provider.of<AyaProvider>(context, listen: false).clear();
-                                                                                },
-                                                                                direction: PopoverDirection.bottom,
-                                                                                width: MediaQuery.of(context).size.width < 600 ? MediaQuery.of(context).size.width * 0.9 : 450,
-                                                                                height: MediaQuery.of(context).size.height * 0.35,
-                                                                                arrowHeight: 15,
-                                                                                arrowWidth: 30,
-                                                                              );
-                                                                            } else {
-                                                                              if (mounted) {
-                                                                                setState(() {
-                                                                                  aya.updateValue(i);
-                                                                                  aya.set();
-                                                                                });
-                                                                              }
-                                                                            }
-                                                                          },
+                                                                onTap: () {
+                                                                  Scaffold.of(
+                                                                          context)
+                                                                      .openDrawer();
+                                                                  Provider.of<AyaProvider>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .getCategoryName(
+                                                                          aya.slice![i]
+                                                                              .wordId,
+                                                                          Provider.of<LangProvider>(context, listen: false).langId);
+                                                                  aya.setWords(aya
+                                                                      .list!
+                                                                      .join()
+                                                                      .split('')
+                                                                      .getRange(
+                                                                          aya.slice![i].start -
+                                                                              1,
+                                                                          aya.slice![i]
+                                                                              .end)
+                                                                      .join());
+                                                                  if (size.width <
+                                                                      600) {
+                                                                    showPopover(
+                                                                      backgroundColor: (themeProvider
+                                                                              .isDarkMode)
+                                                                          ? const Color(
+                                                                              0xffa0a7b7)
+                                                                          : const Color(
+                                                                              0xfffff3ca),
+                                                                      context:
+                                                                          context,
+                                                                      transitionDuration:
+                                                                          Duration(
+                                                                              milliseconds: 200),
+                                                                      bodyBuilder: (context) => ListItems(
+                                                                          aya.list!
+                                                                              .join()
+                                                                              .split('')
+                                                                              .getRange(aya.slice![i].start - 1, aya.slice![i].end)
+                                                                              .join(),
+                                                                          aya.slice![i].wordId!),
+                                                                      onPop:
+                                                                          () {
+                                                                        Provider.of<AyaProvider>(context,
+                                                                                listen: false)
+                                                                            .clearCategory();
+                                                                      },
+                                                                      direction:
+                                                                          PopoverDirection
+                                                                              .bottom,
+                                                                      width: MediaQuery.of(context).size.width <
+                                                                              600
+                                                                          ? MediaQuery.of(context).size.width *
+                                                                              0.9
+                                                                          : 450,
+                                                                      height: MediaQuery.of(context)
+                                                                              .size
+                                                                              .height *
+                                                                          0.35,
+                                                                      arrowHeight:
+                                                                          15,
+                                                                      arrowWidth:
+                                                                          30,
+                                                                    );
+                                                                  } else {
+                                                                    if (mounted) {
+                                                                      setState(
+                                                                          () {
+                                                                        aya.updateValue(
+                                                                            i);
+                                                                        aya.set();
+                                                                      });
+                                                                    }
+                                                                  }
+                                                                },
                                                                 child: Text(
                                                                     aya.list!
                                                                         .join()
@@ -186,69 +252,99 @@ class _SuraSliceState extends State<SuraSlice> {
                                                             ],
                                                           )
                                                         : InkWell(
-                                                            onTap: aya.visible
-                                                                ? null
-                                                                : () {
+                                                            onTap: () {
+                                                              Scaffold.of(
+                                                                      context)
+                                                                  .openDrawer();
+                                                              Provider.of<AyaProvider>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .getCategoryName(
+                                                                      aya
+                                                                          .slice![
+                                                                              i]
+                                                                          .wordId,
+                                                                      Provider.of<LangProvider>(
+                                                                              context,
+                                                                              listen: false)
+                                                                          .langId);
+                                                              aya.setWords(aya
+                                                                  .list!
+                                                                  .join()
+                                                                  .split('')
+                                                                  .getRange(
+                                                                      aya.slice![i].start -
+                                                                          1,
+                                                                      aya
+                                                                          .slice![
+                                                                              i]
+                                                                          .end)
+                                                                  .join());
+                                                              if (size.width <
+                                                                  600) {
+                                                                showPopover(
+                                                                  backgroundColor: (themeProvider
+                                                                          .isDarkMode)
+                                                                      ? const Color(
+                                                                          0xffa0a7b7)
+                                                                      : const Color(
+                                                                          0xfffff3ca),
+                                                                  context:
+                                                                      context,
+                                                                  transitionDuration:
+                                                                      Duration(
+                                                                          milliseconds:
+                                                                              200),
+                                                                  bodyBuilder: (context) => ListItems(
+                                                                      aya.list!
+                                                                          .join()
+                                                                          .split(
+                                                                              '')
+                                                                          .getRange(
+                                                                              aya.slice![i].start - 1,
+                                                                              aya.slice![i].end)
+                                                                          .join(),
+                                                                      aya.slice![i].wordId!),
+                                                                  onPop: () {
                                                                     Provider.of<AyaProvider>(
                                                                             context,
                                                                             listen:
                                                                                 false)
-                                                                        .getCategoryName(
-                                                                            aya.slice![i].wordId,
-                                                                            Provider.of<LangProvider>(context, listen: false).langId);
-                                                                    aya.setWords(aya
-                                                                        .list!
-                                                                        .join()
-                                                                        .split(
-                                                                            '')
-                                                                        .getRange(
-                                                                            aya.slice![i].start -
-                                                                                1,
-                                                                            aya.slice![i].end)
-                                                                        .join());
-                                                                    if (size.width <
-                                                                        600) {
-                                                                      showPopover(
-                                                                        backgroundColor: (themeProvider.isDarkMode)
-                                                                            ? const Color(0xffa0a7b7)
-                                                                            : const Color(0xfffff3ca),
-                                                                        context:
-                                                                            context,
-                                                                        transitionDuration:
-                                                                            Duration(milliseconds: 200),
-                                                                        bodyBuilder: (context) => ListItems(
-                                                                            aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join(),
-                                                                            aya.slice![i].wordId!),
-                                                                        onPop:
-                                                                            () {
-                                                                          Provider.of<AyaProvider>(context, listen: false)
-                                                                              .clear();
-                                                                        },
-                                                                        direction:
-                                                                            PopoverDirection.bottom,
-                                                                        width: MediaQuery.of(context).size.width <
-                                                                                600
-                                                                            ? MediaQuery.of(context).size.width *
-                                                                                0.9
-                                                                            : 450,
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.35,
-                                                                        arrowHeight:
-                                                                            15,
-                                                                        arrowWidth:
-                                                                            30,
-                                                                      );
-                                                                    } else {
-                                                                      if (mounted) {
-                                                                        setState(
-                                                                            () {
-                                                                          aya.updateValue(
-                                                                              i);
-                                                                          aya.set();
-                                                                        });
-                                                                      }
-                                                                    }
+                                                                        .clearCategory();
                                                                   },
+                                                                  direction:
+                                                                      PopoverDirection
+                                                                          .bottom,
+                                                                  width: MediaQuery.of(context)
+                                                                              .size
+                                                                              .width <
+                                                                          600
+                                                                      ? MediaQuery.of(context)
+                                                                              .size
+                                                                              .width *
+                                                                          0.9
+                                                                      : 450,
+                                                                  height: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .height *
+                                                                      0.35,
+                                                                  arrowHeight:
+                                                                      15,
+                                                                  arrowWidth:
+                                                                      30,
+                                                                );
+                                                              } else {
+                                                                if (mounted) {
+                                                                  setState(() {
+                                                                    aya.updateValue(
+                                                                        i);
+                                                                    aya.set();
+                                                                  });
+                                                                }
+                                                              }
+                                                            },
                                                             child: Text(
                                                                 aya.list!
                                                                     .join()
@@ -279,9 +375,6 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                               i]
                                                                           .wordId)
                                                                       : null,
-                                                                  // aya.getBoolean(_slice[i]['start'] - 1)
-                                                                  //     ? aya.getColor(_slice[i]['word_id'])
-                                                                  //     : Colors.black)),
                                                                 )),
                                                           );
                                                   }),
@@ -331,40 +424,82 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                         .value,
                                                                   )),
                                                               InkWell(
-                                                                onTap:
-                                                                    aya.visible
-                                                                        ? null
-                                                                        : () {
-                                                                            Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.slice![i].wordId,
-                                                                                Provider.of<LangProvider>(context, listen: false).langId);
-                                                                            aya.setWords(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
-                                                                            if (size.width <
-                                                                                600) {
-                                                                              showPopover(
-                                                                                backgroundColor: (themeProvider.isDarkMode) ? const Color(0xffa0a7b7) : const Color(0xfffff3ca),
-                                                                                context: context,
-                                                                                transitionDuration: const Duration(milliseconds: 200),
-                                                                                bodyBuilder: (context) {
-                                                                                  return ListItems(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join(), aya.slice![i].wordId!);
-                                                                                },
-                                                                                onPop: () {
-                                                                                  Provider.of<AyaProvider>(context, listen: false).clear();
-                                                                                },
-                                                                                direction: PopoverDirection.bottom,
-                                                                                width: MediaQuery.of(context).size.width < 600 ? MediaQuery.of(context).size.width * 0.9 : 450,
-                                                                                height: MediaQuery.of(context).size.height * 0.35,
-                                                                                arrowHeight: 15,
-                                                                                arrowWidth: 30,
-                                                                              );
-                                                                            } else {
-                                                                              if (mounted) {
-                                                                                setState(() {
-                                                                                  aya.updateValue(i);
-                                                                                  aya.set();
-                                                                                });
-                                                                              }
-                                                                            }
-                                                                          },
+                                                                onTap: () {
+                                                                  Scaffold.of(
+                                                                          context)
+                                                                      .openDrawer();
+                                                                  Provider.of<AyaProvider>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .getCategoryName(
+                                                                          aya.slice![i]
+                                                                              .wordId,
+                                                                          Provider.of<LangProvider>(context, listen: false).langId);
+                                                                  aya.setWords(aya
+                                                                      .list!
+                                                                      .join()
+                                                                      .split('')
+                                                                      .getRange(
+                                                                          aya.slice![i].start -
+                                                                              1,
+                                                                          aya.slice![i]
+                                                                              .end)
+                                                                      .join());
+                                                                  if (size.width <
+                                                                      600) {
+                                                                    showPopover(
+                                                                      backgroundColor: (themeProvider
+                                                                              .isDarkMode)
+                                                                          ? const Color(
+                                                                              0xffa0a7b7)
+                                                                          : const Color(
+                                                                              0xfffff3ca),
+                                                                      context:
+                                                                          context,
+                                                                      transitionDuration:
+                                                                          const Duration(
+                                                                              milliseconds: 200),
+                                                                      bodyBuilder:
+                                                                          (context) {
+                                                                        return ListItems(
+                                                                            aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join(),
+                                                                            aya.slice![i].wordId!);
+                                                                      },
+                                                                      onPop:
+                                                                          () {
+                                                                        Provider.of<AyaProvider>(context,
+                                                                                listen: false)
+                                                                            .clearCategory();
+                                                                      },
+                                                                      direction:
+                                                                          PopoverDirection
+                                                                              .bottom,
+                                                                      width: MediaQuery.of(context).size.width <
+                                                                              600
+                                                                          ? MediaQuery.of(context).size.width *
+                                                                              0.9
+                                                                          : 450,
+                                                                      height: MediaQuery.of(context)
+                                                                              .size
+                                                                              .height *
+                                                                          0.35,
+                                                                      arrowHeight:
+                                                                          15,
+                                                                      arrowWidth:
+                                                                          30,
+                                                                    );
+                                                                  } else {
+                                                                    if (mounted) {
+                                                                      setState(
+                                                                          () {
+                                                                        aya.updateValue(
+                                                                            i);
+                                                                        aya.set();
+                                                                      });
+                                                                    }
+                                                                  }
+                                                                },
                                                                 child: Text(
                                                                     aya.list!
                                                                         .join()
@@ -403,76 +538,101 @@ class _SuraSliceState extends State<SuraSlice> {
                                                             ],
                                                           )
                                                         : InkWell(
-                                                            onTap: aya.visible
-                                                                ? null
-                                                                : () {
-                                                                    print(aya
-                                                                        .slice![
-                                                                            i]
-                                                                        .end);
+                                                            onTap: () {
+                                                              Scaffold.of(
+                                                                      context)
+                                                                  .openDrawer();
+                                                              Provider.of<AyaProvider>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .getCategoryName(
+                                                                      aya
+                                                                          .slice![
+                                                                              i]
+                                                                          .wordId,
+                                                                      Provider.of<LangProvider>(
+                                                                              context,
+                                                                              listen: false)
+                                                                          .langId);
+                                                              aya.setWords(aya
+                                                                  .list!
+                                                                  .join()
+                                                                  .split('')
+                                                                  .getRange(
+                                                                      aya.slice![i].start -
+                                                                          1,
+                                                                      aya
+                                                                          .slice![
+                                                                              i]
+                                                                          .end)
+                                                                  .join());
+                                                              if (size.width <
+                                                                  600) {
+                                                                showPopover(
+                                                                  backgroundColor: (themeProvider
+                                                                          .isDarkMode)
+                                                                      ? const Color(
+                                                                          0xffa0a7b7)
+                                                                      : const Color(
+                                                                          0xfffff3ca),
+                                                                  context:
+                                                                      context,
+                                                                  transitionDuration:
+                                                                      const Duration(
+                                                                          milliseconds:
+                                                                              200),
+                                                                  bodyBuilder:
+                                                                      (context) {
+                                                                    return ListItems(
+                                                                        aya.list!
+                                                                            .join()
+                                                                            .split(
+                                                                                '')
+                                                                            .getRange(aya.slice![i].start - 1,
+                                                                                aya.slice![i].end)
+                                                                            .join(),
+                                                                        aya.slice![i].wordId!);
+                                                                  },
+                                                                  onPop: () {
                                                                     Provider.of<AyaProvider>(
                                                                             context,
                                                                             listen:
                                                                                 false)
-                                                                        .getCategoryName(
-                                                                            aya.slice![i].wordId,
-                                                                            Provider.of<LangProvider>(context, listen: false).langId);
-                                                                    aya.setWords(aya
-                                                                        .list!
-                                                                        .join()
-                                                                        .split(
-                                                                            '')
-                                                                        .getRange(
-                                                                            aya.slice![i].start -
-                                                                                1,
-                                                                            aya.slice![i].end)
-                                                                        .join());
-                                                                    if (size.width <
-                                                                        600) {
-                                                                      showPopover(
-                                                                        backgroundColor: (themeProvider.isDarkMode)
-                                                                            ? const Color(0xffa0a7b7)
-                                                                            : const Color(0xfffff3ca),
-                                                                        context:
-                                                                            context,
-                                                                        transitionDuration:
-                                                                            const Duration(milliseconds: 200),
-                                                                        bodyBuilder:
-                                                                            (context) {
-                                                                          return ListItems(
-                                                                              aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join(),
-                                                                              aya.slice![i].wordId!);
-                                                                        },
-                                                                        onPop:
-                                                                            () {
-                                                                          Provider.of<AyaProvider>(context, listen: false)
-                                                                              .clear();
-                                                                        },
-                                                                        direction:
-                                                                            PopoverDirection.bottom,
-                                                                        width: MediaQuery.of(context).size.width <
-                                                                                600
-                                                                            ? MediaQuery.of(context).size.width *
-                                                                                0.9
-                                                                            : 450,
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.35,
-                                                                        arrowHeight:
-                                                                            15,
-                                                                        arrowWidth:
-                                                                            30,
-                                                                      );
-                                                                    } else {
-                                                                      if (mounted) {
-                                                                        setState(
-                                                                            () {
-                                                                          aya.updateValue(
-                                                                              i);
-                                                                          aya.set();
-                                                                        });
-                                                                      }
-                                                                    }
+                                                                        .clearCategory();
                                                                   },
+                                                                  direction:
+                                                                      PopoverDirection
+                                                                          .bottom,
+                                                                  width: MediaQuery.of(context)
+                                                                              .size
+                                                                              .width <
+                                                                          600
+                                                                      ? MediaQuery.of(context)
+                                                                              .size
+                                                                              .width *
+                                                                          0.9
+                                                                      : 450,
+                                                                  height: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .height *
+                                                                      0.35,
+                                                                  arrowHeight:
+                                                                      15,
+                                                                  arrowWidth:
+                                                                      30,
+                                                                );
+                                                              } else {
+                                                                if (mounted) {
+                                                                  setState(() {
+                                                                    aya.updateValue(
+                                                                        i);
+                                                                    aya.set();
+                                                                  });
+                                                                }
+                                                              }
+                                                            },
                                                             child: Text(
                                                                 aya.list!
                                                                     .join()
@@ -522,44 +682,6 @@ class _SuraSliceState extends State<SuraSlice> {
                             ],
                           ),
                         ),
-                        if (size.width > 700)
-                          Visibility(
-                            visible: aya.wordDetail.isEmpty ? false : true,
-                            child: Align(
-                              alignment: Alignment.topLeft,
-                              child: SizedBox(
-                                height: MediaQuery.of(context).size.height,
-                                width: MediaQuery.of(context).size.width * 0.35,
-                                child: Container(
-                                  color: themeProvider.isDarkMode
-                                      ? const Color(0xff9A9A9A)
-                                      : const Color(0xffFFF5EC),
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.33,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: (themeProvider.isDarkMode)
-                                              ? const Color(0xffffffff)
-                                              : const Color(0xffFFB55F)),
-                                      color: (themeProvider.isDarkMode)
-                                          ? const Color(0xffa0a7b7)
-                                          : const Color(0xfffff3ca),
-                                    ),
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 18.0),
-                                      child: MoreOptionsList(
-                                        surah: aya.words ?? '',
-                                        nukKalimah: 'c',
-                                        wordId: aya.wordID,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
                       ],
                     )
                   : Container())

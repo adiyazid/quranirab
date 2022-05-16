@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:quranirab/models/font.size.dart';
 import 'package:quranirab/models/word.detail.dart';
@@ -59,8 +58,6 @@ class AyaProvider extends ChangeNotifier {
 
   bool nodata = false;
 
-  List<WordDetail> noCategory = [];
-  List<WordDetail> mainCategory = [];
   List<WordDetail> labelCategory = [];
 
   bool success = false;
@@ -239,7 +236,7 @@ class AyaProvider extends ChangeNotifier {
     }
   }
 
-  void clear() {
+  void clearCategory() {
     isim.clear();
     haraf.clear();
     fail.clear();
@@ -254,6 +251,9 @@ class AyaProvider extends ChangeNotifier {
 
   Future<void> getCategoryName(wordId, langId) async {
     wordID = wordId;
+    loadingCategory = false;
+    clearCategory();
+    notifyListeners();
     await wordRelationship
         .where('word_id', isEqualTo: wordId.toString())
         .get()
@@ -266,6 +266,8 @@ class AyaProvider extends ChangeNotifier {
         getSubCategory(categoryID, relationshipID);
       }
     });
+    loadingCategory = true;
+    notifyListeners();
   }
 
   Future<void> getMainCategoryName(wordCategoryId, wordId, id) async {
@@ -9046,37 +9048,6 @@ class AyaProvider extends ChangeNotifier {
         }
       });
     }
-    // if (mainCategory.isEmpty) {
-    //   await wordCategory
-    //       .where('word_type', isEqualTo: 'main-label')
-    //       .get()
-    //       .then((QuerySnapshot querySnapshot) async {
-    //     for (var doc in querySnapshot.docs) {
-    //       var name = doc["tname"];
-    //       bool duplicate =
-    //           mainCategory.any((element) => element.name == name.trim());
-    //       if (!duplicate) {
-    //         if (name != '') {
-    //           String parent = doc["ancestry"];
-    //           mainCategory.add(WordDetail(
-    //               isparent: parent.split('/').last == '1' ? true : false,
-    //               hasChild: parent.split('/').last != '1' ? true : false,
-    //               parent: parent,
-    //               categoryId: int.parse(doc["id"].trim()),
-    //               name: name,
-    //               type: doc["word_type"].trim()));
-    //         }
-    //       }
-    //     }
-    //   });
-    // }
-    // for (var no in noCategory) {
-    //   for (var label in labelCategory) {
-    //     if (no.name == label.name) {
-    //       noCategory.remove(no);
-    //     }
-    //   }
-    // }
   }
 
   List<WordDetail> getSubList(int childID, String parentID) {

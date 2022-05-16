@@ -41,38 +41,35 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
 
     return Consumer<AyaProvider>(builder: (context, aya, child) {
       List<WordDetail> parent = aya.getParent();
-      aya.updateLoad();
       return aya.loadingCategory
           ? Column(
               children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  child: Row(
-                    children: [
-                      TextButton(
-                          onPressed: () {
-                            aya.set();
-                          },
-                          child: Text('Close')),
-                      if (role == 'tester')
-                        Center(
-                          child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            EditData(widget.wordId)));
-                              },
-                              child: Text('Edit')),
-                        ),
-                    ],
+                Text(
+                  aya.words ?? '',
+                  style: TextStyle(
+                    fontFamily: 'MeQuran2',
+                    fontSize: aya.value,
                   ),
+                ),
+                if (role == 'tester')
+                  Center(
+                    child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      EditData(widget.wordId)));
+                        },
+                        child: Text('Edit')),
+                  ),
+                const Divider(
+                  thickness: 1,
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.7,
                   child: TreeView(
-                    startExpanded: false,
+                    startExpanded: true,
                     children: _getChildList(parent),
                   ),
                 ),
@@ -123,9 +120,6 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                                 height: 30,
                                 width: 100,
                               )),
-                        ),
-                        const Divider(
-                          thickness: 1,
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
