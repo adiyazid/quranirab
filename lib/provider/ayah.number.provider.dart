@@ -11,7 +11,7 @@ import '../models/slicing.data.model.dart';
 import '../models/surah.split.model.dart';
 
 class AyaProvider extends ChangeNotifier {
-  var data = 'No data..';
+  WordDetail? data;
   var page = 1;
   var category = 'Waiting to retrieve data...';
   final storageRef = FirebaseStorage.instance.ref();
@@ -62,6 +62,8 @@ class AyaProvider extends ChangeNotifier {
   List<WordDetail> labelCategory = [];
 
   List<WordDetail> parent = [];
+
+  bool success = false;
 
   get value => _value;
 
@@ -8998,6 +9000,7 @@ class AyaProvider extends ChangeNotifier {
       return name;
     });
   }
+
   List<WordDetail> getSubList(int childID, String parentID) {
     String temp = '';
     if (parentID == '') {

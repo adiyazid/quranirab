@@ -146,6 +146,7 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                           aya.slice![i]
                                                                               .wordId,
                                                                           Provider.of<LangProvider>(context, listen: false).langId);
+
                                                                   aya.setWords(aya
                                                                       .list!
                                                                       .join()
@@ -158,11 +159,11 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                       .join());
                                                                   if (mounted) {
                                                                     setState(
-                                                                            () {
-                                                                          aya.updateValue(
-                                                                              i);
-                                                                          aya.set();
-                                                                        });
+                                                                        () {
+                                                                      aya.updateValue(
+                                                                          i);
+                                                                      aya.set();
+                                                                    });
                                                                   }
                                                                 },
                                                                 child: Text(
@@ -343,11 +344,11 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                       .join());
                                                                   if (mounted) {
                                                                     setState(
-                                                                            () {
-                                                                          aya.updateValue(
-                                                                              i);
-                                                                          aya.set();
-                                                                        });
+                                                                        () {
+                                                                      aya.updateValue(
+                                                                          i);
+                                                                      aya.set();
+                                                                    });
                                                                   }
                                                                 },
                                                                 child: Text(

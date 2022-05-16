@@ -182,12 +182,17 @@ class _EditDataState extends State<EditData> {
               actions: [
                 IconButton(
                     onPressed: () {
-                      label.forEach((element) async {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(Icons.clear)),
+                IconButton(
+                    onPressed: () async {
+                      for (var element in label){
                         if (data == element.name) {
                           await Provider.of<AyaProvider>(context, listen: false)
                               .replace(element, document.id);
                         }
-                      });
+                      }
                       showTopSnackBar(
                         context,
                         const CustomSnackBar.success(
@@ -196,12 +201,7 @@ class _EditDataState extends State<EditData> {
                       );
                       Navigator.pop(context);
                     },
-                    icon: Icon(Icons.check)),
-                IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(Icons.clear))
+                    icon: Icon(Icons.check))
               ],
             ),
           );

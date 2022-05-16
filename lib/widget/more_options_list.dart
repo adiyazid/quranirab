@@ -28,10 +28,13 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
 
   @override
   void initState() {
-    // TODO: implement initState
-
     Provider.of<AppUser>(context, listen: false).getRole();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
