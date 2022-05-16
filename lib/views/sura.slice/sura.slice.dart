@@ -63,6 +63,7 @@ class _SuraSliceState extends State<SuraSlice> {
 
       return aya.loading
           ? Scaffold(
+              drawerEnableOpenDragGesture: false,
               drawer: Drawer(
                 backgroundColor: themeProvider.isDarkMode
                     ? const Color(0xff9A9A9A)
@@ -79,7 +80,6 @@ class _SuraSliceState extends State<SuraSlice> {
                   ),
                   child: MoreOptionsList(
                     surah: aya.words ?? '',
-                    nukKalimah: 'c',
                     wordId: aya.wordID,
                   ),
                 ),

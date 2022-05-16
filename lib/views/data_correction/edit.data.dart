@@ -39,22 +39,7 @@ class _EditDataState extends State<EditData> {
           }),
           centerTitle: true,
         ),
-        body:
-            // aya.labelCategory.length<63
-            //     ? Center(
-            //         child: Column(
-            //         mainAxisAlignment: MainAxisAlignment.center,
-            //         children: [
-            //           CircularProgressIndicator(),
-            //           SizedBox(
-            //             height: 20,
-            //           ),
-            //           Text(
-            //               'Loading data ${((aya.labelCategory.length / 63.0) * 100.0).toStringAsFixed(2)} %')
-            //         ],
-            //       ))
-            //     :
-            Padding(
+        body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Center(
             child: Row(

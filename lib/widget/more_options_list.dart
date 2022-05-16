@@ -11,13 +11,11 @@ import '../views/data_correction/edit.data.dart';
 
 class MoreOptionsList extends StatefulWidget {
   final String surah;
-  final String nukKalimah;
   final int wordId;
 
   const MoreOptionsList({
     Key? key,
     required this.wordId,
-    required this.nukKalimah,
     required this.surah,
   }) : super(key: key);
 
@@ -44,6 +42,18 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
       return aya.loadingCategory
           ? Column(
               children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          Navigator.pop(context);
+                          aya.set();
+                          aya.defaultSelect();
+                        });
+                      },
+                      icon: Icon(Icons.clear)),
+                ),
                 Text(
                   aya.words ?? '',
                   style: TextStyle(
@@ -66,6 +76,43 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                 const Divider(
                   thickness: 1,
                 ),
+                if (aya.wordDetail.isNotEmpty)
+                  FutureBuilder<WordDetail>(
+                    future: aya.getFirst(aya.wordDetail.first.parent ?? ''),
+                    builder: (
+                      BuildContext context,
+                      AsyncSnapshot<WordDetail> snapshot,
+                    ) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator(color: Colors.orangeAccent,);
+                      } else if (snapshot.connectionState ==
+                              ConnectionState.active ||
+                          snapshot.connectionState == ConnectionState.done) {
+                        if (snapshot.hasError) {
+                          return const Text('Error');
+                        } else if (snapshot.hasData) {
+                          return Card(
+                            color: Provider.of<ThemeProvider>(context,
+                                        listen: false)
+                                    .isDarkMode
+                                ? Colors.blueGrey
+                                : Colors.amber,
+                            child: ListTile(
+                                leading: Icon(Icons.list),
+                                title: Text(
+                                  snapshot.data!.name ?? '',
+                                ),
+                                trailing:
+                                    Text("${aya.wordDetail.length} items")),
+                          );
+                        } else {
+                          return const Text('Empty data');
+                        }
+                      } else {
+                        return Text('State: ${snapshot.connectionState}');
+                      }
+                    },
+                  ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.7,
                   child: TreeView(
@@ -101,91 +148,43 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
               : Column(
                   children: [
                     SkeletonLoader(
-                        builder: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: IconButton(
-                              onPressed: () {}, icon: Icon(Icons.clear)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Directionality(
-                              textDirection: TextDirection.rtl,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadiusDirectional.circular(16)),
-                                height: 30,
-                                width: 100,
-                              )),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Row(
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadiusDirectional.circular(16)),
-                                height: 30,
-                                width: 100,
-                              ),
-                              Spacer(),
-                              Container(
-                                decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadiusDirectional.circular(16)),
-                                height: 30,
-                                width: 100,
-                              )
-                            ],
+                      builder: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 15),
+                            child: Container(
+                              width: double.infinity,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadiusDirectional.circular(16),
+                                  color: Colors.white),
+                            ),
                           ),
-                        )
-                      ],
-                    )),
+                          const Divider(
+                            thickness: 1,
+                          ),
+                        ],
+                      ),
+                      period: Duration(seconds: 2),
+                      highlightColor: Color(0xffaa9f9f),
+                    ),
                     SkeletonLoader(
                       builder: Container(
                         padding:
                             EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: Column(
-                                children: <Widget>[
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadiusDirectional.circular(
-                                                16),
-                                        color: Colors.white),
-                                    width: double.infinity,
-                                    height: 35,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Spacer(),
-                            Expanded(
-                              child: Column(
-                                children: <Widget>[
-                                  Container(
-                                    width: double.infinity,
-                                    height: 35,
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadiusDirectional.circular(
-                                                16),
-                                        color: Colors.white),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                        child: Container(
+                          width: double.infinity,
+                          height: 40,
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadiusDirectional.circular(16),
+                              color: Colors.white),
                         ),
                       ),
-                      items: 13,
+                      items: 10,
                       period: Duration(seconds: 2),
                       highlightColor: Color(0xffaa9f9f),
                       direction: SkeletonDirection.rtl,

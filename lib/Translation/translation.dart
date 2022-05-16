@@ -131,7 +131,6 @@ class _TranslationPageState extends State<TranslationPage> {
                         ),
                         child: const MoreOptionsList(
                           surah: 'Straight',
-                          nukKalimah: '',
                           wordId: 0,
                         ),
                       ),

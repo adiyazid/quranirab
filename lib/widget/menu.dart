@@ -3,9 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/quiz_module/LeaderBoard.Menu.dart';
 import 'package:quranirab/theme/theme_provider.dart';
+import 'package:quranirab/views/auth/landing.page.dart';
 import 'package:quranirab/views/auth/login.screen.dart';
 import 'package:quranirab/views/home.page.dart';
-
 
 class Menu extends StatelessWidget {
   final padding = const EdgeInsets.symmetric(horizontal: 10);
@@ -109,10 +109,11 @@ class Menu extends StatelessWidget {
               text: 'Logout',
               icon: Icons.exit_to_app,
               onTap: () async {
-                Navigator.pop(context);
-                await AppUser.instance.signOut();
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SigninWidget()));
+                await Provider.of<AppUser>(context, listen: false).signOut();
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => LandingPage()),
+                    (route) => false);
               },
             ),
           ],

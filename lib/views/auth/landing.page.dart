@@ -10,14 +10,11 @@ class LandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appUser = Provider.of<AppUser>(context);
-    if (appUser.user != null) {
-      print('Logged in');
-      return const HomePage();
-      // return const DummyPage();
-    } else {
-      print('Not logged in');
-      return const SigninWidget();
-    }
+    return Consumer<AppUser>(builder: (context, user, child) {
+      if (user.user != null) {
+        return const HomePage();
+      }
+      return SigninWidget();
+    });
   }
 }

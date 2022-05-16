@@ -23,6 +23,8 @@ class AppUser extends ChangeNotifier {
 
   signOut() async {
     await FirebaseAuth.instance.signOut();
+    role = '';
+    notifyListeners();
   }
 
   Future<void> signIn({required String email, required String password}) async {
@@ -39,18 +41,18 @@ class AppUser extends ChangeNotifier {
         throw (e.toString());
       }
     }
-
   }
 
   Future<void> getRole() async {
     final docRef =
         db.collection("quranIrabUsers").doc(AppUser.instance.user!.uid);
     role = await docRef.get().then(
-      (value) {
-        return value['role'] ?? 'None';
-      },
-      onError: (e) => print("Error completing: $e"),
-    );
+          (value) {
+            var role = value['role'] ?? 'None';
+            return role;
+          },
+        ) ??
+        'None';
     notifyListeners();
   }
 

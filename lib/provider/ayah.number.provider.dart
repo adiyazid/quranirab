@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:quranirab/models/font.size.dart';
 import 'package:quranirab/models/word.detail.dart';
@@ -261,12 +262,12 @@ class AyaProvider extends ChangeNotifier {
       for (var doc in querySnapshot.docs) {
         var relationshipID = doc["id"];
         var categoryID = doc["word_category_id"];
-        // getCategoryNameTranslation(doc["word_category_id"].trim(), langId);
         getMainCategoryName(doc["word_category_id"], wordId, relationshipID);
         getSubCategory(categoryID, relationshipID);
       }
     });
     loadingCategory = true;
+
     notifyListeners();
   }
 
@@ -327,14 +328,17 @@ class AyaProvider extends ChangeNotifier {
         .get()
         .then((QuerySnapshot querySnapshot) async {
       for (var doc in querySnapshot.docs) {
+        var parent = doc['ancestry'] ?? '';
         wordDetail.add(WordDetail(
-            isparent: doc["ancestry"].split('/').last == '1' ? true : false,
-            hasChild: doc["ancestry"].split('/').last != '1' ? true : false,
+            isparent:
+                parent.split("/").length == 1 || parent == '' ? true : false,
+            hasChild:
+                parent.split("/").length > 1 || parent == '' ? true : false,
             parent: doc["ancestry"],
             id: int.parse(id),
             categoryId: int.parse(doc["id"]),
             name: doc["tname"],
-            type: doc["word_type"]));
+            type: doc["word_type"]??''));
         notifyListeners();
       }
     });
@@ -8961,8 +8965,9 @@ class AyaProvider extends ChangeNotifier {
     // }
     wordDetail.replaceRange(index, index + 1, [
       WordDetail(
-          isparent: parent.split('/').last == '1' ? true : false,
-          hasChild: parent.split('/').last != '1' ? true : false,
+          isparent:
+              parent.split("/").length == 1 || parent == '' ? true : false,
+          hasChild: parent.split("/").length > 1 || parent == '' ? true : false,
           parent: parent,
           id: id,
           type: type,
@@ -9033,10 +9038,10 @@ class AyaProvider extends ChangeNotifier {
             if (name != '') {
               String parent = doc["ancestry"] ?? '';
               labelCategory.add(WordDetail(
-                  isparent: parent.split("/").last == '1' && parent == ''
+                  isparent: parent.split("/").length == 1 || parent == ''
                       ? true
                       : false,
-                  hasChild: parent.split("/").last != '1' && parent == ''
+                  hasChild: parent.split("/").length > 1 || parent == ''
                       ? true
                       : false,
                   parent: parent,
@@ -9051,7 +9056,12 @@ class AyaProvider extends ChangeNotifier {
   }
 
   List<WordDetail> getSubList(int childID, String parentID) {
-    String temp = '$parentID/$childID';
+    String temp = '';
+    if (parentID == '') {
+      temp = '$childID';
+    } else {
+      temp = '$parentID/$childID';
+    }
     List<WordDetail> _list = [];
     wordDetail.forEach((element) {
       if (element.parent == temp) {
@@ -9075,5 +9085,30 @@ class AyaProvider extends ChangeNotifier {
       }
     });
     return parent;
+  }
+
+  Future<WordDetail> getFirst(String id) async {
+    var obj;
+    if (id != '') {
+      obj = await wordCategory
+          .where('id', isEqualTo: id)
+          .get()
+          .then((QuerySnapshot querySnapshot) async {
+        var data;
+        for (var doc in querySnapshot.docs) {
+          var name = doc["tname"];
+          String parent = doc["ancestry"] ?? '';
+          data = WordDetail(
+              isparent: true,
+              hasChild: true,
+              parent: parent,
+              categoryId: int.parse(doc["id"].trim()),
+              name: name,
+              type: doc["word_type"]??'');
+        }
+        return data;
+      });
+    }
+    return obj;
   }
 }
