@@ -44,90 +44,92 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
     return Consumer<AyaProvider>(builder: (context, aya, child) {
       List<WordDetail> parent = aya.getParent();
       return aya.loadingCategory
-          ? Column(
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          Navigator.pop(context);
-                          aya.set();
-                          aya.defaultSelect();
-                        });
-                      },
-                      icon: Icon(Icons.clear)),
-                ),
-                Text(
-                  aya.words ?? '',
-                  style: TextStyle(
-                    fontFamily: 'MeQuran2',
-                    fontSize: aya.value,
-                  ),
-                ),
-                if (role == 'tester')
-                  Center(
-                    child: ElevatedButton(
+          ? SingleChildScrollView(
+            child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: IconButton(
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      EditData(widget.wordId)));
+                          setState(() {
+                            Navigator.pop(context);
+                            aya.set();
+                            aya.defaultSelect();
+                          });
                         },
-                        child: Text('Edit')),
+                        icon: Icon(Icons.clear)),
                   ),
-                const Divider(
-                  thickness: 1,
-                ),
-                if (aya.wordDetail.isNotEmpty)
-                  FutureBuilder<WordDetail>(
-                    future: aya.getFirst(aya.wordDetail.first.parent ?? ''),
-                    builder: (
-                      BuildContext context,
-                      AsyncSnapshot<WordDetail> snapshot,
-                    ) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator(
-                          color: Colors.orangeAccent,
-                        );
-                      } else if (snapshot.connectionState ==
-                              ConnectionState.active ||
-                          snapshot.connectionState == ConnectionState.done) {
-                        if (snapshot.hasError) {
-                          return const Text('Error');
-                        } else if (snapshot.hasData) {
-                          return Card(
-                            color: Provider.of<ThemeProvider>(context,
-                                        listen: false)
-                                    .isDarkMode
-                                ? Colors.blueGrey
-                                : Colors.amber,
-                            child: ListTile(
-                                leading: Icon(Icons.list),
-                                title: Text(
-                                  snapshot.data!.name ?? '',
-                                ),
-                                trailing:
-                                    Text("${aya.wordDetail.length} items")),
+                  Text(
+                    aya.words ?? '',
+                    style: TextStyle(
+                      fontFamily: 'MeQuran2',
+                      fontSize: aya.value,
+                    ),
+                  ),
+                  if (role == 'tester')
+                    Center(
+                      child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        EditData(widget.wordId)));
+                          },
+                          child: Text('Edit')),
+                    ),
+                  const Divider(
+                    thickness: 1,
+                  ),
+                  if (aya.wordDetail.isNotEmpty)
+                    FutureBuilder<WordDetail>(
+                      future: aya.getFirst(aya.wordDetail.first.parent ?? ''),
+                      builder: (
+                        BuildContext context,
+                        AsyncSnapshot<WordDetail> snapshot,
+                      ) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return CircularProgressIndicator(
+                            color: Colors.orangeAccent,
                           );
+                        } else if (snapshot.connectionState ==
+                                ConnectionState.active ||
+                            snapshot.connectionState == ConnectionState.done) {
+                          if (snapshot.hasError) {
+                            return const Text('Error');
+                          } else if (snapshot.hasData) {
+                            return Card(
+                              color: Provider.of<ThemeProvider>(context,
+                                          listen: false)
+                                      .isDarkMode
+                                  ? Colors.blueGrey
+                                  : Colors.amber,
+                              child: ListTile(
+                                  leading: Icon(Icons.list),
+                                  title: Text(
+                                    snapshot.data!.name ?? '',
+                                  ),
+                                  trailing:
+                                      Text("${aya.wordDetail.length} items")),
+                            );
+                          } else {
+                            return const Text('Empty data');
+                          }
                         } else {
-                          return const Text('Empty data');
+                          return Text('State: ${snapshot.connectionState}');
                         }
-                      } else {
-                        return Text('State: ${snapshot.connectionState}');
-                      }
-                    },
+                      },
+                    ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.7,
+                    child: TreeView(
+                      startExpanded: true,
+                      children: _getChildList(parent),
+                    ),
                   ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.7,
-                  child: TreeView(
-                    startExpanded: true,
-                    children: _getChildList(parent),
-                  ),
-                ),
-              ],
-            )
+                ],
+              ),
+          )
           : aya.nodata
               ? Column(
                   children: [

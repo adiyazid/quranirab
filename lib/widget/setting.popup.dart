@@ -2,10 +2,8 @@ import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
-import 'package:quranirab/models/font.size.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
-
 
 class SettingPopup extends StatefulWidget {
   const SettingPopup({Key? key}) : super(key: key);
@@ -88,6 +86,7 @@ class _SettingPopupState extends State<SettingPopup>
 
   @override
   Widget build(BuildContext context) {
+    final font = Provider.of<AyaProvider>(context);
     final themeProvider = Provider.of<ThemeProvider>(context);
     final brightness = SchedulerBinding.instance!.window.platformBrightness;
     return StatefulBuilder(builder: (context, setState) {
@@ -123,7 +122,8 @@ class _SettingPopupState extends State<SettingPopup>
                         children: <Widget>[
                           const SizedBox(height: 10),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
                             child: Row(
                               children: <Widget>[
                                 Text(
@@ -167,7 +167,8 @@ class _SettingPopupState extends State<SettingPopup>
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
                                   children: [
                                     Align(
                                       alignment: Alignment.topLeft,
@@ -189,7 +190,8 @@ class _SettingPopupState extends State<SettingPopup>
                                         } else {
                                           if (brightness.toString() ==
                                                   "Brightness.light" &&
-                                              themeProvider.isDarkMode == true) {
+                                              themeProvider.isDarkMode ==
+                                                  true) {
                                             themeProvider.toggleTheme(false);
                                           }
                                           if (brightness.toString() ==
@@ -225,7 +227,8 @@ class _SettingPopupState extends State<SettingPopup>
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   Align(
                                     alignment: Alignment.topLeft,
@@ -242,7 +245,7 @@ class _SettingPopupState extends State<SettingPopup>
                                             size: 20),
                                         Center(
                                             child: Text(
-                                          '${fontData.size}',
+                                          '${font.value}',
                                           style: const TextStyle(fontSize: 30),
                                         )),
                                         const Icon(Icons.plus_one, size: 20),
@@ -253,9 +256,8 @@ class _SettingPopupState extends State<SettingPopup>
                                       onPressed: (int newIndex) {
                                         if (newIndex == 0) {
                                           setState(() {
-                                            if (fontData.size != 0 &&
-                                                fontData.size > 20) {
-                                              fontData.size = fontData.size - 5;
+                                            if (font.value != 0 &&
+                                                font.value > 10) {
                                               Provider.of<AyaProvider>(context,
                                                       listen: false)
                                                   .decrement();
@@ -264,15 +266,11 @@ class _SettingPopupState extends State<SettingPopup>
                                           });
                                         } else if (newIndex == 2) {
                                           setState(() {
-                                            // fontData.index = 2;
-                                            // fontData.size = 60;
-                                            if (fontData.size != 35) {
-                                              fontData.size = fontData.size + 5;
-                                              Provider.of<AyaProvider>(context,
-                                                      listen: false)
-                                                  .increment();
-                                              no++;
-                                            }
+                                            Provider.of<AyaProvider>(context,
+                                                    listen: false)
+                                                .increment();
+
+                                            no++;
                                           });
                                         }
                                       },

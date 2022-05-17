@@ -2,9 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:quranirab/models/font.size.dart';
 import 'package:quranirab/models/word.detail.dart';
 import '../models/break.index.model.dart';
 import '../models/slicing.data.model.dart';
@@ -15,7 +13,7 @@ class AyaProvider extends ChangeNotifier {
   var page = 1;
   var category = 'Waiting to retrieve data...';
   final storageRef = FirebaseStorage.instance.ref();
-  double _value = fontData.size;
+  double value = 12;
   int? start;
   int? end;
   int nums = 0;
@@ -65,28 +63,13 @@ class AyaProvider extends ChangeNotifier {
 
   bool success = false;
 
-  get value => _value;
+  double maxScreen = 0.0;
 
   get sliceData => _sliceData;
   bool visible = false;
 
-  void increment() {
-    if (_value != 35) {
-      _value = _value + 5;
-      notifyListeners();
-    }
-  }
-
-  // void getFontSize(BuildContext context) {
-  //   if (MediaQuery.of(context).size.width > 600) {
-  //     _value = 25;
-  //   } else {
-  //     _value = 17;
-  //   }
-  // }
-
   void decrement() {
-    _value = _value - 5;
+    value = value - 1;
     notifyListeners();
   }
 
@@ -9075,5 +9058,66 @@ class AyaProvider extends ChangeNotifier {
     });
     notifyListeners();
     return labelCategory;
+  }
+
+  void getFontSize(BuildContext context) {
+    if (maxScreen < 400) {
+      value = 11;
+    } else if (maxScreen < 600) {
+      value = 13;
+    } else if (maxScreen < 800) {
+      value = 22;
+    } else if (maxScreen < 1000) {
+      value = 23;
+    } else if (maxScreen < 1200) {
+      value = 25;
+    } else if (maxScreen < 1400) {
+      value = 25;
+    } else {
+      value = 25;
+    }
+  }
+
+  void getScreenSize(BuildContext context) {
+    maxScreen = MediaQuery.of(context).size.width;
+  }
+
+  void increment() {
+    if (maxScreen <= 400) {
+      if (value < 12) {
+        value = value + 1;
+        notifyListeners();
+      }
+    } else if (maxScreen <= 600) {
+      if (value < 14) {
+        value = value + 1;
+        notifyListeners();
+      }
+    } else if (maxScreen <= 800) {
+      if (value < 27) {
+        value = value + 1;
+        notifyListeners();
+      }
+    } else if (maxScreen <= 1000) {
+      if (value < 29) {
+        value = value + 1;
+        notifyListeners();
+      }
+    } else if (maxScreen <= 1200) {
+      if (value < 34) {
+        value = value + 1;
+        notifyListeners();
+      }
+    } else if (maxScreen <= 1400) {
+      if (value < 45) {
+        value = value + 1;
+        notifyListeners();
+      }
+    } else {
+      if (value < 68) {
+        value = value + 1;
+        notifyListeners();
+      }
+    }
   }
 }

@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
@@ -168,7 +167,8 @@ class _SurahScreenState extends State<SurahScreen>
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-
+    Provider.of<AyaProvider>(context, listen: false).getScreenSize(context);
+    Provider.of<AyaProvider>(context, listen: false).getFontSize(context);
     return Scaffold(
       backgroundColor: (themeProvider.isDarkMode)
           ? const Color(0xff666666)
@@ -813,8 +813,7 @@ class _SurahScreenState extends State<SurahScreen>
                           )),
                     ),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    primary: Colors.orangeAccent),
+                  style: ElevatedButton.styleFrom(primary: Colors.orangeAccent),
                   onPressed: () => Navigator.push(
                       context,
                       MaterialPageRoute(
