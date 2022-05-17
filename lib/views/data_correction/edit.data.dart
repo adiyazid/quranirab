@@ -21,6 +21,8 @@ class EditData extends StatefulWidget {
 class _EditDataState extends State<EditData> {
   var i = 0;
 
+  final _nameController = TextEditingController();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -34,16 +36,41 @@ class _EditDataState extends State<EditData> {
     return Consumer<AyaProvider>(builder: (context, aya, child) {
       List<WordDetail> parent = aya.getParent();
       return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.orangeAccent,
-          title: Consumer<AyaProvider>(builder: (context, no, child) {
-            return Text(
-                'Total word detail ${no.wordDetail.length} for word ID ${aya.wordID}');
-          }),
-          centerTitle: true,
-        ),
-        body: TreeView(startExpanded: true, children: _getChildList(parent)),
-      );
+          appBar: AppBar(
+            backgroundColor: Colors.orangeAccent,
+            title: Consumer<AyaProvider>(builder: (context, no, child) {
+              return Text('Word detail for word ID ${aya.wordID}');
+            }),
+            centerTitle: true,
+          ),
+          body: TreeView(startExpanded: true, children: _getChildList(parent)),
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: () => showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Add data'),
+                    content: TextField(
+                      decoration:
+                          InputDecoration(label: Text('New Category Name')),
+                      controller: _nameController,
+                    ),
+                    actions: [
+                      ElevatedButton(
+                          onPressed: () => addData(
+                              childType: '',
+                              name: _nameController.value.text.trim(),
+                              parent: '',
+                              wordType: ''),
+                          child: Text('Submit'))
+                    ],
+                  );
+                }),
+            label: Text(
+              'Add new Category and relationship',
+            ),
+            icon: Icon(Icons.add),
+          ));
     });
   }
 
@@ -187,7 +214,7 @@ class _EditDataState extends State<EditData> {
                     icon: Icon(Icons.clear)),
                 IconButton(
                     onPressed: () async {
-                      for (var element in label){
+                      for (var element in label) {
                         if (data == element.name) {
                           await Provider.of<AyaProvider>(context, listen: false)
                               .replace(element, document.id);
@@ -206,5 +233,27 @@ class _EditDataState extends State<EditData> {
             ),
           );
         });
+  }
+
+  Future<void> addData({
+    required String parent,
+    required String wordType,
+    required String name,
+    required String childType,
+  }) async {
+    var id = await Provider.of<AyaProvider>(context, listen: false)
+        .getLastRelationshipId();
+    var catID = await Provider.of<AyaProvider>(context, listen: false)
+        .getLastCategoryId();
+    await Provider.of<AyaProvider>(context, listen: false).addNewCategory(
+        categoryID: int.parse(catID),
+        parent: parent,
+        name: name,
+        childType: childType,
+        wordType: wordType);
+    await Provider.of<AyaProvider>(context, listen: false).addNewRelationship(
+        relationshipID: int.parse(id),
+        wordID: widget.wordId,
+        categoryID: int.parse(catID));
   }
 }

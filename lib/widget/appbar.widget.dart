@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/widget/LanguagePopup.dart';
+import 'package:quranirab/widget/search.popup.dart';
 import 'package:quranirab/widget/setting.popup.dart';
 
 class Appbar extends StatefulWidget {
@@ -25,7 +25,7 @@ class _AppbarState extends State<Appbar> {
     return SliverAppBar(
       iconTheme: Theme.of(context).iconTheme,
       title: Row(
-        children: [
+        children: const [
           CircleAvatar(
             backgroundImage: AssetImage('assets/quranirab.png'),
             radius: 18.0,
@@ -35,16 +35,15 @@ class _AppbarState extends State<Appbar> {
       elevation: 0,
       centerTitle: false,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      actions: <Widget>[
+      actions: const <Widget>[
         Padding(
-          padding: const EdgeInsets.only(right: 20.0),
-          child: IconButton(
-              onPressed: () {}, icon: Icon(Icons.search, size: 26.0)),
-        ),
-        const Padding(
+            padding: EdgeInsets.only(right: 20.0),
+            child: SearchPopup()),
+        Padding(
             padding: EdgeInsets.only(right: 20.0), child: LangPopup()),
-        const Padding(
-            padding: EdgeInsets.only(right: 20.0), child: SettingPopup()),
+        Padding(
+            padding: EdgeInsets.only(right: 20.0),
+            child: SettingPopup()),
       ],
     );
   }

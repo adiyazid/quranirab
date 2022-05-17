@@ -45,6 +45,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
       List<WordDetail> parent = aya.getParent();
       return aya.loadingCategory
           ? SingleChildScrollView(
+        controller: ScrollController(),
             child: Column(
                 children: [
                   Align(
@@ -153,52 +154,54 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                     Spacer(),
                   ],
                 )
-              : Column(
-                  children: [
-                    SkeletonLoader(
-                      builder: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 15),
-                            child: Container(
-                              width: double.infinity,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadiusDirectional.circular(16),
-                                  color: Colors.white),
+              : SingleChildScrollView(
+                child: Column(
+                    children: [
+                      SkeletonLoader(
+                        builder: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 15),
+                              child: Container(
+                                width: double.infinity,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadiusDirectional.circular(16),
+                                    color: Colors.white),
+                              ),
                             ),
-                          ),
-                          const Divider(
-                            thickness: 1,
-                          ),
-                        ],
-                      ),
-                      period: Duration(seconds: 2),
-                      highlightColor: Color(0xffaa9f9f),
-                    ),
-                    SkeletonLoader(
-                      builder: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                        child: Container(
-                          width: double.infinity,
-                          height: 40,
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadiusDirectional.circular(16),
-                              color: Colors.white),
+                            const Divider(
+                              thickness: 1,
+                            ),
+                          ],
                         ),
+                        period: Duration(seconds: 2),
+                        highlightColor: Color(0xffaa9f9f),
                       ),
-                      items: 10,
-                      period: Duration(seconds: 2),
-                      highlightColor: Color(0xffaa9f9f),
-                      direction: SkeletonDirection.rtl,
-                    ),
-                  ],
-                );
+                      SkeletonLoader(
+                        builder: Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                          child: Container(
+                            width: double.infinity,
+                            height: 40,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadiusDirectional.circular(16),
+                                color: Colors.white),
+                          ),
+                        ),
+                        items: 10,
+                        period: Duration(seconds: 2),
+                        highlightColor: Color(0xffaa9f9f),
+                        direction: SkeletonDirection.rtl,
+                      ),
+                    ],
+                  ),
+              );
     });
   }
 

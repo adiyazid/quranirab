@@ -34,7 +34,8 @@ class AyaProvider extends ChangeNotifier {
 
   CollectionReference wordRelationship =
       FirebaseFirestore.instance.collection('word_relationships');
-
+  final CollectionReference wordTable =
+      FirebaseFirestore.instance.collection('words');
   CollectionReference wordCategory =
       FirebaseFirestore.instance.collection('word_categories');
   CollectionReference wordCategoryTranslation =
@@ -9083,41 +9084,63 @@ class AyaProvider extends ChangeNotifier {
   }
 
   void increment() {
-    if (maxScreen <= 400) {
-      if (value < 12) {
-        value = value + 1;
-        notifyListeners();
-      }
-    } else if (maxScreen <= 600) {
-      if (value < 14) {
-        value = value + 1;
-        notifyListeners();
-      }
-    } else if (maxScreen <= 800) {
-      if (value < 27) {
-        value = value + 1;
-        notifyListeners();
-      }
-    } else if (maxScreen <= 1000) {
-      if (value < 29) {
-        value = value + 1;
-        notifyListeners();
-      }
-    } else if (maxScreen <= 1200) {
-      if (value < 34) {
-        value = value + 1;
-        notifyListeners();
-      }
-    } else if (maxScreen <= 1400) {
-      if (value < 45) {
-        value = value + 1;
-        notifyListeners();
-      }
-    } else {
-      if (value < 68) {
-        value = value + 1;
-        notifyListeners();
-      }
+    if (value < 68) {
+      value = value + 1;
+      notifyListeners();
     }
+  }
+
+  Future<String> getLastRelationshipId() async {
+    var id;
+    id = await wordRelationship
+        .orderBy('created_at', descending: true)
+        .limit(1)
+        .get()
+        .then((value) => value.docs.first["id"]);
+    print(id);
+    return id;
+  }
+
+  Future<String> getLastCategoryId() async {
+    var id;
+    id = await wordCategory
+        .orderBy('created_at', descending: true)
+        .limit(1)
+        .get()
+        .then((value) => value.docs.first["id"]);
+    print(id);
+    return id;
+  }
+
+  Future<void> addNewRelationship(
+      {required int relationshipID,
+      required int wordID,
+      required int categoryID}) async {
+    await wordRelationship.doc('${relationshipID + 1}').set({
+      "active": "f",
+      "created_at": DateTime.now().toString(),
+      "id": "${relationshipID + 1}",
+      "updated_at": DateTime.now().toString(),
+      "word_category_id": "${categoryID + 1}",
+      "word_id": "$wordID",
+    });
+  }
+
+  addNewCategory(
+      {required int categoryID,
+      required String wordType,
+      required String name,
+      required String childType,
+      required String parent}) async {
+    await wordCategory.doc('${categoryID + 1}').set({
+      "active": "t",
+      "ancestry": parent,
+      "child_type": childType,
+      "created_at": DateTime.now().toString(),
+      "id": "${categoryID + 1}",
+      "tname": name,
+      "updated_at": DateTime.now().toString(),
+      "word_type": wordType,
+    });
   }
 }

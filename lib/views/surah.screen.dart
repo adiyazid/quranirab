@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:provider/provider.dart';
 
 import 'package:quran/quran.dart';
 import 'package:quranirab/models/font.size.dart';
 import 'package:quranirab/models/item.model.dart';
-import 'package:quranirab/provider/bookmark.provider.dart';
 import 'package:quranirab/quiz_module/quiz.home.dart';
 import 'package:quranirab/views/sura.slice/sura.slice.dart';
 
@@ -14,6 +12,7 @@ import 'package:quranirab/widget/TranslationPopup.dart';
 
 import 'package:quranirab/widget/responsive.dart' as w;
 
+import '../Translation/translation.dart';
 import '../provider/ayah.number.provider.dart';
 import '../theme/theme_provider.dart';
 import '../widget/LanguagePopup.dart';
@@ -207,378 +206,32 @@ class _SurahScreenState extends State<SurahScreen>
               ],
               bottom: PreferredSize(
                 preferredSize: Size.fromHeight(140),
-                child: Column(
-                  children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Flexible(
-                            child: ListTile(
-                              title: Text(
-                                "${widget.name}",
-                                style: TextStyle(
-                                  fontSize:
-                                      MediaQuery.of(context).size.width < 500
-                                          ? 15
-                                          : 20,
-                                ),
-                              ),
-                              subtitle: Text(
-                                widget.detail,
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize:
-                                      MediaQuery.of(context).size.width < 500
-                                          ? 14
-                                          : 20,
-                                ),
-                              ),
-                              trailing:
-                                  Icon(Icons.keyboard_arrow_down_outlined),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 5,
-                            height: 40,
-                            child: VerticalDivider(
-                              thickness: 2,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          hizb != null
-                              ? Expanded(
-                                  child: Consumer<AyaProvider>(
-                                      builder: (context, aya, child) {
-                                    return Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        'Juz ${getJuzNumber(int.parse(widget.sura_id), start ?? 1)} / Hizb $hizb - Page ${aya.page}',
-                                        style: TextStyle(
-                                          fontSize: MediaQuery.of(context)
-                                                      .size
-                                                      .width <
-                                                  500
-                                              ? 15
-                                              : 20,
-                                        ),
-                                      ),
-                                    );
-                                  }),
-                                )
-                              : Container(),
-                          TransPopup(),
-                        ]),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal:
-                              w.Responsive.isDesktop(context) ? 400.0 : 20),
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        child: TabBar(
-                            controller: _tabController,
-                            indicatorPadding: const EdgeInsets.all(8),
-                            indicator: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                // Creates border
-                                color: Theme.of(context).primaryColor),
-                            tabs: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Tab(
-                                  child: Text(
-                                    'Translations',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        color: themeProvider.isDarkMode
-                                            ? Colors.white
-                                            : Colors.black),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Tab(
-                                  child: Text(
-                                    'Reading',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        color: themeProvider.isDarkMode
-                                            ? Colors.white
-                                            : Colors.black),
-                                  ),
-                                ),
-                              )
-                            ]),
-                      ),
-                    ),
-                  ],
-                ),
+                child: topSurah(widget: widget, widget1: widget, hizb: hizb, widget2: widget, start: start, tabController: _tabController, themeProvider: themeProvider),
               ),
             ),
           ];
         },
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.9,
-                child: TabBarView(
-                  controller: _tabController,
-                  children: [
-                    // TranslationPage(widget.sura_id, widget.allpages[i]),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: (themeProvider.isDarkMode)
-                            ? const Color(0xff666666)
-                            : const Color(0xFFffffff),
-                      ),
-                      child: _list.isNotEmpty && _translate.isNotEmpty
-                          ? Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  flex: 6,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 16.0),
-                                    child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: ListView.builder(
-                                        itemCount: _list.length,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          final fontsize =
-                                              Provider.of<AyaProvider>(context);
-                                          return Card(
-                                            semanticContainer: true,
-                                            clipBehavior:
-                                                Clip.antiAliasWithSaveLayer,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                            ),
-                                            elevation: 5,
-                                            color: (themeProvider.isDarkMode)
-                                                ? const Color(0xffC4C4C4)
-                                                : const Color(0xffFFF5EC),
-                                            child: Column(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Row(
-                                                    children: [
-                                                      Container(
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(8),
-                                                          color: (themeProvider
-                                                                  .isDarkMode)
-                                                              ? const Color(
-                                                                  0xff67748E)
-                                                              : const Color(
-                                                                  0xffFFEEB0),
-                                                        ),
-                                                        width: 70,
-                                                        child: Center(
-                                                          child: Text(
-                                                            '${widget.sura_id}:${start! + index}',
-                                                            style: TextStyle(
-                                                                fontSize:
-                                                                    fontsize
-                                                                        .value,
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .textSelectionColor),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      const SizedBox(width: 8),
-                                                      CustomPopupMenu(
-                                                        menuBuilder: () =>
-                                                            ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                          child: Container(
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .primaryColor,
-                                                            child:
-                                                                IntrinsicWidth(
-                                                              child: Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .stretch,
-                                                                children:
-                                                                    menuItems
-                                                                        .map(
-                                                                          (item) =>
-                                                                              Container(
-                                                                            height:
-                                                                                40,
-                                                                            padding:
-                                                                                const EdgeInsets.symmetric(horizontal: 20),
-                                                                            child:
-                                                                                Row(
-                                                                              children: <Widget>[
-                                                                                Icon(
-                                                                                  item.icon,
-                                                                                  size: 16,
-                                                                                  color: Theme.of(context).textSelectionColor,
-                                                                                ),
-                                                                                Expanded(
-                                                                                  child: InkWell(
-                                                                                    onTap: () async {
-                                                                                      // Obtain shared preferences.
-                                                                                      if (item.text == 'Bookmark') {
-                                                                                        List pages = widget.allpages;
-                                                                                        if (i != 0) {
-                                                                                          pages.removeRange(0, i);
-                                                                                        }
-                                                                                        String ayahNo = "${widget.sura_id}:${start! + index}";
-                                                                                        await Provider.of<BookMarkProvider>(context, listen: false).addtoBookmark(context, ayahNo, widget.sura_id, widget.name, widget.detail, pages);
-                                                                                      }
-                                                                                    },
-                                                                                    child: Container(
-                                                                                      margin: const EdgeInsets.only(left: 10),
-                                                                                      padding: const EdgeInsets.symmetric(vertical: 10),
-                                                                                      child: Text(
-                                                                                        item.text,
-                                                                                        style: TextStyle(
-                                                                                          color: Theme.of(context).textSelectionColor,
-                                                                                          fontSize: 14,
-                                                                                        ),
-                                                                                      ),
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                          ),
-                                                                        )
-                                                                        .toList(),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        pressType: PressType
-                                                            .singleClick,
-                                                        child: Container(
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        8),
-                                                            color: (themeProvider
-                                                                    .isDarkMode)
-                                                                ? const Color(
-                                                                    0xff67748E)
-                                                                : const Color(
-                                                                    0xffFFEEB0),
-                                                          ),
-                                                          width: 40,
-                                                          child: Center(
-                                                            child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(4.0),
-                                                              child: Icon(
-                                                                Icons
-                                                                    .more_horiz,
-                                                                size: fontsize
-                                                                    .value,
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .textSelectionColor,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 16.0,
-                                                      vertical: 8),
-                                                  child: Container(
-                                                    color:
-                                                        themeProvider.isDarkMode
-                                                            ? const Color(
-                                                                0xffC4C4C4)
-                                                            : const Color(
-                                                                0xffFFF5EC),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Flexible(
-                                                          child: Text(
-                                                            _translate[index],
-                                                            textAlign: TextAlign
-                                                                .justify,
-                                                            style: TextStyle(
-                                                              fontSize: fontsize
-                                                                  .value,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        SizedBox(
-                                                          width: 16,
-                                                        ),
-                                                        Flexible(
-                                                          child: Text(
-                                                            _list[index]
-                                                                .trim()
-                                                                .replaceAll(
-                                                                    'b', ''),
-                                                            textDirection:
-                                                                TextDirection
-                                                                    .rtl,
-                                                            style: TextStyle(
-                                                                fontSize:
-                                                                    fontsize
-                                                                        .value,
-                                                                fontFamily:
-                                                                    'MeQuran2',
-                                                                color: Colors
-                                                                    .black),
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
-                          : const Center(child: Text('Loading...')),
-                    ),
-                    Align(
-                        alignment: Alignment.center,
-                        child: SizedBox(
-                            child: SuraSlice(
-                                "${Provider.of<AyaProvider>(context, listen: false).page}",
-                                widget.sura_id))),
-                  ],
-                ),
-              ),
-            ],
-          ),
+        body: TabBarView(
+          controller: _tabController,
+          children: [
+            Translation(
+              themeProvider: themeProvider,
+              list: _list,
+              translate: _translate,
+              widget: widget,
+              start: start,
+              menuItems: menuItems,
+              i: i,
+              widget1: widget,
+              widget2: widget,
+              widget3: widget,
+              widget4: widget,
+              widget5: widget,
+            ),
+            SuraSlice(
+                "${Provider.of<AyaProvider>(context, listen: false).page}",
+                widget.sura_id),
+          ],
         ),
       ),
       bottomSheet: Container(
@@ -856,3 +509,136 @@ class _SurahScreenState extends State<SurahScreen>
     }
   }
 }
+
+class topSurah extends StatelessWidget {
+  const topSurah({
+    Key? key,
+    required this.widget,
+    required this.widget1,
+    required this.hizb,
+    required this.widget2,
+    required this.start,
+    required TabController tabController,
+    required this.themeProvider,
+  }) : _tabController = tabController, super(key: key);
+
+  final SurahScreen widget;
+  final SurahScreen widget1;
+  final  hizb;
+  final SurahScreen widget2;
+  final int? start;
+  final TabController _tabController;
+  final ThemeProvider themeProvider;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                child: ListTile(
+                  title: Text(
+                    "${widget.name}",
+                    style: TextStyle(
+                      fontSize:
+                          MediaQuery.of(context).size.width < 500
+                              ? 15
+                              : 20,
+                    ),
+                  ),
+                  subtitle: Text(
+                    widget1.detail,
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize:
+                          MediaQuery.of(context).size.width < 500
+                              ? 14
+                              : 20,
+                    ),
+                  ),
+                  trailing:
+                      Icon(Icons.keyboard_arrow_down_outlined),
+                ),
+              ),
+              const SizedBox(
+                width: 5,
+                height: 40,
+                child: VerticalDivider(
+                  thickness: 2,
+                  color: Colors.grey,
+                ),
+              ),
+              hizb != null
+                  ? Expanded(
+                      child: Consumer<AyaProvider>(
+                          builder: (context, aya, child) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Juz ${getJuzNumber(int.parse(widget2.sura_id), start ?? 1)} / Hizb $hizb - Page ${aya.page}',
+                            style: TextStyle(
+                              fontSize: MediaQuery.of(context)
+                                          .size
+                                          .width <
+                                      500
+                                  ? 15
+                                  : 20,
+                            ),
+                          ),
+                        );
+                      }),
+                    )
+                  : Container(),
+              TransPopup(),
+            ]),
+        Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal:
+                  w.Responsive.isDesktop(context) ? 400.0 : 20),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: TabBar(
+                controller: _tabController,
+                indicatorPadding: const EdgeInsets.all(8),
+                indicator: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    // Creates border
+                    color: Theme.of(context).primaryColor),
+                tabs: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Tab(
+                      child: Text(
+                        'Translations',
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: themeProvider.isDarkMode
+                                ? Colors.white
+                                : Colors.black),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Tab(
+                      child: Text(
+                        'Reading',
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: themeProvider.isDarkMode
+                                ? Colors.white
+                                : Colors.black),
+                      ),
+                    ),
+                  )
+                ]),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+
