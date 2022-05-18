@@ -45,7 +45,7 @@ class _QuizHomeState extends State<QuizHome> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(top: 50, bottom: 20),
-                      child: Container(
+                      child: Container(margin: EdgeInsets.all(8),
                           color: themeProvider.isDarkMode
                               ? Color(0xff808ba1)
                               : Color(0xfffff5ec),
@@ -68,8 +68,14 @@ class _QuizHomeState extends State<QuizHome> {
                     ),
                     button114(
                         'Back',
-                        const TextStyle(color: Colors.black, fontSize: 18),
-                        const Color(0xfffff5ec),
+                         TextStyle(
+                            color: themeProvider.isDarkMode
+                                ? Colors.white
+                                : Colors.black,
+                            fontSize: 18),
+                        themeProvider.isDarkMode
+                            ? Color(0xff808ba1)
+                            : Color(0xfffff5ec),
                         10, () {
                       Navigator.pop(context);
                     }, true),

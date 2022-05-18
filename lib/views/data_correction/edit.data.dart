@@ -1,5 +1,6 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:group_radio_button/group_radio_button.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
@@ -23,6 +24,14 @@ class _EditDataState extends State<EditData> {
 
   final _nameController = TextEditingController();
 
+  final _option = ['Add New', 'Use existing category'];
+
+  String _inputType = 'Add New';
+
+  final _formKey = GlobalKey<FormState>();
+
+  String? _inputParent;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -34,6 +43,11 @@ class _EditDataState extends State<EditData> {
   @override
   Widget build(BuildContext context) {
     return Consumer<AyaProvider>(builder: (context, aya, child) {
+      List<String> list = [];
+      List<String> newList = [];
+      aya.wordDetail.forEach((element) {
+        list.add(element.name!);
+      });
       List<WordDetail> parent = aya.getParent();
       return Scaffold(
           appBar: AppBar(
@@ -48,23 +62,117 @@ class _EditDataState extends State<EditData> {
             onPressed: () => showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text('Add data'),
-                    content: TextField(
-                      decoration:
-                          InputDecoration(label: Text('New Category Name')),
-                      controller: _nameController,
-                    ),
-                    actions: [
-                      ElevatedButton(
-                          onPressed: () => addData(
-                              childType: '',
-                              name: _nameController.value.text.trim(),
-                              parent: '',
-                              wordType: ''),
-                          child: Text('Submit'))
-                    ],
-                  );
+                  return StatefulBuilder(builder: (context, setState) {
+                    return AlertDialog(
+                      title: Text('Add data'),
+                      content: SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.7,
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              DropdownSearch<String>(
+                                dropdownSearchBaseStyle:
+                                    TextStyle(fontFamily: 'MeQuran2'),
+                                showSearchBox: true,
+                                mode: Mode.DIALOG,
+                                showSelectedItems: true,
+                                dropdownBuilder: _style,
+                                popupItemBuilder: _style1,
+                                items: list,
+                                dropdownSearchDecoration: InputDecoration(
+                                  labelText: "Parent Ancestry",
+                                ),
+                                onChanged: (String? value) {
+                                  aya.wordDetail.forEach((element) {
+                                    if (element.name == value) {
+                                      setState(() {
+                                        _inputParent =
+                                            "${element.parent}/${element.categoryId}";
+                                      });
+                                    }
+                                    aya.wordDetail.forEach((element) {
+                                      if (_inputParent == element.parent) {
+                                        if (newList.contains(element.name) ==
+                                            false) {
+                                          newList.add(element.name!);
+                                        }
+                                      }
+                                    });
+                                  });
+                                },
+                                selectedItem: aya.wordDetail.first.name,
+                              ),
+                              RadioGroup<String>.builder(
+                                groupValue: _inputType,
+                                onChanged: (value) => setState(() {
+                                  _inputType = value!;
+                                }),
+                                items: _option,
+                                itemBuilder: (item) => RadioButtonBuilder(
+                                  item,
+                                ),
+                              ),
+                              if (_inputType == 'Add New')
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                      label: Text('New Category Name')),
+                                  controller: _nameController,
+                                  validator: (value) {
+                                    if (_inputType == 'Add New' &&
+                                            value == null ||
+                                        value!.isEmpty &&
+                                            _inputType == 'Add New') {
+                                      return 'Please enter some text';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              if (_inputType != 'Add New' && newList.isNotEmpty)
+                                DropdownSearch<String>(
+                                  dropdownSearchBaseStyle:
+                                      TextStyle(fontFamily: 'MeQuran2'),
+                                  showSearchBox: true,
+                                  mode: Mode.DIALOG,
+                                  showSelectedItems: true,
+                                  dropdownBuilder: _style,
+                                  popupItemBuilder: _style1,
+                                  items: newList,
+                                  dropdownSearchDecoration: InputDecoration(
+                                    labelText: "Child category",
+                                  ),
+                                  onChanged: (String? value) {
+                                    aya.wordDetail.forEach((element) {
+                                      if (element.name == value) {
+                                        setState(() {
+                                          _inputParent =
+                                              "${element.parent}/${element.categoryId}";
+                                        });
+                                      }
+                                    });
+                                  },
+                                  selectedItem: aya.wordDetail.first.name,
+                                ),
+                              Text(_inputParent ?? 'No data'),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    if (_inputParent != null) {
+                                      print(_inputParent);
+                                      // addData(
+                                      //     childType: '',
+                                      //     name: _nameController.value.text.trim(),
+                                      //     parent: _inputParent!,
+                                      //     wordType: '');
+                                    }
+                                  },
+                                  child: Text('Submit'))
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  });
                 }),
             label: Text(
               'Add new Category and relationship',

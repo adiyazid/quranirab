@@ -1,16 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:provider/provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/surah.screen.dart';
 import 'package:skeleton_loader/skeleton_loader.dart';
-
 import 'package:quranirab/provider/ayah.number.provider.dart';
 import 'package:quranirab/provider/bookmark.provider.dart';
 import 'package:quranirab/widget/menu.dart';
-
 import '../widget/appbar.widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -50,7 +46,6 @@ class _HomePageState extends State<HomePage>
               themeProvider.isDarkMode ? Color(0xff666666) : Colors.white,
           drawer: const Menu(),
           body: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.1,
@@ -303,6 +298,9 @@ class _HomePageState extends State<HomePage>
                       }),
                     )),
               ),
+              SizedBox(
+                height: 16,
+              ),
               Padding(
                 padding: const EdgeInsets.only(
                     left: 32.0, right: 32.0, bottom: 32.0),
@@ -332,6 +330,7 @@ class _HomePageState extends State<HomePage>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.05,
                           width: 180,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -366,7 +365,7 @@ class _HomePageState extends State<HomePage>
                           ),
                         ),
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.45,
+                          height: MediaQuery.of(context).size.height * 0.48,
                           child: TabBarView(
                               controller: _tabController,
                               children: [
@@ -606,6 +605,8 @@ class _HomePageState extends State<HomePage>
                                                   },
                                                 )
                                               : ListView.builder(
+                                                  controller:
+                                                      ScrollController(),
                                                   itemCount: 114,
                                                   itemBuilder:
                                                       (BuildContext context,

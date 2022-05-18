@@ -206,7 +206,14 @@ class _SurahScreenState extends State<SurahScreen>
               ],
               bottom: PreferredSize(
                 preferredSize: Size.fromHeight(140),
-                child: topSurah(widget: widget, widget1: widget, hizb: hizb, widget2: widget, start: start, tabController: _tabController, themeProvider: themeProvider),
+                child: topSurah(
+                    widget: widget,
+                    widget1: widget,
+                    hizb: hizb,
+                    widget2: widget,
+                    start: start,
+                    tabController: _tabController,
+                    themeProvider: themeProvider),
               ),
             ),
           ];
@@ -233,6 +240,26 @@ class _SurahScreenState extends State<SurahScreen>
                 widget.sura_id),
           ],
         ),
+      ),
+      floatingActionButton: Padding(
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.1),
+        child: FloatingActionButton.extended(
+            backgroundColor: themeProvider.isDarkMode
+                ? Colors.blueGrey
+                : Colors.orangeAccent,
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => QuizHome(
+                        Provider.of<AyaProvider>(context, listen: false)
+                            .page))),
+            label: Text(
+              'Quiz',
+              style: TextStyle(
+                  color:
+                      themeProvider.isDarkMode ? Colors.white : Colors.black),
+            )),
       ),
       bottomSheet: Container(
         decoration: BoxDecoration(
@@ -465,15 +492,6 @@ class _SurahScreenState extends State<SurahScreen>
                             ),
                           )),
                     ),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(primary: Colors.orangeAccent),
-                  onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => QuizHome(
-                              Provider.of<AyaProvider>(context, listen: false)
-                                  .page))),
-                  child: Text('Quiz'))
             ],
           ),
         ),
@@ -520,11 +538,12 @@ class topSurah extends StatelessWidget {
     required this.start,
     required TabController tabController,
     required this.themeProvider,
-  }) : _tabController = tabController, super(key: key);
+  })  : _tabController = tabController,
+        super(key: key);
 
   final SurahScreen widget;
   final SurahScreen widget1;
-  final  hizb;
+  final hizb;
   final SurahScreen widget2;
   final int? start;
   final TabController _tabController;
@@ -534,69 +553,54 @@ class topSurah extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                child: ListTile(
-                  title: Text(
-                    "${widget.name}",
-                    style: TextStyle(
-                      fontSize:
-                          MediaQuery.of(context).size.width < 500
-                              ? 15
-                              : 20,
-                    ),
-                  ),
-                  subtitle: Text(
-                    widget1.detail,
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize:
-                          MediaQuery.of(context).size.width < 500
-                              ? 14
-                              : 20,
-                    ),
-                  ),
-                  trailing:
-                      Icon(Icons.keyboard_arrow_down_outlined),
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Flexible(
+            child: ListTile(
+              title: Text(
+                "${widget.name}",
+                style: TextStyle(
+                  fontSize: MediaQuery.of(context).size.width < 500 ? 15 : 20,
                 ),
               ),
-              const SizedBox(
-                width: 5,
-                height: 40,
-                child: VerticalDivider(
-                  thickness: 2,
+              subtitle: Text(
+                widget1.detail,
+                style: TextStyle(
                   color: Colors.grey,
+                  fontSize: MediaQuery.of(context).size.width < 500 ? 14 : 20,
                 ),
               ),
-              hizb != null
-                  ? Expanded(
-                      child: Consumer<AyaProvider>(
-                          builder: (context, aya, child) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Juz ${getJuzNumber(int.parse(widget2.sura_id), start ?? 1)} / Hizb $hizb - Page ${aya.page}',
-                            style: TextStyle(
-                              fontSize: MediaQuery.of(context)
-                                          .size
-                                          .width <
-                                      500
-                                  ? 15
-                                  : 20,
-                            ),
-                          ),
-                        );
-                      }),
-                    )
-                  : Container(),
-              TransPopup(),
-            ]),
+              trailing: Icon(Icons.keyboard_arrow_down_outlined),
+            ),
+          ),
+          const SizedBox(
+            width: 5,
+            height: 40,
+            child: VerticalDivider(
+              thickness: 2,
+              color: Colors.grey,
+            ),
+          ),
+          hizb != null
+              ? Expanded(
+                  child: Consumer<AyaProvider>(builder: (context, aya, child) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Juz ${getJuzNumber(int.parse(widget2.sura_id), start ?? 1)} / Hizb $hizb - Page ${aya.page}',
+                        style: TextStyle(
+                          fontSize:
+                              MediaQuery.of(context).size.width < 500 ? 15 : 20,
+                        ),
+                      ),
+                    );
+                  }),
+                )
+              : Container(),
+          TransPopup(),
+        ]),
         Padding(
           padding: EdgeInsets.symmetric(
-              horizontal:
-                  w.Responsive.isDesktop(context) ? 400.0 : 20),
+              horizontal: w.Responsive.isDesktop(context) ? 400.0 : 20),
           child: SizedBox(
             width: MediaQuery.of(context).size.width,
             child: TabBar(
@@ -640,5 +644,3 @@ class topSurah extends StatelessWidget {
     );
   }
 }
-
-

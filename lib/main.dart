@@ -44,7 +44,7 @@ Future<void> main() async {
               Provider.of<ThemeProvider>(context, listen: true);
           return MaterialApp(
             scrollBehavior: MyCustomScrollBehavior(),
-            home: const LandingPage(),
+            home: LandingPage(),
             themeMode: themeProvider.themeMode,
             // themeMode: ThemeMode.light,
             theme: QuranThemes.lightTheme,
@@ -54,3 +54,4 @@ Future<void> main() async {
         }),
   ));
 }
+
