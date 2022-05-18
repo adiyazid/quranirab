@@ -81,4 +81,40 @@ class AppUser extends ChangeNotifier {
       rethrow;
     }
   }
+  final firestoreInstance = FirebaseFirestore.instance;
+
+  Future<void> updatedata(
+      String firstname, String lastname, String email) async {
+    await firestoreInstance
+        .collection("quranIrabUsers")
+        .doc(AppUser.instance.user!.uid)
+        .set({
+      "first_name": firstname,
+      "last_name": lastname,
+      "email": email,
+      "uid": AppUser.instance.user!.uid
+    }, SetOptions(merge: true)).then((value) {
+      print("Data added sucessfully");
+    });
+    var displayName = firstname + lastname;
+    AppUser.instance.user!.updateDisplayName(displayName);
+  }
+
+  Future<void> getData(String firstname, String lastname, String email) async {
+    await firestoreInstance
+        .collection("quranIrabUsers")
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        firstname = doc["first_name"];
+        lastname = doc["last_name"];
+        email = doc["email"];
+      }
+    });
+  }
+
+  Future<void> updatePass(String password) async {
+    user!.updatePassword(password);
+    notifyListeners();
+  }
 }
