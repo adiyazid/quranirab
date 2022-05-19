@@ -1,22 +1,22 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:nb_utils/nb_utils.dart';
+import 'package:path/path.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/widget/menu.dart';
 
 import '../../theme/theme_provider.dart';
 import '../../widget/appbar.widget.dart';
-
-import 'dart:io';
-import 'dart:typed_data';
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:nb_utils/nb_utils.dart';
-import 'package:path/path.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class UserprofileWidget extends StatefulWidget {
   const UserprofileWidget({Key? key}) : super(key: key);
@@ -328,30 +328,32 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
   }
 
   updateProfile(BuildContext context) async {
-    Map<String, dynamic> map = {};
+    //Map<String, dynamic> map = {};
+    String? url;
     if (xfile != null) {
       if (fnamecontroller.text.isNotEmpty && lnamecontroller.text.isNotEmpty) {
         User? currentUser = FirebaseAuth.instance.currentUser;
-        String url = await uploadImage();
+        url = await uploadImage();
         currentUser?.updatePhotoURL(url);
-        map['profileImage'] = url;
+        //map['profileImage'] = url;
         //map['first_name'] = _textEditingController.text;
       } else {
         showToast("Please fill in the information!");
       }
     } else {
-      showToast("Please choose the image!");
+      /*showToast("Please choose the image!");
       if (fnamecontroller.text.isEmpty && lnamecontroller.text.isEmpty) {
         showToast("Please fill in the information!");
-      }
+      }*/
     }
-    if (xfile != null &&
+    if (
         fnamecontroller.text.isNotEmpty &&
         lnamecontroller.text.isNotEmpty) {
-      await FirebaseFirestore.instance
-          .collection("quranIrabUsers")
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .update(map);
+      Provider.of<AppUser>(context, listen: false).updatedata(
+          fnamecontroller.text,
+          lnamecontroller.text,
+          AppUser.instance.user!.email!
+          );
       showToast("Profile successfully updated!");
       Navigator.pop(context);
     }

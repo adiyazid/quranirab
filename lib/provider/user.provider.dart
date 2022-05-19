@@ -84,7 +84,7 @@ class AppUser extends ChangeNotifier {
   final firestoreInstance = FirebaseFirestore.instance;
 
   Future<void> updatedata(
-      String firstname, String lastname, String email,String url) async {
+      String firstname, String lastname, String email) async {
     await firestoreInstance
         .collection("quranIrabUsers")
         .doc(AppUser.instance.user!.uid)
@@ -92,13 +92,13 @@ class AppUser extends ChangeNotifier {
       "first_name": firstname,
       "last_name": lastname,
       "email": email,
-      "profileImage":url,
+      "profileImage":AppUser.instance.user!.photoURL??"",
       "uid": AppUser.instance.user!.uid
     }, SetOptions(merge: true)).then((value) {
       print("Data added sucessfully");
     });
-    var imageURL = url;
-    var displayName = firstname + lastname;
+    var imageURL = AppUser.instance.user!.photoURL??"";
+    var displayName = "$firstname $lastname";
     AppUser.instance.user!.updateDisplayName(displayName);
     AppUser.instance.user!.updatePhotoURL(imageURL);
   }

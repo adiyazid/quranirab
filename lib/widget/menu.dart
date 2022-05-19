@@ -77,7 +77,7 @@ class Menu extends StatelessWidget {
                 text: 'User Profile',
                 icon: Icons.info_outline,
                 onTap: () {
-                  Navigator.pop(context);
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(
