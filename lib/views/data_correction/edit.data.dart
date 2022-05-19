@@ -22,7 +22,6 @@ class EditData extends StatefulWidget {
 class _EditDataState extends State<EditData> {
   var i = 0;
 
-  final _nameController = TextEditingController();
 
   final _option = ['Add New', 'Use existing category'];
 
@@ -32,7 +31,7 @@ class _EditDataState extends State<EditData> {
 
   String? _inputParent;
 
-  int? _inputCat;
+  String? _inputCat;
 
   String? _inputChildType;
 
@@ -41,6 +40,8 @@ class _EditDataState extends State<EditData> {
   List<String> childType = ['unique', 'all', 'multiple', 'none'];
 
   List<String> wordType = ['none', 'label', 'main', 'main-label'];
+
+  int? _catID;
 
   @override
   void initState() {
@@ -85,6 +86,12 @@ class _EditDataState extends State<EditData> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               DropdownSearch<String>(
+                                validator: (value) {
+                                  if (value == 'Choose parent') {
+                                    return 'Please choose one parent ancestry';
+                                  }
+                                  return null;
+                                },
                                 dropdownSearchBaseStyle:
                                     TextStyle(fontFamily: 'MeQuran2'),
                                 showSearchBox: true,
@@ -137,7 +144,11 @@ class _EditDataState extends State<EditData> {
                                 TextFormField(
                                   decoration: InputDecoration(
                                       label: Text('New Category Name')),
-                                  controller: _nameController,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _inputCat = value;
+                                    });
+                                  },
                                   validator: (value) {
                                     if (_inputType == 'Add New' &&
                                             value == null ||
@@ -150,6 +161,12 @@ class _EditDataState extends State<EditData> {
                                 ),
                               if (_inputType != 'Add New' && newList.isNotEmpty)
                                 DropdownSearch<String>(
+                                    validator: (value) {
+                                      if (value == 'Choose child category') {
+                                        return 'Please choose one child category';
+                                      }
+                                      return null;
+                                    },
                                     dropdownSearchBaseStyle:
                                         TextStyle(fontFamily: 'MeQuran2'),
                                     showSearchBox: true,
@@ -162,16 +179,23 @@ class _EditDataState extends State<EditData> {
                                       labelText: "Child Category",
                                     ),
                                     onChanged: (String? value) async {
+                                      setState(() {
+                                        _inputCat = value;
+                                      });
                                       label.forEach((element) {
-                                        if (value == element.name) {
-                                          setState(() {
-                                            _inputCat = element.categoryId;
-                                          });
+                                        if (element.name == value) {
+                                          _catID = element.categoryId;
                                         }
                                       });
                                     },
                                     selectedItem: 'Choose child category'),
                               DropdownSearch<String>(
+                                  validator: (value) {
+                                    if (value == 'Choose child type') {
+                                      return 'Please choose one child type';
+                                    }
+                                    return null;
+                                  },
                                   dropdownSearchBaseStyle:
                                       TextStyle(fontFamily: 'MeQuran2'),
                                   showSearchBox: true,
@@ -190,6 +214,12 @@ class _EditDataState extends State<EditData> {
                                   },
                                   selectedItem: 'Choose child type'),
                               DropdownSearch<String>(
+                                  validator: (value) {
+                                    if (value == 'Choose word type') {
+                                      return 'Please choose one word type';
+                                    }
+                                    return null;
+                                  },
                                   dropdownSearchBaseStyle:
                                       TextStyle(fontFamily: 'MeQuran2'),
                                   showSearchBox: true,
@@ -209,19 +239,32 @@ class _EditDataState extends State<EditData> {
                                   selectedItem: 'Choose word type'),
                               Text(
                                   "Parent Ancestry ${_inputParent ?? "No data"}"),
-                              Text("Category ID ${_inputCat ?? "No data"}"),
+                              Text("Category Name ${_inputCat ?? "No data"}"),
+                              Text("Category ID ${_catID ?? "No data"}"),
                               Text(
                                   "Child Type ${_inputChildType ?? "No data"}"),
                               Text("Word Type ${_inputWordType ?? "No data"}"),
                               ElevatedButton(
-                                  onPressed: () {
-                                    if (_inputParent != null) {
-                                      print(_inputParent);
-                                      // addData(
-                                      //     childType: '',
-                                      //     name: _nameController.value.text.trim(),
-                                      //     parent: _inputParent!,
-                                      //     wordType: '');
+                                  onPressed: () async {
+                                    // Validate returns true if the form is valid, or false otherwise.
+                                    if (_formKey.currentState!.validate()) {
+                                      await addData(
+                                          categoryId: "$_catID",
+                                          parent: _inputParent!,
+                                          wordType: _inputWordType!,
+                                          name: _inputCat!,
+                                          childType: _inputChildType!,
+                                          newCat: _inputType == 'Add New'
+                                              ? true
+                                              : false);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                            content: Text('Adding Data...')),
+                                      );
+                                      Navigator.pop(context);
+                                      Navigator.pop(context);
+                                      Navigator.pop(context);
                                     }
                                   },
                                   child: Text('Submit'))
@@ -409,20 +452,29 @@ class _EditDataState extends State<EditData> {
     required String wordType,
     required String name,
     required String childType,
+    String? categoryId,
+    required bool newCat,
   }) async {
     var id = await Provider.of<AyaProvider>(context, listen: false)
         .getLastRelationshipId();
-    var catID = await Provider.of<AyaProvider>(context, listen: false)
-        .getLastCategoryId();
-    await Provider.of<AyaProvider>(context, listen: false).addNewCategory(
-        categoryID: int.parse(catID),
-        parent: parent,
-        name: name,
-        childType: childType,
-        wordType: wordType);
+    var catID;
+    if (newCat) {
+      setState(() {});
+      catID = await Provider.of<AyaProvider>(context, listen: false)
+          .getLastCategoryId();
+      await Provider.of<AyaProvider>(context, listen: false).addNewCategory(
+          categoryID: int.parse(catID),
+          parent: parent,
+          name: name,
+          childType: childType,
+          wordType: wordType);
+    } else {
+      catID = categoryId;
+    }
     await Provider.of<AyaProvider>(context, listen: false).addNewRelationship(
         relationshipID: int.parse(id),
         wordID: widget.wordId,
         categoryID: int.parse(catID));
+  print('data added');
   }
 }

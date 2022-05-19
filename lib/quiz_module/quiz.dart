@@ -54,7 +54,6 @@ class _QuizState extends State<Quiz> {
   String btnText = "Next";
   bool answered = false;
 
-
   @override
   void initState() {
     generateQuestions();
@@ -62,12 +61,14 @@ class _QuizState extends State<Quiz> {
   }
 
   @override
-  Widget build(BuildContext context) {var themeProvider = Provider.of<ThemeProvider>(context);
+  Widget build(BuildContext context) {
+    var themeProvider = Provider.of<ThemeProvider>(context);
     windowWidth = MediaQuery.of(context).size.width;
     windowHeight = MediaQuery.of(context).size.height;
     windowSize = min(windowWidth, windowHeight);
     return Scaffold(
-      backgroundColor: themeProvider.isDarkMode ? Color(0xff666666) : ManyColors.color17,
+      backgroundColor:
+          themeProvider.isDarkMode ? Color(0xff666666) : ManyColors.color17,
       body: dataReady
           ? PageView.builder(
               controller: _controller,
@@ -88,7 +89,9 @@ class _QuizState extends State<Quiz> {
                       height: 30.0,
                     ),
                     Container(
-                      color: themeProvider.isDarkMode ? Color(0xff666666) : ManyColors.color17,
+                      color: themeProvider.isDarkMode
+                          ? Color(0xff666666)
+                          : ManyColors.color17,
                       padding: const EdgeInsets.all(10.0),
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height * 0.8,
@@ -212,78 +215,96 @@ class _QuizState extends State<Quiz> {
                                           Flexible(
                                             fit: FlexFit.loose,
                                             flex: 1,
-                                            child:Container(
-                                            margin: const EdgeInsets.all(3),
-                                            child: RawMaterialButton(
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5)),
-                                              elevation: 0.0,
-                                              fillColor: btnPressed
-                                                  ? options_arabic[i].isSelected
-                                                      ? options_arabic[i]
-                                                              .isCorrect
-                                                          ? Colors.green
-                                                          : Colors.red
-                                                      : !correctAnswer
-                                                          ? options_arabic[i]
-                                                                  .isCorrect
-                                                              ? Colors.green
-                                                              : !options_arabic[
-                                                                          i]
-                                                                      .isSelected
-                                                                  ? themeProvider.isDarkMode ? AppColor.secondaryColor : AppColor.pripmaryColor
-                                                                  : null
-                                                          : themeProvider.isDarkMode ? AppColor.secondaryColor : AppColor.pripmaryColor
-                                                  : themeProvider.isDarkMode ? AppColor.secondaryColor : AppColor.pripmaryColor,
-                                              onPressed: !answered
-                                                  ? () {
-                                                      selectedOption =
-                                                          options_arabic[i].id;
-                                                      options_arabic[i]
-                                                          .isSelected = true;
-                                                      checkAnswer(
-                                                          wordList[index]
-                                                              .id
-                                                              .toString(),
-                                                          selectedOption);
+                                            child: Container(
+                                              margin: const EdgeInsets.all(3),
+                                              child: RawMaterialButton(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5)),
+                                                elevation: 0.0,
+                                                fillColor: btnPressed
+                                                    ? options_arabic[i]
+                                                            .isSelected
+                                                        ? options_arabic[i]
+                                                                .isCorrect
+                                                            ? Colors.green
+                                                            : Colors.red
+                                                        : !correctAnswer
+                                                            ? options_arabic[i]
+                                                                    .isCorrect
+                                                                ? Colors.green
+                                                                : !options_arabic[
+                                                                            i]
+                                                                        .isSelected
+                                                                    ? themeProvider
+                                                                            .isDarkMode
+                                                                        ? AppColor
+                                                                            .secondaryColor
+                                                                        : AppColor
+                                                                            .pripmaryColor
+                                                                    : null
+                                                            : themeProvider
+                                                                    .isDarkMode
+                                                                ? AppColor
+                                                                    .secondaryColor
+                                                                : AppColor
+                                                                    .pripmaryColor
+                                                    : themeProvider.isDarkMode
+                                                        ? AppColor
+                                                            .secondaryColor
+                                                        : AppColor
+                                                            .pripmaryColor,
+                                                onPressed: !answered
+                                                    ? () {
+                                                        selectedOption =
+                                                            options_arabic[i]
+                                                                .id;
+                                                        options_arabic[i]
+                                                            .isSelected = true;
+                                                        checkAnswer(
+                                                            wordList[index]
+                                                                .id
+                                                                .toString(),
+                                                            selectedOption);
 
-                                                      /**
-                                              if (questions[index]
-                                              .answers!
-                                              .values
-                                              .toList()[i]) {
-                                              score++;
-                                              print("yes");
-                                              } else {
-                                              print("no");
-                                              }
-                                           **/
-                                                      setState(() {
-                                                        btnPressed = true;
-                                                        answered = true;
-                                                      });
-                                                    }
-                                                  : null,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(5.0),
-                                                child: AutoSizeText(
-                                                  options_arabic[i].text,
-                                                  //questions[index].answers!.keys.toList()[i],
-                                                  softWrap: false,
-                                                  style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 18.0,
-                                                    fontFamily: 'MeQuran2',
+                                                        /**
+                                                if (questions[index]
+                                                .answers!
+                                                .values
+                                                .toList()[i]) {
+                                                score++;
+                                                print("yes");
+                                                } else {
+                                                print("no");
+                                                }
+                                             **/
+                                                        setState(() {
+                                                          btnPressed = true;
+                                                          answered = true;
+                                                        });
+                                                      }
+                                                    : null,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(5.0),
+                                                  child: AutoSizeText(
+                                                    options_arabic[i].text,
+                                                    //questions[index].answers!.keys.toList()[i],
+                                                    softWrap: false,
+                                                    style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18.0,
+                                                      fontFamily: 'MeQuran2',
+                                                    ),
+                                                    maxFontSize: 18.0,
+                                                    minFontSize: 16.0,
+                                                    maxLines: 1,
                                                   ),
-                                                  maxFontSize: 18.0,
-                                                  minFontSize: 16.0,
-                                                  maxLines: 1,
                                                 ),
                                               ),
                                             ),
-                                          ),),
+                                          ),
                                       ],
                                     ),
                                   )
@@ -338,7 +359,9 @@ class _QuizState extends State<Quiz> {
                           },
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5)),
-                          fillColor: themeProvider.isDarkMode ? Color(0xff808ba1) : Colors.orange[200],
+                          fillColor: themeProvider.isDarkMode
+                              ? Color(0xff808ba1)
+                              : Colors.orange[200],
                           padding: const EdgeInsets.all(15.0),
                           elevation: 0.0,
                           child: Text(
