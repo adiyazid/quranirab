@@ -1,10 +1,10 @@
 import 'dart:math';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/models/option-model.dart';
 import 'package:quranirab/provider/user.provider.dart';
-import 'package:quranirab/quiz_module/quiz_list.dart';
 import 'package:quranirab/quiz_module/quiz_model.dart';
 import 'package:quranirab/quiz_module/utils/AppColor.java';
 import 'package:quranirab/quiz_module/Quiz.Score.dart';
@@ -115,7 +115,7 @@ class _QuizState extends State<Quiz> {
                               child: Column(
                                 children: [
                                   const SizedBox(
-                                    height: 20.0,
+                                    height: 40.0,
                                   ),
                                   Center(
                                     child: SizedBox(
@@ -132,7 +132,7 @@ class _QuizState extends State<Quiz> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(height: 20),
+                                  SizedBox(height: 60),
                                   Center(
                                     child: SizedBox(
                                       height: 40.0,
@@ -199,7 +199,7 @@ class _QuizState extends State<Quiz> {
                                     ),
                                   ),
                                   const SizedBox(
-                                    height: 50.00,
+                                    height: 20.00,
                                   ),
                                   Expanded(
                                     child: Row(
@@ -209,7 +209,10 @@ class _QuizState extends State<Quiz> {
                                         for (int i = 0;
                                             i < options_arabic.length;
                                             i++)
-                                          Container(
+                                          Flexible(
+                                            fit: FlexFit.loose,
+                                            flex: 1,
+                                            child:Container(
                                             margin: const EdgeInsets.all(3),
                                             child: RawMaterialButton(
                                               shape: RoundedRectangleBorder(
@@ -265,18 +268,22 @@ class _QuizState extends State<Quiz> {
                                               child: Padding(
                                                 padding:
                                                     const EdgeInsets.all(5.0),
-                                                child: Text(
+                                                child: AutoSizeText(
                                                   options_arabic[i].text,
                                                   //questions[index].answers!.keys.toList()[i],
+                                                  softWrap: false,
                                                   style: const TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 18.0,
                                                     fontFamily: 'MeQuran2',
                                                   ),
+                                                  maxFontSize: 18.0,
+                                                  minFontSize: 16.0,
+                                                  maxLines: 1,
                                                 ),
                                               ),
                                             ),
-                                          ),
+                                          ),),
                                       ],
                                     ),
                                   )

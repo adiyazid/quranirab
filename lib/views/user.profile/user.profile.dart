@@ -1,10 +1,23 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/widget/menu.dart';
 
 import '../../theme/theme_provider.dart';
 import '../../widget/appbar.widget.dart';
+
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:nb_utils/nb_utils.dart';
+import 'package:path/path.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class UserprofileWidget extends StatefulWidget {
   const UserprofileWidget({Key? key}) : super(key: key);
@@ -14,6 +27,11 @@ class UserprofileWidget extends StatefulWidget {
 }
 
 class _UserprofileWidgetState extends State<UserprofileWidget> {
+  XFile? xfile;
+  late File file;
+  bool _load = false;
+  Uint8List webImage = Uint8List(10);
+  String? photoUrl;
   String? first_name;
   String? last_name;
 
@@ -21,9 +39,27 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
 
   var fnamecontroller = TextEditingController();
 
+  Future<PermissionStatus> requestPermissions() async {
+    await Permission.photos.request();
+    return Permission.photos.status;
+  }
+
+  void showToast(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  }
+
   @override
   void initState() {
     // TODO: implement initState
+    getImage();
     getName();
     super.initState();
   }
@@ -68,27 +104,100 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
           SizedBox(
             height: 24,
           ),
-          CircleAvatar(
-            backgroundImage: AssetImage(themeProvider.isDarkMode
-                ? "images/dark.jpg"
-                : "images/light.jpg"),
+          if (_load == false)
+            CircleAvatar(
+            backgroundImage: AssetImage(themeProvider.isDarkMode?"images/dark.jpg":"images/light.jpg"),
+            radius: 80,
+            child://if want to display the uploaded profile picture need to run at the terminal
+            //flutter run -d chrome --web-renderer html
+            //or need to setup CORS Configuration
+            // refer https://stackoverflow.com/questions/65653801/flutter-web-cant-load-network-image-from-another-domain
+              CachedNetworkImage(
+                    imageUrl: photoUrl!,
+                    imageBuilder:
+                        (context, imageProvider) =>
+                            Stack(
+                                alignment: Alignment.topRight,
+                                children: [
+                                  ClipOval(
+                                    child:Container(
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: imageProvider,
+                                          fit: BoxFit.cover,filterQuality: FilterQuality.low,
+                                        ),
+                                      ),
+                                    ),),
+                                  Positioned(
+                                  right: 16,
+                                  top: 116,
+                                  child: ClipOval(
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        chooseImage();
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8),
+                                        color: Colors.white,
+                                        child: const Icon(
+                                          Icons.edit,
+                                          color: Colors.black,
+                                          size: 23,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )]),
+                    placeholder: (context, url) =>
+                        CircularProgressIndicator(),
+                    errorWidget: (context, url, error)
+                    => Stack(
+                      alignment: Alignment.topRight,
+                      children: [ Positioned(
+                      right: 16,
+                      top: 116,
+                      child: ClipOval(
+                        child: GestureDetector(
+                          onTap: () {
+                            chooseImage();
+                            /*showDialog(
+                                context: context,
+                                builder:
+                                    (BuildContext context) {
+                                  return AlertDialog(title: Text("test1"),);
+                                });*/
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            color: Colors.white,
+                            child: const Icon(
+                              Icons.edit,
+                              color: Colors.black,
+                              size: 23,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )]),
+                  ),
+          )else (kIsWeb)
+              ? CircleAvatar(
+            //backgroundImage: AssetImage(themeProvider.isDarkMode?"images/dark.jpg":"images/light.jpg"),
             radius: 80,
             child: Stack(
-              alignment: Alignment.topRight,
               children: [
+                ClipOval(
+                  child: Image.memory(webImage, width: 200,
+                    height: 200,
+                    fit: BoxFit.cover,),
+                ),
                 Positioned(
                   right: 16,
                   top: 116,
                   child: ClipOval(
                     child: GestureDetector(
                       onTap: () {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text("test1"),
-                              );
-                            });
+                        chooseImage();
                       },
                       child: Container(
                         padding: const EdgeInsets.all(8),
@@ -103,8 +212,8 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
                   ),
                 )
               ],
-            ),
-          ),
+            ),)
+              : Image.file(file),
           SizedBox(
             height: 24,
           ),
@@ -168,6 +277,7 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
                     if (lnamecontroller.value.text.isNotEmpty){
                     print (lnamecontroller.value.text);
                     }
+                    updateProfile(context);
                   },
                   child: Text(
                     'Save Changes',
@@ -185,6 +295,92 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
         ]),
       ),
     );
+  }
+
+  chooseImage() async {
+    var permissionStatus = requestPermissions();
+    if (kIsWeb) {
+      xfile = await ImagePicker().pickImage(source: ImageSource.gallery,maxWidth: 300,maxHeight: 300);
+      print("file " + xfile!.path);
+      if (xfile != null) {
+        var f = await xfile!.readAsBytes();
+        setState(() {
+          file = File(xfile!.path);
+          webImage = f;
+          _load = true;
+        });
+      }else {
+        showToast("No file selected");
+      }
+    }
+    else if (!kIsWeb && await permissionStatus.isGranted) {
+      xfile = await ImagePicker().pickImage(source: ImageSource.gallery,maxWidth: 300,maxHeight: 300);
+      print("file " + xfile!.path);
+      if (xfile != null) {
+        var f = File(xfile!.path);
+        setState(() {
+          file = f;
+          //webImage = f;
+          _load = true;
+        });
+      }else {
+        showToast("No file selected");
+      }
+    }else {
+      showToast("Permission not granted");
+    }
+
+  }
+
+  updateProfile(BuildContext context) async {
+    Map<String, dynamic> map = Map();
+    if (xfile != null) {
+      if (fnamecontroller.text.isNotEmpty && lnamecontroller.text.isNotEmpty) {
+        User? currentUser = await FirebaseAuth.instance.currentUser;
+        String url = await uploadImage();
+        currentUser?.updatePhotoURL(url);
+        map['profileImage'] = url;
+        //map['first_name'] = _textEditingController.text;
+      }else {
+        showToast("Please fill in the information!");
+      }
+    }
+    else {
+      showToast("Please choose the image!");
+      if (fnamecontroller.text.isEmpty && lnamecontroller.text.isEmpty) {
+        showToast("Please fill in the information!");
+      }
+    }
+    if ( xfile != null && fnamecontroller.text.isNotEmpty && lnamecontroller.text.isNotEmpty) {
+      await FirebaseFirestore.instance
+          .collection("quranIrabUsers")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update(map);
+      showToast("Profile successfully updated!");
+      Navigator.pop(context);
+    }
+  }
+
+  Future<String> uploadImage() async {
+    TaskSnapshot taskSnapshot = await FirebaseStorage.instance
+        .refFromURL('gs://quranirab-74bba.appspot.com')
+        .child("profile")
+        .child(
+        FirebaseAuth.instance.currentUser!.uid + "_" + basename(xfile!.path))
+        .putData(await xfile!.readAsBytes(),
+      SettableMetadata(contentType: 'image/jpeg'),);
+    taskSnapshot.ref.getDownloadURL().then(
+            (value) => print("Done: $value"));
+
+    return taskSnapshot.ref.getDownloadURL();
+  }
+
+  void getImage() {
+
+    var profileImage = AppUser.instance.user!.photoURL;
+    setState(() {
+      photoUrl = profileImage;
+    });
   }
 
   void getName() {
