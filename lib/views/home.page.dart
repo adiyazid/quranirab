@@ -330,7 +330,7 @@ class _HomePageState extends State<HomePage>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.05,
+                          height: MediaQuery.of(context).size.height * 0.06,
                           width: 180,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -365,7 +365,7 @@ class _HomePageState extends State<HomePage>
                           ),
                         ),
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.48,
+                          height: MediaQuery.of(context).size.height * 0.45,
                           child: TabBarView(
                               controller: _tabController,
                               children: [

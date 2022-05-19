@@ -6,6 +6,7 @@ class WordDetail {
   String? parent;
   bool? isparent;
   bool? hasChild;
+  String? childType;
 
   WordDetail(
       {required this.name,
@@ -14,5 +15,6 @@ class WordDetail {
       this.id,
       this.parent,
       this.isparent,
-      this.hasChild});
+      this.hasChild,
+      this.childType});
 }

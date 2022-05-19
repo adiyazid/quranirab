@@ -32,6 +32,16 @@ class _EditDataState extends State<EditData> {
 
   String? _inputParent;
 
+  int? _inputCat;
+
+  String? _inputChildType;
+
+  String? _inputWordType;
+
+  List<String> childType = ['unique', 'all', 'multiple', 'none'];
+
+  List<String> wordType = ['none', 'label', 'main', 'main-label'];
+
   @override
   void initState() {
     // TODO: implement initState
@@ -45,9 +55,11 @@ class _EditDataState extends State<EditData> {
     return Consumer<AyaProvider>(builder: (context, aya, child) {
       List<String> list = [];
       List<String> newList = [];
+
       aya.wordDetail.forEach((element) {
         list.add(element.name!);
       });
+      List<WordDetail> label = [];
       List<WordDetail> parent = aya.getParent();
       return Scaffold(
           appBar: AppBar(
@@ -85,14 +97,20 @@ class _EditDataState extends State<EditData> {
                                   labelText: "Parent Ancestry",
                                 ),
                                 onChanged: (String? value) {
-                                  aya.wordDetail.forEach((element) {
+                                  aya.wordDetail.forEach((element) async {
                                     if (element.name == value) {
                                       setState(() {
                                         _inputParent =
                                             "${element.parent}/${element.categoryId}";
                                       });
                                     }
-                                    aya.wordDetail.forEach((element) {
+                                    newList.clear();
+
+                                    label = await Provider.of<AyaProvider>(
+                                            context,
+                                            listen: false)
+                                        .getList(_inputParent ?? '');
+                                    label.forEach((element) {
                                       if (_inputParent == element.parent) {
                                         if (newList.contains(element.name) ==
                                             false) {
@@ -102,10 +120,11 @@ class _EditDataState extends State<EditData> {
                                     });
                                   });
                                 },
-                                selectedItem: aya.wordDetail.first.name,
+                                selectedItem: 'Choose parent',
                               ),
                               RadioGroup<String>.builder(
-                                groupValue: _inputType,
+                                groupValue:
+                                    newList.isEmpty ? "Add New" : _inputType,
                                 onChanged: (value) => setState(() {
                                   _inputType = value!;
                                 }),
@@ -114,7 +133,7 @@ class _EditDataState extends State<EditData> {
                                   item,
                                 ),
                               ),
-                              if (_inputType == 'Add New')
+                              if (_inputType == 'Add New' || newList.isEmpty)
                                 TextFormField(
                                   decoration: InputDecoration(
                                       label: Text('New Category Name')),
@@ -131,6 +150,28 @@ class _EditDataState extends State<EditData> {
                                 ),
                               if (_inputType != 'Add New' && newList.isNotEmpty)
                                 DropdownSearch<String>(
+                                    dropdownSearchBaseStyle:
+                                        TextStyle(fontFamily: 'MeQuran2'),
+                                    showSearchBox: true,
+                                    mode: Mode.DIALOG,
+                                    showSelectedItems: true,
+                                    dropdownBuilder: _style,
+                                    popupItemBuilder: _style1,
+                                    items: newList,
+                                    dropdownSearchDecoration: InputDecoration(
+                                      labelText: "Child Category",
+                                    ),
+                                    onChanged: (String? value) async {
+                                      label.forEach((element) {
+                                        if (value == element.name) {
+                                          setState(() {
+                                            _inputCat = element.categoryId;
+                                          });
+                                        }
+                                      });
+                                    },
+                                    selectedItem: 'Choose child category'),
+                              DropdownSearch<String>(
                                   dropdownSearchBaseStyle:
                                       TextStyle(fontFamily: 'MeQuran2'),
                                   showSearchBox: true,
@@ -138,23 +179,40 @@ class _EditDataState extends State<EditData> {
                                   showSelectedItems: true,
                                   dropdownBuilder: _style,
                                   popupItemBuilder: _style1,
-                                  items: newList,
+                                  items: childType,
                                   dropdownSearchDecoration: InputDecoration(
-                                    labelText: "Child category",
+                                    labelText: "Child Type",
                                   ),
                                   onChanged: (String? value) {
-                                    aya.wordDetail.forEach((element) {
-                                      if (element.name == value) {
-                                        setState(() {
-                                          _inputParent =
-                                              "${element.parent}/${element.categoryId}";
-                                        });
-                                      }
+                                    setState(() {
+                                      _inputChildType = value;
                                     });
                                   },
-                                  selectedItem: aya.wordDetail.first.name,
-                                ),
-                              Text(_inputParent ?? 'No data'),
+                                  selectedItem: 'Choose child type'),
+                              DropdownSearch<String>(
+                                  dropdownSearchBaseStyle:
+                                      TextStyle(fontFamily: 'MeQuran2'),
+                                  showSearchBox: true,
+                                  mode: Mode.DIALOG,
+                                  showSelectedItems: true,
+                                  dropdownBuilder: _style,
+                                  popupItemBuilder: _style1,
+                                  items: wordType,
+                                  dropdownSearchDecoration: InputDecoration(
+                                    labelText: "Word Type",
+                                  ),
+                                  onChanged: (String? value) {
+                                    setState(() {
+                                      _inputWordType = value;
+                                    });
+                                  },
+                                  selectedItem: 'Choose word type'),
+                              Text(
+                                  "Parent Ancestry ${_inputParent ?? "No data"}"),
+                              Text("Category ID ${_inputCat ?? "No data"}"),
+                              Text(
+                                  "Child Type ${_inputChildType ?? "No data"}"),
+                              Text("Word Type ${_inputWordType ?? "No data"}"),
                               ElevatedButton(
                                   onPressed: () {
                                     if (_inputParent != null) {
@@ -246,7 +304,8 @@ class _EditDataState extends State<EditData> {
               child: ListTile(
                   leading: Icon(Icons.navigate_next),
                   title: Text(document.name!),
-                  subtitle: Text('ID: ${document.categoryId}'),
+                  subtitle: Text(
+                      'ID: ${document.categoryId}, Type: ${document.type}, Child: ${document.childType}'),
                   trailing: Text("${list.length} items")))
           : list.isNotEmpty
               ? Card(
@@ -257,7 +316,8 @@ class _EditDataState extends State<EditData> {
                   child: ListTile(
                       leading: Icon(Icons.arrow_right),
                       title: Text(document.name!),
-                      subtitle: Text('ID: ${document.categoryId}'),
+                      subtitle: Text(
+                          'ID: ${document.categoryId}, Type: ${document.type ?? "None"}, Child: ${document.childType}'),
                       trailing: IconButton(
                         icon: Icon(Icons.edit),
                         onPressed: () async {
@@ -272,7 +332,8 @@ class _EditDataState extends State<EditData> {
               : ListTile(
                   leading: Icon(Icons.remove),
                   title: Text(document.name!),
-                  subtitle: Text('ID: ${document.categoryId}'),
+                  subtitle: Text(
+                      'ID: ${document.categoryId}, Type: ${document.type ?? "None"}, Child: ${document.childType}'),
                   trailing: IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () async {

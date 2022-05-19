@@ -17,7 +17,7 @@ class AyaProvider extends ChangeNotifier {
   int? start;
   int? end;
   int nums = 0;
-
+  List<WordDetail> allChild = [];
   BreakIndex? _index;
   List _sPos = [];
   List ayaPosition = [];
@@ -314,6 +314,7 @@ class AyaProvider extends ChangeNotifier {
       for (var doc in querySnapshot.docs) {
         var parent = doc['ancestry'] ?? '';
         wordDetail.add(WordDetail(
+            childType: doc["child_type"] ?? '',
             isparent:
                 parent.split("/").length == 1 || parent == '' ? true : false,
             hasChild:
@@ -322,7 +323,7 @@ class AyaProvider extends ChangeNotifier {
             id: int.parse(id),
             categoryId: int.parse(doc["id"]),
             name: doc["tname"],
-            type: doc["word_type"] ?? ''));
+            type: doc["word_type"] ?? 'None'));
         notifyListeners();
       }
     });
@@ -8924,6 +8925,7 @@ class AyaProvider extends ChangeNotifier {
     var index = wordDetail.indexWhere((element) => element.id == id);
     wordDetail.replaceRange(index, index + 1, [
       WordDetail(
+          childType: data.childType,
           isparent: data.parent!.split("/").length == 1 || data.parent == ''
               ? true
               : false,
@@ -9029,12 +9031,13 @@ class AyaProvider extends ChangeNotifier {
           var name = doc["tname"];
           String parent = doc["ancestry"] ?? '';
           data = WordDetail(
+              childType: doc["child_type"] ?? '',
               isparent: true,
               hasChild: true,
               parent: parent,
               categoryId: int.parse(doc["id"].trim()),
               name: name,
-              type: doc["word_type"] ?? '');
+              type: doc["word_type"] ?? 'None');
         }
         return data;
       });
@@ -9051,9 +9054,10 @@ class AyaProvider extends ChangeNotifier {
         .then((QuerySnapshot querySnapshot) {
       for (var doc in querySnapshot.docs) {
         labelCategory.add(WordDetail(
+            childType: doc["child_type"],
             parent: doc["ancestry"] ?? '',
             name: doc["tname"] ?? '',
-            type: doc['word_type'] ?? '',
+            type: doc['word_type'] ?? 'None',
             categoryId: int.parse(doc['id'])));
       }
     });
