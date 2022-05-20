@@ -9382,7 +9382,7 @@ class AyaProvider extends ChangeNotifier {
         breakIndex = _index?.page445 ?? <int>[];
       } else if (page == 446) {
         breakIndex = _index?.page446 ?? <int>[];
-      }else if (page == 447) {
+      } else if (page == 447) {
         breakIndex = _index?.page447 ?? <int>[];
       }
     } else if (page <= 604) {
@@ -9782,6 +9782,21 @@ class AyaProvider extends ChangeNotifier {
     await wordRelationship.doc(id).set({
       "updated_at": DateTime.now().toString(),
       "word_category_id": '$wordId'
+    }, SetOptions(merge: true));
+    notifyListeners();
+  }
+
+  Future<void> updateCategory(
+    String name,
+    String childType,
+    String type,
+    String categoryID,
+  ) async {
+    await wordCategory.doc(categoryID).set({
+      "tname": name,
+      "child_type": childType,
+      "word_type": type,
+      "updated_at": DateTime.now().toString(),
     }, SetOptions(merge: true));
     notifyListeners();
   }

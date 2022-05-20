@@ -31,10 +31,19 @@ class _QuizHomeState extends State<QuizHome> {
         length: 3,
         child: Stack(
           children: [
-            const SizedBox(
-              height: 115,
+            Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                      width: 2.0,
+                      color: themeProvider.isDarkMode
+                          ? Colors.white
+                          : const Color(0xffE86F00)),
+                ),
+              ),
+              height: 57,
               child: CustomScrollView(
-                slivers: [Appbar()],
+                slivers: const [Appbar()],
               ),
             ),
             Align(
@@ -45,7 +54,8 @@ class _QuizHomeState extends State<QuizHome> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(top: 50, bottom: 20),
-                      child: Container(margin: EdgeInsets.all(8),
+                      child: Container(
+                          margin: EdgeInsets.all(8),
                           color: themeProvider.isDarkMode
                               ? Color(0xff808ba1)
                               : Color(0xfffff5ec),
@@ -68,7 +78,7 @@ class _QuizHomeState extends State<QuizHome> {
                     ),
                     button114(
                         'Back',
-                         TextStyle(
+                        TextStyle(
                             color: themeProvider.isDarkMode
                                 ? Colors.white
                                 : Colors.black,

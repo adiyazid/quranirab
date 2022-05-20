@@ -43,6 +43,7 @@ Future<void> main() async {
           final themeProvider =
               Provider.of<ThemeProvider>(context, listen: true);
           return MaterialApp(
+            title: "QuranIrab Web App",
             scrollBehavior: MyCustomScrollBehavior(),
             home: LandingPage(),
             themeMode: themeProvider.themeMode,

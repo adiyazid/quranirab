@@ -76,11 +76,23 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
           : Color.fromRGBO(255, 255, 255, 1),
       body: SingleChildScrollView(
         child: Column(children: <Widget>[
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.1,
+          Container(
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                    width: 2.0,
+                    color: themeProvider.isDarkMode
+                        ? Colors.white
+                        : const Color(0xffE86F00)),
+              ),
+            ),
+            height: 57,
             child: CustomScrollView(
               slivers: const [Appbar()],
             ),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.05,
           ),
           Text(
             'User Profile',

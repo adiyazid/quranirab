@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/quiz_module/LeaderBoard.Menu.dart';
 import 'package:quranirab/theme/theme_provider.dart';
-import 'package:quranirab/views/auth/login.screen.dart';
+import 'package:quranirab/views/auth/landing.page.dart';
 import 'package:quranirab/views/home.page.dart';
 
 import '../views/user.profile/user.profile.dart';
@@ -75,9 +75,8 @@ class Menu extends StatelessWidget {
             const SizedBox(height: 16),
             buildMenuItem(
                 text: 'User Profile',
-                icon: Icons.info_outline,
+                icon: Icons.person,
                 onTap: () {
-
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -125,7 +124,7 @@ class Menu extends StatelessWidget {
                 Navigator.pop(context);
                 await AppUser.instance.signOut();
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SigninWidget()));
+                    MaterialPageRoute(builder: (context) => LandingPage()));
               },
             )
           ],

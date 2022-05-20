@@ -38,7 +38,6 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     var themeProvider = Provider.of<ThemeProvider>(context);
-
     // Figma Flutter Generator Desktop31Widget - FRAME
     return SafeArea(
       child: Scaffold(
@@ -47,11 +46,22 @@ class _HomePageState extends State<HomePage>
           drawer: const Menu(),
           body: Column(
             children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.1,
+              Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                        color: themeProvider.isDarkMode
+                            ? Colors.white
+                            : const Color(0xffE86F00)),
+                  ),
+                ),
+                height: 57,
                 child: CustomScrollView(
                   slivers: const [Appbar()],
                 ),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.05,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32.0),
@@ -406,12 +416,12 @@ class _HomePageState extends State<HomePage>
                                                               await getTotalPage(
                                                                   _list[index]
                                                                       ["id"]);
-                                                          // Provider.of<AyaProvider>(
-                                                          //         context,
-                                                          //         listen: false)
-                                                          //     .getPage(
-                                                          //         int.parse(
-                                                          //             a.first));
+                                                          Provider.of<AyaProvider>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .getPage(
+                                                                  int.parse(
+                                                                      a.first));
                                                           Provider.of<AyaProvider>(
                                                                   context,
                                                                   listen: false)
@@ -426,9 +436,9 @@ class _HomePageState extends State<HomePage>
                                                                   int.parse(
                                                                       a.first));
 
-                                                          Provider.of<AyaProvider>(context,
-                                                              listen: false)
-                                                              .getPage(447);
+                                                          // Provider.of<AyaProvider>(context,
+                                                          //     listen: false)
+                                                          //     .getPage(447);
                                                           Navigator.push(
                                                               context,
                                                               MaterialPageRoute(
@@ -495,7 +505,6 @@ class _HomePageState extends State<HomePage>
                                                             children: [
                                                               Container(
                                                                   width: 50,
-                                                                  height: 100,
                                                                   decoration:
                                                                       BoxDecoration(
                                                                     borderRadius:
@@ -711,7 +720,6 @@ class _HomePageState extends State<HomePage>
                                                             children: [
                                                               Container(
                                                                   width: 50,
-                                                                  height: 100,
                                                                   decoration:
                                                                       BoxDecoration(
                                                                     borderRadius:
