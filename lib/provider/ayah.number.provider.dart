@@ -7509,6 +7509,22 @@ class AyaProvider extends ChangeNotifier {
         170,
         183
       ],
+      "page_447": [
+        13,
+        25,
+        36,
+        47,
+        59,
+        73,
+        89,
+        99,
+        116,
+        131,
+        146,
+        158,
+        170,
+        183
+      ],
       "page_504": [
         16,
         32,
@@ -9366,6 +9382,8 @@ class AyaProvider extends ChangeNotifier {
         breakIndex = _index?.page445 ?? <int>[];
       } else if (page == 446) {
         breakIndex = _index?.page446 ?? <int>[];
+      }else if (page == 447) {
+        breakIndex = _index?.page447 ?? <int>[];
       }
     } else if (page <= 604) {
       if (page == 504) {

@@ -66,7 +66,7 @@ dependencies:
   get_storage: ^2.0.3
   dropdown_search: ^3.0.1
   tree_view: ^0.0.6
-  fab_circular_menu: ^1.0.2
+  floating_action_bubble: ^1.1.4
   group_radio_button: ^1.2.0
   image_picker: ^0.8.5+3
   permission_handler: ^9.2.0

@@ -1,4 +1,5 @@
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:group_radio_button/group_radio_button.dart';
 import 'package:provider/provider.dart';
@@ -19,40 +20,51 @@ class EditData extends StatefulWidget {
   State<EditData> createState() => _EditDataState();
 }
 
-class _EditDataState extends State<EditData> {
+class _EditDataState extends State<EditData>
+    with SingleTickerProviderStateMixin {
   var i = 0;
-
+  late Animation<double> _animation;
+  late AnimationController _animationController;
 
   final _option = ['Add New', 'Use existing category'];
 
   String _inputType = 'Add New';
 
   final _formKey = GlobalKey<FormState>();
-
+  final _formKey2 = GlobalKey<FormState>();
   String? _inputParent;
-
+  String? _inputParent2;
   String? _inputCat;
-
+  String? _inputCat2;
   String? _inputChildType;
-
+  String? _inputChildType2;
   String? _inputWordType;
-
+  String? _inputWordType2;
   List<String> childType = ['unique', 'all', 'multiple', 'none'];
 
   List<String> wordType = ['none', 'label', 'main', 'main-label'];
 
   int? _catID;
+  int? _catID2;
 
   @override
   void initState() {
     // TODO: implement initState
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 260),
+    );
 
+    final curvedAnimation =
+        CurvedAnimation(curve: Curves.easeInOut, parent: _animationController);
+    _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation);
     init();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Consumer<AyaProvider>(builder: (context, aya, child) {
       List<String> list = [];
       List<String> newList = [];
@@ -71,214 +83,625 @@ class _EditDataState extends State<EditData> {
             centerTitle: true,
           ),
           body: TreeView(startExpanded: true, children: _getChildList(parent)),
-          floatingActionButton: FloatingActionButton.extended(
-            onPressed: () => showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return StatefulBuilder(builder: (context, setState) {
-                    return AlertDialog(
-                      title: Text('Add data'),
-                      content: SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.7,
-                        child: Form(
-                          key: _formKey,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              DropdownSearch<String>(
-                                validator: (value) {
-                                  if (value == 'Choose parent') {
-                                    return 'Please choose one parent ancestry';
-                                  }
-                                  return null;
-                                },
-                                dropdownSearchBaseStyle:
-                                    TextStyle(fontFamily: 'MeQuran2'),
-                                showSearchBox: true,
-                                mode: Mode.DIALOG,
-                                showSelectedItems: true,
-                                dropdownBuilder: _style,
-                                popupItemBuilder: _style1,
-                                items: list,
-                                dropdownSearchDecoration: InputDecoration(
-                                  labelText: "Parent Ancestry",
-                                ),
-                                onChanged: (String? value) {
-                                  aya.wordDetail.forEach((element) async {
-                                    if (element.name == value) {
-                                      setState(() {
-                                        _inputParent =
-                                            "${element.parent}/${element.categoryId}";
-                                      });
-                                    }
-                                    newList.clear();
 
-                                    label = await Provider.of<AyaProvider>(
-                                            context,
-                                            listen: false)
-                                        .getList(_inputParent ?? '');
-                                    label.forEach((element) {
-                                      if (_inputParent == element.parent) {
-                                        if (newList.contains(element.name) ==
-                                            false) {
-                                          newList.add(element.name!);
+          //Init Floating Action Bubble
+          floatingActionButton: FloatingActionBubble(
+            // Menu items
+            items: <Bubble>[
+              Bubble(
+                title: "Add Word Relationship",
+                iconColor: Colors.white,
+                bubbleColor: themeProvider.isDarkMode
+                    ? Colors.blueGrey
+                    : Colors.orangeAccent,
+                icon: Icons.account_tree_rounded,
+                titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+                onPress: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return StatefulBuilder(builder: (context, setState) {
+                          return AlertDialog(
+                            title: Text('Add New Word Relationship'),
+                            content: SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.7,
+                              child: Form(
+                                key: _formKey,
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    DropdownSearch<String>(
+                                      validator: (value) {
+                                        if (value == 'Choose parent') {
+                                          return 'Please choose one parent ancestry';
                                         }
-                                      }
-                                    });
-                                  });
-                                },
-                                selectedItem: 'Choose parent',
-                              ),
-                              RadioGroup<String>.builder(
-                                groupValue:
-                                    newList.isEmpty ? "Add New" : _inputType,
-                                onChanged: (value) => setState(() {
-                                  _inputType = value!;
-                                }),
-                                items: _option,
-                                itemBuilder: (item) => RadioButtonBuilder(
-                                  item,
+                                        return null;
+                                      },
+                                      dropdownSearchBaseStyle:
+                                          TextStyle(fontFamily: 'MeQuran2'),
+                                      showSearchBox: true,
+                                      mode: Mode.DIALOG,
+                                      showSelectedItems: true,
+                                      dropdownBuilder: _style,
+                                      popupItemBuilder: _style1,
+                                      items: list,
+                                      dropdownSearchDecoration: InputDecoration(
+                                        labelText: "Parent Ancestry",
+                                      ),
+                                      onChanged: (String? value) {
+                                        aya.wordDetail.forEach((element) async {
+                                          if (element.name == value) {
+                                            setState(() {
+                                              _inputParent =
+                                                  "${element.parent}/${element.categoryId}";
+                                            });
+                                          }
+                                          newList.clear();
+
+                                          label =
+                                              await Provider.of<AyaProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .getList(_inputParent ?? '');
+                                          label.forEach((element) {
+                                            if (_inputParent ==
+                                                element.parent) {
+                                              if (newList
+                                                      .contains(element.name) ==
+                                                  false) {
+                                                newList.add(element.name!);
+                                              }
+                                            }
+                                          });
+                                        });
+                                      },
+                                      selectedItem: 'Choose parent',
+                                    ),
+                                    RadioGroup<String>.builder(
+                                      groupValue: newList.isEmpty
+                                          ? "Add New"
+                                          : _inputType,
+                                      onChanged: (value) => setState(() {
+                                        _inputType = value!;
+                                      }),
+                                      items: _option,
+                                      itemBuilder: (item) => RadioButtonBuilder(
+                                        item,
+                                      ),
+                                    ),
+                                    if (_inputType == 'Add New' ||
+                                        newList.isEmpty)
+                                      TextFormField(
+                                        decoration: InputDecoration(
+                                            label: Text('New Category Name')),
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _inputCat = value;
+                                            _catID = null;
+                                          });
+                                        },
+                                        validator: (value) {
+                                          if (_inputType == 'Add New' &&
+                                                  value == null ||
+                                              value!.isEmpty &&
+                                                  _inputType == 'Add New') {
+                                            return 'Please enter some text';
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    if (_inputType != 'Add New' &&
+                                        newList.isNotEmpty)
+                                      DropdownSearch<String>(
+                                          validator: (value) {
+                                            if (value ==
+                                                'Choose child category') {
+                                              return 'Please choose one child category';
+                                            }
+                                            return null;
+                                          },
+                                          dropdownSearchBaseStyle:
+                                              TextStyle(fontFamily: 'MeQuran2'),
+                                          showSearchBox: true,
+                                          mode: Mode.DIALOG,
+                                          showSelectedItems: true,
+                                          dropdownBuilder: _style,
+                                          popupItemBuilder: _style1,
+                                          items: newList,
+                                          dropdownSearchDecoration:
+                                              InputDecoration(
+                                            labelText: "Child Category",
+                                          ),
+                                          onChanged: (String? value) async {
+                                            setState(() {
+                                              _inputCat = value;
+                                            });
+                                            label.forEach((element) {
+                                              if (element.name == value) {
+                                                _catID = element.categoryId;
+                                              }
+                                            });
+                                          },
+                                          selectedItem:
+                                              'Choose child category'),
+                                    DropdownSearch<String>(
+                                        validator: (value) {
+                                          if (value == 'Choose child type') {
+                                            return 'Please choose one child type';
+                                          }
+                                          return null;
+                                        },
+                                        dropdownSearchBaseStyle:
+                                            TextStyle(fontFamily: 'MeQuran2'),
+                                        showSearchBox: true,
+                                        mode: Mode.DIALOG,
+                                        showSelectedItems: true,
+                                        dropdownBuilder: _style,
+                                        popupItemBuilder: _style1,
+                                        items: childType,
+                                        dropdownSearchDecoration:
+                                            InputDecoration(
+                                          labelText: "Child Type",
+                                        ),
+                                        onChanged: (String? value) {
+                                          setState(() {
+                                            _inputChildType = value;
+                                          });
+                                        },
+                                        selectedItem: 'Choose child type'),
+                                    DropdownSearch<String>(
+                                        validator: (value) {
+                                          if (value == 'Choose word type') {
+                                            return 'Please choose one word type';
+                                          }
+                                          return null;
+                                        },
+                                        dropdownSearchBaseStyle:
+                                            TextStyle(fontFamily: 'MeQuran2'),
+                                        showSearchBox: true,
+                                        mode: Mode.DIALOG,
+                                        showSelectedItems: true,
+                                        dropdownBuilder: _style,
+                                        popupItemBuilder: _style1,
+                                        items: wordType,
+                                        dropdownSearchDecoration:
+                                            InputDecoration(
+                                          labelText: "Word Type",
+                                        ),
+                                        onChanged: (String? value) {
+                                          setState(() {
+                                            _inputWordType = value;
+                                          });
+                                        },
+                                        selectedItem: 'Choose word type'),
+                                    Text(
+                                        "Parent Ancestry ${_inputParent ?? "No data"}"),
+                                    Text(
+                                        "Category Name ${_inputCat ?? "No data"}"),
+                                    Text("Category ID ${_catID ?? "No data"}"),
+                                    Text(
+                                        "Child Type ${_inputChildType ?? "No data"}"),
+                                    Text(
+                                        "Word Type ${_inputWordType ?? "No data"}"),
+                                    ElevatedButton(
+                                        onPressed: () async {
+                                          // Validate returns true if the form is valid, or false otherwise.
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            await addData(
+                                                categoryId: "$_catID",
+                                                parent: _inputParent!,
+                                                wordType: _inputWordType!,
+                                                name: _inputCat!,
+                                                childType: _inputChildType!,
+                                                newCat: _inputType == 'Add New'
+                                                    ? true
+                                                    : false,
+                                                newRel: true);
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                  content:
+                                                      Text('Adding Data...')),
+                                            );
+                                            Navigator.pop(context);
+                                            Navigator.pop(context);
+                                            Navigator.pop(context);
+                                          }
+                                        },
+                                        child: Text('Submit'))
+                                  ],
                                 ),
                               ),
-                              if (_inputType == 'Add New' || newList.isEmpty)
-                                TextFormField(
-                                  decoration: InputDecoration(
-                                      label: Text('New Category Name')),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _inputCat = value;
-                                    });
-                                  },
-                                  validator: (value) {
-                                    if (_inputType == 'Add New' &&
-                                            value == null ||
-                                        value!.isEmpty &&
-                                            _inputType == 'Add New') {
-                                      return 'Please enter some text';
-                                    }
-                                    return null;
-                                  },
+                            ),
+                          );
+                        });
+                      });
+                  _animationController.reverse();
+                },
+              ),
+              Bubble(
+                title: "Add Word Category",
+                iconColor: Colors.white,
+                bubbleColor: themeProvider.isDarkMode
+                    ? Colors.blueGrey
+                    : Colors.orangeAccent,
+                icon: Icons.category,
+                titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+                onPress: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return StatefulBuilder(builder: (context, setState) {
+                          return AlertDialog(
+                            title: Text('Add New Word Category'),
+                            content: SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.7,
+                              child: Form(
+                                key: _formKey2,
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    DropdownSearch<String>(
+                                      validator: (value) {
+                                        if (value == 'Choose parent') {
+                                          return 'Please choose one parent ancestry';
+                                        }
+                                        return null;
+                                      },
+                                      dropdownSearchBaseStyle:
+                                          TextStyle(fontFamily: 'MeQuran2'),
+                                      showSearchBox: true,
+                                      mode: Mode.DIALOG,
+                                      showSelectedItems: true,
+                                      dropdownBuilder: _style,
+                                      popupItemBuilder: _style1,
+                                      items: list,
+                                      dropdownSearchDecoration: InputDecoration(
+                                        labelText: "Parent Ancestry",
+                                      ),
+                                      onChanged: (String? value) {
+                                        aya.wordDetail.forEach((element) async {
+                                          if (element.name == value) {
+                                            setState(() {
+                                              _inputParent2 =
+                                                  "${element.parent}/${element.categoryId}";
+                                            });
+                                          }
+                                          newList.clear();
+
+                                          label =
+                                              await Provider.of<AyaProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .getList(_inputParent ?? '');
+                                          label.forEach((element) {
+                                            if (_inputParent2 ==
+                                                element.parent) {
+                                              if (newList
+                                                      .contains(element.name) ==
+                                                  false) {
+                                                newList.add(element.name!);
+                                              }
+                                            }
+                                          });
+                                        });
+                                      },
+                                      selectedItem: 'Choose parent',
+                                    ),
+                                    TextFormField(
+                                      decoration: InputDecoration(
+                                          label: Text('New Category Name')),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _inputCat2 = value;
+                                          _catID2 = null;
+                                        });
+                                      },
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter some text';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    DropdownSearch<String>(
+                                        validator: (value) {
+                                          if (value == 'Choose child type') {
+                                            return 'Please choose one child type';
+                                          }
+                                          return null;
+                                        },
+                                        dropdownSearchBaseStyle:
+                                            TextStyle(fontFamily: 'MeQuran2'),
+                                        showSearchBox: true,
+                                        mode: Mode.DIALOG,
+                                        showSelectedItems: true,
+                                        dropdownBuilder: _style,
+                                        popupItemBuilder: _style1,
+                                        items: childType,
+                                        dropdownSearchDecoration:
+                                            InputDecoration(
+                                          labelText: "Child Type",
+                                        ),
+                                        onChanged: (String? value) {
+                                          setState(() {
+                                            _inputChildType2 = value;
+                                          });
+                                        },
+                                        selectedItem: 'Choose child type'),
+                                    DropdownSearch<String>(
+                                        validator: (value) {
+                                          if (value == 'Choose word type') {
+                                            return 'Please choose one word type';
+                                          }
+                                          return null;
+                                        },
+                                        dropdownSearchBaseStyle:
+                                            TextStyle(fontFamily: 'MeQuran2'),
+                                        showSearchBox: true,
+                                        mode: Mode.DIALOG,
+                                        showSelectedItems: true,
+                                        dropdownBuilder: _style,
+                                        popupItemBuilder: _style1,
+                                        items: wordType,
+                                        dropdownSearchDecoration:
+                                            InputDecoration(
+                                          labelText: "Word Type",
+                                        ),
+                                        onChanged: (String? value) {
+                                          setState(() {
+                                            _inputWordType2 = value;
+                                          });
+                                        },
+                                        selectedItem: 'Choose word type'),
+                                    Text(
+                                        "Parent Ancestry ${_inputParent2 ?? "No data"}"),
+                                    Text(
+                                        "Category Name ${_inputCat2 ?? "No data"}"),
+                                    Text("Category ID ${_catID2 ?? "No data"}"),
+                                    Text(
+                                        "Child Type ${_inputChildType2 ?? "No data"}"),
+                                    Text(
+                                        "Word Type ${_inputWordType2 ?? "No data"}"),
+                                    ElevatedButton(
+                                        onPressed: () async {
+                                          // Validate returns true if the form is valid, or false otherwise.
+                                          if (_formKey2.currentState!
+                                              .validate()) {
+                                            await addData(
+                                                categoryId: "$_catID2",
+                                                parent: _inputParent2!,
+                                                wordType: _inputWordType2!,
+                                                name: _inputCat2!,
+                                                childType: _inputChildType2!,
+                                                newCat: true,
+                                                newRel: false);
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                  content:
+                                                      Text('Adding Data...')),
+                                            );
+                                            Navigator.pop(context);
+                                            Navigator.pop(context);
+                                            Navigator.pop(context);
+                                          }
+                                        },
+                                        child: Text('Submit'))
+                                  ],
                                 ),
-                              if (_inputType != 'Add New' && newList.isNotEmpty)
-                                DropdownSearch<String>(
+                              ),
+                            ),
+                          );
+                        });
+                      });
+                  _animationController.reverse();
+                },
+              ),
+              // Floating action menu item
+              Bubble(
+                title: "Edit Word Category",
+                iconColor: Colors.white,
+                bubbleColor: themeProvider.isDarkMode
+                    ? Colors.blueGrey
+                    : Colors.orangeAccent,
+                icon: Icons.edit,
+                titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+                onPress: () {showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return StatefulBuilder(builder: (context, setState) {
+                        return AlertDialog(
+                          title: Text('Add New Word Category'),
+                          content: SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.7,
+                            child: Form(
+                              key: _formKey2,
+                              child: Column(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  DropdownSearch<String>(
                                     validator: (value) {
-                                      if (value == 'Choose child category') {
-                                        return 'Please choose one child category';
+                                      if (value == 'Choose parent') {
+                                        return 'Please choose one parent ancestry';
                                       }
                                       return null;
                                     },
                                     dropdownSearchBaseStyle:
-                                        TextStyle(fontFamily: 'MeQuran2'),
+                                    TextStyle(fontFamily: 'MeQuran2'),
                                     showSearchBox: true,
                                     mode: Mode.DIALOG,
                                     showSelectedItems: true,
                                     dropdownBuilder: _style,
                                     popupItemBuilder: _style1,
-                                    items: newList,
+                                    items: list,
                                     dropdownSearchDecoration: InputDecoration(
-                                      labelText: "Child Category",
+                                      labelText: "Parent Ancestry",
                                     ),
-                                    onChanged: (String? value) async {
-                                      setState(() {
-                                        _inputCat = value;
-                                      });
-                                      label.forEach((element) {
+                                    onChanged: (String? value) {
+                                      aya.wordDetail.forEach((element) async {
                                         if (element.name == value) {
-                                          _catID = element.categoryId;
+                                          setState(() {
+                                            _inputParent2 =
+                                            "${element.parent}/${element.categoryId}";
+                                          });
                                         }
+                                        newList.clear();
+
+                                        label =
+                                        await Provider.of<AyaProvider>(
+                                            context,
+                                            listen: false)
+                                            .getList(_inputParent ?? '');
+                                        label.forEach((element) {
+                                          if (_inputParent2 ==
+                                              element.parent) {
+                                            if (newList
+                                                .contains(element.name) ==
+                                                false) {
+                                              newList.add(element.name!);
+                                            }
+                                          }
+                                        });
                                       });
                                     },
-                                    selectedItem: 'Choose child category'),
-                              DropdownSearch<String>(
-                                  validator: (value) {
-                                    if (value == 'Choose child type') {
-                                      return 'Please choose one child type';
-                                    }
-                                    return null;
-                                  },
-                                  dropdownSearchBaseStyle:
-                                      TextStyle(fontFamily: 'MeQuran2'),
-                                  showSearchBox: true,
-                                  mode: Mode.DIALOG,
-                                  showSelectedItems: true,
-                                  dropdownBuilder: _style,
-                                  popupItemBuilder: _style1,
-                                  items: childType,
-                                  dropdownSearchDecoration: InputDecoration(
-                                    labelText: "Child Type",
+                                    selectedItem: 'Choose parent',
                                   ),
-                                  onChanged: (String? value) {
-                                    setState(() {
-                                      _inputChildType = value;
-                                    });
-                                  },
-                                  selectedItem: 'Choose child type'),
-                              DropdownSearch<String>(
-                                  validator: (value) {
-                                    if (value == 'Choose word type') {
-                                      return 'Please choose one word type';
-                                    }
-                                    return null;
-                                  },
-                                  dropdownSearchBaseStyle:
-                                      TextStyle(fontFamily: 'MeQuran2'),
-                                  showSearchBox: true,
-                                  mode: Mode.DIALOG,
-                                  showSelectedItems: true,
-                                  dropdownBuilder: _style,
-                                  popupItemBuilder: _style1,
-                                  items: wordType,
-                                  dropdownSearchDecoration: InputDecoration(
-                                    labelText: "Word Type",
+                                  TextFormField(
+                                    decoration: InputDecoration(
+                                        label: Text('New Category Name')),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _inputCat2 = value;
+                                        _catID2 = null;
+                                      });
+                                    },
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter some text';
+                                      }
+                                      return null;
+                                    },
                                   ),
-                                  onChanged: (String? value) {
-                                    setState(() {
-                                      _inputWordType = value;
-                                    });
-                                  },
-                                  selectedItem: 'Choose word type'),
-                              Text(
-                                  "Parent Ancestry ${_inputParent ?? "No data"}"),
-                              Text("Category Name ${_inputCat ?? "No data"}"),
-                              Text("Category ID ${_catID ?? "No data"}"),
-                              Text(
-                                  "Child Type ${_inputChildType ?? "No data"}"),
-                              Text("Word Type ${_inputWordType ?? "No data"}"),
-                              ElevatedButton(
-                                  onPressed: () async {
-                                    // Validate returns true if the form is valid, or false otherwise.
-                                    if (_formKey.currentState!.validate()) {
-                                      await addData(
-                                          categoryId: "$_catID",
-                                          parent: _inputParent!,
-                                          wordType: _inputWordType!,
-                                          name: _inputCat!,
-                                          childType: _inputChildType!,
-                                          newCat: _inputType == 'Add New'
-                                              ? true
-                                              : false);
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                            content: Text('Adding Data...')),
-                                      );
-                                      Navigator.pop(context);
-                                      Navigator.pop(context);
-                                      Navigator.pop(context);
-                                    }
-                                  },
-                                  child: Text('Submit'))
-                            ],
+                                  DropdownSearch<String>(
+                                      validator: (value) {
+                                        if (value == 'Choose child type') {
+                                          return 'Please choose one child type';
+                                        }
+                                        return null;
+                                      },
+                                      dropdownSearchBaseStyle:
+                                      TextStyle(fontFamily: 'MeQuran2'),
+                                      showSearchBox: true,
+                                      mode: Mode.DIALOG,
+                                      showSelectedItems: true,
+                                      dropdownBuilder: _style,
+                                      popupItemBuilder: _style1,
+                                      items: childType,
+                                      dropdownSearchDecoration:
+                                      InputDecoration(
+                                        labelText: "Child Type",
+                                      ),
+                                      onChanged: (String? value) {
+                                        setState(() {
+                                          _inputChildType2 = value;
+                                        });
+                                      },
+                                      selectedItem: 'Choose child type'),
+                                  DropdownSearch<String>(
+                                      validator: (value) {
+                                        if (value == 'Choose word type') {
+                                          return 'Please choose one word type';
+                                        }
+                                        return null;
+                                      },
+                                      dropdownSearchBaseStyle:
+                                      TextStyle(fontFamily: 'MeQuran2'),
+                                      showSearchBox: true,
+                                      mode: Mode.DIALOG,
+                                      showSelectedItems: true,
+                                      dropdownBuilder: _style,
+                                      popupItemBuilder: _style1,
+                                      items: wordType,
+                                      dropdownSearchDecoration:
+                                      InputDecoration(
+                                        labelText: "Word Type",
+                                      ),
+                                      onChanged: (String? value) {
+                                        setState(() {
+                                          _inputWordType2 = value;
+                                        });
+                                      },
+                                      selectedItem: 'Choose word type'),
+                                  Text(
+                                      "Parent Ancestry ${_inputParent2 ?? "No data"}"),
+                                  Text(
+                                      "Category Name ${_inputCat2 ?? "No data"}"),
+                                  Text("Category ID ${_catID2 ?? "No data"}"),
+                                  Text(
+                                      "Child Type ${_inputChildType2 ?? "No data"}"),
+                                  Text(
+                                      "Word Type ${_inputWordType2 ?? "No data"}"),
+                                  ElevatedButton(
+                                      onPressed: () async {
+                                        // Validate returns true if the form is valid, or false otherwise.
+                                        if (_formKey2.currentState!
+                                            .validate()) {
+                                          await addData(
+                                              categoryId: "$_catID2",
+                                              parent: _inputParent2!,
+                                              wordType: _inputWordType2!,
+                                              name: _inputCat2!,
+                                              childType: _inputChildType2!,
+                                              newCat: true,
+                                              newRel: false);
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                                content:
+                                                Text('Adding Data...')),
+                                          );
+                                          Navigator.pop(context);
+                                          Navigator.pop(context);
+                                          Navigator.pop(context);
+                                        }
+                                      },
+                                      child: Text('Submit'))
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    );
-                  });
-                }),
-            label: Text(
-              'Add new Category and relationship',
-            ),
-            icon: Icon(Icons.add),
+                        );
+                      });
+                    });
+                  _animationController.reverse();
+                },
+              ),
+              // Floating action menu item
+
+              //Floating action menu item
+            ],
+
+            // animation controller
+            animation: _animation,
+
+            // On pressed change animation state
+            onPress: () => _animationController.isCompleted
+                ? _animationController.reverse()
+                : _animationController.forward(),
+
+            // Floating Action button Icon color
+            iconColor: themeProvider.isDarkMode ? Colors.white : Colors.black,
+
+            // Flaoting Action button Icon
+            iconData: Icons.add,
+            backGroundColor: themeProvider.isDarkMode
+                ? Colors.blueGrey
+                : Colors.orangeAccent,
           ));
     });
   }
@@ -454,6 +877,7 @@ class _EditDataState extends State<EditData> {
     required String childType,
     String? categoryId,
     required bool newCat,
+    required bool newRel,
   }) async {
     var id = await Provider.of<AyaProvider>(context, listen: false)
         .getLastRelationshipId();
@@ -469,12 +893,16 @@ class _EditDataState extends State<EditData> {
           childType: childType,
           wordType: wordType);
     } else {
-      catID = categoryId;
+      setState(() {
+        catID = categoryId;
+      });
     }
-    await Provider.of<AyaProvider>(context, listen: false).addNewRelationship(
-        relationshipID: int.parse(id),
-        wordID: widget.wordId,
-        categoryID: int.parse(catID));
-  print('data added');
+    if (newRel) {
+      await Provider.of<AyaProvider>(context, listen: false).addNewRelationship(
+          relationshipID: int.parse(id),
+          wordID: widget.wordId,
+          categoryID: int.parse(catID));
+    }
+    print('data added');
   }
 }

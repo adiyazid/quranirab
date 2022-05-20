@@ -406,12 +406,12 @@ class _HomePageState extends State<HomePage>
                                                               await getTotalPage(
                                                                   _list[index]
                                                                       ["id"]);
-                                                          Provider.of<AyaProvider>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .getPage(
-                                                                  int.parse(
-                                                                      a.first));
+                                                          // Provider.of<AyaProvider>(
+                                                          //         context,
+                                                          //         listen: false)
+                                                          //     .getPage(
+                                                          //         int.parse(
+                                                          //             a.first));
                                                           Provider.of<AyaProvider>(
                                                                   context,
                                                                   listen: false)
@@ -426,9 +426,9 @@ class _HomePageState extends State<HomePage>
                                                                   int.parse(
                                                                       a.first));
 
-                                                          // Provider.of<AyaProvider>(context,
-                                                          //     listen: false)
-                                                          //     .getPage(439);
+                                                          Provider.of<AyaProvider>(context,
+                                                              listen: false)
+                                                              .getPage(447);
                                                           Navigator.push(
                                                               context,
                                                               MaterialPageRoute(
