@@ -36,6 +36,10 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
 
   var fnamecontroller = TextEditingController();
 
+  var currentpass = TextEditingController();
+  var newpassword = TextEditingController();
+  var confirmpass = TextEditingController();
+
   Future<PermissionStatus> requestPermissions() async {
     if (kIsWeb) return PermissionStatus.granted;
     await Permission.photos.request();
@@ -249,18 +253,21 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
           ),
           ContainerUpdate(
             text: 'Current password',
+            controller: currentpass,
           ),
           SizedBox(
             height: 16,
           ),
           ContainerUpdate(
             text: 'New password',
+            controller: newpassword,
           ),
           SizedBox(
             height: 16,
           ),
           ContainerUpdate(
             text: 'Confirm password',
+            controller: confirmpass,
           ),
           SizedBox(
             height: 16,
@@ -380,6 +387,16 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
       showToast("Profile successfully updated!");
       Navigator.pop(context);
     }
+    if (currentpass.text.isNotEmpty &&
+        newpassword.text.isNotEmpty &&
+        confirmpass.text.isNotEmpty) {
+      if (newpassword.text != confirmpass.text) {
+        showToast("Password are not match");
+      }
+      Provider.of<AppUser>(context, listen: false)
+          .updatePassword(newpassword.text);
+        showToast("Password successfully updated!");
+    }
   }
 
   Future<String> uploadImage() async {
@@ -487,9 +504,11 @@ class _NameUpdateState extends State<NameUpdate> {
 
 class ContainerUpdate extends StatelessWidget {
   final String text;
+  final TextEditingController controller;
 
   const ContainerUpdate({
     required this.text,
+    required this.controller,
     Key? key,
   }) : super(key: key);
 
@@ -523,6 +542,8 @@ class ContainerUpdate extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextFormField(
+              obscureText: true,
+              controller: controller,
               cursorColor: theme.isDarkMode ? Colors.white : Colors.black,
               decoration: InputDecoration(
                   enabledBorder: UnderlineInputBorder(

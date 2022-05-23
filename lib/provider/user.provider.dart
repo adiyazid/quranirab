@@ -122,8 +122,9 @@ class AppUser extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updatePass(String password) async {
-    user!.updatePassword(password);
+  Future<void> updatePass(String newpass, String oldpass) async {
+    AppUser.instance.signIn(email: user!.email!, password: oldpass);
+    user!.updatePassword(newpass);
     notifyListeners();
   }
 }
