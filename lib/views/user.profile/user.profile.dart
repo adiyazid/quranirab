@@ -31,7 +31,9 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
   String? photoUrl;
   String? first_name;
   String? last_name;
-
+  var _obsecure = true;
+  var _obsecure2 = true;
+  var _obsecure3 = true;
   var lnamecontroller = TextEditingController();
 
   var fnamecontroller = TextEditingController();
@@ -256,21 +258,21 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
           ),
           ContainerUpdate(
             text: 'Current password',
-            controller: currentpass,
+            controller: currentpass, obsecure: _obsecure,
           ),
           SizedBox(
             height: 16,
           ),
           ContainerUpdate(
             text: 'New password',
-            controller: newpassword,
+            controller: newpassword, obsecure: _obsecure2,
           ),
           SizedBox(
             height: 16,
           ),
           ContainerUpdate(
             text: 'Confirm password',
-            controller: confirmpass,
+            controller: confirmpass, obsecure: _obsecure3,
           ),
           SizedBox(
             height: 16,
@@ -506,16 +508,23 @@ class _NameUpdateState extends State<NameUpdate> {
   }
 }
 
-class ContainerUpdate extends StatelessWidget {
+class ContainerUpdate extends StatefulWidget {
   final String text;
   final TextEditingController controller;
+  bool obsecure;
 
-  const ContainerUpdate({
+  ContainerUpdate({
     required this.text,
     required this.controller,
+    required this.obsecure,
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<ContainerUpdate> createState() => _ContainerUpdateState();
+}
+
+class _ContainerUpdateState extends State<ContainerUpdate> {
   get theColor => Colors.transparent;
 
   @override
@@ -546,10 +555,23 @@ class ContainerUpdate extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextFormField(
-              obscureText: true,
-              controller: controller,
+              obscureText: widget.obsecure,
+              obscuringCharacter: '*',
+              controller: widget.controller,
               cursorColor: theme.isDarkMode ? Colors.white : Colors.black,
               decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                    color: theme.isDarkMode ? Colors.white : Colors.black,
+                    onPressed: () {
+                      setState(() {});
+                      widget.obsecure = !widget.obsecure;
+                    },
+                    icon: Icon(
+                      !widget.obsecure
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
+                  ),
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: theColor),
                   ),
@@ -559,7 +581,7 @@ class ContainerUpdate extends StatelessWidget {
                   border: UnderlineInputBorder(
                     borderSide: BorderSide(color: theColor),
                   ),
-                  hintText: text,
+                  hintText: widget.text,
                   hintStyle: TextStyle(
                       color: theme.isDarkMode
                           ? Colors.white
