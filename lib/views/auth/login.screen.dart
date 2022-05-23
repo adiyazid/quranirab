@@ -33,7 +33,7 @@ class _SigninWidgetState extends State<SigninWidget> {
             ? Center(
                 child: LoadingAnimationWidget.fourRotatingDots(
                   size: 200,
-                  color: Theme.of(context).secondaryHeaderColor,
+                  color: theme.isDarkMode? Colors.blueGrey:Colors.orangeAccent,
                 ),
               )
             : Container(
@@ -213,7 +213,7 @@ class _SigninWidgetState extends State<SigninWidget> {
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 16.0, vertical: 8),
+                                      horizontal: 16.0),
                                   child: Center(
                                     child: TextFormField(
                                       cursorColor: theme.isDarkMode
@@ -223,7 +223,10 @@ class _SigninWidgetState extends State<SigninWidget> {
                                       obscuringCharacter: '*',
                                       controller: _pass,
                                       decoration: InputDecoration(
-                                          suffix: IconButton(
+                                          suffixIcon: IconButton(
+                                            color: theme.isDarkMode
+                                                ? Colors.white
+                                                : Colors.black,
                                             onPressed: () {
                                               setState(() {});
                                               _obsecure = !_obsecure;

@@ -75,7 +75,7 @@ class Menu extends StatelessWidget {
             const SizedBox(height: 16),
             buildMenuItem(
                 text: 'User Profile',
-                icon: Icons.person,
+                icon: Icons.person_outline,
                 onTap: () {
                   Navigator.push(
                       context,
@@ -106,7 +106,7 @@ class Menu extends StatelessWidget {
             buildMenuItem(
               darkMode: themeProvider.isDarkMode,
               text: 'Leaderboard',
-              icon: Icons.score,
+              icon: Icons.score_outlined,
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(

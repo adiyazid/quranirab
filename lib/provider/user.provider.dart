@@ -81,6 +81,7 @@ class AppUser extends ChangeNotifier {
       rethrow;
     }
   }
+
   final firestoreInstance = FirebaseFirestore.instance;
 
   Future<void> updatedata(
@@ -92,18 +93,19 @@ class AppUser extends ChangeNotifier {
       "first_name": firstname,
       "last_name": lastname,
       "email": email,
-      "profileImage":AppUser.instance.user!.photoURL??"",
+      "profileImage": AppUser.instance.user!.photoURL ?? "",
       "uid": AppUser.instance.user!.uid
     }, SetOptions(merge: true)).then((value) {
       print("Data added sucessfully");
     });
-    var imageURL = AppUser.instance.user!.photoURL??"";
+    var imageURL = AppUser.instance.user!.photoURL ?? "";
     var displayName = "$firstname $lastname";
     AppUser.instance.user!.updateDisplayName(displayName);
     AppUser.instance.user!.updatePhotoURL(imageURL);
   }
 
-  Future<void> getData(String firstname, String lastname, String email, String url) async {
+  Future<void> getData(
+      String firstname, String lastname, String email, String url) async {
     await firestoreInstance
         .collection("quranIrabUsers")
         .get()

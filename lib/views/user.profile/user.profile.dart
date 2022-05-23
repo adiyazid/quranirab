@@ -193,39 +193,42 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
           else
             (kIsWeb)
                 ? CircleAvatar(
-                    //backgroundImage: AssetImage(themeProvider.isDarkMode?"images/dark.jpg":"images/light.jpg"),
-                    radius: 80,
-                    child: Stack(
-                      children: [
-                        ClipOval(
-                          child: Image.memory(
-                            webImage,
-                            width: 200,
-                            height: 200,
-                            fit: BoxFit.cover,
+                    radius: 85,
+                    child: CircleAvatar(
+                      //backgroundImage: AssetImage(themeProvider.isDarkMode?"images/dark.jpg":"images/light.jpg"),
+                      radius: 80,
+                      child: Stack(
+                        children: [
+                          ClipOval(
+                            child: Image.memory(
+                              webImage,
+                              width: 200,
+                              height: 200,
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                        ),
-                        Positioned(
-                          right: 16,
-                          top: 116,
-                          child: ClipOval(
-                            child: GestureDetector(
-                              onTap: () {
-                                chooseImage();
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.all(8),
-                                color: Colors.white,
-                                child: const Icon(
-                                  Icons.edit,
-                                  color: Colors.black,
-                                  size: 23,
+                          Positioned(
+                            right: 16,
+                            top: 116,
+                            child: ClipOval(
+                              child: GestureDetector(
+                                onTap: () {
+                                  chooseImage();
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(8),
+                                  color: Colors.white,
+                                  child: const Icon(
+                                    Icons.edit,
+                                    color: Colors.black,
+                                    size: 23,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     ),
                   )
                 : Image.file(file),
@@ -395,7 +398,8 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
       }
       Provider.of<AppUser>(context, listen: false)
           .updatePassword(newpassword.text);
-        showToast("Password successfully updated!");
+      showToast("Password successfully updated!");
+      Navigator.pop(context);
     }
   }
 

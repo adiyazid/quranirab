@@ -45,7 +45,7 @@ Future<void> main() async {
           return MaterialApp(
             title: "QuranIrab Web App",
             scrollBehavior: MyCustomScrollBehavior(),
-            home: LandingPage(),
+            home:LandingPage(),
             themeMode: themeProvider.themeMode,
             // themeMode: ThemeMode.light,
             theme: QuranThemes.lightTheme,

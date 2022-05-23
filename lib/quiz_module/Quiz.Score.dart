@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/quiz_module/quiz.home.dart';
+import 'package:quranirab/quiz_module/utils/AppColor.java';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/widget/appbar.widget.dart';
 import 'package:quranirab/widget/menu.dart';
@@ -39,18 +40,26 @@ class _QuizScoreState extends State<QuizScore> {
     var themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
-        backgroundColor:
-            themeProvider.isDarkMode ? Color(0xff666666) : Colors.white,
+        backgroundColor: themeProvider.isDarkMode ? Color(0xff808ba1) : Color(0xfffff5ec),
         drawer: const Menu(),
         endDrawer: const Setting(),
         body: DefaultTabController(
           length: 3,
           child: Stack(
             children: [
-              const SizedBox(
-                height: 115,
+              Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                        width: 2.0,
+                        color: themeProvider.isDarkMode
+                            ? Colors.white
+                            : const Color(0xffE86F00)),
+                  ),
+                ),
+                height: 57,
                 child: CustomScrollView(
-                  slivers: [Appbar()],
+                  slivers: const [Appbar()],
                 ),
               ),
               Align(
@@ -59,7 +68,7 @@ class _QuizScoreState extends State<QuizScore> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 40, vertical: 40),
                       child: Container(
-                        color: const Color(0xfffff5ec),
+                        color: themeProvider.isDarkMode ? Color(0xff808ba1) : Color(0xfffff5ec),
                         width: MediaQuery.of(context).size.width / 1.4,
                         height: MediaQuery.of(context).size.height / 1.4,
                         child: Column(
@@ -99,7 +108,7 @@ class _QuizScoreState extends State<QuizScore> {
                                   button182(
                                       'Play Again',
                                       const TextStyle(fontSize: 28),
-                                      const Color(0xffffb55f),
+                                      themeProvider.isDarkMode ? AppColor.secondaryColor : AppColor.pripmaryColor,
                                       10, () {
                                     Navigator.push(
                                         context,
@@ -115,7 +124,7 @@ class _QuizScoreState extends State<QuizScore> {
                                   button182(
                                       'Back to Page',
                                       const TextStyle(fontSize: 28),
-                                      const Color(0xffffb55f),
+                                      themeProvider.isDarkMode ? AppColor.secondaryColor : AppColor.pripmaryColor,
                                       10, () {
                                     Navigator.pop(context);
                                   }, true),
@@ -127,7 +136,7 @@ class _QuizScoreState extends State<QuizScore> {
                                   button182(
                                       'Leaderboard',
                                       const TextStyle(fontSize: 28),
-                                      const Color(0xffffb55f),
+                                      themeProvider.isDarkMode ? AppColor.secondaryColor : AppColor.pripmaryColor,
                                       10, () {
                                     Navigator.push(
                                         context,

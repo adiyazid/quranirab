@@ -220,6 +220,7 @@ class _SurahScreenState extends State<SurahScreen>
             ];
           },
           body: TabBarView(
+            physics: NeverScrollableScrollPhysics(),
             controller: _tabController,
             children: [
               Translation(
@@ -242,7 +243,6 @@ class _SurahScreenState extends State<SurahScreen>
             ],
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: Padding(
           padding: EdgeInsets.only(
               bottom: MediaQuery.of(context).size.height * 0.08),
