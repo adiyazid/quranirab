@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:quranirab/models/font.size.dart';
 
 class ThemeProvider extends ChangeNotifier {
   ThemeMode themeMode = ThemeMode.system;
@@ -22,6 +21,8 @@ class ThemeProvider extends ChangeNotifier {
 
 class QuranThemes {
   static final darkTheme = ThemeData(
+    primaryColorDark: Colors.grey,
+    primaryColorLight: Colors.orangeAccent,
     textSelectionColor: Colors.white,
     //text color  white black
     indicatorColor: Colors.orange,
@@ -44,13 +45,15 @@ class QuranThemes {
     colorScheme: const ColorScheme.dark(),
   );
   static final lightTheme = ThemeData(
+    primaryColorDark: Colors.grey,
+    primaryColorLight: Colors.orangeAccent,
     textSelectionColor: Colors.black,
     canvasColor: Colors.orange,
     focusColor: Colors.white,
     secondaryHeaderColor: Colors.black,
     scaffoldBackgroundColor: Colors.white,
     primaryColor: const Color(0xFFFFC896),
-    colorScheme: const ColorScheme.light(),
+    colorScheme: ColorScheme.light(),
     iconTheme: const IconThemeData(color: Color(0xFFE86F00)),
     indicatorColor: Colors.orange,
     primarySwatch: Colors.orange,
@@ -61,4 +64,3 @@ class QuranThemes {
     // const TextSelectionThemeData(cursorColor: Colors.orange),
   );
 }
-

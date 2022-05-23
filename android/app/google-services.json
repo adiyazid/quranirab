@@ -1,33 +1,34 @@
 {
   "project_info": {
-    "project_number": "272557919792",
-    "project_id": "quranirab-5ba6f",
-    "storage_bucket": "quranirab-5ba6f.appspot.com"
+    "project_number": "422246535912",
+    "firebase_url": "https://quranirab-74bba-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "quranirab-74bba",
+    "storage_bucket": "quranirab-74bba.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:272557919792:android:9945d72b0bc6c1da4767f5",
+        "mobilesdk_app_id": "1:422246535912:android:f23ab06d55e927ef2cef5d",
         "android_client_info": {
           "package_name": "com.example.quranirab"
         }
       },
       "oauth_client": [
         {
-          "client_id": "272557919792-l5bmi2utuuiscb3okto3tg1pfk51ebna.apps.googleusercontent.com",
+          "client_id": "422246535912-23lrmrak4fu6sfbmm40eid1f8qsh93d2.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyChLg8xkqqv-ngi9RcR4iGRw5rwC4UrBBw"
+          "current_key": "AIzaSyBPLRqHyrGSqjCYyOMTcT923YnfVvDrq3k"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "272557919792-l5bmi2utuuiscb3okto3tg1pfk51ebna.apps.googleusercontent.com",
+              "client_id": "422246535912-23lrmrak4fu6sfbmm40eid1f8qsh93d2.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

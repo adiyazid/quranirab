@@ -1,6 +1,7 @@
 import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
@@ -114,13 +115,16 @@ class _SearchPopupState extends State<SearchPopup>
                   width: 1,
                 )),
             child: SizedBox(
-              height: 320,
-              width: 500,
+              height: kIsWeb == true
+                  ? 250
+                  : MediaQuery.of(context).size.height * 0.4,
+              width: kIsWeb == true
+                  ? 300
+                  : MediaQuery.of(context).size.width * 0.5,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 24.0, vertical: 8),
+                  Flexible(
                     child: TextField(
                       cursorColor: themeProvider.isDarkMode
                           ? Colors.white
@@ -156,61 +160,54 @@ class _SearchPopupState extends State<SearchPopup>
                     ),
                   ),
                   Flexible(
-                      flex: 1,
-                      child: Visibility(
-                        visible: visible,
-                        child: Text('Popular Searches'),
-                      )),
-                  Expanded(
-                    flex: 4,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 24.0, vertical: 8),
-                      child: ListView.builder(
-                        itemCount: visible ? pop.length : _list.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return ListTile(
-                            title: InkWell(
-                              onTap: () async {
-                                var a = await getTotalPage(_list[index]["id"]);
-                                var b = await getTotalPage(pop[index]["id"]);
+                    child: Visibility(
+                      visible: visible,
+                      child: Text('Popular Searches'),
+                    ),
+                  ),
+                  Expanded(flex: 4,
+                    child: ListView.builder(
+                      itemCount: visible ? pop.length : _list.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return ListTile(
+                          title: InkWell(
+                            onTap: () async {
+                              var a = await getTotalPage(_list[index]["id"]);
+                              var b = await getTotalPage(pop[index]["id"]);
+                              Provider.of<AyaProvider>(context, listen: false)
+                                  .setDefault();
+                              if (visible) {
                                 Provider.of<AyaProvider>(context, listen: false)
-                                    .setDefault();
-                                if (visible) {
-                                  Provider.of<AyaProvider>(context,
-                                          listen: false)
-                                      .getPage(int.parse(b.first));
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => SurahScreen(
-                                              b,
-                                              pop[index]["id"],
-                                              pop[index]["tname"],
-                                              pop[index]["ename"],
-                                              0)));
-                                } else {
-                                  Provider.of<AyaProvider>(context,
-                                          listen: false)
-                                      .getPage(int.parse(a.first));
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => SurahScreen(
-                                              a,
-                                              _list[index]["id"],
-                                              _list[index]["tname"],
-                                              _list[index]["ename"],
-                                              0)));
-                                }
-                              },
-                              child: Text(visible
-                                  ? pop[index]['tname']
-                                  : _list[index]['tname']),
-                            ),
-                          );
-                        },
-                      ),
+                                    .getPage(int.parse(b.first));
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SurahScreen(
+                                            b,
+                                            pop[index]["id"],
+                                            pop[index]["tname"],
+                                            pop[index]["ename"],
+                                            0)));
+                              } else {
+                                Provider.of<AyaProvider>(context, listen: false)
+                                    .getPage(int.parse(a.first));
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SurahScreen(
+                                            a,
+                                            _list[index]["id"],
+                                            _list[index]["tname"],
+                                            _list[index]["ename"],
+                                            0)));
+                              }
+                            },
+                            child: Text(visible
+                                ? pop[index]['tname']
+                                : _list[index]['tname']),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ],

@@ -10,7 +10,6 @@ BreakIndex breakIndexFromJson(String str) =>
 String breakIndexToJson(BreakIndex data) => json.encode(data.toJson());
 
 class BreakIndex {
-
   BreakIndex({
     required this.page1,
     required this.page2,
@@ -458,6 +457,61 @@ class BreakIndex {
     required this.page444,
     required this.page445,
     required this.page446,
+    required this.page504,
+    required this.page505,
+    required this.page506,
+    required this.page507,
+    required this.page508,
+    required this.page509,
+    required this.page510,
+    required this.page511,
+    required this.page512,
+    required this.page513,
+    required this.page514,
+    required this.page515,
+    required this.page516,
+    required this.page517,
+    required this.page518,
+    required this.page519,
+    required this.page520,
+    required this.page521,
+    required this.page522,
+    required this.page523,
+    required this.page524,
+    required this.page525,
+    required this.page526,
+    required this.page527,
+    required this.page528,
+    required this.page529,
+    required this.page530,
+    required this.page531,
+    required this.page532,
+    required this.page533,
+    required this.page534,
+    required this.page535,
+    required this.page536,
+    required this.page537,
+    required this.page538,
+    required this.page539,
+    required this.page540,
+    required this.page541,
+    required this.page542,
+    required this.page543,
+    required this.page544,
+    required this.page545,
+    required this.page546,
+    required this.page547,
+    required this.page548,
+    required this.page549,
+    required this.page550,
+    required this.page551,
+    required this.page552,
+    required this.page553,
+    required this.page554,
+    required this.page555,
+    required this.page556,
+    required this.page557,
+    required this.page558,
     required this.page447,
     required this.page448,
     required this.page559,
@@ -954,6 +1008,61 @@ class BreakIndex {
   List<int> page444;
   List<int> page445;
   List<int> page446;
+  List<int> page504;
+  List<int> page505;
+  List<int> page506;
+  List<int> page507;
+  List<int> page508;
+  List<int> page509;
+  List<int> page510;
+  List<int> page511;
+  List<int> page512;
+  List<int> page513;
+  List<int> page514;
+  List<int> page515;
+  List<int> page516;
+  List<int> page517;
+  List<int> page518;
+  List<int> page519;
+  List<int> page520;
+  List<int> page521;
+  List<int> page522;
+  List<int> page523;
+  List<int> page524;
+  List<int> page525;
+  List<int> page526;
+  List<int> page527;
+  List<int> page528;
+  List<int> page529;
+  List<int> page530;
+  List<int> page531;
+  List<int> page532;
+  List<int> page533;
+  List<int> page534;
+  List<int> page535;
+  List<int> page536;
+  List<int> page537;
+  List<int> page538;
+  List<int> page539;
+  List<int> page540;
+  List<int> page541;
+  List<int> page542;
+  List<int> page543;
+  List<int> page544;
+  List<int> page545;
+  List<int> page546;
+  List<int> page547;
+  List<int> page548;
+  List<int> page549;
+  List<int> page550;
+  List<int> page551;
+  List<int> page552;
+  List<int> page553;
+  List<int> page554;
+  List<int> page555;
+  List<int> page556;
+  List<int> page557;
+  List<int> page558;
   List<int> page447;
   List<int> page448;
   List<int> page449;

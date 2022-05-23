@@ -64,6 +64,15 @@ dependencies:
   firebase_storage: ^10.2.13
   dio: ^4.0.6
   get_storage: ^2.0.3
+  dropdown_search: ^3.0.1
+  tree_view: ^0.0.6
+  floating_action_bubble: ^1.1.4
+  group_radio_button: ^1.2.0
+  image_picker: ^0.8.5+3
+  permission_handler: ^9.2.0
+  auto_size_text: ^3.0.0
+  universal_html:
+  loading_animation_widget: ^1.2.0+1
 
 dev_dependencies:
   flutter_test:
@@ -107,7 +116,8 @@ flutter:
     - assets/sura_header.png
     - assets/javascript/index.html
     - assets/unicode_line_break.txt
-
+    - assets/images/dark.jpg
+    - assets/images/light.jpg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

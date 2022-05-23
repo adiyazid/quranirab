@@ -23,17 +23,27 @@ class _QuizHomeState extends State<QuizHome> {
   Widget build(BuildContext context) {
     var themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
-      backgroundColor: themeProvider.isDarkMode ? Color(0xff666666) : Colors.white,
+      backgroundColor:
+          themeProvider.isDarkMode ? Color(0xff808ba1) : Color(0xfffff5ec),
       drawer: const Menu(),
       endDrawer: const Setting(),
       body: DefaultTabController(
         length: 3,
         child: Stack(
           children: [
-            const SizedBox(
-              height: 115,
+            Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                      width: 2.0,
+                      color: themeProvider.isDarkMode
+                          ? Colors.white
+                          : const Color(0xffE86F00)),
+                ),
+              ),
+              height: 57,
               child: CustomScrollView(
-                slivers: [Appbar()],
+                slivers: const [Appbar()],
               ),
             ),
             Align(
@@ -42,25 +52,22 @@ class _QuizHomeState extends State<QuizHome> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // Padding(
-                    //   padding: const EdgeInsets.all(8.0),
-                    //   child: Text('Quiz Page ${widget.page}',
-                    //       style: TextStyle(
-                    //         fontSize: 28,
-                    //         color: ManyColors.color11,
-                    //       )),
-                    // ),
                     Padding(
                       padding: const EdgeInsets.only(top: 50, bottom: 20),
                       child: Container(
-                          color: themeProvider.isDarkMode ? Color(0xff808ba1) : Color(0xfffff5ec),
+                          margin: EdgeInsets.all(8),
+                          color: themeProvider.isDarkMode
+                              ? Color(0xff808ba1)
+                              : Color(0xfffff5ec),
                           width: MediaQuery.of(context).size.width / 1.4,
                           height: MediaQuery.of(context).size.height / 1.4,
                           child: Center(
                             child: button182(
                                 'Start the Quiz',
                                 const TextStyle(fontSize: 28),
-                                themeProvider.isDarkMode ? ManyColors.color4 : ManyColors.color0,
+                                themeProvider.isDarkMode
+                                    ? ManyColors.color4
+                                    : ManyColors.color0,
                                 10, () {
                               Navigator.push(
                                   context,
@@ -71,8 +78,14 @@ class _QuizHomeState extends State<QuizHome> {
                     ),
                     button114(
                         'Back',
-                        const TextStyle(color: Colors.black, fontSize: 18),
-                        const Color(0xfffff5ec),
+                        TextStyle(
+                            color: themeProvider.isDarkMode
+                                ? Colors.white
+                                : Colors.black,
+                            fontSize: 18),
+                        themeProvider.isDarkMode
+                            ? Color(0xff808ba1)
+                            : Color(0xfffff5ec),
                         10, () {
                       Navigator.pop(context);
                     }, true),
