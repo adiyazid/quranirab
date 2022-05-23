@@ -261,7 +261,9 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
             height: 16,
           ),
           Container(
-              width: 522,
+              width:  MediaQuery.of(context).size.width < 600
+                  ? MediaQuery.of(context).size.width * 0.85
+                  : 522,
               height: 54,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
@@ -297,7 +299,9 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
                         height: 1),
                   ),
                 ),
-              )),
+              )), SizedBox(
+            height: 16,
+          ),
         ]),
       ),
     );
@@ -402,7 +406,7 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
   }
 }
 
-class NameUpdate extends StatelessWidget {
+class NameUpdate extends StatefulWidget {
   final String text;
   final TextEditingController controller;
 
@@ -412,13 +416,20 @@ class NameUpdate extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<NameUpdate> createState() => _NameUpdateState();
+}
+
+class _NameUpdateState extends State<NameUpdate> {
   get theColor => Colors.transparent;
 
   @override
   Widget build(BuildContext context) {
     var theme = Provider.of<ThemeProvider>(context);
     return Container(
-        width: 250,
+        width: MediaQuery.of(context).size.width < 600
+            ? MediaQuery.of(context).size.width * 0.4
+            : 250,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
@@ -440,7 +451,7 @@ class NameUpdate extends StatelessWidget {
             child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: TextFormField(
-            controller: controller,
+            controller: widget.controller,
             cursorColor: theme.isDarkMode ? Colors.white : Colors.black,
             decoration: InputDecoration(
                 enabledBorder: UnderlineInputBorder(
@@ -452,7 +463,7 @@ class NameUpdate extends StatelessWidget {
                 border: UnderlineInputBorder(
                   borderSide: BorderSide(color: theColor),
                 ),
-                hintText: text,
+                hintText: widget.text,
                 hintStyle: TextStyle(
                     color: theme.isDarkMode
                         ? Colors.white
@@ -482,7 +493,9 @@ class ContainerUpdate extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Provider.of<ThemeProvider>(context);
     return Container(
-        width: 522,
+        width: MediaQuery.of(context).size.width < 600
+            ? MediaQuery.of(context).size.width * 0.85
+            : 522,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
