@@ -16,7 +16,7 @@ class LandingPage extends StatelessWidget {
 
     if (appUser.user != null) {
       print('Logged in');
-      return const QuizHome(1);
+      return const HomePage();
       // return const DummyPage();
     } else {
       print('Not logged in');
