@@ -9768,6 +9768,21 @@ class AyaProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> updateCategory(
+      String name,
+      String childType,
+      String type,
+      String categoryID,
+      ) async {
+    await wordCategory.doc(categoryID).set({
+      "tname": name,
+      "child_type": childType,
+      "word_type": type,
+      "updated_at": DateTime.now().toString(),
+    }, SetOptions(merge: true));
+    notifyListeners();
+  }
+
   checkMainColor(int? id) {
     if (id == 3 || id == 329) {
       return Color(0xffFF6106);
@@ -9925,8 +9940,8 @@ class AyaProvider extends ChangeNotifier {
 
   Future<void> addNewRelationship(
       {required int relationshipID,
-      required int wordID,
-      required int categoryID}) async {
+        required int wordID,
+        required int categoryID}) async {
     await wordRelationship.doc('${relationshipID + 1}').set({
       "active": "f",
       "created_at": DateTime.now().toString(),
@@ -9939,10 +9954,10 @@ class AyaProvider extends ChangeNotifier {
 
   addNewCategory(
       {required int categoryID,
-      required String wordType,
-      required String name,
-      required String childType,
-      required String parent}) async {
+        required String wordType,
+        required String name,
+        required String childType,
+        required String parent}) async {
     await wordCategory.doc('${categoryID + 1}').set({
       "active": "t",
       "ancestry": parent,

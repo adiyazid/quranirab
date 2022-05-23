@@ -87,7 +87,9 @@ class _SignupWidgetState extends State<SignupWidget> {
                     : Alignment.center,
                 child: Padding(
                   padding: EdgeInsets.only(
-                      left: MediaQuery.of(context).size.width > 818 ?MediaQuery.of(context).size.width * 0.06:0),
+                      left: MediaQuery.of(context).size.width > 818
+                          ? MediaQuery.of(context).size.width * 0.06
+                          : 0),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width > 818
                         ? MediaQuery.of(context).size.width * 0.55
@@ -136,7 +138,8 @@ class _SignupWidgetState extends State<SignupWidget> {
                                 Container(
                                   width: MediaQuery.of(context).size.width > 818
                                       ? MediaQuery.of(context).size.width * 0.17
-                                      : MediaQuery.of(context).size.width * 0.37,
+                                      : MediaQuery.of(context).size.width *
+                                          0.37,
                                   height: 54,
                                   decoration: BoxDecoration(
                                     borderRadius: const BorderRadius.only(
@@ -184,7 +187,8 @@ class _SignupWidgetState extends State<SignupWidget> {
                                 Container(
                                   width: MediaQuery.of(context).size.width > 818
                                       ? MediaQuery.of(context).size.width * 0.17
-                                      : MediaQuery.of(context).size.width * 0.37,
+                                      : MediaQuery.of(context).size.width *
+                                          0.37,
                                   height: 54,
                                   decoration: BoxDecoration(
                                     borderRadius: const BorderRadius.only(
@@ -297,8 +301,9 @@ class _SignupWidgetState extends State<SignupWidget> {
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: TextFormField(
-                              cursorColor:
-                                  theme.isDarkMode ? Colors.white : Colors.black,
+                              cursorColor: theme.isDarkMode
+                                  ? Colors.white
+                                  : Colors.black,
                               obscureText: true,
                               obscuringCharacter: '*',
                               controller: _pass1,
@@ -346,8 +351,9 @@ class _SignupWidgetState extends State<SignupWidget> {
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: TextFormField(
-                              cursorColor:
-                                  theme.isDarkMode ? Colors.white : Colors.black,
+                              cursorColor: theme.isDarkMode
+                                  ? Colors.white
+                                  : Colors.black,
                               obscureText: true,
                               obscuringCharacter: '*',
                               controller: _pass2,
@@ -528,6 +534,7 @@ class _SignupWidgetState extends State<SignupWidget> {
     return users
         .doc(AppUser.instance.user!.uid)
         .set({
+          'role': 'user',
           'first_name': _firstName.text, // John Doe
           'last_name': _lastName.text, // Stokes and Sons
           'email': _email.text,

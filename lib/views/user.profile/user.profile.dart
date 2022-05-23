@@ -109,78 +109,83 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
           ),
           if (_load == false)
             CircleAvatar(
-                radius: 80,
-                child: //if want to display the uploaded profile picture need to run at the terminal
-                    //flutter run -d chrome --web-renderer html
-                    //or need to setup CORS Configuration
-                    // refer https://stackoverflow.com/questions/65653801/flutter-web-cant-load-network-image-from-another-domain
-                    CachedNetworkImage(
-                  imageUrl: photoUrl ?? imageDefault,
-                  imageBuilder: (context, imageProvider) =>
-                      Stack(alignment: Alignment.topRight, children: [
-                    ClipOval(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: imageProvider,
-                            fit: BoxFit.cover,
-                            filterQuality: FilterQuality.low,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      right: 16,
-                      top: 116,
-                      child: ClipOval(
-                        child: GestureDetector(
-                          onTap: () {
-                            chooseImage();
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            color: Colors.white,
-                            child: const Icon(
-                              Icons.edit,
-                              color: Colors.black,
-                              size: 23,
+              radius: 85,
+              child: CircleAvatar(
+                  radius: 80,
+                  child: //if want to display the uploaded profile picture need to run at the terminal
+                      //flutter run -d chrome --web-renderer html
+                      //or need to setup CORS Configuration
+                      // refer https://stackoverflow.com/questions/65653801/flutter-web-cant-load-network-image-from-another-domain
+                      CachedNetworkImage(
+                    imageUrl: photoUrl ?? imageDefault,
+                    imageBuilder: (context, imageProvider) =>
+                        Stack(alignment: Alignment.topRight, children: [
+                      ClipOval(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: imageProvider,
+                              fit: BoxFit.cover,
+                              filterQuality: FilterQuality.low,
                             ),
                           ),
                         ),
                       ),
-                    )
-                  ]),
-                  placeholder: (context, url) => CircularProgressIndicator(),
-                  errorWidget: (context, url, error) =>
-                      Stack(alignment: Alignment.topRight, children: [
-                    Positioned(
-                      right: 16,
-                      top: 116,
-                      child: ClipOval(
-                        child: GestureDetector(
-                          onTap: () {
-                            chooseImage();
-                            /*showDialog(
-                                context: context,
-                                builder:
-                                    (BuildContext context) {
-                                  return AlertDialog(title: Text("test1"),);
-                                });*/
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            color: Colors.white,
-                            child: const Icon(
-                              Icons.edit,
-                              color: Colors.black,
-                              size: 23,
+                      Positioned(
+                        right: 16,
+                        top: 116,
+                        child: ClipOval(
+                          child: GestureDetector(
+                            onTap: () {
+                              chooseImage();
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              color: themeProvider.isDarkMode
+                                  ? white
+                                  : Colors.orangeAccent,
+                              child: const Icon(
+                                Icons.edit,
+                                color: Colors.black,
+                                size: 23,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    )
-                  ]),
-                ))
+                      )
+                    ]),
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) =>
+                        Stack(alignment: Alignment.topRight, children: [
+                      Positioned(
+                        right: 16,
+                        top: 116,
+                        child: ClipOval(
+                          child: GestureDetector(
+                            onTap: () {
+                              chooseImage();
+                              /*showDialog(
+                                  context: context,
+                                  builder:
+                                      (BuildContext context) {
+                                    return AlertDialog(title: Text("test1"),);
+                                  });*/
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              color: Colors.white,
+                              child: const Icon(
+                                Icons.edit,
+                                color: Colors.black,
+                                size: 23,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ]),
+                  )),
+            )
           else
             (kIsWeb)
                 ? CircleAvatar(
@@ -261,7 +266,7 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
             height: 16,
           ),
           Container(
-              width:  MediaQuery.of(context).size.width < 600
+              width: MediaQuery.of(context).size.width < 600
                   ? MediaQuery.of(context).size.width * 0.85
                   : 522,
               height: 54,
@@ -299,7 +304,8 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
                         height: 1),
                   ),
                 ),
-              )), SizedBox(
+              )),
+          SizedBox(
             height: 16,
           ),
         ]),

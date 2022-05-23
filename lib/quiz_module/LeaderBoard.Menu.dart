@@ -40,14 +40,14 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                         : const Color(0xffE86F00)),
               ),
             ),
-            height:57,
+            height: 57,
             child: CustomScrollView(
               slivers: const [Appbar()],
             ),
           ),
           Container(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height-57,
+            height: MediaQuery.of(context).size.height - 57,
             decoration: BoxDecoration(
                 color: themeProvider.isDarkMode
                     ? const Color(0xff808BA1)
@@ -108,7 +108,7 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                       });
                     },
                     child: Container(
-                      width: 600,
+                      width: MediaQuery.of(context).size.width<600? MediaQuery.of(context).size.width*0.7 :600,
                       height: MediaQuery.of(context).size.width > 600
                           ? MediaQuery.of(context).size.height * 0.15
                           : 100,
@@ -165,7 +165,7 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                               builder: (context) => const LeaderBoardTable()));
                     },
                     child: Container(
-                      width: 600,
+                      width: MediaQuery.of(context).size.width<600? MediaQuery.of(context).size.width*0.7 :600,
                       height: MediaQuery.of(context).size.width > 600
                           ? MediaQuery.of(context).size.height * 0.15
                           : 100,
@@ -225,7 +225,7 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                               builder: (context) => const LeaderBoardTable()));
                     },
                     child: Container(
-                      width: 600,
+                      width: MediaQuery.of(context).size.width<600? MediaQuery.of(context).size.width*0.7 :600,
                       height: MediaQuery.of(context).size.width > 600
                           ? MediaQuery.of(context).size.height * 0.15
                           : 100,
@@ -284,7 +284,7 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                               builder: (context) => const LeaderBoardTable()));
                     },
                     child: Container(
-                      width: 600,
+                      width: MediaQuery.of(context).size.width<600? MediaQuery.of(context).size.width*0.7 :600,
                       height: MediaQuery.of(context).size.width > 600
                           ? MediaQuery.of(context).size.height * 0.15
                           : 100,

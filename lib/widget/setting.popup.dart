@@ -35,19 +35,19 @@ class _SettingPopupState extends State<SettingPopup>
   List<Widget> list = [
     const Tab(
         child: Text(
-          'Auto',
+          'Auto',textAlign: TextAlign.center,
           style: TextStyle(fontSize: 12),
         ),
         icon: Icon(Icons.brightness_auto)),
     const Tab(
         child: Text(
-          'Light Mode',
+          'Light Mode',textAlign: TextAlign.center,
           style: TextStyle(fontSize: 12),
         ),
         icon: Icon(Icons.light_mode)),
     const Tab(
         child: Text(
-          'Dark Mode',
+          'Dark Mode',textAlign: TextAlign.center,
           style: TextStyle(fontSize: 12),
         ),
         icon: Icon(Icons.dark_mode)),
