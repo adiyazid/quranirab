@@ -457,7 +457,6 @@ class BreakIndex {
     required this.page444,
     required this.page445,
     required this.page446,
-    required this.page447,
     required this.page504,
     required this.page505,
     required this.page506,
@@ -561,7 +560,6 @@ class BreakIndex {
     required this.page604,
   });
 
-  List<int> page447;
   List<int> page1;
   List<int> page2;
   List<int> page3;
@@ -1113,7 +1111,6 @@ class BreakIndex {
   factory BreakIndex.fromJson(Map<String, dynamic> json) => BreakIndex(
         page1: List<int>.from(json["page_1"].map((x) => x)),
         page2: List<int>.from(json["page_2"].map((x) => x)),
-        page447: List<int>.from(json["page_447"].map((x) => x)),
         //add
         page3: List<int>.from(json["page_3"].map((x) => x)),
         page4: List<int>.from(json["page_4"].map((x) => x)),
@@ -1559,7 +1556,6 @@ class BreakIndex {
         page444: List<int>.from(json["page_444"].map((x) => x)),
         page445: List<int>.from(json["page_445"].map((x) => x)),
         page446: List<int>.from(json["page_446"].map((x) => x)),
-
         page504: List<int>.from(json["page_504"].map((x) => x)),
         page505: List<int>.from(json["page_505"].map((x) => x)),
         page506: List<int>.from(json["page_506"].map((x) => x)),
@@ -1615,7 +1611,6 @@ class BreakIndex {
         page556: List<int>.from(json["page_556"].map((x) => x)),
         page557: List<int>.from(json["page_557"].map((x) => x)),
         page558: List<int>.from(json["page_558"].map((x) => x)),
-
         page559: List<int>.from(json["page_559"].map((x) => x)),
         page560: List<int>.from(json["page_560"].map((x) => x)),
         page561: List<int>.from(json["page_561"].map((x) => x)),
@@ -1665,7 +1660,6 @@ class BreakIndex {
       );
 
   Map<String, dynamic> toJson() => {
-        "page_447": List<dynamic>.from(page1.map((x) => x)),
         "page_1": List<dynamic>.from(page1.map((x) => x)),
         "page_2": List<dynamic>.from(page2.map((x) => x)),
         "page_3": List<dynamic>.from(page3.map((x) => x)),

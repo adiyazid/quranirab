@@ -33,15 +33,15 @@ class AyaProvider extends ChangeNotifier {
   List<WordDetail> wordName = [];
 
   CollectionReference wordRelationship =
-      FirebaseFirestore.instance.collection('word_relationships');
+  FirebaseFirestore.instance.collection('word_relationships');
   final CollectionReference wordTable =
-      FirebaseFirestore.instance.collection('words');
+  FirebaseFirestore.instance.collection('words');
   CollectionReference wordCategory =
-      FirebaseFirestore.instance.collection('word_categories');
+  FirebaseFirestore.instance.collection('word_categories');
   CollectionReference wordCategoryTranslation =
-      FirebaseFirestore.instance.collection('category_translations');
+  FirebaseFirestore.instance.collection('category_translations');
   final CollectionReference _sliceData =
-      FirebaseFirestore.instance.collection('medina_mushaf_pages');
+  FirebaseFirestore.instance.collection('medina_mushaf_pages');
 
   List? list = [];
 
@@ -316,9 +316,9 @@ class AyaProvider extends ChangeNotifier {
         wordDetail.add(WordDetail(
             childType: doc["child_type"] ?? '',
             isparent:
-                parent.split("/").length == 1 || parent == '' ? true : false,
+            parent.split("/").length == 1 || parent == '' ? true : false,
             hasChild:
-                parent.split("/").length > 1 || parent == '' ? true : false,
+            parent.split("/").length > 1 || parent == '' ? true : false,
             parent: doc["ancestry"],
             id: int.parse(id),
             categoryId: int.parse(doc["id"]),
@@ -335,11 +335,11 @@ class AyaProvider extends ChangeNotifier {
         .where('word_category_id', isEqualTo: categoryId)
         .get()
         .then((QuerySnapshot querySnapshot) =>
-            querySnapshot.docs.forEach((element) {
-              if (element['language_id'] == langId) {
-                print('${element['name']} ${element['word_category_id']}');
-              }
-            }));
+        querySnapshot.docs.forEach((element) {
+          if (element['language_id'] == langId) {
+            print('${element['name']} ${element['word_category_id']}');
+          }
+        }));
   }
 
   void clearPrevAya() {
@@ -7509,22 +7509,6 @@ class AyaProvider extends ChangeNotifier {
         170,
         183
       ],
-      "page_447": [
-        13,
-        25,
-        36,
-        47,
-        59,
-        73,
-        89,
-        99,
-        116,
-        131,
-        146,
-        158,
-        170,
-        183
-      ],
       "page_504": [
         16,
         32,
@@ -9382,8 +9366,6 @@ class AyaProvider extends ChangeNotifier {
         breakIndex = _index?.page445 ?? <int>[];
       } else if (page == 446) {
         breakIndex = _index?.page446 ?? <int>[];
-      } else if (page == 447) {
-        breakIndex = _index?.page447 ?? <int>[];
       }
     } else if (page <= 604) {
       if (page == 504) {
@@ -9782,21 +9764,6 @@ class AyaProvider extends ChangeNotifier {
     await wordRelationship.doc(id).set({
       "updated_at": DateTime.now().toString(),
       "word_category_id": '$wordId'
-    }, SetOptions(merge: true));
-    notifyListeners();
-  }
-
-  Future<void> updateCategory(
-    String name,
-    String childType,
-    String type,
-    String categoryID,
-  ) async {
-    await wordCategory.doc(categoryID).set({
-      "tname": name,
-      "child_type": childType,
-      "word_type": type,
-      "updated_at": DateTime.now().toString(),
     }, SetOptions(merge: true));
     notifyListeners();
   }
