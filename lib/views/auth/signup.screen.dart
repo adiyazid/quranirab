@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +8,9 @@ import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/auth/landing.page.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../main.dart';
 
 class SignupWidget extends StatefulWidget {
   const SignupWidget({Key? key}) : super(key: key);
@@ -15,7 +19,8 @@ class SignupWidget extends StatefulWidget {
   _SignupWidgetState createState() => _SignupWidgetState();
 }
 
-class _SignupWidgetState extends State<SignupWidget> {
+class _SignupWidgetState extends State<SignupWidget>
+    with SingleTickerProviderStateMixin {
   var _obsecure = true;
   var _obsecure2 = true;
 
@@ -30,6 +35,22 @@ class _SignupWidgetState extends State<SignupWidget> {
   CollectionReference users =
       FirebaseFirestore.instance.collection('quranIrabUsers');
   bool _check = false;
+  late Animation<double> _animation;
+  late AnimationController _animationController;
+
+  @override
+  void initState() {
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 260),
+    );
+
+    final curvedAnimation =
+        CurvedAnimation(curve: Curves.bounceIn, parent: _animationController);
+    _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation);
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,11 +99,12 @@ class _SignupWidgetState extends State<SignupWidget> {
                               ? const Color(0xff808BA1)
                               : const Color(0xffFFEEB0),
                         ),
-                        child: const Center(
+                        child: Center(
                           child: SizedBox(
                             width: 400,
                             child: Text(
-                              'Welcome to QuranIrab official website',
+                              AppLocalizations.of(context)!
+                                  .welcomeToQuranIrabOfficialWebsite,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontFamily: 'Poppins',
@@ -108,7 +130,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width > 818
                             ? MediaQuery.of(context).size.width * 0.55
-                            : MediaQuery.of(context).size.width * 0.8,
+                            : MediaQuery.of(context).size.width,
                         height: MediaQuery.of(context).size.height * 0.9,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -132,7 +154,8 @@ class _SignupWidgetState extends State<SignupWidget> {
                             ),
                             Flexible(
                               child: Text(
-                                'Register for QuranIrab',
+                                AppLocalizations.of(context)!
+                                    .registerForQuranIrab,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontFamily: 'Poppins',
@@ -146,11 +169,11 @@ class _SignupWidgetState extends State<SignupWidget> {
                             Flexible(
                               child: SizedBox(
                                 width: MediaQuery.of(context).size.width > 818
-                                    ? MediaQuery.of(context).size.width * 0.37
-                                    : MediaQuery.of(context).size.width * 0.8,
+                                    ? MediaQuery.of(context).size.width * 0.4
+                                    : MediaQuery.of(context).size.width,
                                 child: Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceAround,
                                   children: [
                                     Container(
                                       width:
@@ -159,11 +182,11 @@ class _SignupWidgetState extends State<SignupWidget> {
                                               ? MediaQuery.of(context)
                                                       .size
                                                       .width *
-                                                  0.17
+                                                  0.18
                                               : MediaQuery.of(context)
                                                       .size
                                                       .width *
-                                                  0.37,
+                                                  0.46,
                                       decoration: BoxDecoration(
                                         borderRadius: const BorderRadius.only(
                                           topLeft: Radius.circular(20),
@@ -198,14 +221,15 @@ class _SignupWidgetState extends State<SignupWidget> {
                                                 borderSide:
                                                     BorderSide(color: theColor),
                                               ),
-                                              hintText: 'First Name',
+                                              hintText:
+                                                  AppLocalizations.of(context)!
+                                                      .firstName,
                                               hintStyle: TextStyle(
                                                   color: theme.isDarkMode
                                                       ? Colors.white
                                                       : const Color.fromRGBO(
                                                           151, 151, 151, 1),
                                                   fontFamily: 'Poppins',
-                                                  fontSize: 20,
                                                   letterSpacing:
                                                       0 /*percentages not used in flutter. defaulting to zero*/,
                                                   fontWeight: FontWeight.normal,
@@ -220,11 +244,11 @@ class _SignupWidgetState extends State<SignupWidget> {
                                               ? MediaQuery.of(context)
                                                       .size
                                                       .width *
-                                                  0.17
+                                                  0.18
                                               : MediaQuery.of(context)
                                                       .size
                                                       .width *
-                                                  0.37,
+                                                  0.46,
                                       decoration: BoxDecoration(
                                         borderRadius: const BorderRadius.only(
                                           topLeft: Radius.circular(20),
@@ -259,14 +283,15 @@ class _SignupWidgetState extends State<SignupWidget> {
                                                 borderSide:
                                                     BorderSide(color: theColor),
                                               ),
-                                              hintText: 'Last Name',
+                                              hintText:
+                                                  AppLocalizations.of(context)!
+                                                      .lastName,
                                               hintStyle: TextStyle(
                                                   color: theme.isDarkMode
                                                       ? Colors.white
                                                       : const Color.fromRGBO(
                                                           151, 151, 151, 1),
                                                   fontFamily: 'Poppins',
-                                                  fontSize: 20,
                                                   letterSpacing:
                                                       0 /*percentages not used in flutter. defaulting to zero*/,
                                                   fontWeight: FontWeight.normal,
@@ -281,7 +306,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                             Container(
                               width: MediaQuery.of(context).size.width > 818
                                   ? MediaQuery.of(context).size.width * 0.37
-                                  : MediaQuery.of(context).size.width * 0.8,
+                                  : MediaQuery.of(context).size.width * 0.96,
                               decoration: BoxDecoration(
                                 borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(20),
@@ -311,7 +336,8 @@ class _SignupWidgetState extends State<SignupWidget> {
                                       border: UnderlineInputBorder(
                                         borderSide: BorderSide(color: theColor),
                                       ),
-                                      hintText: 'Email',
+                                      hintText:
+                                          AppLocalizations.of(context)!.email,
                                       hintStyle: TextStyle(
                                           color: theme.isDarkMode
                                               ? Colors.white
@@ -329,7 +355,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                             Container(
                               width: MediaQuery.of(context).size.width > 818
                                   ? MediaQuery.of(context).size.width * 0.37
-                                  : MediaQuery.of(context).size.width * 0.8,
+                                  : MediaQuery.of(context).size.width * 0.96,
                               decoration: BoxDecoration(
                                 borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(20),
@@ -375,7 +401,8 @@ class _SignupWidgetState extends State<SignupWidget> {
                                       border: UnderlineInputBorder(
                                         borderSide: BorderSide(color: theColor),
                                       ),
-                                      hintText: 'Password',
+                                      hintText: AppLocalizations.of(context)!
+                                          .password,
                                       hintStyle: TextStyle(
                                           color: theme.isDarkMode
                                               ? Colors.white
@@ -393,7 +420,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                             Container(
                               width: MediaQuery.of(context).size.width > 818
                                   ? MediaQuery.of(context).size.width * 0.37
-                                  : MediaQuery.of(context).size.width * 0.8,
+                                  : MediaQuery.of(context).size.width * 0.96,
                               decoration: BoxDecoration(
                                 borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(20),
@@ -439,7 +466,8 @@ class _SignupWidgetState extends State<SignupWidget> {
                                       border: UnderlineInputBorder(
                                         borderSide: BorderSide(color: theColor),
                                       ),
-                                      hintText: 'Confirm Password',
+                                      hintText: AppLocalizations.of(context)!
+                                          .confirmPass,
                                       hintStyle: TextStyle(
                                           color: theme.isDarkMode
                                               ? Colors.white
@@ -454,11 +482,10 @@ class _SignupWidgetState extends State<SignupWidget> {
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width > 818
-                                  ? MediaQuery.of(context).size.width * 0.4
-                                  : MediaQuery.of(context).size.width * 0.8,
+                            Flexible(
                               child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   Checkbox(
                                     activeColor: Colors.lightBlue,
@@ -475,8 +502,9 @@ class _SignupWidgetState extends State<SignupWidget> {
                                     width: 8,
                                   ),
                                   Expanded(
-                                    child: const Text(
-                                      'I accept the terms and conditions and I have read the privacy policy ',
+                                    child: Text(
+                                      AppLocalizations.of(context)!
+                                          .iAgreeTermCondition,
                                       textAlign: TextAlign.left,
                                       maxLines: 3,
                                       style: TextStyle(
@@ -495,31 +523,52 @@ class _SignupWidgetState extends State<SignupWidget> {
                             ///button
                             InkWell(
                               onTap: () async {
-                                if (_pass1.text == '' &&
-                                    _pass2.text == '' &&
-                                    _firstName.text == '' &&
-                                    _lastName.text == '' &&
-                                    _email.text == '') {
+                                bool emailValid = RegExp(
+                                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                    .hasMatch(_email.text.trim());
+                                if (_pass1.text.isEmpty ||
+                                    _pass2.text.isEmpty ||
+                                    _firstName.text.isEmpty ||
+                                    _lastName.text.isEmpty ||
+                                    _email.text.isEmpty) {
                                   showTopSnackBar(
                                     context,
-                                    const CustomSnackBar.error(
-                                      message: 'Please Fill All Field',
+                                    CustomSnackBar.error(
+                                      message: AppLocalizations.of(context)!
+                                          .fillAllField,
+                                    ),
+                                  );
+                                } else if (!emailValid) {
+                                  showTopSnackBar(
+                                    context,
+                                    CustomSnackBar.error(
+                                      message: AppLocalizations.of(context)!
+                                          .emailError,
+                                    ),
+                                  );
+                                } else if (_pass1.text.length < 6 ||
+                                    _pass2.text.length < 6) {
+                                  showTopSnackBar(
+                                    context,
+                                    CustomSnackBar.error(
+                                      message: AppLocalizations.of(context)!
+                                          .passwordLengthError,
                                     ),
                                   );
                                 } else if (_pass1.text != _pass2.text) {
                                   showTopSnackBar(
                                     context,
-                                    const CustomSnackBar.error(
-                                      message:
-                                          'Password did not match. Please insert again',
+                                    CustomSnackBar.error(
+                                      message: AppLocalizations.of(context)!
+                                          .passwordError,
                                     ),
                                   );
                                 } else if (_check == false) {
                                   showTopSnackBar(
                                     context,
-                                    const CustomSnackBar.error(
-                                      message:
-                                          'Please agree with terms and condition before proceed',
+                                    CustomSnackBar.error(
+                                      message: AppLocalizations.of(context)!
+                                          .termConditionError,
                                     ),
                                   );
                                 } else {
@@ -539,8 +588,9 @@ class _SignupWidgetState extends State<SignupWidget> {
                                                 LandingPage()));
                                     showTopSnackBar(
                                       context,
-                                      const CustomSnackBar.success(
-                                        message: 'New Account Created',
+                                      CustomSnackBar.success(
+                                        message: AppLocalizations.of(context)!
+                                            .newAccCreated,
                                       ),
                                     );
                                     setState(() {});
@@ -548,11 +598,21 @@ class _SignupWidgetState extends State<SignupWidget> {
                                   } catch (e) {
                                     setState(() {});
                                     loading = false;
-                                    showTopSnackBar(
-                                        context,
-                                        CustomSnackBar.error(
-                                          message: e.toString(),
-                                        ));
+                                    if (e.toString() ==
+                                        '[firebase_auth/email-already-in-use] The email address is already in use by another account.') {
+                                      showTopSnackBar(
+                                          context,
+                                          CustomSnackBar.error(
+                                            message:
+                                                AppLocalizations.of(context)!
+                                                    .duplicateEmail,
+                                          ));
+                                    } else {
+                                      showTopSnackBar(
+                                          context,
+                                          CustomSnackBar.error(
+                                              message: e.toString()));
+                                    }
                                   }
                                 }
                               },
@@ -570,9 +630,9 @@ class _SignupWidgetState extends State<SignupWidget> {
                                       ? const Color(0xff808AB1)
                                       : const Color(0xffFFB55F),
                                 ),
-                                child: const Center(
+                                child: Center(
                                   child: Text(
-                                    'Sign up',
+                                    AppLocalizations.of(context)!.signUp,
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                         fontFamily: 'Poppins',
@@ -591,22 +651,72 @@ class _SignupWidgetState extends State<SignupWidget> {
                     ),
                   ),
                 ])),
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: FloatingActionButton(
-            backgroundColor: Colors.orange,
-            onPressed: () {
-              theme.isDarkMode
-                  ? theme.toggleTheme(false)
-                  : theme.toggleTheme(true);
-            },
-            child: theme.isDarkMode
-                ? const Icon(Icons.wb_sunny)
-                : const Icon(Icons.nightlight_round),
-          ),
+        floatingActionButton: FloatingActionBubble(
+          iconData: Icons.settings,
+          onPress: () => _animationController.isCompleted
+              ? _animationController.reverse()
+              : _animationController.forward(),
+          animation: _animation,
+          items: <Bubble>[
+            Bubble(
+              title: "Arabic",
+              iconColor: theme.isDarkMode ? Colors.white : Colors.black,
+              bubbleColor:
+                  theme.isDarkMode ? Colors.blueGrey : Colors.orangeAccent,
+              icon: Icons.language,
+              titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+              onPress: () {
+                MyApp.of(context)!
+                    .setLocale(Locale.fromSubtags(languageCode: 'ar'));
+                _animationController.reverse();
+              },
+            ),
+            Bubble(
+              title: "English",
+              iconColor: theme.isDarkMode ? Colors.white : Colors.black,
+              bubbleColor:
+                  theme.isDarkMode ? Colors.blueGrey : Colors.orangeAccent,
+              icon: Icons.language,
+              titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+              onPress: () {
+                MyApp.of(context)!
+                    .setLocale(Locale.fromSubtags(languageCode: 'en'));
+                _animationController.reverse();
+              },
+            ),
+            Bubble(
+              title: "Bahasa Melayu",
+              iconColor: theme.isDarkMode ? Colors.white : Colors.black,
+              bubbleColor:
+                  theme.isDarkMode ? Colors.blueGrey : Colors.orangeAccent,
+              icon: Icons.language,
+              titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+              onPress: () {
+                MyApp.of(context)!
+                    .setLocale(Locale.fromSubtags(languageCode: 'my'));
+                _animationController.reverse();
+              },
+            ),
+            // Floating action menu item
+            Bubble(
+              title: theme.isDarkMode ? "Light mode" : "Dark Mode",
+              iconColor: theme.isDarkMode ? Colors.white : Colors.black,
+              bubbleColor:
+                  theme.isDarkMode ? Colors.blueGrey : Colors.orangeAccent,
+              icon: theme.isDarkMode ? Icons.wb_sunny : Icons.nightlight_round,
+              titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+              onPress: () {
+                theme.isDarkMode
+                    ? theme.toggleTheme(false)
+                    : theme.toggleTheme(true);
+                _animationController.reverse();
+              },
+            ),
+          ],
+          backGroundColor:
+              theme.isDarkMode ? Colors.blueGrey : Colors.orangeAccent,
+          iconColor: theme.isDarkMode ? Colors.white : Colors.black,
         ),
-        //BUTTON LOCATION
-        floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       ),
     );
   }

@@ -6,7 +6,6 @@ import 'package:quranirab/quiz_module/utils/colors.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/widget/appbar.widget.dart';
 import 'package:quranirab/widget/menu.dart';
-import 'package:quranirab/widget/setting.dart';
 import 'package:quranirab/quiz_module/quiz.dart';
 
 class QuizHome extends StatefulWidget {
@@ -26,7 +25,6 @@ class _QuizHomeState extends State<QuizHome> {
       backgroundColor:
           themeProvider.isDarkMode ? Color(0xff808ba1) : Color(0xfffff5ec),
       drawer: const Menu(),
-      endDrawer: const Setting(),
       body: DefaultTabController(
         length: 3,
         child: Stack(

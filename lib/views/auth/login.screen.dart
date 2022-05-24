@@ -1,4 +1,6 @@
+import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:flutter/material.dart';
+
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/user.provider.dart';
@@ -6,6 +8,9 @@ import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/auth/signup.screen.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../main.dart';
 
 class SigninWidget extends StatefulWidget {
   const SigninWidget({Key? key}) : super(key: key);
@@ -14,13 +19,30 @@ class SigninWidget extends StatefulWidget {
   State<SigninWidget> createState() => _SigninWidgetState();
 }
 
-class _SigninWidgetState extends State<SigninWidget> {
+class _SigninWidgetState extends State<SigninWidget>
+    with SingleTickerProviderStateMixin {
   var _obsecure = true;
 
   get theColor => Colors.transparent;
   final TextEditingController _email = TextEditingController();
   final TextEditingController _pass = TextEditingController();
   bool loading = false;
+  late Animation<double> _animation;
+  late AnimationController _animationController;
+
+  @override
+  void initState() {
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 260),
+    );
+
+    final curvedAnimation =
+        CurvedAnimation(curve: Curves.bounceIn, parent: _animationController);
+    _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation);
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +55,8 @@ class _SigninWidgetState extends State<SigninWidget> {
             ? Center(
                 child: LoadingAnimationWidget.fourRotatingDots(
                   size: 200,
-                  color: theme.isDarkMode? Colors.blueGrey:Colors.orangeAccent,
+                  color:
+                      theme.isDarkMode ? Colors.blueGrey : Colors.orangeAccent,
                 ),
               )
             : Container(
@@ -72,7 +95,7 @@ class _SigninWidgetState extends State<SigninWidget> {
                                 ),
                           child: Center(
                             child: Text(
-                              'Assalamualaikum',
+                              AppLocalizations.of(context)!.helloWorld,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: theme.isDarkMode
@@ -124,7 +147,7 @@ class _SigninWidgetState extends State<SigninWidget> {
                             ),
                             Flexible(
                               child: Text(
-                                'Login to QuranIrab',
+                                AppLocalizations.of(context)!.loginToQuranIrab,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     color: theme.isDarkMode
@@ -178,7 +201,9 @@ class _SigninWidgetState extends State<SigninWidget> {
                                               borderSide:
                                                   BorderSide(color: theColor),
                                             ),
-                                            hintText: 'Email',
+                                            hintText:
+                                                AppLocalizations.of(context)!
+                                                    .email,
                                             hintStyle: TextStyle(
                                                 color: theme.isDarkMode
                                                     ? Colors.white
@@ -249,7 +274,9 @@ class _SigninWidgetState extends State<SigninWidget> {
                                             borderSide:
                                                 BorderSide(color: theColor),
                                           ),
-                                          hintText: 'Password',
+                                          hintText:
+                                              AppLocalizations.of(context)!
+                                                  .password,
                                           hintStyle: TextStyle(
                                               color: theme.isDarkMode
                                                   ? Colors.white
@@ -268,7 +295,7 @@ class _SigninWidgetState extends State<SigninWidget> {
                             ),
                             Flexible(
                               child: Text(
-                                'Forgot Password?',
+                                AppLocalizations.of(context)!.forgotPassword,
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                     color: theme.isDarkMode
@@ -303,8 +330,10 @@ class _SigninWidgetState extends State<SigninWidget> {
                                       loading = false;
                                       showTopSnackBar(
                                           context,
-                                          const CustomSnackBar.success(
-                                            message: 'Login Success',
+                                          CustomSnackBar.success(
+                                            message:
+                                                AppLocalizations.of(context)!
+                                                    .loginSuccess,
                                           ),
                                           showOutAnimationDuration:
                                               Duration(milliseconds: 200),
@@ -340,7 +369,7 @@ class _SigninWidgetState extends State<SigninWidget> {
                                   ),
                                   child: Center(
                                     child: Text(
-                                      'Login',
+                                      AppLocalizations.of(context)!.login,
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                           color: theme.isDarkMode
@@ -363,7 +392,7 @@ class _SigninWidgetState extends State<SigninWidget> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    'Don’t have account? ',
+                                    AppLocalizations.of(context)!.dontHaveAcc,
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                         color: theme.isDarkMode
@@ -384,7 +413,7 @@ class _SigninWidgetState extends State<SigninWidget> {
                                             builder: (context) =>
                                                 const SignupWidget())),
                                     child: Text(
-                                      'Sign up ',
+                                      AppLocalizations.of(context)!.signUp,
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                           decoration: TextDecoration.underline,
@@ -410,22 +439,73 @@ class _SigninWidgetState extends State<SigninWidget> {
                     ),
                   ),
                 ])),
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: FloatingActionButton(
-            backgroundColor: Colors.orange,
-            onPressed: () {
-              theme.isDarkMode
-                  ? theme.toggleTheme(false)
-                  : theme.toggleTheme(true);
-            },
-            child: theme.isDarkMode
-                ? const Icon(Icons.wb_sunny)
-                : const Icon(Icons.nightlight_round),
-          ),
+        floatingActionButton: FloatingActionBubble(
+          iconData: Icons.settings,
+          onPress: () => _animationController.isCompleted
+              ? _animationController.reverse()
+              : _animationController.forward(),
+          animation: _animation,
+          items: <Bubble>[
+            Bubble(
+              title: "Arabic",
+              iconColor: theme.isDarkMode ? Colors.white : Colors.black,
+              bubbleColor:
+                  theme.isDarkMode ? Colors.blueGrey : Colors.orangeAccent,
+              icon: Icons.language,
+              titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+              onPress: () {
+                MyApp.of(context)!
+                    .setLocale(Locale.fromSubtags(languageCode: 'ar'));
+                _animationController.reverse();
+              },
+            ),
+            Bubble(
+              title: "English",
+              iconColor: theme.isDarkMode ? Colors.white : Colors.black,
+              bubbleColor:
+                  theme.isDarkMode ? Colors.blueGrey : Colors.orangeAccent,
+              icon: Icons.language,
+              titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+              onPress: () {
+                MyApp.of(context)!
+                    .setLocale(Locale.fromSubtags(languageCode: 'en'));
+                _animationController.reverse();
+              },
+            ),
+            Bubble(
+              title: "Bahasa Melayu",
+              iconColor: theme.isDarkMode ? Colors.white : Colors.black,
+              bubbleColor:
+                  theme.isDarkMode ? Colors.blueGrey : Colors.orangeAccent,
+              icon: Icons.language,
+              titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+              onPress: () {
+                MyApp.of(context)!
+                    .setLocale(Locale.fromSubtags(languageCode: 'my'));
+                _animationController.reverse();
+              },
+            ),
+            // Floating action menu item
+            Bubble(
+              title: theme.isDarkMode ? "Light mode" : "Dark Mode",
+              iconColor: theme.isDarkMode ? Colors.white : Colors.black,
+              bubbleColor:
+                  theme.isDarkMode ? Colors.blueGrey : Colors.orangeAccent,
+              icon: theme.isDarkMode ? Icons.wb_sunny : Icons.nightlight_round,
+              titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+              onPress: () {
+                theme.isDarkMode
+                    ? theme.toggleTheme(false)
+                    : theme.toggleTheme(true);
+                _animationController.reverse();
+              },
+            ),
+          ],
+          backGroundColor:
+              theme.isDarkMode ? Colors.blueGrey : Colors.orangeAccent,
+          iconColor: theme.isDarkMode ? Colors.white : Colors.black,
         ),
         //BUTTON LOCATION
-        floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       ),
     );
   }

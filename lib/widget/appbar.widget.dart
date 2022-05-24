@@ -36,14 +36,13 @@ class _AppbarState extends State<Appbar> {
       centerTitle: false,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       actions: const <Widget>[
-        Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: SearchPopup()),
-        Padding(
-            padding: EdgeInsets.only(right: 20.0), child: LangPopup()),
-        Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: SettingPopup()),
+        SizedBox(width: 16),
+        SearchPopup(),
+        SizedBox(width: 16),
+        LangPopup(),
+        SizedBox(width: 16),
+        SettingPopup(),
+        SizedBox(width: 16),
       ],
     );
   }

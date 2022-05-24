@@ -8,6 +8,7 @@ import 'package:quranirab/provider/ayah.number.provider.dart';
 import 'package:quranirab/provider/bookmark.provider.dart';
 import 'package:quranirab/widget/menu.dart';
 import '../widget/appbar.widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -95,7 +96,7 @@ class _HomePageState extends State<HomePage>
                             children: [
                               Align(
                                 child: Text(
-                                  'Bookmark',
+                                  AppLocalizations.of(context)!.bookmark,
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                       decoration: TextDecoration.underline,
@@ -272,7 +273,7 @@ class _HomePageState extends State<HomePage>
                           children: [
                             Align(
                               child: Text(
-                                'Bookmark',
+                                AppLocalizations.of(context)!.bookmark,
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                     decoration: TextDecoration.underline,
@@ -290,7 +291,7 @@ class _HomePageState extends State<HomePage>
                             Align(
                               alignment: Alignment.topLeft,
                               child: Text(
-                                'You do not have any bookmark yet',
+                                AppLocalizations.of(context)!.emptyBookmark,
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                     fontFamily: 'Open Sans',
