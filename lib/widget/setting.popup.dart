@@ -132,8 +132,9 @@ class _SettingPopupState extends State<SettingPopup>
                                 Text(
                                   AppLocalizations.of(context)!.setting,
                                   style: TextStyle(
-                                      color:
-                                          Theme.of(context).textSelectionColor,
+                                      color: Theme.of(context)
+                                          .textSelectionTheme
+                                          .selectionColor,
                                       fontSize: 16),
                                 ),
                                 Spacer(),
@@ -142,7 +143,9 @@ class _SettingPopupState extends State<SettingPopup>
                                     _custom.hideMenu();
                                   },
                                   icon: const Icon(Icons.close),
-                                  color: Theme.of(context).textSelectionColor,
+                                  color: Theme.of(context)
+                                      .textSelectionTheme
+                                      .selectionColor,
                                   iconSize: 20,
                                   splashRadius: 15,
                                 ),
@@ -179,7 +182,8 @@ class _SettingPopupState extends State<SettingPopup>
                                           AppLocalizations.of(context)!.theme,
                                           style: TextStyle(
                                             color: Theme.of(context)
-                                                .textSelectionColor,
+                                                .textSelectionTheme
+                                                .selectionColor,
                                             fontSize: 16,
                                           )),
                                     ),
@@ -240,7 +244,8 @@ class _SettingPopupState extends State<SettingPopup>
                                         AppLocalizations.of(context)!.fontSize,
                                         style: TextStyle(
                                             color: Theme.of(context)
-                                                .textSelectionColor,
+                                                .textSelectionTheme
+                                                .selectionColor,
                                             fontSize: 16)),
                                   ),
                                   Center(

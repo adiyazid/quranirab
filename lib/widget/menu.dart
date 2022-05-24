@@ -43,7 +43,7 @@ class Menu extends StatelessWidget {
                       Navigator.of(context).pop();
                     },
                     icon: const Icon(Icons.close),
-                    color: Theme.of(context).textSelectionColor,
+                    color: Theme.of(context).textSelectionTheme.selectionColor,
                     iconSize: 20,
                     splashRadius: 15,
                   ),
