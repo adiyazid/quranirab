@@ -49,5 +49,11 @@
   "noFile": "No file selected",
   "noChanges": "No Changes",
   "translations": "Translations",
-  "reading": "Reading"
+  "reading": "Reading",
+  "takeAQuiz": "Take a Quiz",
+  "prevPage": "Previous Page",
+  "beginningSurah": "Beginning Surah",
+  "nextPage": "Next Page",
+  "items":"Items",
+  "wordDetail": "Word Detail for Word"
 }

@@ -10,6 +10,7 @@ import 'package:tree_view/tree_view.dart';
 
 import '../../models/word.detail.dart';
 import '../../theme/theme_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditData extends StatefulWidget {
   final int wordId;
@@ -82,7 +83,8 @@ class _EditDataState extends State<EditData>
           appBar: AppBar(
             backgroundColor: Colors.orangeAccent,
             title: Consumer<AyaProvider>(builder: (context, no, child) {
-              return Text('Word detail for word ID ${aya.wordID}');
+              return Text(
+                  '${AppLocalizations.of(context)!.wordDetail} ID ${aya.wordID}');
             }),
             centerTitle: true,
           ),
@@ -147,7 +149,12 @@ class _EditDataState extends State<EditData>
                                               await Provider.of<AyaProvider>(
                                                       context,
                                                       listen: false)
-                                                  .getList(_inputParent ?? '');
+                                                  .getList(
+                                                      _inputParent ?? '',
+                                                      Provider.of<AyaProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .getLangID(context));
                                           label.forEach((element) {
                                             if (_inputParent ==
                                                 element.parent) {
@@ -305,10 +312,9 @@ class _EditDataState extends State<EditData>
                                                 newRel: true);
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
-
                                               const SnackBar(
                                                   backgroundColor:
-                                                  Colors.cyanAccent,
+                                                      Colors.cyanAccent,
                                                   content:
                                                       Text('Adding Data...')),
                                             );
@@ -383,7 +389,12 @@ class _EditDataState extends State<EditData>
                                               await Provider.of<AyaProvider>(
                                                       context,
                                                       listen: false)
-                                                  .getList(_inputParent ?? '');
+                                                  .getList(
+                                                      _inputParent ?? '',
+                                                      Provider.of<AyaProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .getLangID(context));
                                           label.forEach((element) {
                                             if (_inputParent2 ==
                                                 element.parent) {
@@ -490,7 +501,7 @@ class _EditDataState extends State<EditData>
                                                 .showSnackBar(
                                               const SnackBar(
                                                   backgroundColor:
-                                                  Colors.cyanAccent,
+                                                      Colors.cyanAccent,
                                                   content:
                                                       Text('Adding Data...')),
                                             );
@@ -762,7 +773,8 @@ class _EditDataState extends State<EditData>
       document.isparent!
           ? Card(
               color:
-                  Provider.of<ThemeProvider>(context, listen: false).isDarkMode
+                  Provider.of<ThemeProvider>(context, listen: false)
+                          .isDarkMode
                       ? Color(0xff4C6A7A)
                       : Color(0xffE0BD61),
               child: ListTile(
@@ -770,7 +782,8 @@ class _EditDataState extends State<EditData>
                   title: Text(document.name!),
                   subtitle: Text(
                       'ID: ${document.categoryId}, Type: ${document.type}, Child: ${document.childType}'),
-                  trailing: Text("${list.length} items")))
+                  trailing: Text(
+                      "${list.length} ${AppLocalizations.of(context)!.items}")))
           : list.isNotEmpty
               ? Card(
                   color: Provider.of<ThemeProvider>(context, listen: false)
@@ -788,7 +801,11 @@ class _EditDataState extends State<EditData>
                           List<WordDetail> label =
                               await Provider.of<AyaProvider>(context,
                                       listen: false)
-                                  .getList(document.parent ?? '');
+                                  .getList(
+                                      document.parent ?? '',
+                                      Provider.of<AyaProvider>(context,
+                                              listen: false)
+                                          .getLangID(context));
                           popUp(document, label);
                         },
                       )),
@@ -801,9 +818,13 @@ class _EditDataState extends State<EditData>
                   trailing: IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () async {
-                      List<WordDetail> label =
-                          await Provider.of<AyaProvider>(context, listen: false)
-                              .getList(document.parent ?? '');
+                      List<WordDetail> label = await Provider.of<AyaProvider>(
+                              context,
+                              listen: false)
+                          .getList(
+                              document.parent ?? '',
+                              Provider.of<AyaProvider>(context, listen: false)
+                                  .getLangID(context));
                       popUp(document, label);
                     },
                   ));

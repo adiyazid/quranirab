@@ -49,5 +49,11 @@
   "noFile": "Tiada fail yang dipilih",
   "noChanges": "Tiada Perubahan",
   "translations": "Terjemahan",
-  "reading": "Membaca"
+  "reading": "Membaca",
+  "takeAQuiz": "Ambil kuiz",
+  "prevPage": "Muka Surat Sebelumnya",
+  "beginningSurah": "Permulaan Surah",
+  "nextPage": "Muka Surat Seterusnya",
+  "items": "benda",
+  "wordDetail": "Maklumat huruf terperinci untuk huruf"
 }

@@ -2,6 +2,7 @@ import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TransPopup extends StatefulWidget {
   const TransPopup({Key? key}) : super(key: key);
@@ -13,7 +14,6 @@ class TransPopup extends StatefulWidget {
 class _TransPopupState extends State<TransPopup> {
   final padding = const EdgeInsets.symmetric(horizontal: 10);
 
-  @override
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
@@ -52,7 +52,7 @@ class _TransPopupState extends State<TransPopup> {
                         padding: padding,
                         children: <Widget>[
                           buildMenuItem(
-                              text: 'Translation',
+                              text: AppLocalizations.of(context)!.translations,
                               enable: false,
                               darkMode: themeProvider.isDarkMode,
                               align: TextAlign.left,

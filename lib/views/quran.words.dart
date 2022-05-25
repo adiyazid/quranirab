@@ -1,9 +1,7 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:quranirab/models/surah.model.dart';
-import 'package:quranirab/views/nav.draw.dart';
 
 class Words extends StatefulWidget {
   const Words({Key? key}) : super(key: key);
@@ -61,57 +59,54 @@ class _WordsState extends State<Words> {
 
   @override
   Widget build(BuildContext context) {
-
-      return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text('Words-Json'),
-          backgroundColor: Colors.orange[700],
-          elevation: 0,
-          actions: [
-          ],
-        ),
-        body: Center(
-          child: Container(
-            width: 900,
-            padding: const EdgeInsets.all(8.0),
-            child: Directionality(
-              textDirection: TextDirection.rtl,
-              child: RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  children: ayatList
-                      .map((data) => TextSpan(
-                            text: data.text,
-                            style: TextStyle(
-                              fontFamily: 'MeQuran2',
-                              fontSize: 40,
-                              color: checkColor(data.text),
-                            ),
-                          ))
-                      .toList(),
-                ),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text('Words-Json'),
+        backgroundColor: Colors.orange[700],
+        elevation: 0,
+        actions: [],
+      ),
+      body: Center(
+        child: Container(
+          width: 900,
+          padding: const EdgeInsets.all(8.0),
+          child: Directionality(
+            textDirection: TextDirection.rtl,
+            child: RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                children: ayatList
+                    .map((data) => TextSpan(
+                          text: data.text,
+                          style: TextStyle(
+                            fontFamily: 'MeQuran2',
+                            fontSize: 40,
+                            color: checkColor(data.text),
+                          ),
+                        ))
+                    .toList(),
               ),
             ),
           ),
         ),
-        // ListView.builder(
-        //     itemCount: length,
-        //     itemBuilder: (BuildContext context, int index) {
-        //       return Padding(
-        //         padding: const EdgeInsets.only(top: 38.0),
-        //         child: Center(
-        //           child: Text(
-        //             ayatList[index].text,
-        //             style: TextStyle(
-        //                 fontFamily: 'MeQuran2',
-        //                 fontSize: 30,
-        //                 color: checkColor(ayatList[index].text)),
-        //           ),
-        //         ),
-        //       );
-        //     }),
-      );
-
+      ),
+      // ListView.builder(
+      //     itemCount: length,
+      //     itemBuilder: (BuildContext context, int index) {
+      //       return Padding(
+      //         padding: const EdgeInsets.only(top: 38.0),
+      //         child: Center(
+      //           child: Text(
+      //             ayatList[index].text,
+      //             style: TextStyle(
+      //                 fontFamily: 'MeQuran2',
+      //                 fontSize: 30,
+      //                 color: checkColor(ayatList[index].text)),
+      //           ),
+      //         ),
+      //       );
+      //     }),
+    );
   }
 }

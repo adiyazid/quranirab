@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 
 // import 'package:flutter_js/flutter_js.dart';
 import 'package:flutter/material.dart';
-import 'package:quranirab/views/nav.draw.dart';
 import 'package:quranirab/widget/text.widget.dart';
 
 import '../views/surah_model.dart';
@@ -119,7 +118,6 @@ class _SurahState extends State<Surah> {
     final List<double> stop7 = [0.0, fillStop7, fillStop7, 1.0];
 
     return Scaffold(
-        drawer: navDrawer(),
         appBar: AppBar(
           backgroundColor: Colors.orange[700],
           elevation: 0,

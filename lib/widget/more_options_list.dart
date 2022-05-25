@@ -8,6 +8,7 @@ import '../models/word.detail.dart';
 import '../provider/user.provider.dart';
 import '../theme/theme_provider.dart';
 import '../views/data_correction/edit.data.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MoreOptionsList extends StatefulWidget {
   final String surah;
@@ -45,8 +46,8 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
       List<WordDetail> parent = aya.getParent();
       return aya.loadingCategory
           ? SingleChildScrollView(
-        controller: ScrollController(),
-            child: Column(
+              controller: ScrollController(),
+              child: Column(
                 children: [
                   Align(
                     alignment: Alignment.topLeft,
@@ -84,12 +85,14 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                   ),
                   if (aya.wordDetail.isNotEmpty)
                     FutureBuilder<WordDetail>(
-                      future: aya.getFirst(aya.wordDetail.first.parent ?? ''),
+                      future: aya.getFirst(aya.wordDetail.first.parent ?? '',
+                          aya.getLangID(context)),
                       builder: (
                         BuildContext context,
                         AsyncSnapshot<WordDetail> snapshot,
                       ) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return CircularProgressIndicator(
                             color: Colors.orangeAccent,
                           );
@@ -107,11 +110,10 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                                   : Colors.amber,
                               child: ListTile(
                                   leading: Icon(Icons.list),
-                                  title: Text(
-                                    snapshot.data!.name ?? '',
-                                  ),
-                                  trailing:
-                                      Text("${aya.wordDetail.length} items")),
+                                  title: Text(snapshot.data!.name ?? '',
+                                      style: TextStyle(fontFamily: 'MeQuran2')),
+                                  trailing: Text(
+                                      "${aya.wordDetail.length} ${AppLocalizations.of(context)!.items}")),
                             );
                           } else {
                             return const Text('Empty data');
@@ -130,7 +132,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                   ),
                 ],
               ),
-          )
+            )
           : aya.nodata
               ? Column(
                   children: [
@@ -155,7 +157,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                   ],
                 )
               : SingleChildScrollView(
-                child: Column(
+                  child: Column(
                     children: [
                       SkeletonLoader(
                         builder: Column(
@@ -183,8 +185,8 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                       ),
                       SkeletonLoader(
                         builder: Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 10),
                           child: Container(
                             width: double.infinity,
                             height: 40,
@@ -201,7 +203,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                       ),
                     ],
                   ),
-              );
+                );
     });
   }
 
@@ -249,8 +251,10 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                       : Color(0xffE0BD61),
               child: ListTile(
                 leading: Icon(Icons.navigate_next),
-                title: Text(document.name!),
-                trailing: Text("${list.length} items"),
+                title: Text(document.name!,
+                    style: TextStyle(fontFamily: 'MeQuran2')),
+                trailing: Text(
+                    "${list.length} ${AppLocalizations.of(context)!.items}"),
               ),
             )
           : list.isNotEmpty
@@ -260,12 +264,18 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                       ? Color(0xff808BA1)
                       : Color(0xffFCD77A),
                   child: ListTile(
-                      leading: Icon(Icons.arrow_right),
-                      title: Text(document.name!),
-                      trailing: Text("${list.length} items")),
+                    leading: Icon(Icons.arrow_right),
+                    title: Text(
+                      document.name!,
+                      style: TextStyle(fontFamily: 'MeQuran2'),
+                    ),
+                    trailing: Text(
+                        "${list.length} ${AppLocalizations.of(context)!.items}"),
+                  ),
                 )
               : ListTile(
                   leading: Icon(Icons.remove),
-                  title: Text(document.name!),
+                  title: Text(document.name!,
+                      style: TextStyle(fontFamily: 'MeQuran2')),
                 );
 }

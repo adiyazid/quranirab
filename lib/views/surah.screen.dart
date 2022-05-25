@@ -19,6 +19,7 @@ import '../widget/menu.dart';
 import '../widget/search.popup.dart';
 import '../widget/setting.popup.dart';
 import 'Translation/translation.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SurahScreen extends StatefulWidget {
   final List allpages;
@@ -257,7 +258,7 @@ class _SurahScreenState extends State<SurahScreen>
                           Provider.of<AyaProvider>(context, listen: false)
                               .page))),
               label: Text(
-                'Take a Quiz',
+                AppLocalizations.of(context)!.takeAQuiz,
                 style: TextStyle(
                     color:
                         themeProvider.isDarkMode ? Colors.white : Colors.black),
@@ -373,7 +374,7 @@ class _SurahScreenState extends State<SurahScreen>
                                       }
                                     : null,
                                 child: Text(
-                                  'Previous page',
+                                  AppLocalizations.of(context)!.prevPage,
                                   style: TextStyle(
                                     fontSize: 18,
                                     color: Colors.black,
@@ -421,8 +422,8 @@ class _SurahScreenState extends State<SurahScreen>
                               primary: (themeProvider.isDarkMode)
                                   ? const Color(0xff4C6A7A)
                                   : const Color(0xffffeeb0)),
-                          child: const Text(
-                            'Beginning Surah',
+                          child: Text(
+                            AppLocalizations.of(context)!.beginningSurah,
                             style: TextStyle(color: Colors.black, fontSize: 18),
                           ));
                     }),
@@ -517,7 +518,7 @@ class _SurahScreenState extends State<SurahScreen>
                                       }
                                     : null,
                                 child: Text(
-                                  'Next page',
+                                  AppLocalizations.of(context)!.nextPage,
                                   style: TextStyle(
                                     fontSize: 18,
                                     color: Colors.black,
@@ -648,7 +649,7 @@ class topSurah extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Tab(
                       child: Text(
-                        'Translations',
+                        AppLocalizations.of(context)!.translations,
                         style: TextStyle(
                             fontSize: 20,
                             color: themeProvider.isDarkMode
@@ -661,7 +662,7 @@ class topSurah extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Tab(
                       child: Text(
-                        'Reading',
+                        AppLocalizations.of(context)!.reading,
                         style: TextStyle(
                             fontSize: 20,
                             color: themeProvider.isDarkMode

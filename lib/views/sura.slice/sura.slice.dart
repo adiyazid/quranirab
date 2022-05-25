@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
-import 'package:quranirab/provider/language.provider.dart';
 
 import '../../widget/more_options_list.dart';
 import '../../theme/theme_provider.dart';
@@ -81,11 +80,12 @@ class _SuraSliceState extends State<SuraSlice> {
               ),
               body: aya.breakIndex!.isNotEmpty
                   ? SingleChildScrollView(
-                    child: Column(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           for (int index = aya.checkSurahStart(
-                                  Provider.of<AyaProvider>(context, listen: false)
+                                  Provider.of<AyaProvider>(context,
+                                          listen: false)
                                       .page);
                               index <
                                   aya.checkSurahEnd(Provider.of<AyaProvider>(
@@ -108,8 +108,8 @@ class _SuraSliceState extends State<SuraSlice> {
                                     )
                                         ? Row(
                                             children: [
-                                              Consumer<AyaProvider>(
-                                                  builder: (context, aya, child) {
+                                              Consumer<AyaProvider>(builder:
+                                                  (context, aya, child) {
                                                 return aya.checkSymbol(
                                                         aya.slice![i].start)
                                                     ? Row(
@@ -127,7 +127,8 @@ class _SuraSliceState extends State<SuraSlice> {
                                                               )),
                                                           InkWell(
                                                             onTap: () {
-                                                              Scaffold.of(context)
+                                                              Scaffold.of(
+                                                                      context)
                                                                   .openDrawer();
                                                               Provider.of<AyaProvider>(
                                                                       context,
@@ -138,11 +139,8 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                           .slice![
                                                                               i]
                                                                           .wordId,
-                                                                      Provider.of<LangProvider>(
-                                                                              context,
-                                                                              listen:
-                                                                                  false)
-                                                                          .langId);
+                                                                      aya.getLangID(
+                                                                          context));
 
                                                               aya.setWords(aya
                                                                   .list!
@@ -180,11 +178,12 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                     TextDirection
                                                                         .rtl,
                                                                 softWrap: true,
-                                                                style: TextStyle(
+                                                                style:
+                                                                    TextStyle(
                                                                   fontFamily:
                                                                       'MeQuran2',
-                                                                  fontSize:
-                                                                      font.value,
+                                                                  fontSize: font
+                                                                      .value,
                                                                   color: aya
                                                                           .getBoolean(
                                                                               i)
@@ -210,11 +209,8 @@ class _SuraSliceState extends State<SuraSlice> {
                                                               .getCategoryName(
                                                                   aya.slice![i]
                                                                       .wordId,
-                                                                  Provider.of<LangProvider>(
-                                                                          context,
-                                                                          listen:
-                                                                              false)
-                                                                      .langId);
+                                                                  aya.getLangID(
+                                                                      context));
                                                           aya.setWords(aya.list!
                                                               .join()
                                                               .split('')
@@ -227,7 +223,8 @@ class _SuraSliceState extends State<SuraSlice> {
                                                               .join());
                                                           if (mounted) {
                                                             setState(() {
-                                                              aya.updateValue(i);
+                                                              aya.updateValue(
+                                                                  i);
                                                               aya.set();
                                                             });
                                                           }
@@ -237,14 +234,16 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                 .join()
                                                                 .split('')
                                                                 .getRange(
-                                                                    aya.slice![i]
-                                                                            .start -
+                                                                    aya.slice![i].start -
                                                                         1,
-                                                                    aya.slice![i]
+                                                                    aya
+                                                                        .slice![
+                                                                            i]
                                                                         .end)
                                                                 .join(),
                                                             textDirection:
-                                                                TextDirection.rtl,
+                                                                TextDirection
+                                                                    .rtl,
                                                             softWrap: true,
                                                             style: TextStyle(
                                                               fontFamily:
@@ -254,16 +253,17 @@ class _SuraSliceState extends State<SuraSlice> {
                                                               color: aya
                                                                       .getBoolean(
                                                                           i)
-                                                                  ? aya.getColor(
-                                                                      aya
-                                                                          .slice![
-                                                                              i]
-                                                                          .wordId)
+                                                                  ? aya.getColor(aya
+                                                                      .slice![i]
+                                                                      .wordId)
                                                                   : null,
                                                             )),
                                                       );
                                               }),
-                                              aya.list!.join().split('').length -
+                                              aya.list!
+                                                              .join()
+                                                              .split('')
+                                                              .length -
                                                           aya.slice![i].end <
                                                       3
                                                   ? Text(
@@ -281,8 +281,8 @@ class _SuraSliceState extends State<SuraSlice> {
                                           )
                                         : Row(
                                             children: [
-                                              Consumer<AyaProvider>(
-                                                  builder: (context, aya, child) {
+                                              Consumer<AyaProvider>(builder:
+                                                  (context, aya, child) {
                                                 return aya.checkSymbol(
                                                         aya.slice![i].start)
                                                     ? Row(
@@ -300,7 +300,8 @@ class _SuraSliceState extends State<SuraSlice> {
                                                               )),
                                                           InkWell(
                                                             onTap: () {
-                                                              Scaffold.of(context)
+                                                              Scaffold.of(
+                                                                      context)
                                                                   .openDrawer();
                                                               Provider.of<AyaProvider>(
                                                                       context,
@@ -311,11 +312,8 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                           .slice![
                                                                               i]
                                                                           .wordId,
-                                                                      Provider.of<LangProvider>(
-                                                                              context,
-                                                                              listen:
-                                                                                  false)
-                                                                          .langId);
+                                                                      aya.getLangID(
+                                                                          context));
                                                               aya.setWords(aya
                                                                   .list!
                                                                   .join()
@@ -352,11 +350,12 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                     TextDirection
                                                                         .rtl,
                                                                 softWrap: true,
-                                                                style: TextStyle(
+                                                                style:
+                                                                    TextStyle(
                                                                   fontFamily:
                                                                       'MeQuran2',
-                                                                  fontSize:
-                                                                      font.value,
+                                                                  fontSize: font
+                                                                      .value,
                                                                   color: aya
                                                                           .getBoolean(
                                                                               i)
@@ -379,11 +378,8 @@ class _SuraSliceState extends State<SuraSlice> {
                                                               .getCategoryName(
                                                                   aya.slice![i]
                                                                       .wordId,
-                                                                  Provider.of<LangProvider>(
-                                                                          context,
-                                                                          listen:
-                                                                              false)
-                                                                      .langId);
+                                                                  aya.getLangID(
+                                                                      context));
                                                           aya.setWords(aya.list!
                                                               .join()
                                                               .split('')
@@ -396,7 +392,8 @@ class _SuraSliceState extends State<SuraSlice> {
                                                               .join());
                                                           if (mounted) {
                                                             setState(() {
-                                                              aya.updateValue(i);
+                                                              aya.updateValue(
+                                                                  i);
                                                               aya.set();
                                                             });
                                                           }
@@ -406,10 +403,11 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                 .join()
                                                                 .split('')
                                                                 .getRange(
-                                                                    aya.slice![i]
-                                                                            .start -
+                                                                    aya.slice![i].start -
                                                                         1,
-                                                                    aya.slice![i]
+                                                                    aya
+                                                                        .slice![
+                                                                            i]
                                                                         .end)
                                                                 .join()
                                                                 .replaceAll(
@@ -423,11 +421,9 @@ class _SuraSliceState extends State<SuraSlice> {
                                                               color: aya
                                                                       .getBoolean(
                                                                           i)
-                                                                  ? aya.getColor(
-                                                                      aya
-                                                                          .slice![
-                                                                              i]
-                                                                          .wordId)
+                                                                  ? aya.getColor(aya
+                                                                      .slice![i]
+                                                                      .wordId)
                                                                   : null,
                                                             )),
                                                       );
@@ -449,7 +445,7 @@ class _SuraSliceState extends State<SuraSlice> {
                               height: MediaQuery.of(context).size.height * .2)
                         ],
                       ),
-                  )
+                    )
                   : Container())
           : Align(
               alignment: Alignment.center,

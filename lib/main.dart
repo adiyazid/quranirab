@@ -57,6 +57,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     final appUser = AppUser();
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<AppUser>.value(value: appUser),
