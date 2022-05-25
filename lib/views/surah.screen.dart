@@ -12,13 +12,13 @@ import 'package:quranirab/widget/TranslationPopup.dart';
 
 import 'package:quranirab/widget/responsive.dart' as w;
 
-import '../Translation/translation.dart';
 import '../provider/ayah.number.provider.dart';
 import '../theme/theme_provider.dart';
 import '../widget/LanguagePopup.dart';
 import '../widget/menu.dart';
 import '../widget/search.popup.dart';
 import '../widget/setting.popup.dart';
+import 'Translation/translation.dart';
 
 class SurahScreen extends StatefulWidget {
   final List allpages;

@@ -47,5 +47,7 @@
   "imageSuccess": "Profile Images successfully updated!",
   "permissionError": "Permission not granted",
   "noFile": "No file selected",
-  "noChanges": "No Changes"
+  "noChanges": "No Changes",
+  "translations": "Translations",
+  "reading": "Reading"
 }

@@ -47,5 +47,7 @@
   "imageSuccess": "Gambar profil berjaya diubah!",
   "permissionError": "Kebenaran tidak disahkan",
   "noFile": "Tiada fail yang dipilih",
-  "noChanges": "Tiada Perubahan"
+  "noChanges": "Tiada Perubahan",
+  "translations": "Terjemahan",
+  "reading": "Membaca"
 }
