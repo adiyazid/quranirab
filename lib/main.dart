@@ -13,6 +13,8 @@ import 'package:quranirab/views/auth/landing.page.dart';
 import 'framework/horizontal.scroll.web.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'framework/ms.language.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
@@ -80,9 +82,10 @@ class _MyAppState extends State<MyApp> {
                 GlobalMaterialLocalizations.delegate,
                 GlobalWidgetsLocalizations.delegate,
                 GlobalCupertinoLocalizations.delegate,
+                MsMaterialLocalizations.delegate,
               ],
               supportedLocales: const [
-                Locale('my', ''),
+                Locale('ms', 'MY'),
                 Locale('en', ''),
                 Locale('ar', ''),
               ],

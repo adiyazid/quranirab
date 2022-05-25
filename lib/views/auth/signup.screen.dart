@@ -693,7 +693,7 @@ class _SignupWidgetState extends State<SignupWidget>
               titleStyle: TextStyle(fontSize: 16, color: Colors.white),
               onPress: () {
                 MyApp.of(context)!
-                    .setLocale(Locale.fromSubtags(languageCode: 'my'));
+                    .setLocale(Locale.fromSubtags(languageCode: 'mas'));
                 _animationController.reverse();
               },
             ),

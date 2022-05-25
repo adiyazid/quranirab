@@ -17,6 +17,7 @@ class Menu extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Drawer(
+      semanticLabel: 'Menu',
       child: Material(
         color: Theme.of(context).primaryColor,
         child: ListView(
@@ -74,7 +75,7 @@ class Menu extends StatelessWidget {
                 darkMode: themeProvider.isDarkMode),
             const SizedBox(height: 16),
             buildMenuItem(
-                text: 'User Profile',
+                text: AppLocalizations.of(context)!.userProfile,
                 icon: Icons.person_outline,
                 onTap: () {
                   Navigator.push(

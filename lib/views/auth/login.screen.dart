@@ -481,7 +481,7 @@ class _SigninWidgetState extends State<SigninWidget>
               titleStyle: TextStyle(fontSize: 16, color: Colors.white),
               onPress: () {
                 MyApp.of(context)!
-                    .setLocale(Locale.fromSubtags(languageCode: 'my'));
+                    .setLocale(Locale.fromSubtags(languageCode: 'mas'));
                 _animationController.reverse();
               },
             ),

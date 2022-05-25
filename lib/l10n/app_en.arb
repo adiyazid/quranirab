@@ -38,5 +38,14 @@
   "feedback": "Feedback",
   "help": "Help",
   "leaderboard": "Leaderboard",
-  "logout": "Logout"
+  "logout": "Logout",
+  "currentPassword": "Current Password",
+  "newPassword": "New Password",
+  "saveChanges": "Save Changes",
+  "passwordSuccess": "Password successfully updated!",
+  "profileSuccess": "Profile successfully updated!",
+  "imageSuccess": "Profile Images successfully updated!",
+  "permissionError": "Permission not granted",
+  "noFile": "No file selected",
+  "noChanges": "No Changes"
 }

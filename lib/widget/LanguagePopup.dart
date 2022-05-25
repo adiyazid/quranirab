@@ -75,7 +75,7 @@ class _LangPopupState extends State<LangPopup> {
                               align: TextAlign.center,
                               onTap: () {
                                 MyApp.of(context)!.setLocale(
-                                    Locale.fromSubtags(languageCode: 'my'));
+                                    Locale.fromSubtags(languageCode: 'ms'));
                               }),
                           buildMenuItem(
                               text: 'Arabic',

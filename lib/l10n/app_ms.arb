@@ -38,5 +38,14 @@
   "feedback": "Maklum Balas",
   "help": "Bantuan",
   "leaderboard": "Carta Kedudukan",
-  "logout": "Log Keluar"
+  "logout": "Log Keluar",
+  "currentPassword": "Kata Laluan Semasa",
+  "newPassword": "Kata Laluan Baharu",
+  "saveChanges": "Simpan Perubahan",
+  "passwordSuccess": "Kata laluan berjaya diubah!",
+  "profileSuccess": "Profil berjaya diubah!",
+  "imageSuccess": "Gambar profil berjaya diubah!",
+  "permissionError": "Kebenaran tidak disahkan",
+  "noFile": "Tiada fail yang dipilih",
+  "noChanges": "Tiada Perubahan"
 }

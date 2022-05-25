@@ -12,9 +12,11 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/widget/menu.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../theme/theme_provider.dart';
 import '../../widget/appbar.widget.dart';
+import 'container.update.dart';
+import 'name.update.dart';
 
 class UserprofileWidget extends StatefulWidget {
   const UserprofileWidget({Key? key}) : super(key: key);
@@ -50,13 +52,14 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
 
   void showToast(String message) {
     Fluttertoast.showToast(
+      webPosition: "center",
       msg: message,
-      toastLength: Toast.LENGTH_SHORT,
+      toastLength: Toast.LENGTH_LONG,
       gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
+      timeInSecForIosWeb: 2,
       backgroundColor: Colors.red,
       textColor: Colors.white,
-      fontSize: 16.0,
+      fontSize: 24.0,
     );
   }
 
@@ -101,7 +104,7 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
             height: MediaQuery.of(context).size.height * 0.05,
           ),
           Text(
-            'User Profile',
+            AppLocalizations.of(context)!.userProfile,
             textAlign: TextAlign.left,
             style: TextStyle(
                 fontFamily: 'Open Sans',
@@ -241,14 +244,14 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               NameUpdate(
-                text: first_name ?? 'First name',
+                text: first_name ?? AppLocalizations.of(context)!.firstName,
                 controller: fnamecontroller,
               ),
               SizedBox(
                 width: 18,
               ),
               NameUpdate(
-                text: last_name ?? 'Last name',
+                text: last_name ?? AppLocalizations.of(context)!.lastName,
                 controller: lnamecontroller,
               ),
             ],
@@ -257,55 +260,52 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
             height: 16,
           ),
           ContainerUpdate(
-            text: 'Current password',
-            controller: currentpass, obsecure: _obsecure,
+            text: AppLocalizations.of(context)!.currentPassword,
+            controller: currentpass,
+            obsecure: _obsecure,
           ),
           SizedBox(
             height: 16,
           ),
           ContainerUpdate(
-            text: 'New password',
-            controller: newpassword, obsecure: _obsecure2,
+            text: AppLocalizations.of(context)!.newPassword,
+            controller: newpassword,
+            obsecure: _obsecure2,
           ),
           SizedBox(
             height: 16,
           ),
           ContainerUpdate(
-            text: 'Confirm password',
-            controller: confirmpass, obsecure: _obsecure3,
+            text: AppLocalizations.of(context)!.confirmPass,
+            controller: confirmpass,
+            obsecure: _obsecure3,
           ),
           SizedBox(
             height: 16,
           ),
-          Container(
-              width: MediaQuery.of(context).size.width < 600
-                  ? MediaQuery.of(context).size.width * 0.85
-                  : 522,
-              height: 54,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
+          GestureDetector(
+            onTap: () {
+              updateProfile(context);
+            },
+            child: Container(
+                width: MediaQuery.of(context).size.width < 600
+                    ? MediaQuery.of(context).size.width * 0.85
+                    : 522,
+                height: 54,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20),
+                  ),
+                  color: themeProvider.isDarkMode
+                      ? Color(0xff67748E)
+                      : Color.fromRGBO(255, 181, 94, 1),
                 ),
-                color: themeProvider.isDarkMode
-                    ? Color(0xff67748E)
-                    : Color.fromRGBO(255, 181, 94, 1),
-              ),
-              child: Center(
-                child: GestureDetector(
-                  onTap: () {
-                    if (fnamecontroller.value.text.isNotEmpty) {
-                      print(fnamecontroller.value.text);
-                    }
-                    if (lnamecontroller.value.text.isNotEmpty) {
-                      print(lnamecontroller.value.text);
-                    }
-                    updateProfile(context);
-                  },
+                child: Center(
                   child: Text(
-                    'Save Changes',
+                    AppLocalizations.of(context)!.saveChanges,
                     textAlign: TextAlign.left,
                     style: TextStyle(
                         fontFamily: 'Poppins',
@@ -315,8 +315,8 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
                         fontWeight: FontWeight.normal,
                         height: 1),
                   ),
-                ),
-              )),
+                )),
+          ),
           SizedBox(
             height: 16,
           ),
@@ -339,7 +339,7 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
           _load = true;
         });
       } else {
-        showToast("No file selected");
+        showToast(AppLocalizations.of(context)!.noFile);
       }
     } else if (!kIsWeb && await permissionStatus.isGranted) {
       xfile = await ImagePicker().pickImage(
@@ -353,10 +353,10 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
           _load = true;
         });
       } else {
-        showToast("No file selected");
+        showToast(AppLocalizations.of(context)!.noFile);
       }
     } else {
-      showToast("Permission not granted");
+      showToast(AppLocalizations.of(context)!.permissionError);
     }
   }
 
@@ -367,41 +367,39 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
       User? currentUser = FirebaseAuth.instance.currentUser;
       url = await uploadImage();
       currentUser?.updatePhotoURL(url);
-      showToast("Profile Images successfully updated!");
+      showToast(AppLocalizations.of(context)!.imageSuccess);
       Navigator.pop(context);
-      // if (fnamecontroller.text.isNotEmpty && lnamecontroller.text.isNotEmpty) {
-      //   User? currentUser = FirebaseAuth.instance.currentUser;
-      //   url = await uploadImage();
-      //   currentUser?.updatePhotoURL(url);
-      //   //map['profileImage'] = url;
-      //   //map['first_name'] = _textEditingController.text;
-      // } else {
-      //   showToast("Please fill in the information!");
-      // }
-    } else {
-      /*showToast("Please choose the image!");
-      if (fnamecontroller.text.isEmpty && lnamecontroller.text.isEmpty) {
-        showToast("Please fill in the information!");
-      }*/
     }
     if (fnamecontroller.text.isNotEmpty && lnamecontroller.text.isNotEmpty) {
       Provider.of<AppUser>(context, listen: false).updatedata(
           fnamecontroller.text,
           lnamecontroller.text,
           AppUser.instance.user!.email!);
-      showToast("Profile successfully updated!");
+      showToast(AppLocalizations.of(context)!.profileSuccess);
       Navigator.pop(context);
     }
+
     if (currentpass.text.isNotEmpty &&
         newpassword.text.isNotEmpty &&
         confirmpass.text.isNotEmpty) {
-      if (newpassword.text != confirmpass.text) {
-        showToast("Password are not match");
+      if (newpassword.text.length < 6 && confirmpass.text.length < 6) {
+        showToast(AppLocalizations.of(context)!.passwordLengthError);
+      } else if (newpassword.text != confirmpass.text) {
+        showToast(AppLocalizations.of(context)!.passwordError);
+      } else {
+        Provider.of<AppUser>(context, listen: false)
+            .updatePassword(newpassword.text);
+        showToast(AppLocalizations.of(context)!.passwordSuccess);
+        Navigator.pop(context);
       }
-      Provider.of<AppUser>(context, listen: false)
-          .updatePassword(newpassword.text);
-      showToast("Password successfully updated!");
-      Navigator.pop(context);
+    }
+    if (xfile == null &&
+        currentpass.text.isEmpty &&
+        newpassword.text.isEmpty &&
+        confirmpass.text.isEmpty &&
+        fnamecontroller.text.isEmpty &&
+        lnamecontroller.text.isEmpty) {
+      showToast(AppLocalizations.of(context)!.noChanges);
     }
   }
 
@@ -432,168 +430,5 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
       first_name = name.split(" ")[0];
       last_name = name.split(" ")[1];
     });
-  }
-}
-
-class NameUpdate extends StatefulWidget {
-  final String text;
-  final TextEditingController controller;
-
-  const NameUpdate({
-    required this.text,
-    required this.controller,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  State<NameUpdate> createState() => _NameUpdateState();
-}
-
-class _NameUpdateState extends State<NameUpdate> {
-  get theColor => Colors.transparent;
-
-  @override
-  Widget build(BuildContext context) {
-    var theme = Provider.of<ThemeProvider>(context);
-    return Container(
-        width: MediaQuery.of(context).size.width < 600
-            ? MediaQuery.of(context).size.width * 0.4
-            : 250,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-            bottomLeft: Radius.circular(20),
-            bottomRight: Radius.circular(20),
-          ),
-          color: theme.isDarkMode
-              ? Color(0xff808BA1)
-              : Color.fromRGBO(255, 255, 255, 1),
-          border: Border.all(
-            color: theme.isDarkMode
-                ? Color(0xff67748E)
-                : Color.fromRGBO(255, 181, 94, 1),
-            width: 1,
-          ),
-        ),
-        child: Center(
-            child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextFormField(
-            controller: widget.controller,
-            cursorColor: theme.isDarkMode ? Colors.white : Colors.black,
-            decoration: InputDecoration(
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: theColor),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: theColor),
-                ),
-                border: UnderlineInputBorder(
-                  borderSide: BorderSide(color: theColor),
-                ),
-                hintText: widget.text,
-                hintStyle: TextStyle(
-                    color: theme.isDarkMode
-                        ? Colors.white
-                        : const Color.fromRGBO(151, 151, 151, 1),
-                    fontFamily: 'Poppins',
-                    fontSize: 20,
-                    letterSpacing:
-                        0 /*percentages not used in flutter. defaulting to zero*/,
-                    fontWeight: FontWeight.normal,
-                    height: 1)),
-          ),
-        )));
-  }
-}
-
-class ContainerUpdate extends StatefulWidget {
-  final String text;
-  final TextEditingController controller;
-  bool obsecure;
-
-  ContainerUpdate({
-    required this.text,
-    required this.controller,
-    required this.obsecure,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  State<ContainerUpdate> createState() => _ContainerUpdateState();
-}
-
-class _ContainerUpdateState extends State<ContainerUpdate> {
-  get theColor => Colors.transparent;
-
-  @override
-  Widget build(BuildContext context) {
-    var theme = Provider.of<ThemeProvider>(context);
-    return Container(
-        width: MediaQuery.of(context).size.width < 600
-            ? MediaQuery.of(context).size.width * 0.85
-            : 522,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-            bottomLeft: Radius.circular(20),
-            bottomRight: Radius.circular(20),
-          ),
-          color: theme.isDarkMode
-              ? Color(0xff808BA1)
-              : Color.fromRGBO(255, 255, 255, 1),
-          border: Border.all(
-            color: theme.isDarkMode
-                ? Color(0xff67748E)
-                : Color.fromRGBO(255, 181, 94, 1),
-            width: 1,
-          ),
-        ),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              obscureText: widget.obsecure,
-              obscuringCharacter: '*',
-              controller: widget.controller,
-              cursorColor: theme.isDarkMode ? Colors.white : Colors.black,
-              decoration: InputDecoration(
-                  suffixIcon: IconButton(
-                    color: theme.isDarkMode ? Colors.white : Colors.black,
-                    onPressed: () {
-                      setState(() {});
-                      widget.obsecure = !widget.obsecure;
-                    },
-                    icon: Icon(
-                      !widget.obsecure
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                    ),
-                  ),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: theColor),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: theColor),
-                  ),
-                  border: UnderlineInputBorder(
-                    borderSide: BorderSide(color: theColor),
-                  ),
-                  hintText: widget.text,
-                  hintStyle: TextStyle(
-                      color: theme.isDarkMode
-                          ? Colors.white
-                          : const Color.fromRGBO(151, 151, 151, 1),
-                      fontFamily: 'Poppins',
-                      fontSize: 20,
-                      letterSpacing:
-                          0 /*percentages not used in flutter. defaulting to zero*/,
-                      fontWeight: FontWeight.normal,
-                      height: 1)),
-            ),
-          ),
-        ));
   }
 }
