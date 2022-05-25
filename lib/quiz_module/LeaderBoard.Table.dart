@@ -18,13 +18,10 @@ class LeaderBoardTable extends StatefulWidget {
 class _LeaderBoardTableState extends State<LeaderBoardTable> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     init();
   }
 
-  //
-  // final usernameRef = FirebaseFirestore.instance.collection('quranIrabUsers');
   var dataTable = [];
   var oldDataTable = [];
   bool _sortAscending = false;
@@ -92,24 +89,25 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
       body: DefaultTabController(
           length: 2,
           child: Column(
-            children: [ Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                      width: 2.0,
-                      color: themeProvider.isDarkMode
-                          ? Colors.white
-                          : const Color(0xffE86F00)),
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                        width: 2.0,
+                        color: themeProvider.isDarkMode
+                            ? Colors.white
+                            : const Color(0xffE86F00)),
+                  ),
+                ),
+                height: 57,
+                child: CustomScrollView(
+                  slivers: const [Appbar()],
                 ),
               ),
-              height: 57,
-              child: CustomScrollView(
-                slivers: const [Appbar()],
-              ),
-            ),
               Container(
                   width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height-57,
+                  height: MediaQuery.of(context).size.height - 57,
                   decoration: BoxDecoration(
                     color: themeProvider.isDarkMode
                         ? const Color(0xff808BA1)
@@ -130,9 +128,10 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                       ? Colors.white
                                       : const Color.fromRGBO(0, 0, 0, 1),
                                   fontFamily: 'Source Serif Pro',
-                                  fontSize: MediaQuery.of(context).size.width > 600
-                                      ? 64
-                                      : 40,
+                                  fontSize:
+                                      MediaQuery.of(context).size.width > 600
+                                          ? 64
+                                          : 40,
                                   letterSpacing:
                                       0 /*percentages not used in flutter. defaulting to zero*/,
                                   fontWeight: FontWeight.normal,
@@ -140,7 +139,8 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 20.0),
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width > 600
                                   ? MediaQuery.of(context).size.width * 0.35
@@ -164,13 +164,15 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                         style: TextStyle(
                                             color: themeProvider.isDarkMode
                                                 ? Colors.white
-                                                : const Color.fromRGBO(0, 0, 0, 1),
+                                                : const Color.fromRGBO(
+                                                    0, 0, 0, 1),
                                             fontFamily: 'Source Serif Pro',
-                                            fontSize:
-                                                MediaQuery.of(context).size.width >
-                                                        600
-                                                    ? 36
-                                                    : 24,
+                                            fontSize: MediaQuery.of(context)
+                                                        .size
+                                                        .width >
+                                                    600
+                                                ? 36
+                                                : 24,
                                             letterSpacing:
                                                 0 /*percentages not used in flutter. defaulting to zero*/,
                                             fontWeight: FontWeight.normal,
@@ -185,13 +187,15 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                         style: TextStyle(
                                             color: themeProvider.isDarkMode
                                                 ? Colors.white
-                                                : const Color.fromRGBO(0, 0, 0, 1),
+                                                : const Color.fromRGBO(
+                                                    0, 0, 0, 1),
                                             fontFamily: 'Source Serif Pro',
-                                            fontSize:
-                                                MediaQuery.of(context).size.width >
-                                                        600
-                                                    ? 36
-                                                    : 24,
+                                            fontSize: MediaQuery.of(context)
+                                                        .size
+                                                        .width >
+                                                    600
+                                                ? 36
+                                                : 24,
                                             letterSpacing:
                                                 0 /*percentages not used in flutter. defaulting to zero*/,
                                             fontWeight: FontWeight.normal,
@@ -218,7 +222,8 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                         shape: BoxShape.rectangle),
                                     child: Theme(
                                       data: Theme.of(context).copyWith(
-                                          dividerColor: const Color(0xffBABABA)),
+                                          dividerColor:
+                                              const Color(0xffBABABA)),
                                       child: oldDataTable.isEmpty
                                           ? Center(
                                               child: Text(
@@ -238,12 +243,15 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                                   color: Colors.black,
                                                   fontSize: 24),
                                               decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20)),
-                                              headingRowColor: MaterialStateProperty
-                                                  .all(themeProvider.isDarkMode
-                                                      ? const Color(0xff808BA1)
-                                                      : const Color(0xFFFFEDAD)),
+                                                  borderRadius: BorderRadius
+                                                      .circular(20)),
+                                              headingRowColor:
+                                                  MaterialStateProperty.all(
+                                                      themeProvider.isDarkMode
+                                                          ? const Color(
+                                                              0xff808BA1)
+                                                          : const Color(
+                                                              0xFFFFEDAD)),
                                               columnSpacing: 20,
                                               columns: [
                                                 DataColumn(
@@ -261,10 +269,10 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                                   label: Text(
                                                     'Name',
                                                     style: TextStyle(
-                                                        color:
-                                                            themeProvider.isDarkMode
-                                                                ? Colors.white
-                                                                : Colors.black),
+                                                        color: themeProvider
+                                                                .isDarkMode
+                                                            ? Colors.white
+                                                            : Colors.black),
                                                   ),
                                                 ),
                                                 DataColumn(
@@ -291,64 +299,63 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                                     onSort: _onSortId),
                                               ],
                                               rows: oldDataTable
-                                                  .map((e) => DataRow(
-                                                          selected: false,
-                                                          cells: [
-                                                            DataCell(
-                                                              Text(
-                                                                '${oldDataTable.indexOf(e) + 1}',
-                                                                style:
-                                                                    const TextStyle(
+                                                  .map(
+                                                      (e) => DataRow(
+                                                              selected: false,
+                                                              cells: [
+                                                                DataCell(
+                                                                  Text(
+                                                                    '${oldDataTable.indexOf(e) + 1}',
+                                                                    style: const TextStyle(
                                                                         color: Colors
                                                                             .black),
-                                                              ),
-                                                            ),
-                                                            DataCell(
-                                                                Row(
-                                                                  children: [
-                                                                    const CircleAvatar(
-                                                                      backgroundColor:
-                                                                          Color(
-                                                                              0xffBABABA),
-                                                                      backgroundImage:
-                                                                          AssetImage(
-                                                                              'assets/Image3.png'),
-                                                                    ),
-                                                                    const SizedBox(
-                                                                      width: 16,
-                                                                    ),
-                                                                    Text(
-                                                                      "${e['name']}",
-                                                                      style: const TextStyle(
-                                                                          color: Colors
-                                                                              .black),
-                                                                    ),
-                                                                    const Spacer(),
-                                                                  ],
+                                                                  ),
                                                                 ),
-                                                                showEditIcon: false,
-                                                                onTap: () {}),
-                                                            DataCell(
-                                                              Text(
-                                                                "${e['total-quiz']}",
-                                                                textAlign: TextAlign
-                                                                    .center,
-                                                                style:
-                                                                    const TextStyle(
+                                                                DataCell(
+                                                                    Row(
+                                                                      children: [
+                                                                        const CircleAvatar(
+                                                                          backgroundColor:
+                                                                              Color(0xffBABABA),
+                                                                          backgroundImage:
+                                                                              AssetImage('assets/Image3.png'),
+                                                                        ),
+                                                                        const SizedBox(
+                                                                          width:
+                                                                              16,
+                                                                        ),
+                                                                        Text(
+                                                                          "${e['name']}",
+                                                                          style:
+                                                                              const TextStyle(color: Colors.black),
+                                                                        ),
+                                                                        const Spacer(),
+                                                                      ],
+                                                                    ),
+                                                                    showEditIcon:
+                                                                        false,
+                                                                    onTap:
+                                                                        () {}),
+                                                                DataCell(
+                                                                  Text(
+                                                                    "${e['total-quiz']}",
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                    style: const TextStyle(
                                                                         color: Colors
                                                                             .black),
-                                                              ),
-                                                            ),
-                                                            DataCell(
-                                                              Text(
-                                                                "${e['scores']}",
-                                                                style:
-                                                                    const TextStyle(
+                                                                  ),
+                                                                ),
+                                                                DataCell(
+                                                                  Text(
+                                                                    "${e['scores']}",
+                                                                    style: const TextStyle(
                                                                         color: Colors
                                                                             .black),
-                                                              ),
-                                                            ),
-                                                          ]))
+                                                                  ),
+                                                                ),
+                                                              ]))
                                                   .toList()),
                                     )),
                               ),
@@ -362,7 +369,8 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                         shape: BoxShape.rectangle),
                                     child: Theme(
                                       data: Theme.of(context).copyWith(
-                                          dividerColor: const Color(0xffBABABA)),
+                                          dividerColor:
+                                              const Color(0xffBABABA)),
                                       child: dataTable.isEmpty
                                           ? Center(
                                               child: Text(
@@ -382,12 +390,15 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                                   color: Colors.black,
                                                   fontSize: 24),
                                               decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20)),
-                                              headingRowColor: MaterialStateProperty
-                                                  .all(themeProvider.isDarkMode
-                                                      ? const Color(0xff808BA1)
-                                                      : const Color(0xFFFFEDAD)),
+                                                  borderRadius: BorderRadius
+                                                      .circular(20)),
+                                              headingRowColor:
+                                                  MaterialStateProperty.all(
+                                                      themeProvider.isDarkMode
+                                                          ? const Color(
+                                                              0xff808BA1)
+                                                          : const Color(
+                                                              0xFFFFEDAD)),
                                               columnSpacing: 20,
                                               columns: [
                                                 DataColumn(
@@ -405,10 +416,10 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                                   label: Text(
                                                     'Name',
                                                     style: TextStyle(
-                                                        color:
-                                                            themeProvider.isDarkMode
-                                                                ? Colors.white
-                                                                : Colors.black),
+                                                        color: themeProvider
+                                                                .isDarkMode
+                                                            ? Colors.white
+                                                            : Colors.black),
                                                   ),
                                                 ),
                                                 DataColumn(
@@ -435,64 +446,63 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                                     onSort: _onSortId),
                                               ],
                                               rows: dataTable
-                                                  .map((e) => DataRow(
-                                                          selected: false,
-                                                          cells: [
-                                                            DataCell(
-                                                              Text(
-                                                                '${dataTable.indexOf(e) + 1}',
-                                                                style:
-                                                                    const TextStyle(
+                                                  .map(
+                                                      (e) => DataRow(
+                                                              selected: false,
+                                                              cells: [
+                                                                DataCell(
+                                                                  Text(
+                                                                    '${dataTable.indexOf(e) + 1}',
+                                                                    style: const TextStyle(
                                                                         color: Colors
                                                                             .black),
-                                                              ),
-                                                            ),
-                                                            DataCell(
-                                                                Row(
-                                                                  children: [
-                                                                    const CircleAvatar(
-                                                                      backgroundColor:
-                                                                          Color(
-                                                                              0xffBABABA),
-                                                                      backgroundImage:
-                                                                          AssetImage(
-                                                                              'assets/Image3.png'),
-                                                                    ),
-                                                                    const SizedBox(
-                                                                      width: 16,
-                                                                    ),
-                                                                    Text(
-                                                                      "${e['name']}",
-                                                                      style: const TextStyle(
-                                                                          color: Colors
-                                                                              .black),
-                                                                    ),
-                                                                    const Spacer(),
-                                                                  ],
+                                                                  ),
                                                                 ),
-                                                                showEditIcon: false,
-                                                                onTap: () {}),
-                                                            DataCell(
-                                                              Text(
-                                                                "${e['total-quiz']}",
-                                                                textAlign: TextAlign
-                                                                    .center,
-                                                                style:
-                                                                    const TextStyle(
+                                                                DataCell(
+                                                                    Row(
+                                                                      children: [
+                                                                        const CircleAvatar(
+                                                                          backgroundColor:
+                                                                              Color(0xffBABABA),
+                                                                          backgroundImage:
+                                                                              AssetImage('assets/Image3.png'),
+                                                                        ),
+                                                                        const SizedBox(
+                                                                          width:
+                                                                              16,
+                                                                        ),
+                                                                        Text(
+                                                                          "${e['name']}",
+                                                                          style:
+                                                                              const TextStyle(color: Colors.black),
+                                                                        ),
+                                                                        const Spacer(),
+                                                                      ],
+                                                                    ),
+                                                                    showEditIcon:
+                                                                        false,
+                                                                    onTap:
+                                                                        () {}),
+                                                                DataCell(
+                                                                  Text(
+                                                                    "${e['total-quiz']}",
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                    style: const TextStyle(
                                                                         color: Colors
                                                                             .black),
-                                                              ),
-                                                            ),
-                                                            DataCell(
-                                                              Text(
-                                                                "${e['scores']}",
-                                                                style:
-                                                                    const TextStyle(
+                                                                  ),
+                                                                ),
+                                                                DataCell(
+                                                                  Text(
+                                                                    "${e['scores']}",
+                                                                    style: const TextStyle(
                                                                         color: Colors
                                                                             .black),
-                                                              ),
-                                                            ),
-                                                          ]))
+                                                                  ),
+                                                                ),
+                                                              ]))
                                                   .toList()),
                                     )),
                               ),

@@ -4,6 +4,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingPopup extends StatefulWidget {
   const SettingPopup({Key? key}) : super(key: key);
@@ -32,27 +33,6 @@ class _SettingPopupState extends State<SettingPopup>
 
   late TabController _controller;
 
-  List<Widget> list = [
-    const Tab(
-        child: Text(
-          'Auto',textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 12),
-        ),
-        icon: Icon(Icons.brightness_auto)),
-    const Tab(
-        child: Text(
-          'Light Mode',textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 12),
-        ),
-        icon: Icon(Icons.light_mode)),
-    const Tab(
-        child: Text(
-          'Dark Mode',textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 12),
-        ),
-        icon: Icon(Icons.dark_mode)),
-  ];
-
   ThemeMode themeMode = ThemeMode.system;
 
   bool get isDarkMode {
@@ -68,7 +48,7 @@ class _SettingPopupState extends State<SettingPopup>
   void initState() {
     // TODO: implement initState
     super.initState();
-    _controller = TabController(length: list.length, vsync: this);
+    _controller = TabController(length: 3, vsync: this, initialIndex: 0);
     // Create TabController for getting the index of current tab
     _controller.addListener(() {
       setState(() {});
@@ -86,6 +66,29 @@ class _SettingPopupState extends State<SettingPopup>
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> list = [
+      const Tab(
+          child: Text(
+            'Auto',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 12),
+          ),
+          icon: Icon(Icons.brightness_auto)),
+      Tab(
+          child: Text(
+            AppLocalizations.of(context)!.lightMode,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 12),
+          ),
+          icon: Icon(Icons.light_mode)),
+      Tab(
+          child: Text(
+            AppLocalizations.of(context)!.darkMode,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 12),
+          ),
+          icon: Icon(Icons.dark_mode)),
+    ];
     final font = Provider.of<AyaProvider>(context);
     final themeProvider = Provider.of<ThemeProvider>(context);
     final brightness = SchedulerBinding.instance!.window.platformBrightness;
@@ -127,10 +130,11 @@ class _SettingPopupState extends State<SettingPopup>
                             child: Row(
                               children: <Widget>[
                                 Text(
-                                  'Setting',
+                                  AppLocalizations.of(context)!.setting,
                                   style: TextStyle(
-                                      color:
-                                          Theme.of(context).textSelectionColor,
+                                      color: Theme.of(context)
+                                          .textSelectionTheme
+                                          .selectionColor,
                                       fontSize: 16),
                                 ),
                                 Spacer(),
@@ -139,7 +143,9 @@ class _SettingPopupState extends State<SettingPopup>
                                     _custom.hideMenu();
                                   },
                                   icon: const Icon(Icons.close),
-                                  color: Theme.of(context).textSelectionColor,
+                                  color: Theme.of(context)
+                                      .textSelectionTheme
+                                      .selectionColor,
                                   iconSize: 20,
                                   splashRadius: 15,
                                 ),
@@ -172,10 +178,12 @@ class _SettingPopupState extends State<SettingPopup>
                                   children: [
                                     Align(
                                       alignment: Alignment.topLeft,
-                                      child: Text('Theme',
+                                      child: Text(
+                                          AppLocalizations.of(context)!.theme,
                                           style: TextStyle(
                                             color: Theme.of(context)
-                                                .textSelectionColor,
+                                                .textSelectionTheme
+                                                .selectionColor,
                                             fontSize: 16,
                                           )),
                                     ),
@@ -232,10 +240,12 @@ class _SettingPopupState extends State<SettingPopup>
                                 children: [
                                   Align(
                                     alignment: Alignment.topLeft,
-                                    child: Text('Font Size',
+                                    child: Text(
+                                        AppLocalizations.of(context)!.fontSize,
                                         style: TextStyle(
                                             color: Theme.of(context)
-                                                .textSelectionColor,
+                                                .textSelectionTheme
+                                                .selectionColor,
                                             fontSize: 16)),
                                   ),
                                   Center(

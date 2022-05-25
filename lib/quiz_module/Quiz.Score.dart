@@ -9,7 +9,7 @@ import 'package:quranirab/quiz_module/utils/AppColor.java';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/widget/appbar.widget.dart';
 import 'package:quranirab/widget/menu.dart';
-import 'package:quranirab/widget/setting.dart';
+
 import 'package:quranirab/quiz_module/utils/button182.dart';
 import 'package:quranirab/quiz_module/LeaderBoard.Menu.dart';
 
@@ -42,7 +42,6 @@ class _QuizScoreState extends State<QuizScore> {
     return Scaffold(
         backgroundColor: themeProvider.isDarkMode ? Color(0xff808ba1) : Color(0xfffff5ec),
         drawer: const Menu(),
-        endDrawer: const Setting(),
         body: DefaultTabController(
           length: 3,
           child: Stack(

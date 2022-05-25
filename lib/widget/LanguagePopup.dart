@@ -1,9 +1,9 @@
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../main.dart';
 
 class LangPopup extends StatefulWidget {
   const LangPopup({Key? key}) : super(key: key);
@@ -12,19 +12,14 @@ class LangPopup extends StatefulWidget {
   State<LangPopup> createState() => _LangPopupState();
 }
 
-class _LangPopupState extends State<LangPopup>{
+class _LangPopupState extends State<LangPopup> {
   final padding = const EdgeInsets.symmetric(horizontal: 10);
-
-
-  @override
-
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return CustomPopupMenu(
       child: const Icon(Icons.language),
-
       pressType: PressType.singleClick,
       showArrow: false,
       verticalMargin: 1,
@@ -38,7 +33,9 @@ class _LangPopupState extends State<LangPopup>{
                 Container(
                   margin: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: themeProvider.isDarkMode?const Color(0xFF67748E):const Color(0xFFFFC692),
+                      color: themeProvider.isDarkMode
+                          ? const Color(0xFF67748E)
+                          : const Color(0xFFFFC692),
                       borderRadius: const BorderRadius.all(
                         Radius.circular(12.0),
                       ),
@@ -48,38 +45,56 @@ class _LangPopupState extends State<LangPopup>{
                       )),
                   child: SizedBox(
                       width: 365,
-                      height: 120,
-
+                      height: 210,
                       child: ListView(
                         padding: padding,
                         children: <Widget>[
                           buildMenuItem(
-                              text: 'Language',
+                              text: AppLocalizations.of(context)!.language,
                               enable: false,
                               darkMode: themeProvider.isDarkMode,
                               align: TextAlign.left,
-                              onTap: (){}
+                              onTap: () {}),
+                          const Divider(
+                            color: Color(0xFFC4C4C4),
+                            thickness: 1,
                           ),
-                           const Divider(
-                              color: Color(0xFFC4C4C4),thickness: 1,),
                           buildMenuItem(
                               text: 'English',
                               enable: true,
                               darkMode: themeProvider.isDarkMode,
                               align: TextAlign.center,
-                              onTap: (){}
-                          ),
+                              onTap: () {
+                                MyApp.of(context)!.setLocale(
+                                    Locale.fromSubtags(languageCode: 'en'));
+                              }),
+                          buildMenuItem(
+                              text: 'Bahasa Melayu',
+                              enable: true,
+                              darkMode: themeProvider.isDarkMode,
+                              align: TextAlign.center,
+                              onTap: () {
+                                MyApp.of(context)!.setLocale(
+                                    Locale.fromSubtags(languageCode: 'ms'));
+                              }),
+                          buildMenuItem(
+                              text: 'Arabic',
+                              enable: true,
+                              darkMode: themeProvider.isDarkMode,
+                              align: TextAlign.center,
+                              onTap: () {
+                                MyApp.of(context)!.setLocale(
+                                    Locale.fromSubtags(languageCode: 'ar'));
+                              }),
                         ],
-                      )
-                  ),
+                      )),
                 ),
               ],
             ),
           ),
-        );},
-
+        );
+      },
     );
-
   }
 }
 
@@ -90,10 +105,11 @@ Widget buildMenuItem({
   required bool darkMode,
   required var align,
 }) {
-
   return ListTile(
-    title: Text(text, textAlign: align, style: TextStyle(color: (darkMode)? Colors.white : Colors.black)),
+    title: Text(text,
+        textAlign: align,
+        style: TextStyle(color: (darkMode) ? Colors.white : Colors.black)),
     enabled: enable,
-    onTap: () {},
+    onTap: onTap,
   );
 }

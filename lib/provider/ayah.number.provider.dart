@@ -33,15 +33,15 @@ class AyaProvider extends ChangeNotifier {
   List<WordDetail> wordName = [];
 
   CollectionReference wordRelationship =
-  FirebaseFirestore.instance.collection('word_relationships');
+      FirebaseFirestore.instance.collection('word_relationships');
   final CollectionReference wordTable =
-  FirebaseFirestore.instance.collection('words');
+      FirebaseFirestore.instance.collection('words');
   CollectionReference wordCategory =
-  FirebaseFirestore.instance.collection('word_categories');
+      FirebaseFirestore.instance.collection('word_categories');
   CollectionReference wordCategoryTranslation =
-  FirebaseFirestore.instance.collection('category_translations');
+      FirebaseFirestore.instance.collection('category_translations');
   final CollectionReference _sliceData =
-  FirebaseFirestore.instance.collection('medina_mushaf_pages');
+      FirebaseFirestore.instance.collection('medina_mushaf_pages');
 
   List? list = [];
 
@@ -247,7 +247,7 @@ class AyaProvider extends ChangeNotifier {
         var relationshipID = doc["id"];
         var categoryID = doc["word_category_id"];
         getMainCategoryName(doc["word_category_id"], wordId, relationshipID);
-        getSubCategory(categoryID, relationshipID);
+        getSubCategory(categoryID, relationshipID, langId);
       }
     });
     loadingCategory = true;
@@ -306,23 +306,24 @@ class AyaProvider extends ChangeNotifier {
     select.replaceRange(index, index + 1, [true]);
   }
 
-  Future<void> getSubCategory(wordCategoryId, id) async {
+  Future<void> getSubCategory(wordCategoryId, id, String langID) async {
     await wordCategory
         .where('id', isEqualTo: wordCategoryId)
         .get()
         .then((QuerySnapshot querySnapshot) async {
       for (var doc in querySnapshot.docs) {
         var parent = doc['ancestry'] ?? '';
+        var name = await getCategoryNameTranslation(wordCategoryId, langID);
         wordDetail.add(WordDetail(
             childType: doc["child_type"] ?? '',
             isparent:
-            parent.split("/").length == 1 || parent == '' ? true : false,
+                parent.split("/").length == 1 || parent == '' ? true : false,
             hasChild:
-            parent.split("/").length > 1 || parent == '' ? true : false,
+                parent.split("/").length > 1 || parent == '' ? true : false,
             parent: doc["ancestry"],
             id: int.parse(id),
             categoryId: int.parse(doc["id"]),
-            name: doc["tname"],
+            name: name,
             type: doc["word_type"] ?? 'None'));
         notifyListeners();
       }
@@ -330,16 +331,21 @@ class AyaProvider extends ChangeNotifier {
     wordDetail.sort((a, b) => a.categoryId!.compareTo(b.categoryId!));
   }
 
-  Future<void> getCategoryNameTranslation(categoryId, langId) async {
+  Future<String> getCategoryNameTranslation(categoryId, langId) async {
+    var name = '';
     await wordCategoryTranslation
         .where('word_category_id', isEqualTo: categoryId)
         .get()
         .then((QuerySnapshot querySnapshot) =>
-        querySnapshot.docs.forEach((element) {
-          if (element['language_id'] == langId) {
-            print('${element['name']} ${element['word_category_id']}');
-          }
-        }));
+            querySnapshot.docs.forEach((element) {
+              if (element['language_id'] == langId) {
+                name = element['name']
+                        .replaceAll("<i>", "")
+                        .replaceAll("</i>", " ") ??
+                    'No Translation';
+              }
+            }));
+    return name;
   }
 
   void clearPrevAya() {
@@ -9769,11 +9775,11 @@ class AyaProvider extends ChangeNotifier {
   }
 
   Future<void> updateCategory(
-      String name,
-      String childType,
-      String type,
-      String categoryID,
-      ) async {
+    String name,
+    String childType,
+    String type,
+    String categoryID,
+  ) async {
     await wordCategory.doc(categoryID).set({
       "tname": name,
       "child_type": childType,
@@ -9841,7 +9847,7 @@ class AyaProvider extends ChangeNotifier {
     return parent;
   }
 
-  Future<WordDetail> getFirst(String id) async {
+  Future<WordDetail> getFirst(String id, String langID) async {
     var obj;
     if (id != '') {
       obj = await wordCategory
@@ -9850,7 +9856,8 @@ class AyaProvider extends ChangeNotifier {
           .then((QuerySnapshot querySnapshot) async {
         var data;
         for (var doc in querySnapshot.docs) {
-          var name = doc["tname"];
+          var name = await getCategoryNameTranslation(id, langID);
+
           String parent = doc["ancestry"] ?? '';
           data = WordDetail(
               childType: doc["child_type"] ?? '',
@@ -9868,17 +9875,19 @@ class AyaProvider extends ChangeNotifier {
     return obj;
   }
 
-  Future<List<WordDetail>> getList(String parentID) async {
+  Future<List<WordDetail>> getList(String parentID, String langID) async {
     labelCategory.clear();
     await wordCategory
         .where('ancestry', isEqualTo: parentID)
         .get()
-        .then((QuerySnapshot querySnapshot) {
+        .then((QuerySnapshot querySnapshot) async {
       for (var doc in querySnapshot.docs) {
+        var name = await getCategoryNameTranslation(doc['id'], langID);
+        print(name);
         labelCategory.add(WordDetail(
             childType: doc["child_type"],
             parent: doc["ancestry"] ?? '',
-            name: doc["tname"] ?? '',
+            name: name,
             type: doc['word_type'] ?? 'None',
             categoryId: int.parse(doc['id'])));
       }
@@ -9940,8 +9949,8 @@ class AyaProvider extends ChangeNotifier {
 
   Future<void> addNewRelationship(
       {required int relationshipID,
-        required int wordID,
-        required int categoryID}) async {
+      required int wordID,
+      required int categoryID}) async {
     await wordRelationship.doc('${relationshipID + 1}').set({
       "active": "f",
       "created_at": DateTime.now().toString(),
@@ -9954,10 +9963,10 @@ class AyaProvider extends ChangeNotifier {
 
   addNewCategory(
       {required int categoryID,
-        required String wordType,
-        required String name,
-        required String childType,
-        required String parent}) async {
+      required String wordType,
+      required String name,
+      required String childType,
+      required String parent}) async {
     await wordCategory.doc('${categoryID + 1}').set({
       "active": "t",
       "ancestry": parent,
@@ -9968,5 +9977,15 @@ class AyaProvider extends ChangeNotifier {
       "updated_at": DateTime.now().toString(),
       "word_type": wordType,
     });
+  }
+
+  getLangID(context) {
+    if (Localizations.localeOf(context).toString() == "en_") {
+      return "2";
+    } else if (Localizations.localeOf(context).toString() == "ms_MY") {
+      return "3";
+    } else if (Localizations.localeOf(context).toString() == "ar_") {
+      return "1";
+    }
   }
 }

@@ -5,7 +5,7 @@ import 'package:quranirab/quiz_module/LeaderBoard.Menu.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/auth/landing.page.dart';
 import 'package:quranirab/views/home.page.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../views/user.profile/user.profile.dart';
 
 class Menu extends StatelessWidget {
@@ -17,6 +17,7 @@ class Menu extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Drawer(
+      semanticLabel: 'Menu',
       child: Material(
         color: Theme.of(context).primaryColor,
         child: ListView(
@@ -43,7 +44,7 @@ class Menu extends StatelessWidget {
                       Navigator.of(context).pop();
                     },
                     icon: const Icon(Icons.close),
-                    color: Theme.of(context).textSelectionColor,
+                    color: Theme.of(context).textSelectionTheme.selectionColor,
                     iconSize: 20,
                     splashRadius: 15,
                   ),
@@ -56,7 +57,7 @@ class Menu extends StatelessWidget {
             ),
             const SizedBox(height: 18),
             buildMenuItem(
-                text: 'Home',
+                text: AppLocalizations.of(context)!.home,
                 icon: Icons.home_outlined,
                 onTap: () {
                   Navigator.pop(context);
@@ -68,13 +69,13 @@ class Menu extends StatelessWidget {
                 darkMode: themeProvider.isDarkMode),
             const SizedBox(height: 16),
             buildMenuItem(
-                text: 'About us',
+                text: AppLocalizations.of(context)!.aboutUs,
                 icon: Icons.info_outline,
                 onTap: () {},
                 darkMode: themeProvider.isDarkMode),
             const SizedBox(height: 16),
             buildMenuItem(
-                text: 'User Profile',
+                text: AppLocalizations.of(context)!.userProfile,
                 icon: Icons.person_outline,
                 onTap: () {
                   Navigator.push(
@@ -85,19 +86,19 @@ class Menu extends StatelessWidget {
                 darkMode: themeProvider.isDarkMode),
             const SizedBox(height: 16),
             buildMenuItem(
-                text: 'Privacy',
+                text: AppLocalizations.of(context)!.privacy,
                 icon: Icons.privacy_tip_outlined,
                 onTap: () {},
                 darkMode: themeProvider.isDarkMode),
             const SizedBox(height: 16),
             buildMenuItem(
-                text: 'Feedback',
+                text: AppLocalizations.of(context)!.feedback,
                 icon: Icons.feedback_outlined,
                 onTap: () {},
                 darkMode: themeProvider.isDarkMode),
             const SizedBox(height: 16),
             buildMenuItem(
-              text: 'Help',
+              text: AppLocalizations.of(context)!.help,
               icon: Icons.help_outline,
               onTap: () {},
               darkMode: themeProvider.isDarkMode,
@@ -105,7 +106,7 @@ class Menu extends StatelessWidget {
             const SizedBox(height: 16),
             buildMenuItem(
               darkMode: themeProvider.isDarkMode,
-              text: 'Leaderboard',
+              text: AppLocalizations.of(context)!.leaderboard,
               icon: Icons.score_outlined,
               onTap: () {
                 Navigator.pop(context);
@@ -118,7 +119,7 @@ class Menu extends StatelessWidget {
             const SizedBox(height: 16),
             buildMenuItem(
               darkMode: themeProvider.isDarkMode,
-              text: 'Logout',
+              text: AppLocalizations.of(context)!.logout,
               icon: Icons.exit_to_app,
               onTap: () async {
                 Navigator.pop(context);

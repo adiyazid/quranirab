@@ -2,10 +2,10 @@ import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../provider/ayah.number.provider.dart';
-import '../provider/bookmark.provider.dart';
-import '../theme/theme_provider.dart';
-import '../views/surah.screen.dart';
+import '../../provider/ayah.number.provider.dart';
+import '../../provider/bookmark.provider.dart';
+import '../../theme/theme_provider.dart';
+import '../surah.screen.dart';
 
 class Translation extends StatefulWidget {
   const Translation({
@@ -47,7 +47,8 @@ class _TranslationState extends State<Translation> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 56.0, top: 16 , left: 16, right: 16),
+      padding:
+          const EdgeInsets.only(bottom: 56.0, top: 16, left: 16, right: 16),
       child: Container(
         height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
@@ -98,8 +99,9 @@ class _TranslationState extends State<Translation> {
                                           '${widget.widget.sura_id}:${widget.start! + index}',
                                           style: TextStyle(
                                               fontSize: fontsize.value,
-                                              color: Theme.of(context)
-                                                  .textSelectionColor),
+                                              color: Theme.of(
+                                                  context)
+                                                  .textSelectionTheme.selectionColor,),
                                         ),
                                       ),
                                     ),
@@ -127,7 +129,8 @@ class _TranslationState extends State<Translation> {
                                                             size: 16,
                                                             color: Theme.of(
                                                                     context)
-                                                                .textSelectionColor,
+                                                                .textSelectionTheme
+                                                                .selectionColor,
                                                           ),
                                                           Expanded(
                                                             child: InkWell(
@@ -180,7 +183,8 @@ class _TranslationState extends State<Translation> {
                                                                       TextStyle(
                                                                     color: Theme.of(
                                                                             context)
-                                                                        .textSelectionColor,
+                                                                        .textSelectionTheme
+                                                                        .selectionColor,
                                                                     fontSize:
                                                                         14,
                                                                   ),
@@ -215,7 +219,8 @@ class _TranslationState extends State<Translation> {
                                               Icons.more_horiz,
                                               size: fontsize.value,
                                               color: Theme.of(context)
-                                                  .textSelectionColor,
+                                                  .textSelectionTheme
+                                                  .selectionColor,
                                             ),
                                           ),
                                         ),

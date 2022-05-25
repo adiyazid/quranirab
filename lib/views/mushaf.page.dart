@@ -6,7 +6,7 @@ import 'package:quranirab/models/font.size.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/widget/language.dart';
 import 'package:quranirab/widget/menu.dart';
-import 'package:quranirab/widget/setting.dart';
+
 
 class MushafPage extends StatefulWidget {
   const MushafPage({Key? key}) : super(key: key);
@@ -103,7 +103,7 @@ class _MushafPageState extends State<MushafPage> {
   }
 
   final TextEditingController _search = TextEditingController();
-  Setting s = const Setting();
+
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +121,6 @@ class _MushafPageState extends State<MushafPage> {
             return SingleChildScrollView(
               child: Scaffold(
                   drawer: const Menu(),
-                  endDrawer: const Setting(),
                   appBar: AppBar(
                     iconTheme: Theme.of(context).iconTheme,
                     title: Row(

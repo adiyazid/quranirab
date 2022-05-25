@@ -8,6 +8,7 @@ import 'package:quranirab/theme/theme_provider.dart';
 
 import '../provider/ayah.number.provider.dart';
 import '../views/surah.screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SearchPopup extends StatefulWidget {
   const SearchPopup({Key? key}) : super(key: key);
@@ -153,7 +154,7 @@ class _SearchPopupState extends State<SearchPopup>
                               ? Colors.white
                               : Colors.black,
                         ),
-                        hintText: 'Search',
+                        hintText: AppLocalizations.of(context)!.search,
                       ),
                       controller: myController,
                       onChanged: _search,
@@ -162,10 +163,11 @@ class _SearchPopupState extends State<SearchPopup>
                   Flexible(
                     child: Visibility(
                       visible: visible,
-                      child: Text('Popular Searches'),
+                      child: Text(AppLocalizations.of(context)!.popularSearch),
                     ),
                   ),
-                  Expanded(flex: 4,
+                  Expanded(
+                    flex: 4,
                     child: ListView.builder(
                       itemCount: visible ? pop.length : _list.length,
                       itemBuilder: (BuildContext context, int index) {

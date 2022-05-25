@@ -5,8 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:quranirab/models/surah.model.dart';
 
 
-import '../views/nav.draw.dart';
-
 class Split extends StatefulWidget {
   const Split({Key? key}) : super(key: key);
 
@@ -52,7 +50,6 @@ class _SplitState extends State<Split> {
           if (snapshot.hasData) {
 
                 return Scaffold(
-                  drawer: navDrawer(),
                   appBar: AppBar(
                     backgroundColor: Colors.orange[700],
                     elevation: 0,
