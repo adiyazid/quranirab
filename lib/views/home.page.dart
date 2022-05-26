@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage>
                 ),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.04,
+                height: MediaQuery.of(context).size.height * 0.03,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32.0),
@@ -314,7 +314,7 @@ class _HomePageState extends State<HomePage>
               ),
               Padding(
                 padding: const EdgeInsets.only(
-                    left: 32.0, right: 32.0, bottom: 32.0),
+                    left: 32.0, right: 32.0, bottom: 28.0),
                 child: Container(
                   height: MediaQuery.of(context).size.height * 0.55,
                   decoration: BoxDecoration(
@@ -341,7 +341,7 @@ class _HomePageState extends State<HomePage>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.06,
+                          height: MediaQuery.of(context).size.height * 0.07,
                           width: 180,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),

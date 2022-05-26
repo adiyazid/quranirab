@@ -323,7 +323,7 @@ class AyaProvider extends ChangeNotifier {
             parent: doc["ancestry"],
             id: int.parse(id),
             categoryId: int.parse(doc["id"]),
-            name: name,
+            name: name != '' ? name : doc["name"],
             type: doc["word_type"] ?? 'None'));
         notifyListeners();
       }
@@ -9775,13 +9775,16 @@ class AyaProvider extends ChangeNotifier {
   }
 
   Future<void> updateCategory(
-    String name,
+    String engName,
+    String malayName,
+    String arabName,
     String childType,
     String type,
     String categoryID,
   ) async {
+    addTranslation(engName, malayName, arabName);
     await wordCategory.doc(categoryID).set({
-      "tname": name,
+      "tname": engName,
       "child_type": childType,
       "word_type": type,
       "updated_at": DateTime.now().toString(),
@@ -9865,7 +9868,7 @@ class AyaProvider extends ChangeNotifier {
               hasChild: true,
               parent: parent,
               categoryId: int.parse(doc["id"].trim()),
-              name: name,
+              name: name != '' ? name : doc["name"],
               type: doc["word_type"] ?? 'None');
         }
         return data;
@@ -9887,7 +9890,7 @@ class AyaProvider extends ChangeNotifier {
         labelCategory.add(WordDetail(
             childType: doc["child_type"],
             parent: doc["ancestry"] ?? '',
-            name: name,
+            name: name != '' ? name : doc["name"],
             type: doc['word_type'] ?? 'None',
             categoryId: int.parse(doc['id'])));
       }
@@ -9950,13 +9953,15 @@ class AyaProvider extends ChangeNotifier {
   Future<void> addNewRelationship(
       {required int relationshipID,
       required int wordID,
-      required int categoryID}) async {
+      required int categoryID,
+      required bool newCat}) async {
+    if (newCat) categoryID = categoryID + 1;
     await wordRelationship.doc('${relationshipID + 1}').set({
       "active": "f",
       "created_at": DateTime.now().toString(),
       "id": "${relationshipID + 1}",
       "updated_at": DateTime.now().toString(),
-      "word_category_id": "${categoryID + 1}",
+      "word_category_id": "$categoryID",
       "word_id": "$wordID",
     });
   }
@@ -9964,16 +9969,19 @@ class AyaProvider extends ChangeNotifier {
   addNewCategory(
       {required int categoryID,
       required String wordType,
-      required String name,
+      required String engName,
+      required String malayName,
+      required String arabName,
       required String childType,
       required String parent}) async {
+    addTranslation(engName, malayName, arabName);
     await wordCategory.doc('${categoryID + 1}').set({
       "active": "t",
       "ancestry": parent,
       "child_type": childType,
       "created_at": DateTime.now().toString(),
       "id": "${categoryID + 1}",
-      "tname": name,
+      "tname": engName,
       "updated_at": DateTime.now().toString(),
       "word_type": wordType,
     });
@@ -9988,4 +9996,6 @@ class AyaProvider extends ChangeNotifier {
       return "1";
     }
   }
+
+  void addTranslation(String engName, String malayName, String arabName) {}
 }

@@ -85,8 +85,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                   ),
                   if (aya.wordDetail.isNotEmpty)
                     FutureBuilder<WordDetail>(
-                      future: aya.getFirst(aya.wordDetail.first.parent ?? '',
-                          aya.getLangID(context)),
+                      future: aya.getFirst(getParent(), aya.getLangID(context)),
                       builder: (
                         BuildContext context,
                         AsyncSnapshot<WordDetail> snapshot,
@@ -100,7 +99,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                                 ConnectionState.active ||
                             snapshot.connectionState == ConnectionState.done) {
                           if (snapshot.hasError) {
-                            return const Text('Error');
+                            return const Text('Waiiting..');
                           } else if (snapshot.hasData) {
                             return Card(
                               color: Provider.of<ThemeProvider>(context,
@@ -278,4 +277,18 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                   title: Text(document.name!,
                       style: TextStyle(fontFamily: 'MeQuran2')),
                 );
+
+  getParent() {
+    var parent = "";
+    List<WordDetail> _list =
+        Provider.of<AyaProvider>(context, listen: false).wordDetail;
+    _list.forEach((element) {
+      if (element.categoryId == 2 ||
+          element.categoryId == 328 ||
+          element.categoryId == 426) {
+        parent = element.parent ?? '';
+      }
+    });
+    return parent;
+  }
 }

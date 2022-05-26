@@ -35,9 +35,9 @@ class _EditDataState extends State<EditData>
   final _formKey2 = GlobalKey<FormState>();
   String? _inputParent;
   String? _inputParent2;
-  String? _inputCat;
-  String? _inputCat2;
-  String? _inputCat3;
+  String? _inputEngCat;
+  String? _inputEngCat2;
+  String? _inputEngCat3;
   String? _inputChildType;
   String? _inputChildType2;
   String? _inputChildType3;
@@ -51,6 +51,13 @@ class _EditDataState extends State<EditData>
   int? _catID;
   int? _catID2;
   int? _catID3;
+
+  var _inputMalayCat;
+  var _inputMalayCat2;
+  var _inputMalayCat3;
+  var _inputArabCat;
+  var _inputArabCat2;
+  var _inputArabCat3;
 
   @override
   void initState() {
@@ -110,7 +117,7 @@ class _EditDataState extends State<EditData>
                           return AlertDialog(
                             title: Text('Add New Word Relationship'),
                             content: SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.7,
+                              height: MediaQuery.of(context).size.height * 0.85,
                               child: Form(
                                 key: _formKey,
                                 child: Column(
@@ -185,10 +192,55 @@ class _EditDataState extends State<EditData>
                                         newList.isEmpty)
                                       TextFormField(
                                         decoration: InputDecoration(
-                                            label: Text('New Category Name')),
+                                            label: Text(
+                                                'New English Category Name')),
                                         onChanged: (value) {
                                           setState(() {
-                                            _inputCat = value;
+                                            _inputEngCat = value;
+                                            _catID = null;
+                                          });
+                                        },
+                                        validator: (value) {
+                                          if (_inputType == 'Add New' &&
+                                                  value == null ||
+                                              value!.isEmpty &&
+                                                  _inputType == 'Add New') {
+                                            return 'Please enter some text';
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    if (_inputType == 'Add New' ||
+                                        newList.isEmpty)
+                                      TextFormField(
+                                        decoration: InputDecoration(
+                                            label:
+                                                Text('New Arab Category Name')),
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _inputArabCat = value;
+                                            _catID = null;
+                                          });
+                                        },
+                                        validator: (value) {
+                                          if (_inputType == 'Add New' &&
+                                                  value == null ||
+                                              value!.isEmpty &&
+                                                  _inputType == 'Add New') {
+                                            return 'Please enter some text';
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    if (_inputType == 'Add New' ||
+                                        newList.isEmpty)
+                                      TextFormField(
+                                        decoration: InputDecoration(
+                                            label: Text(
+                                                'New Malay Category Name')),
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _inputMalayCat = value;
                                             _catID = null;
                                           });
                                         },
@@ -226,7 +278,7 @@ class _EditDataState extends State<EditData>
                                           ),
                                           onChanged: (String? value) async {
                                             setState(() {
-                                              _inputCat = value;
+                                              _inputEngCat = value;
                                             });
                                             label.forEach((element) {
                                               if (element.name == value) {
@@ -286,15 +338,6 @@ class _EditDataState extends State<EditData>
                                           });
                                         },
                                         selectedItem: 'Choose word type'),
-                                    Text(
-                                        "Parent Ancestry ${_inputParent ?? "No data"}"),
-                                    Text(
-                                        "Category Name ${_inputCat ?? "No data"}"),
-                                    Text("Category ID ${_catID ?? "No data"}"),
-                                    Text(
-                                        "Child Type ${_inputChildType ?? "No data"}"),
-                                    Text(
-                                        "Word Type ${_inputWordType ?? "No data"}"),
                                     ElevatedButton(
                                         onPressed: () async {
                                           // Validate returns true if the form is valid, or false otherwise.
@@ -304,12 +347,14 @@ class _EditDataState extends State<EditData>
                                                 categoryId: "$_catID",
                                                 parent: _inputParent!,
                                                 wordType: _inputWordType!,
-                                                name: _inputCat!,
                                                 childType: _inputChildType!,
                                                 newCat: _inputType == 'Add New'
                                                     ? true
                                                     : false,
-                                                newRel: true);
+                                                newRel: true,
+                                                engName: _inputEngCat!,
+                                                malayName: _inputMalayCat!,
+                                                arabName: _inputArabCat!);
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
                                               const SnackBar(
@@ -350,7 +395,7 @@ class _EditDataState extends State<EditData>
                           return AlertDialog(
                             title: Text('Add New Word Category'),
                             content: SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.7,
+                              height: MediaQuery.of(context).size.height * 0.85,
                               child: Form(
                                 key: _formKey2,
                                 child: Column(
@@ -411,10 +456,45 @@ class _EditDataState extends State<EditData>
                                     ),
                                     TextFormField(
                                       decoration: InputDecoration(
-                                          label: Text('New Category Name')),
+                                          label: Text(
+                                              'New English Category Name')),
                                       onChanged: (value) {
                                         setState(() {
-                                          _inputCat2 = value;
+                                          _inputEngCat2 = value;
+                                          _catID2 = null;
+                                        });
+                                      },
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter some text';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    TextFormField(
+                                      decoration: InputDecoration(
+                                          label:
+                                              Text('New Arabic Category Name')),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _inputArabCat2 = value;
+                                          _catID2 = null;
+                                        });
+                                      },
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter some text';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    TextFormField(
+                                      decoration: InputDecoration(
+                                          label:
+                                              Text('New Malay Category Name')),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _inputMalayCat2 = value;
                                           _catID2 = null;
                                         });
                                       },
@@ -475,15 +555,6 @@ class _EditDataState extends State<EditData>
                                           });
                                         },
                                         selectedItem: 'Choose word type'),
-                                    Text(
-                                        "Parent Ancestry ${_inputParent2 ?? "No data"}"),
-                                    Text(
-                                        "Category Name ${_inputCat2 ?? "No data"}"),
-                                    Text("Category ID ${_catID2 ?? "No data"}"),
-                                    Text(
-                                        "Child Type ${_inputChildType2 ?? "No data"}"),
-                                    Text(
-                                        "Word Type ${_inputWordType2 ?? "No data"}"),
                                     ElevatedButton(
                                         onPressed: () async {
                                           // Validate returns true if the form is valid, or false otherwise.
@@ -493,10 +564,12 @@ class _EditDataState extends State<EditData>
                                                 categoryId: "$_catID2",
                                                 parent: _inputParent2!,
                                                 wordType: _inputWordType2!,
-                                                name: _inputCat2!,
                                                 childType: _inputChildType2!,
                                                 newCat: true,
-                                                newRel: false);
+                                                newRel: false,
+                                                malayName: _inputMalayCat2!,
+                                                arabName: _inputArabCat2!,
+                                                engName: _inputEngCat2!);
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
                                               const SnackBar(
@@ -538,7 +611,7 @@ class _EditDataState extends State<EditData>
                           return AlertDialog(
                             title: Text('Add New Word Category'),
                             content: SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.7,
+                              height: MediaQuery.of(context).size.height * 0.85,
                               child: Form(
                                 key: _formKey2,
                                 child: Column(
@@ -567,7 +640,7 @@ class _EditDataState extends State<EditData>
                                         aya.wordDetail.forEach((element) async {
                                           if (element.name == value) {
                                             setState(() {
-                                              _inputCat3 = value;
+                                              _inputEngCat3 = value;
                                               _catID3 = element.categoryId;
                                               _inputWordType3 = element.type;
                                               _inputChildType3 =
@@ -579,12 +652,47 @@ class _EditDataState extends State<EditData>
                                       selectedItem: 'Choose Word Category',
                                     ),
                                     TextFormField(
-                                      initialValue: _inputCat3,
+                                      initialValue: _inputEngCat3,
                                       decoration: InputDecoration(
-                                          label: Text('New Category Name')),
+                                          label: Text(
+                                              'New English Category Name')),
                                       onChanged: (value) {
                                         setState(() {
-                                          _inputCat3 = value;
+                                          _inputEngCat3 = value;
+                                        });
+                                      },
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter some text';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    TextFormField(
+                                      initialValue: _inputEngCat3,
+                                      decoration: InputDecoration(
+                                          label:
+                                              Text('New Arab Category Name')),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _inputArabCat3 = value;
+                                        });
+                                      },
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter some text';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    TextFormField(
+                                      initialValue: _inputEngCat3,
+                                      decoration: InputDecoration(
+                                          label:
+                                              Text('New Malay Category Name')),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _inputMalayCat3 = value;
                                         });
                                       },
                                       validator: (value) {
@@ -646,13 +754,7 @@ class _EditDataState extends State<EditData>
                                         },
                                         selectedItem: _inputWordType3 ??
                                             'Choose word type'),
-                                    Text("Category ID ${_catID3 ?? "No data"}"),
-                                    Text(
-                                        "Category Name ${_inputCat3 ?? "No data"}"),
-                                    Text(
-                                        "Child Type ${_inputChildType3 ?? "No data"}"),
-                                    Text(
-                                        "Word Type ${_inputWordType3 ?? "No data"}"),
+
                                     ElevatedButton(
                                         onPressed: () async {
                                           // Validate returns true if the form is valid, or false otherwise.
@@ -662,7 +764,9 @@ class _EditDataState extends State<EditData>
                                                     context,
                                                     listen: false)
                                                 .updateCategory(
-                                                    _inputCat3!,
+                                                    _inputEngCat3!,
+                                                    _inputArabCat3!,
+                                                    _inputMalayCat3!,
                                                     _inputChildType3!,
                                                     _inputWordType3!,
                                                     '$_catID3');
@@ -773,17 +877,29 @@ class _EditDataState extends State<EditData>
       document.isparent!
           ? Card(
               color:
-                  Provider.of<ThemeProvider>(context, listen: false)
-                          .isDarkMode
+                  Provider.of<ThemeProvider>(context, listen: false).isDarkMode
                       ? Color(0xff4C6A7A)
                       : Color(0xffE0BD61),
               child: ListTile(
                   leading: Icon(Icons.navigate_next),
-                  title: Text(document.name!),
+                  title: Text(document.name!,
+                      style: TextStyle(fontFamily: 'MeQuran2')),
                   subtitle: Text(
-                      'ID: ${document.categoryId}, Type: ${document.type}, Child: ${document.childType}'),
-                  trailing: Text(
-                      "${list.length} ${AppLocalizations.of(context)!.items}")))
+                    'ID: ${document.categoryId}, Type: ${document.type}, Child: ${document.childType}',
+                  ),
+                  trailing: IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () async {
+                      List<WordDetail> label = await Provider.of<AyaProvider>(
+                              context,
+                              listen: false)
+                          .getList(
+                              document.parent ?? '',
+                              Provider.of<AyaProvider>(context, listen: false)
+                                  .getLangID(context));
+                      popUp(document, label);
+                    },
+                  )))
           : list.isNotEmpty
               ? Card(
                   color: Provider.of<ThemeProvider>(context, listen: false)
@@ -792,7 +908,8 @@ class _EditDataState extends State<EditData>
                       : Color(0xffFCD77A),
                   child: ListTile(
                       leading: Icon(Icons.arrow_right),
-                      title: Text(document.name!),
+                      title: Text(document.name!,
+                          style: TextStyle(fontFamily: 'MeQuran2')),
                       subtitle: Text(
                           'ID: ${document.categoryId}, Type: ${document.type ?? "None"}, Child: ${document.childType}'),
                       trailing: IconButton(
@@ -812,7 +929,8 @@ class _EditDataState extends State<EditData>
                 )
               : ListTile(
                   leading: Icon(Icons.remove),
-                  title: Text(document.name!),
+                  title: Text(document.name!,
+                      style: TextStyle(fontFamily: 'MeQuran2')),
                   subtitle: Text(
                       'ID: ${document.categoryId}, Type: ${document.type ?? "None"}, Child: ${document.childType}'),
                   trailing: IconButton(
@@ -892,7 +1010,9 @@ class _EditDataState extends State<EditData>
   Future<void> addData({
     required String parent,
     required String wordType,
-    required String name,
+    required String engName,
+    required String malayName,
+    required String arabName,
     required String childType,
     String? categoryId,
     required bool newCat,
@@ -908,9 +1028,11 @@ class _EditDataState extends State<EditData>
       await Provider.of<AyaProvider>(context, listen: false).addNewCategory(
           categoryID: int.parse(catID),
           parent: parent,
-          name: name,
           childType: childType,
-          wordType: wordType);
+          wordType: wordType,
+          malayName: malayName,
+          arabName: arabName,
+          engName: engName);
     } else {
       setState(() {
         catID = categoryId;
@@ -920,7 +1042,8 @@ class _EditDataState extends State<EditData>
       await Provider.of<AyaProvider>(context, listen: false).addNewRelationship(
           relationshipID: int.parse(id),
           wordID: widget.wordId,
-          categoryID: int.parse(catID));
+          categoryID: int.parse(catID),
+          newCat: newCat);
     }
     print('data added');
   }
