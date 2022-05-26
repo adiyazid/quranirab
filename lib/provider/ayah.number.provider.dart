@@ -9782,7 +9782,9 @@ class AyaProvider extends ChangeNotifier {
     String type,
     String categoryID,
   ) async {
-    addTranslation(engName, malayName, arabName);
+    var id = await getLastTransId();
+    await addTranslation(
+        engName, malayName, arabName, int.parse(categoryID), int.parse(id));
     await wordCategory.doc(categoryID).set({
       "tname": engName,
       "child_type": childType,
@@ -9967,14 +9969,19 @@ class AyaProvider extends ChangeNotifier {
   }
 
   addNewCategory(
-      {required int categoryID,
+      {required bool newCat,
+      required int categoryID,
       required String wordType,
       required String engName,
       required String malayName,
       required String arabName,
       required String childType,
       required String parent}) async {
-    addTranslation(engName, malayName, arabName);
+    if (newCat) {
+      var id = await getLastTransId();
+      await addTranslation(
+          engName, malayName, arabName, categoryID, int.parse(id));
+    }
     await wordCategory.doc('${categoryID + 1}').set({
       "active": "t",
       "ancestry": parent,
@@ -9997,5 +10004,42 @@ class AyaProvider extends ChangeNotifier {
     }
   }
 
-  void addTranslation(String engName, String malayName, String arabName) {}
+  Future<void> addTranslation(String engName, String malayName, String arabName,
+      int wordCategoryID, int translationID) async {
+    await wordCategoryTranslation.doc("${translationID + 1}").set({
+      "language_id": "1",
+      "id": "${translationID + 1}",
+      "created_at": DateTime.now().toString(),
+      "updated_at": DateTime.now().toString(),
+      "name": arabName,
+      "word_category_id": "${wordCategoryID + 1}"
+    });
+    await wordCategoryTranslation.doc("${translationID + 2}").set({
+      "language_id": "2",
+      "id": "${translationID + 2}",
+      "created_at": DateTime.now().toString(),
+      "updated_at": DateTime.now().toString(),
+      "name": engName,
+      "word_category_id": "${wordCategoryID + 1}"
+    });
+    await wordCategoryTranslation.doc("${translationID + 3}").set({
+      "language_id": "3",
+      "id": "${translationID + 3}",
+      "created_at": DateTime.now().toString(),
+      "updated_at": DateTime.now().toString(),
+      "name": malayName,
+      "word_category_id": "${wordCategoryID + 1}"
+    });
+  }
+
+  Future<String> getLastTransId() async {
+    var id;
+    id = await wordCategoryTranslation
+        .orderBy('created_at', descending: true)
+        .limit(1)
+        .get()
+        .then((value) => value.docs.first["id"]);
+    print(id);
+    return id;
+  }
 }

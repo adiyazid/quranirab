@@ -117,7 +117,7 @@ class _EditDataState extends State<EditData>
                           return AlertDialog(
                             title: Text('Add New Word Relationship'),
                             content: SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.85,
+                              height: MediaQuery.of(context).size.height * 0.87,
                               child: Form(
                                 key: _formKey,
                                 child: Column(
@@ -279,6 +279,8 @@ class _EditDataState extends State<EditData>
                                           onChanged: (String? value) async {
                                             setState(() {
                                               _inputEngCat = value;
+                                              _inputMalayCat = value;
+                                              _inputArabCat = value;
                                             });
                                             label.forEach((element) {
                                               if (element.name == value) {
@@ -395,7 +397,7 @@ class _EditDataState extends State<EditData>
                           return AlertDialog(
                             title: Text('Add New Word Category'),
                             content: SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.85,
+                              height: MediaQuery.of(context).size.height * 0.87,
                               child: Form(
                                 key: _formKey2,
                                 child: Column(
@@ -611,7 +613,7 @@ class _EditDataState extends State<EditData>
                           return AlertDialog(
                             title: Text('Add New Word Category'),
                             content: SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.85,
+                              height: MediaQuery.of(context).size.height * 0.87,
                               child: Form(
                                 key: _formKey2,
                                 child: Column(
@@ -754,7 +756,6 @@ class _EditDataState extends State<EditData>
                                         },
                                         selectedItem: _inputWordType3 ??
                                             'Choose word type'),
-
                                     ElevatedButton(
                                         onPressed: () async {
                                           // Validate returns true if the form is valid, or false otherwise.
@@ -1011,10 +1012,10 @@ class _EditDataState extends State<EditData>
     required String parent,
     required String wordType,
     required String engName,
-    required String malayName,
-    required String arabName,
+    required String? malayName,
+    required String? arabName,
     required String childType,
-    String? categoryId,
+    required String? categoryId,
     required bool newCat,
     required bool newRel,
   }) async {
@@ -1030,9 +1031,10 @@ class _EditDataState extends State<EditData>
           parent: parent,
           childType: childType,
           wordType: wordType,
-          malayName: malayName,
-          arabName: arabName,
-          engName: engName);
+          malayName: malayName!,
+          arabName: arabName!,
+          engName: engName,
+          newCat: newCat);
     } else {
       setState(() {
         catID = categoryId;
