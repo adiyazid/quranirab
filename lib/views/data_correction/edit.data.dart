@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:group_radio_button/group_radio_button.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
+import 'package:quranirab/provider/delete.provider.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:tree_view/tree_view.dart';
@@ -47,7 +48,9 @@ class _EditDataState extends State<EditData>
   List<String> childType = ['unique', 'all', 'multiple', 'none'];
 
   List<String> wordType = ['none', 'label', 'main', 'main-label'];
-
+  final snackBar = SnackBar(
+    content: const Text('Delete Success'),
+  );
   int? _catID;
   int? _catID2;
   int? _catID3;
@@ -131,16 +134,27 @@ class _EditDataState extends State<EditData>
                                         }
                                         return null;
                                       },
-                                      dropdownSearchBaseStyle:
-                                          TextStyle(fontFamily: 'MeQuran2'),
-                                      showSearchBox: true,
-                                      mode: Mode.DIALOG,
-                                      showSelectedItems: true,
+                                      popupProps: PopupProps.dialog(
+                                        showSelectedItems: true,
+                                        itemBuilder: _style1,
+                                        dialogProps: DialogProps(
+                                          contentTextStyle: TextStyle(
+                                              fontFamily: 'MeQuran2',
+                                              fontSize: 24),
+                                        ),
+                                        showSearchBox: true,
+                                        textStyle: TextStyle(
+                                            fontFamily: 'MeQuran2',
+                                            fontSize: 24),
+                                      ),
                                       dropdownBuilder: _style,
-                                      popupItemBuilder: _style1,
                                       items: list,
-                                      dropdownSearchDecoration: InputDecoration(
-                                        labelText: "Parent Ancestry",
+                                      dropdownDecoratorProps:
+                                          const DropDownDecoratorProps(
+                                        dropdownSearchDecoration:
+                                            InputDecoration(
+                                          labelText: "Parent Ancestry",
+                                        ),
                                       ),
                                       onChanged: (String? value) {
                                         aya.wordDetail.forEach((element) async {
@@ -264,18 +278,28 @@ class _EditDataState extends State<EditData>
                                             }
                                             return null;
                                           },
-                                          dropdownSearchBaseStyle:
-                                              TextStyle(fontFamily: 'MeQuran2'),
-                                          showSearchBox: true,
-                                          mode: Mode.DIALOG,
-                                          showSelectedItems: true,
-                                          dropdownBuilder: _style,
-                                          popupItemBuilder: _style1,
-                                          items: newList,
-                                          dropdownSearchDecoration:
-                                              InputDecoration(
-                                            labelText: "Child Category",
+                                          popupProps: PopupProps.dialog(
+                                            showSelectedItems: true,
+                                            itemBuilder: _style1,
+                                            dialogProps: DialogProps(
+                                              contentTextStyle: TextStyle(
+                                                  fontFamily: 'MeQuran2',
+                                                  fontSize: 24),
+                                            ),
+                                            showSearchBox: true,
+                                            textStyle: TextStyle(
+                                                fontFamily: 'MeQuran2',
+                                                fontSize: 24),
                                           ),
+                                          dropdownBuilder: _style,
+                                          dropdownDecoratorProps:
+                                              const DropDownDecoratorProps(
+                                            dropdownSearchDecoration:
+                                                InputDecoration(
+                                              labelText: "Child Category",
+                                            ),
+                                          ),
+                                          items: newList,
                                           onChanged: (String? value) async {
                                             setState(() {
                                               _inputEngCat = value;
@@ -297,18 +321,28 @@ class _EditDataState extends State<EditData>
                                           }
                                           return null;
                                         },
-                                        dropdownSearchBaseStyle:
-                                            TextStyle(fontFamily: 'MeQuran2'),
-                                        showSearchBox: true,
-                                        mode: Mode.DIALOG,
-                                        showSelectedItems: true,
-                                        dropdownBuilder: _style,
-                                        popupItemBuilder: _style1,
-                                        items: childType,
-                                        dropdownSearchDecoration:
-                                            InputDecoration(
-                                          labelText: "Child Type",
+                                        popupProps: PopupProps.dialog(
+                                          showSelectedItems: true,
+                                          itemBuilder: _style1,
+                                          dialogProps: DialogProps(
+                                            contentTextStyle: TextStyle(
+                                                fontFamily: 'MeQuran2',
+                                                fontSize: 24),
+                                          ),
+                                          showSearchBox: true,
+                                          textStyle: TextStyle(
+                                              fontFamily: 'MeQuran2',
+                                              fontSize: 24),
                                         ),
+                                        dropdownBuilder: _style,
+                                        dropdownDecoratorProps:
+                                            const DropDownDecoratorProps(
+                                          dropdownSearchDecoration:
+                                              InputDecoration(
+                                            labelText: "Child Type",
+                                          ),
+                                        ),
+                                        items: childType,
                                         onChanged: (String? value) {
                                           setState(() {
                                             _inputChildType = value;
@@ -322,18 +356,28 @@ class _EditDataState extends State<EditData>
                                           }
                                           return null;
                                         },
-                                        dropdownSearchBaseStyle:
-                                            TextStyle(fontFamily: 'MeQuran2'),
-                                        showSearchBox: true,
-                                        mode: Mode.DIALOG,
-                                        showSelectedItems: true,
-                                        dropdownBuilder: _style,
-                                        popupItemBuilder: _style1,
-                                        items: wordType,
-                                        dropdownSearchDecoration:
-                                            InputDecoration(
-                                          labelText: "Word Type",
+                                        popupProps: PopupProps.dialog(
+                                          showSelectedItems: true,
+                                          itemBuilder: _style1,
+                                          dialogProps: DialogProps(
+                                            contentTextStyle: TextStyle(
+                                                fontFamily: 'MeQuran2',
+                                                fontSize: 24),
+                                          ),
+                                          showSearchBox: true,
+                                          textStyle: TextStyle(
+                                              fontFamily: 'MeQuran2',
+                                              fontSize: 24),
                                         ),
+                                        dropdownBuilder: _style,
+                                        dropdownDecoratorProps:
+                                            const DropDownDecoratorProps(
+                                          dropdownSearchDecoration:
+                                              InputDecoration(
+                                            labelText: "Word Type",
+                                          ),
+                                        ),
+                                        items: wordType,
                                         onChanged: (String? value) {
                                           setState(() {
                                             _inputWordType = value;
@@ -411,17 +455,28 @@ class _EditDataState extends State<EditData>
                                         }
                                         return null;
                                       },
-                                      dropdownSearchBaseStyle:
-                                          TextStyle(fontFamily: 'MeQuran2'),
-                                      showSearchBox: true,
-                                      mode: Mode.DIALOG,
-                                      showSelectedItems: true,
-                                      dropdownBuilder: _style,
-                                      popupItemBuilder: _style1,
-                                      items: list,
-                                      dropdownSearchDecoration: InputDecoration(
-                                        labelText: "Parent Ancestry",
+                                      popupProps: PopupProps.dialog(
+                                        showSelectedItems: true,
+                                        itemBuilder: _style1,
+                                        dialogProps: DialogProps(
+                                          contentTextStyle: TextStyle(
+                                              fontFamily: 'MeQuran2',
+                                              fontSize: 24),
+                                        ),
+                                        showSearchBox: true,
+                                        textStyle: TextStyle(
+                                            fontFamily: 'MeQuran2',
+                                            fontSize: 24),
                                       ),
+                                      dropdownBuilder: _style,
+                                      dropdownDecoratorProps:
+                                          const DropDownDecoratorProps(
+                                        dropdownSearchDecoration:
+                                            InputDecoration(
+                                          labelText: "Parent Ancestry",
+                                        ),
+                                      ),
+                                      items: list,
                                       onChanged: (String? value) {
                                         aya.wordDetail.forEach((element) async {
                                           if (element.name == value) {
@@ -514,18 +569,28 @@ class _EditDataState extends State<EditData>
                                           }
                                           return null;
                                         },
-                                        dropdownSearchBaseStyle:
-                                            TextStyle(fontFamily: 'MeQuran2'),
-                                        showSearchBox: true,
-                                        mode: Mode.DIALOG,
-                                        showSelectedItems: true,
-                                        dropdownBuilder: _style,
-                                        popupItemBuilder: _style1,
-                                        items: childType,
-                                        dropdownSearchDecoration:
-                                            InputDecoration(
-                                          labelText: "Child Type",
+                                        popupProps: PopupProps.dialog(
+                                          showSelectedItems: true,
+                                          itemBuilder: _style1,
+                                          dialogProps: DialogProps(
+                                            contentTextStyle: TextStyle(
+                                                fontFamily: 'MeQuran2',
+                                                fontSize: 24),
+                                          ),
+                                          showSearchBox: true,
+                                          textStyle: TextStyle(
+                                              fontFamily: 'MeQuran2',
+                                              fontSize: 24),
                                         ),
+                                        dropdownBuilder: _style,
+                                        dropdownDecoratorProps:
+                                            const DropDownDecoratorProps(
+                                          dropdownSearchDecoration:
+                                              InputDecoration(
+                                            labelText: "Child Type",
+                                          ),
+                                        ),
+                                        items: childType,
                                         onChanged: (String? value) {
                                           setState(() {
                                             _inputChildType2 = value;
@@ -539,18 +604,28 @@ class _EditDataState extends State<EditData>
                                           }
                                           return null;
                                         },
-                                        dropdownSearchBaseStyle:
-                                            TextStyle(fontFamily: 'MeQuran2'),
-                                        showSearchBox: true,
-                                        mode: Mode.DIALOG,
-                                        showSelectedItems: true,
-                                        dropdownBuilder: _style,
-                                        popupItemBuilder: _style1,
-                                        items: wordType,
-                                        dropdownSearchDecoration:
-                                            InputDecoration(
-                                          labelText: "Word Type",
+                                        popupProps: PopupProps.dialog(
+                                          showSelectedItems: true,
+                                          itemBuilder: _style1,
+                                          dialogProps: DialogProps(
+                                            contentTextStyle: TextStyle(
+                                                fontFamily: 'MeQuran2',
+                                                fontSize: 24),
+                                          ),
+                                          showSearchBox: true,
+                                          textStyle: TextStyle(
+                                              fontFamily: 'MeQuran2',
+                                              fontSize: 24),
                                         ),
+                                        dropdownBuilder: _style,
+                                        dropdownDecoratorProps:
+                                            const DropDownDecoratorProps(
+                                          dropdownSearchDecoration:
+                                              InputDecoration(
+                                            labelText: "Word Type",
+                                          ),
+                                        ),
+                                        items: wordType,
                                         onChanged: (String? value) {
                                           setState(() {
                                             _inputWordType2 = value;
@@ -627,17 +702,28 @@ class _EditDataState extends State<EditData>
                                         }
                                         return null;
                                       },
-                                      dropdownSearchBaseStyle:
-                                          TextStyle(fontFamily: 'MeQuran2'),
-                                      showSearchBox: true,
-                                      mode: Mode.DIALOG,
-                                      showSelectedItems: true,
-                                      dropdownBuilder: _style,
-                                      popupItemBuilder: _style1,
-                                      items: list,
-                                      dropdownSearchDecoration: InputDecoration(
-                                        labelText: "Select Word Category",
+                                      popupProps: PopupProps.dialog(
+                                        showSelectedItems: true,
+                                        itemBuilder: _style1,
+                                        dialogProps: DialogProps(
+                                          contentTextStyle: TextStyle(
+                                              fontFamily: 'MeQuran2',
+                                              fontSize: 24),
+                                        ),
+                                        showSearchBox: true,
+                                        textStyle: TextStyle(
+                                            fontFamily: 'MeQuran2',
+                                            fontSize: 24),
                                       ),
+                                      dropdownBuilder: _style,
+                                      dropdownDecoratorProps:
+                                          const DropDownDecoratorProps(
+                                        dropdownSearchDecoration:
+                                            InputDecoration(
+                                          labelText: "Select Word Category",
+                                        ),
+                                      ),
+                                      items: list,
                                       onChanged: (String? value) {
                                         aya.wordDetail.forEach((element) async {
                                           if (element.name == value) {
@@ -711,18 +797,28 @@ class _EditDataState extends State<EditData>
                                           }
                                           return null;
                                         },
-                                        dropdownSearchBaseStyle:
-                                            TextStyle(fontFamily: 'MeQuran2'),
-                                        showSearchBox: true,
-                                        mode: Mode.DIALOG,
-                                        showSelectedItems: true,
-                                        dropdownBuilder: _style,
-                                        popupItemBuilder: _style1,
-                                        items: childType,
-                                        dropdownSearchDecoration:
-                                            InputDecoration(
-                                          labelText: "Child Type",
+                                        popupProps: PopupProps.dialog(
+                                          showSelectedItems: true,
+                                          itemBuilder: _style1,
+                                          dialogProps: DialogProps(
+                                            contentTextStyle: TextStyle(
+                                                fontFamily: 'MeQuran2',
+                                                fontSize: 24),
+                                          ),
+                                          showSearchBox: true,
+                                          textStyle: TextStyle(
+                                              fontFamily: 'MeQuran2',
+                                              fontSize: 24),
                                         ),
+                                        dropdownBuilder: _style,
+                                        dropdownDecoratorProps:
+                                            const DropDownDecoratorProps(
+                                          dropdownSearchDecoration:
+                                              InputDecoration(
+                                            labelText: "Child Type",
+                                          ),
+                                        ),
+                                        items: childType,
                                         onChanged: (String? value) {
                                           setState(() {
                                             _inputChildType3 = value;
@@ -737,18 +833,28 @@ class _EditDataState extends State<EditData>
                                           }
                                           return null;
                                         },
-                                        dropdownSearchBaseStyle:
-                                            TextStyle(fontFamily: 'MeQuran2'),
-                                        showSearchBox: true,
-                                        mode: Mode.DIALOG,
-                                        showSelectedItems: true,
-                                        dropdownBuilder: _style,
-                                        popupItemBuilder: _style1,
-                                        items: wordType,
-                                        dropdownSearchDecoration:
-                                            InputDecoration(
-                                          labelText: "Word Type",
+                                        popupProps: PopupProps.dialog(
+                                          showSelectedItems: true,
+                                          itemBuilder: _style1,
+                                          dialogProps: DialogProps(
+                                            contentTextStyle: TextStyle(
+                                                fontFamily: 'MeQuran2',
+                                                fontSize: 24),
+                                          ),
+                                          showSearchBox: true,
+                                          textStyle: TextStyle(
+                                              fontFamily: 'MeQuran2',
+                                              fontSize: 24),
                                         ),
+                                        dropdownBuilder: _style,
+                                        dropdownDecoratorProps:
+                                            const DropDownDecoratorProps(
+                                          dropdownSearchDecoration:
+                                              InputDecoration(
+                                            labelText: "Word Type",
+                                          ),
+                                        ),
+                                        items: wordType,
                                         onChanged: (String? value) {
                                           setState(() {
                                             _inputWordType3 = value;
@@ -837,7 +943,7 @@ class _EditDataState extends State<EditData>
           textAlign: TextAlign.center,
           style: TextStyle(
               fontFamily: 'MeQuran2',
-              color: isSelected ? Colors.cyanAccent : null,
+              color: isSelected ? Colors.cyanAccent : Colors.amber,
               fontSize: 24),
         ),
       ),
@@ -888,18 +994,86 @@ class _EditDataState extends State<EditData>
                   subtitle: Text(
                     'ID: ${document.categoryId}, Type: ${document.type}, Child: ${document.childType}',
                   ),
-                  trailing: IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () async {
-                      List<WordDetail> label = await Provider.of<AyaProvider>(
-                              context,
-                              listen: false)
-                          .getList(
-                              document.parent ?? '',
-                              Provider.of<AyaProvider>(context, listen: false)
-                                  .getLangID(context));
-                      popUp(document, label);
-                    },
+                  trailing: SizedBox(
+                    width: 100,
+                    child: Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.edit),
+                          onPressed: () async {
+                            List<WordDetail> label =
+                                await Provider.of<AyaProvider>(
+                                        context,
+                                        listen: false)
+                                    .getList(
+                                        document.parent ?? '',
+                                        Provider.of<AyaProvider>(context,
+                                                listen: false)
+                                            .getLangID(context));
+                            popUp(document, label);
+                          },
+                        ),
+                        Spacer(),
+                        IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () async {
+                            showModalBottomSheet<void>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Container(
+                                  height: 100,
+                                  color: Colors.amber,
+                                  child: Center(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Colors.redAccent,
+                                              elevation: 2,
+                                              minimumSize: const Size(200, 40),
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(8),
+                                                ),
+                                              ),
+                                            ),
+                                            child: const Text('Confirm Delete'),
+                                            onPressed: () {
+                                              print(document.id);
+                                              Provider.of<DeleteProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .deleteRelationship(
+                                                      document.id);
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(snackBar);
+                                              Navigator.pop(context);
+                                              Navigator.pop(context);
+                                              Navigator.pop(context);
+                                            }),
+                                        TextButton(
+                                          child: Text(
+                                            'Cancel',
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .backgroundColor),
+                                          ),
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   )))
           : list.isNotEmpty
               ? Card(
@@ -913,19 +1087,88 @@ class _EditDataState extends State<EditData>
                           style: TextStyle(fontFamily: 'MeQuran2')),
                       subtitle: Text(
                           'ID: ${document.categoryId}, Type: ${document.type ?? "None"}, Child: ${document.childType}'),
-                      trailing: IconButton(
-                        icon: Icon(Icons.edit),
-                        onPressed: () async {
-                          List<WordDetail> label =
-                              await Provider.of<AyaProvider>(context,
-                                      listen: false)
-                                  .getList(
-                                      document.parent ?? '',
-                                      Provider.of<AyaProvider>(context,
-                                              listen: false)
-                                          .getLangID(context));
-                          popUp(document, label);
-                        },
+                      trailing: SizedBox(
+                        width: 100,
+                        child: Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.edit),
+                              onPressed: () async {
+                                List<WordDetail> label =
+                                    await Provider.of<AyaProvider>(context,
+                                            listen: false)
+                                        .getList(
+                                            document.parent ?? '',
+                                            Provider.of<AyaProvider>(context,
+                                                    listen: false)
+                                                .getLangID(context));
+                                popUp(document, label);
+                              },
+                            ),
+                            Spacer(),
+                            IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () async {
+                                showModalBottomSheet<void>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return Container(
+                                      height: 100,
+                                      color: Colors.amber,
+                                      child: Center(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  primary: Colors.redAccent,
+                                                  elevation: 2,
+                                                  minimumSize:
+                                                      const Size(200, 40),
+                                                  shape:
+                                                      const RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(8),
+                                                    ),
+                                                  ),
+                                                ),
+                                                child: const Text(
+                                                    'Confirm Delete'),
+                                                onPressed: () {
+                                                  print(document.id);
+                                                  Provider.of<DeleteProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .deleteRelationship(
+                                                          document.id);
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(snackBar);
+                                                  Navigator.pop(context);
+                                                  Navigator.pop(context);
+                                                  Navigator.pop(context);
+                                                }),
+                                            TextButton(
+                                              child: Text(
+                                                'Cancel',
+                                                style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .backgroundColor),
+                                              ),
+                                              onPressed: () =>
+                                                  Navigator.pop(context),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                       )),
                 )
               : ListTile(
@@ -934,18 +1177,86 @@ class _EditDataState extends State<EditData>
                       style: TextStyle(fontFamily: 'MeQuran2')),
                   subtitle: Text(
                       'ID: ${document.categoryId}, Type: ${document.type ?? "None"}, Child: ${document.childType}'),
-                  trailing: IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () async {
-                      List<WordDetail> label = await Provider.of<AyaProvider>(
-                              context,
-                              listen: false)
-                          .getList(
-                              document.parent ?? '',
-                              Provider.of<AyaProvider>(context, listen: false)
-                                  .getLangID(context));
-                      popUp(document, label);
-                    },
+                  trailing: SizedBox(
+                    width: 100,
+                    child: Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.edit),
+                          onPressed: () async {
+                            List<WordDetail> label =
+                                await Provider.of<AyaProvider>(
+                                        context,
+                                        listen: false)
+                                    .getList(
+                                        document.parent ?? '',
+                                        Provider.of<AyaProvider>(context,
+                                                listen: false)
+                                            .getLangID(context));
+                            popUp(document, label);
+                          },
+                        ),
+                        Spacer(),
+                        IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () async {
+                            showModalBottomSheet<void>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Container(
+                                  height: 100,
+                                  color: Colors.amber,
+                                  child: Center(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Colors.redAccent,
+                                              elevation: 2,
+                                              minimumSize: const Size(200, 40),
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(8),
+                                                ),
+                                              ),
+                                            ),
+                                            child: const Text('Confirm Delete'),
+                                            onPressed: () {
+                                              print(document.id);
+                                              Provider.of<DeleteProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .deleteRelationship(
+                                                      document.id);
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(snackBar);
+                                              Navigator.pop(context);
+                                              Navigator.pop(context);
+                                              Navigator.pop(context);
+                                            }),
+                                        TextButton(
+                                          child: Text(
+                                            'Cancel',
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .backgroundColor),
+                                          ),
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ));
 
   Future<dynamic> popUp(WordDetail document, List<WordDetail> label) {
@@ -961,17 +1272,24 @@ class _EditDataState extends State<EditData>
             height: MediaQuery.of(context).size.height * 0.4,
             child: AlertDialog(
               content: DropdownSearch<String>(
-                dropdownSearchBaseStyle: TextStyle(fontFamily: 'MeQuran2'),
-                showSearchBox: true,
-                mode: Mode.DIALOG,
-                showSelectedItems: true,
-                dropdownBuilder: _style,
-                popupItemBuilder: _style1,
-                items: list,
-                dropdownSearchDecoration: InputDecoration(
-                  labelText:
-                      "Word detail from parent ${document.parent!.split('/').last}",
+                popupProps: PopupProps.dialog(
+                  showSelectedItems: true,
+                  itemBuilder: _style1,
+                  dialogProps: DialogProps(
+                    contentTextStyle:
+                        TextStyle(fontFamily: 'MeQuran2', fontSize: 24),
+                  ),
+                  showSearchBox: true,
+                  textStyle: TextStyle(fontFamily: 'MeQuran2', fontSize: 24),
                 ),
+                dropdownBuilder: _style,
+                dropdownDecoratorProps: DropDownDecoratorProps(
+                  dropdownSearchDecoration: InputDecoration(
+                    labelText:
+                        "Word detail from parent ${document.parent!.split('/').last}",
+                  ),
+                ),
+                items: list,
                 onChanged: (String? value) {
                   setState(() {
                     data = value;
