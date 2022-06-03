@@ -243,7 +243,6 @@ class _TranslationState extends State<Translation> {
                                       Flexible(
                                         child: Text(
                                           widget._translate[index],
-                                          textAlign: TextAlign.justify,
                                           style: TextStyle(
                                             fontSize: fontsize.value,
                                           ),
