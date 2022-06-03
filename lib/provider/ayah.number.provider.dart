@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:quranirab/models/word.detail.dart';
 import '../models/break.index.model.dart';
@@ -123,7 +124,9 @@ class AyaProvider extends ChangeNotifier {
           for (int i = 0; i < list!.join().split('').length; i++) {
             select.add(false);
           }
-          print('[set to default]');
+          if (kDebugMode) {
+            print('[set to default]');
+          }
         }
         notifyListeners();
       }
@@ -141,7 +144,9 @@ class AyaProvider extends ChangeNotifier {
           end: list!.join().split('').length,
           wordId: last.wordId));
       notifyListeners();
-      print("[fix last surah of slice data]");
+      if (kDebugMode) {
+        print("[fix last surah of slice data]");
+      }
     }
     loading = true;
     notifyListeners();

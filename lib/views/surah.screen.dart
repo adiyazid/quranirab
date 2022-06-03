@@ -134,7 +134,7 @@ class _SurahScreenState extends State<SurahScreen>
         .then((QuerySnapshot querySnapshot) {
       for (var doc in querySnapshot.docs) {
         setState(() {
-          a.add(doc['text1']);
+          a.add(doc['text']);
         });
       }
 
