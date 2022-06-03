@@ -40,7 +40,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
 
   @override
   Widget build(BuildContext context) {
-    var role = Provider.of<AppUser>(context).role;
+    var role = Provider.of<AppUser>(context, listen: false).role;
 
     return Consumer<AyaProvider>(builder: (context, aya, child) {
       List<WordDetail> parent = aya.getParent();

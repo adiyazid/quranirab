@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:quranirab/models/category.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/widget/menu.dart';
-
 import '../widget/appbar.widget.dart';
 
 class LeaderBoardTable extends StatefulWidget {
@@ -102,7 +101,7 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                 ),
                 height: 57,
                 child: CustomScrollView(
-                  slivers: const [Appbar()],
+                  slivers: [Appbar()],
                 ),
               ),
               Container(

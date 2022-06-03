@@ -11,8 +11,8 @@ class LandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<AyaProvider>(context,listen: false).getScreenSize(context);
-    Provider.of<AyaProvider>(context,listen: false).getFontSize(context);
+    Provider.of<AyaProvider>(context, listen: false).getScreenSize(context);
+    Provider.of<AyaProvider>(context, listen: false).getFontSize(context);
 
     return Consumer<AppUser>(builder: (context, user, child) {
       if (user.user != null) {

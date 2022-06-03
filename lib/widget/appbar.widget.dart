@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:quranirab/widget/LanguagePopup.dart';
 import 'package:quranirab/widget/search.popup.dart';
 import 'package:quranirab/widget/setting.popup.dart';
+
+import '../provider/user.provider.dart';
 
 class Appbar extends StatefulWidget {
   const Appbar({Key? key}) : super(key: key);
@@ -11,8 +14,6 @@ class Appbar extends StatefulWidget {
 }
 
 class _AppbarState extends State<Appbar> {
-  String? role;
-
   @override
   void initState() {
     // TODO: implement initState
@@ -25,11 +26,23 @@ class _AppbarState extends State<Appbar> {
     return SliverAppBar(
       iconTheme: Theme.of(context).iconTheme,
       title: Row(
-        children: const [
+        children: [
           CircleAvatar(
             backgroundImage: AssetImage('assets/quranirab.png'),
             radius: 18.0,
           ),
+          Consumer<AppUser>(builder: (context, user, child) {
+            if (user.role == 'No Data') return Container();
+            return Padding(
+              padding: EdgeInsets.all(16.0),
+              child: user.role! == 'user'
+                  ? Chip(label: Text('Standard'))
+                  : user.role! == 'premium-user'
+                      ? Chip(
+                          backgroundColor: Colors.teal, label: Text('Premium'))
+                      : Container(),
+            );
+          }),
         ],
       ),
       elevation: 0,
