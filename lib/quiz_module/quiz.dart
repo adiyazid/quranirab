@@ -1,14 +1,16 @@
 import 'dart:math';
+
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/models/option-model.dart';
 import 'package:quranirab/provider/user.provider.dart';
+import 'package:quranirab/quiz_module/Quiz.Score.dart';
 import 'package:quranirab/quiz_module/quiz_model.dart';
 import 'package:quranirab/quiz_module/utils/AppColor.java';
-import 'package:quranirab/quiz_module/Quiz.Score.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:quranirab/quiz_module/utils/colors.dart';
 import 'package:quranirab/quiz_module/words.model.dart';
 
@@ -47,15 +49,16 @@ class _QuizState extends State<Quiz> {
   var windowWidth;
   var windowHeight;
   double windowSize = 0;
-
+  late String btnText;
   int btnIndex = 0;
   int score = 0;
   bool btnPressed = false;
-  String btnText = "Next";
+
   bool answered = false;
 
   @override
   void initState() {
+    btnText = AppLocalizations.of(context)!.next;
     generateQuestions();
     super.initState();
   }
@@ -75,7 +78,7 @@ class _QuizState extends State<Quiz> {
               onPageChanged: (page) {
                 if (page == wordList.length - 1) {
                   setState(() {
-                    btnText = "See Results";
+                    btnText = AppLocalizations.of(context)!.seeResult;
                   });
                 }
                 setState(() {
@@ -124,7 +127,7 @@ class _QuizState extends State<Quiz> {
                                     child: SizedBox(
                                       height: 40,
                                       child: Text(
-                                        'Question ' +
+                                        AppLocalizations.of(context)!.question +
                                             (index + 1).toString() +
                                             ' / ' +
                                             wordList.length.toString(),
@@ -140,7 +143,7 @@ class _QuizState extends State<Quiz> {
                                     child: SizedBox(
                                       height: 40.0,
                                       child: Text(
-                                        'Ayat',
+                                        AppLocalizations.of(context)!.sentence,
                                         //ayat_quran[index].toString(),
                                         style: const TextStyle(
                                             color: Colors.black,
@@ -332,7 +335,8 @@ class _QuizState extends State<Quiz> {
                             } else {
                               if (!btnPressed) {
                                 Fluttertoast.showToast(
-                                  msg: 'Please answer the questions',
+                                  msg: AppLocalizations.of(context)!
+                                      .pleaseAnswerQuestion,
                                   fontSize: 20,
                                   backgroundColor: Colors.black,
                                   textColor: Colors.white,

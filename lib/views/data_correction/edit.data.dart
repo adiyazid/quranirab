@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:group_radio_button/group_radio_button.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
+import 'package:quranirab/provider/delete.provider.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:tree_view/tree_view.dart';
@@ -35,9 +36,9 @@ class _EditDataState extends State<EditData>
   final _formKey2 = GlobalKey<FormState>();
   String? _inputParent;
   String? _inputParent2;
-  String? _inputCat;
-  String? _inputCat2;
-  String? _inputCat3;
+  String? _inputEngCat;
+  String? _inputEngCat2;
+  String? _inputEngCat3;
   String? _inputChildType;
   String? _inputChildType2;
   String? _inputChildType3;
@@ -47,10 +48,19 @@ class _EditDataState extends State<EditData>
   List<String> childType = ['unique', 'all', 'multiple', 'none'];
 
   List<String> wordType = ['none', 'label', 'main', 'main-label'];
-
+  final snackBar = SnackBar(
+    content: const Text('Delete Success'),
+  );
   int? _catID;
   int? _catID2;
   int? _catID3;
+
+  var _inputMalayCat;
+  var _inputMalayCat2;
+  var _inputMalayCat3;
+  var _inputArabCat;
+  var _inputArabCat2;
+  var _inputArabCat3;
 
   @override
   void initState() {
@@ -110,7 +120,7 @@ class _EditDataState extends State<EditData>
                           return AlertDialog(
                             title: Text('Add New Word Relationship'),
                             content: SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.7,
+                              height: MediaQuery.of(context).size.height * 0.87,
                               child: Form(
                                 key: _formKey,
                                 child: Column(
@@ -124,16 +134,27 @@ class _EditDataState extends State<EditData>
                                         }
                                         return null;
                                       },
-                                      dropdownSearchBaseStyle:
-                                          TextStyle(fontFamily: 'MeQuran2'),
-                                      showSearchBox: true,
-                                      mode: Mode.DIALOG,
-                                      showSelectedItems: true,
+                                      popupProps: PopupProps.dialog(
+                                        showSelectedItems: true,
+                                        itemBuilder: _style1,
+                                        dialogProps: DialogProps(
+                                          contentTextStyle: TextStyle(
+                                              fontFamily: 'MeQuran2',
+                                              fontSize: 24),
+                                        ),
+                                        showSearchBox: true,
+                                        textStyle: TextStyle(
+                                            fontFamily: 'MeQuran2',
+                                            fontSize: 24),
+                                      ),
                                       dropdownBuilder: _style,
-                                      popupItemBuilder: _style1,
                                       items: list,
-                                      dropdownSearchDecoration: InputDecoration(
-                                        labelText: "Parent Ancestry",
+                                      dropdownDecoratorProps:
+                                          const DropDownDecoratorProps(
+                                        dropdownSearchDecoration:
+                                            InputDecoration(
+                                          labelText: "Parent Ancestry",
+                                        ),
                                       ),
                                       onChanged: (String? value) {
                                         aya.wordDetail.forEach((element) async {
@@ -185,10 +206,55 @@ class _EditDataState extends State<EditData>
                                         newList.isEmpty)
                                       TextFormField(
                                         decoration: InputDecoration(
-                                            label: Text('New Category Name')),
+                                            label: Text(
+                                                'New English Category Name')),
                                         onChanged: (value) {
                                           setState(() {
-                                            _inputCat = value;
+                                            _inputEngCat = value;
+                                            _catID = null;
+                                          });
+                                        },
+                                        validator: (value) {
+                                          if (_inputType == 'Add New' &&
+                                                  value == null ||
+                                              value!.isEmpty &&
+                                                  _inputType == 'Add New') {
+                                            return 'Please enter some text';
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    if (_inputType == 'Add New' ||
+                                        newList.isEmpty)
+                                      TextFormField(
+                                        decoration: InputDecoration(
+                                            label:
+                                                Text('New Arab Category Name')),
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _inputArabCat = value;
+                                            _catID = null;
+                                          });
+                                        },
+                                        validator: (value) {
+                                          if (_inputType == 'Add New' &&
+                                                  value == null ||
+                                              value!.isEmpty &&
+                                                  _inputType == 'Add New') {
+                                            return 'Please enter some text';
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    if (_inputType == 'Add New' ||
+                                        newList.isEmpty)
+                                      TextFormField(
+                                        decoration: InputDecoration(
+                                            label: Text(
+                                                'New Malay Category Name')),
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _inputMalayCat = value;
                                             _catID = null;
                                           });
                                         },
@@ -212,21 +278,33 @@ class _EditDataState extends State<EditData>
                                             }
                                             return null;
                                           },
-                                          dropdownSearchBaseStyle:
-                                              TextStyle(fontFamily: 'MeQuran2'),
-                                          showSearchBox: true,
-                                          mode: Mode.DIALOG,
-                                          showSelectedItems: true,
-                                          dropdownBuilder: _style,
-                                          popupItemBuilder: _style1,
-                                          items: newList,
-                                          dropdownSearchDecoration:
-                                              InputDecoration(
-                                            labelText: "Child Category",
+                                          popupProps: PopupProps.dialog(
+                                            showSelectedItems: true,
+                                            itemBuilder: _style1,
+                                            dialogProps: DialogProps(
+                                              contentTextStyle: TextStyle(
+                                                  fontFamily: 'MeQuran2',
+                                                  fontSize: 24),
+                                            ),
+                                            showSearchBox: true,
+                                            textStyle: TextStyle(
+                                                fontFamily: 'MeQuran2',
+                                                fontSize: 24),
                                           ),
+                                          dropdownBuilder: _style,
+                                          dropdownDecoratorProps:
+                                              const DropDownDecoratorProps(
+                                            dropdownSearchDecoration:
+                                                InputDecoration(
+                                              labelText: "Child Category",
+                                            ),
+                                          ),
+                                          items: newList,
                                           onChanged: (String? value) async {
                                             setState(() {
-                                              _inputCat = value;
+                                              _inputEngCat = value;
+                                              _inputMalayCat = value;
+                                              _inputArabCat = value;
                                             });
                                             label.forEach((element) {
                                               if (element.name == value) {
@@ -243,18 +321,28 @@ class _EditDataState extends State<EditData>
                                           }
                                           return null;
                                         },
-                                        dropdownSearchBaseStyle:
-                                            TextStyle(fontFamily: 'MeQuran2'),
-                                        showSearchBox: true,
-                                        mode: Mode.DIALOG,
-                                        showSelectedItems: true,
-                                        dropdownBuilder: _style,
-                                        popupItemBuilder: _style1,
-                                        items: childType,
-                                        dropdownSearchDecoration:
-                                            InputDecoration(
-                                          labelText: "Child Type",
+                                        popupProps: PopupProps.dialog(
+                                          showSelectedItems: true,
+                                          itemBuilder: _style1,
+                                          dialogProps: DialogProps(
+                                            contentTextStyle: TextStyle(
+                                                fontFamily: 'MeQuran2',
+                                                fontSize: 24),
+                                          ),
+                                          showSearchBox: true,
+                                          textStyle: TextStyle(
+                                              fontFamily: 'MeQuran2',
+                                              fontSize: 24),
                                         ),
+                                        dropdownBuilder: _style,
+                                        dropdownDecoratorProps:
+                                            const DropDownDecoratorProps(
+                                          dropdownSearchDecoration:
+                                              InputDecoration(
+                                            labelText: "Child Type",
+                                          ),
+                                        ),
+                                        items: childType,
                                         onChanged: (String? value) {
                                           setState(() {
                                             _inputChildType = value;
@@ -268,33 +356,34 @@ class _EditDataState extends State<EditData>
                                           }
                                           return null;
                                         },
-                                        dropdownSearchBaseStyle:
-                                            TextStyle(fontFamily: 'MeQuran2'),
-                                        showSearchBox: true,
-                                        mode: Mode.DIALOG,
-                                        showSelectedItems: true,
-                                        dropdownBuilder: _style,
-                                        popupItemBuilder: _style1,
-                                        items: wordType,
-                                        dropdownSearchDecoration:
-                                            InputDecoration(
-                                          labelText: "Word Type",
+                                        popupProps: PopupProps.dialog(
+                                          showSelectedItems: true,
+                                          itemBuilder: _style1,
+                                          dialogProps: DialogProps(
+                                            contentTextStyle: TextStyle(
+                                                fontFamily: 'MeQuran2',
+                                                fontSize: 24),
+                                          ),
+                                          showSearchBox: true,
+                                          textStyle: TextStyle(
+                                              fontFamily: 'MeQuran2',
+                                              fontSize: 24),
                                         ),
+                                        dropdownBuilder: _style,
+                                        dropdownDecoratorProps:
+                                            const DropDownDecoratorProps(
+                                          dropdownSearchDecoration:
+                                              InputDecoration(
+                                            labelText: "Word Type",
+                                          ),
+                                        ),
+                                        items: wordType,
                                         onChanged: (String? value) {
                                           setState(() {
                                             _inputWordType = value;
                                           });
                                         },
                                         selectedItem: 'Choose word type'),
-                                    Text(
-                                        "Parent Ancestry ${_inputParent ?? "No data"}"),
-                                    Text(
-                                        "Category Name ${_inputCat ?? "No data"}"),
-                                    Text("Category ID ${_catID ?? "No data"}"),
-                                    Text(
-                                        "Child Type ${_inputChildType ?? "No data"}"),
-                                    Text(
-                                        "Word Type ${_inputWordType ?? "No data"}"),
                                     ElevatedButton(
                                         onPressed: () async {
                                           // Validate returns true if the form is valid, or false otherwise.
@@ -304,12 +393,14 @@ class _EditDataState extends State<EditData>
                                                 categoryId: "$_catID",
                                                 parent: _inputParent!,
                                                 wordType: _inputWordType!,
-                                                name: _inputCat!,
                                                 childType: _inputChildType!,
                                                 newCat: _inputType == 'Add New'
                                                     ? true
                                                     : false,
-                                                newRel: true);
+                                                newRel: true,
+                                                engName: _inputEngCat!,
+                                                malayName: _inputMalayCat!,
+                                                arabName: _inputArabCat!);
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
                                               const SnackBar(
@@ -350,7 +441,7 @@ class _EditDataState extends State<EditData>
                           return AlertDialog(
                             title: Text('Add New Word Category'),
                             content: SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.7,
+                              height: MediaQuery.of(context).size.height * 0.87,
                               child: Form(
                                 key: _formKey2,
                                 child: Column(
@@ -364,17 +455,28 @@ class _EditDataState extends State<EditData>
                                         }
                                         return null;
                                       },
-                                      dropdownSearchBaseStyle:
-                                          TextStyle(fontFamily: 'MeQuran2'),
-                                      showSearchBox: true,
-                                      mode: Mode.DIALOG,
-                                      showSelectedItems: true,
-                                      dropdownBuilder: _style,
-                                      popupItemBuilder: _style1,
-                                      items: list,
-                                      dropdownSearchDecoration: InputDecoration(
-                                        labelText: "Parent Ancestry",
+                                      popupProps: PopupProps.dialog(
+                                        showSelectedItems: true,
+                                        itemBuilder: _style1,
+                                        dialogProps: DialogProps(
+                                          contentTextStyle: TextStyle(
+                                              fontFamily: 'MeQuran2',
+                                              fontSize: 24),
+                                        ),
+                                        showSearchBox: true,
+                                        textStyle: TextStyle(
+                                            fontFamily: 'MeQuran2',
+                                            fontSize: 24),
                                       ),
+                                      dropdownBuilder: _style,
+                                      dropdownDecoratorProps:
+                                          const DropDownDecoratorProps(
+                                        dropdownSearchDecoration:
+                                            InputDecoration(
+                                          labelText: "Parent Ancestry",
+                                        ),
+                                      ),
+                                      items: list,
                                       onChanged: (String? value) {
                                         aya.wordDetail.forEach((element) async {
                                           if (element.name == value) {
@@ -411,10 +513,45 @@ class _EditDataState extends State<EditData>
                                     ),
                                     TextFormField(
                                       decoration: InputDecoration(
-                                          label: Text('New Category Name')),
+                                          label: Text(
+                                              'New English Category Name')),
                                       onChanged: (value) {
                                         setState(() {
-                                          _inputCat2 = value;
+                                          _inputEngCat2 = value;
+                                          _catID2 = null;
+                                        });
+                                      },
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter some text';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    TextFormField(
+                                      decoration: InputDecoration(
+                                          label:
+                                              Text('New Arabic Category Name')),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _inputArabCat2 = value;
+                                          _catID2 = null;
+                                        });
+                                      },
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter some text';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    TextFormField(
+                                      decoration: InputDecoration(
+                                          label:
+                                              Text('New Malay Category Name')),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _inputMalayCat2 = value;
                                           _catID2 = null;
                                         });
                                       },
@@ -432,18 +569,28 @@ class _EditDataState extends State<EditData>
                                           }
                                           return null;
                                         },
-                                        dropdownSearchBaseStyle:
-                                            TextStyle(fontFamily: 'MeQuran2'),
-                                        showSearchBox: true,
-                                        mode: Mode.DIALOG,
-                                        showSelectedItems: true,
-                                        dropdownBuilder: _style,
-                                        popupItemBuilder: _style1,
-                                        items: childType,
-                                        dropdownSearchDecoration:
-                                            InputDecoration(
-                                          labelText: "Child Type",
+                                        popupProps: PopupProps.dialog(
+                                          showSelectedItems: true,
+                                          itemBuilder: _style1,
+                                          dialogProps: DialogProps(
+                                            contentTextStyle: TextStyle(
+                                                fontFamily: 'MeQuran2',
+                                                fontSize: 24),
+                                          ),
+                                          showSearchBox: true,
+                                          textStyle: TextStyle(
+                                              fontFamily: 'MeQuran2',
+                                              fontSize: 24),
                                         ),
+                                        dropdownBuilder: _style,
+                                        dropdownDecoratorProps:
+                                            const DropDownDecoratorProps(
+                                          dropdownSearchDecoration:
+                                              InputDecoration(
+                                            labelText: "Child Type",
+                                          ),
+                                        ),
+                                        items: childType,
                                         onChanged: (String? value) {
                                           setState(() {
                                             _inputChildType2 = value;
@@ -457,33 +604,34 @@ class _EditDataState extends State<EditData>
                                           }
                                           return null;
                                         },
-                                        dropdownSearchBaseStyle:
-                                            TextStyle(fontFamily: 'MeQuran2'),
-                                        showSearchBox: true,
-                                        mode: Mode.DIALOG,
-                                        showSelectedItems: true,
-                                        dropdownBuilder: _style,
-                                        popupItemBuilder: _style1,
-                                        items: wordType,
-                                        dropdownSearchDecoration:
-                                            InputDecoration(
-                                          labelText: "Word Type",
+                                        popupProps: PopupProps.dialog(
+                                          showSelectedItems: true,
+                                          itemBuilder: _style1,
+                                          dialogProps: DialogProps(
+                                            contentTextStyle: TextStyle(
+                                                fontFamily: 'MeQuran2',
+                                                fontSize: 24),
+                                          ),
+                                          showSearchBox: true,
+                                          textStyle: TextStyle(
+                                              fontFamily: 'MeQuran2',
+                                              fontSize: 24),
                                         ),
+                                        dropdownBuilder: _style,
+                                        dropdownDecoratorProps:
+                                            const DropDownDecoratorProps(
+                                          dropdownSearchDecoration:
+                                              InputDecoration(
+                                            labelText: "Word Type",
+                                          ),
+                                        ),
+                                        items: wordType,
                                         onChanged: (String? value) {
                                           setState(() {
                                             _inputWordType2 = value;
                                           });
                                         },
                                         selectedItem: 'Choose word type'),
-                                    Text(
-                                        "Parent Ancestry ${_inputParent2 ?? "No data"}"),
-                                    Text(
-                                        "Category Name ${_inputCat2 ?? "No data"}"),
-                                    Text("Category ID ${_catID2 ?? "No data"}"),
-                                    Text(
-                                        "Child Type ${_inputChildType2 ?? "No data"}"),
-                                    Text(
-                                        "Word Type ${_inputWordType2 ?? "No data"}"),
                                     ElevatedButton(
                                         onPressed: () async {
                                           // Validate returns true if the form is valid, or false otherwise.
@@ -493,10 +641,12 @@ class _EditDataState extends State<EditData>
                                                 categoryId: "$_catID2",
                                                 parent: _inputParent2!,
                                                 wordType: _inputWordType2!,
-                                                name: _inputCat2!,
                                                 childType: _inputChildType2!,
                                                 newCat: true,
-                                                newRel: false);
+                                                newRel: false,
+                                                malayName: _inputMalayCat2!,
+                                                arabName: _inputArabCat2!,
+                                                engName: _inputEngCat2!);
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
                                               const SnackBar(
@@ -538,7 +688,7 @@ class _EditDataState extends State<EditData>
                           return AlertDialog(
                             title: Text('Add New Word Category'),
                             content: SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.7,
+                              height: MediaQuery.of(context).size.height * 0.87,
                               child: Form(
                                 key: _formKey2,
                                 child: Column(
@@ -552,22 +702,33 @@ class _EditDataState extends State<EditData>
                                         }
                                         return null;
                                       },
-                                      dropdownSearchBaseStyle:
-                                          TextStyle(fontFamily: 'MeQuran2'),
-                                      showSearchBox: true,
-                                      mode: Mode.DIALOG,
-                                      showSelectedItems: true,
-                                      dropdownBuilder: _style,
-                                      popupItemBuilder: _style1,
-                                      items: list,
-                                      dropdownSearchDecoration: InputDecoration(
-                                        labelText: "Select Word Category",
+                                      popupProps: PopupProps.dialog(
+                                        showSelectedItems: true,
+                                        itemBuilder: _style1,
+                                        dialogProps: DialogProps(
+                                          contentTextStyle: TextStyle(
+                                              fontFamily: 'MeQuran2',
+                                              fontSize: 24),
+                                        ),
+                                        showSearchBox: true,
+                                        textStyle: TextStyle(
+                                            fontFamily: 'MeQuran2',
+                                            fontSize: 24),
                                       ),
+                                      dropdownBuilder: _style,
+                                      dropdownDecoratorProps:
+                                          const DropDownDecoratorProps(
+                                        dropdownSearchDecoration:
+                                            InputDecoration(
+                                          labelText: "Select Word Category",
+                                        ),
+                                      ),
+                                      items: list,
                                       onChanged: (String? value) {
                                         aya.wordDetail.forEach((element) async {
                                           if (element.name == value) {
                                             setState(() {
-                                              _inputCat3 = value;
+                                              _inputEngCat3 = value;
                                               _catID3 = element.categoryId;
                                               _inputWordType3 = element.type;
                                               _inputChildType3 =
@@ -579,12 +740,47 @@ class _EditDataState extends State<EditData>
                                       selectedItem: 'Choose Word Category',
                                     ),
                                     TextFormField(
-                                      initialValue: _inputCat3,
+                                      initialValue: _inputEngCat3,
                                       decoration: InputDecoration(
-                                          label: Text('New Category Name')),
+                                          label: Text(
+                                              'New English Category Name')),
                                       onChanged: (value) {
                                         setState(() {
-                                          _inputCat3 = value;
+                                          _inputEngCat3 = value;
+                                        });
+                                      },
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter some text';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    TextFormField(
+                                      initialValue: _inputEngCat3,
+                                      decoration: InputDecoration(
+                                          label:
+                                              Text('New Arab Category Name')),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _inputArabCat3 = value;
+                                        });
+                                      },
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter some text';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    TextFormField(
+                                      initialValue: _inputEngCat3,
+                                      decoration: InputDecoration(
+                                          label:
+                                              Text('New Malay Category Name')),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _inputMalayCat3 = value;
                                         });
                                       },
                                       validator: (value) {
@@ -601,18 +797,28 @@ class _EditDataState extends State<EditData>
                                           }
                                           return null;
                                         },
-                                        dropdownSearchBaseStyle:
-                                            TextStyle(fontFamily: 'MeQuran2'),
-                                        showSearchBox: true,
-                                        mode: Mode.DIALOG,
-                                        showSelectedItems: true,
-                                        dropdownBuilder: _style,
-                                        popupItemBuilder: _style1,
-                                        items: childType,
-                                        dropdownSearchDecoration:
-                                            InputDecoration(
-                                          labelText: "Child Type",
+                                        popupProps: PopupProps.dialog(
+                                          showSelectedItems: true,
+                                          itemBuilder: _style1,
+                                          dialogProps: DialogProps(
+                                            contentTextStyle: TextStyle(
+                                                fontFamily: 'MeQuran2',
+                                                fontSize: 24),
+                                          ),
+                                          showSearchBox: true,
+                                          textStyle: TextStyle(
+                                              fontFamily: 'MeQuran2',
+                                              fontSize: 24),
                                         ),
+                                        dropdownBuilder: _style,
+                                        dropdownDecoratorProps:
+                                            const DropDownDecoratorProps(
+                                          dropdownSearchDecoration:
+                                              InputDecoration(
+                                            labelText: "Child Type",
+                                          ),
+                                        ),
+                                        items: childType,
                                         onChanged: (String? value) {
                                           setState(() {
                                             _inputChildType3 = value;
@@ -627,18 +833,28 @@ class _EditDataState extends State<EditData>
                                           }
                                           return null;
                                         },
-                                        dropdownSearchBaseStyle:
-                                            TextStyle(fontFamily: 'MeQuran2'),
-                                        showSearchBox: true,
-                                        mode: Mode.DIALOG,
-                                        showSelectedItems: true,
-                                        dropdownBuilder: _style,
-                                        popupItemBuilder: _style1,
-                                        items: wordType,
-                                        dropdownSearchDecoration:
-                                            InputDecoration(
-                                          labelText: "Word Type",
+                                        popupProps: PopupProps.dialog(
+                                          showSelectedItems: true,
+                                          itemBuilder: _style1,
+                                          dialogProps: DialogProps(
+                                            contentTextStyle: TextStyle(
+                                                fontFamily: 'MeQuran2',
+                                                fontSize: 24),
+                                          ),
+                                          showSearchBox: true,
+                                          textStyle: TextStyle(
+                                              fontFamily: 'MeQuran2',
+                                              fontSize: 24),
                                         ),
+                                        dropdownBuilder: _style,
+                                        dropdownDecoratorProps:
+                                            const DropDownDecoratorProps(
+                                          dropdownSearchDecoration:
+                                              InputDecoration(
+                                            labelText: "Word Type",
+                                          ),
+                                        ),
+                                        items: wordType,
                                         onChanged: (String? value) {
                                           setState(() {
                                             _inputWordType3 = value;
@@ -646,13 +862,6 @@ class _EditDataState extends State<EditData>
                                         },
                                         selectedItem: _inputWordType3 ??
                                             'Choose word type'),
-                                    Text("Category ID ${_catID3 ?? "No data"}"),
-                                    Text(
-                                        "Category Name ${_inputCat3 ?? "No data"}"),
-                                    Text(
-                                        "Child Type ${_inputChildType3 ?? "No data"}"),
-                                    Text(
-                                        "Word Type ${_inputWordType3 ?? "No data"}"),
                                     ElevatedButton(
                                         onPressed: () async {
                                           // Validate returns true if the form is valid, or false otherwise.
@@ -662,7 +871,9 @@ class _EditDataState extends State<EditData>
                                                     context,
                                                     listen: false)
                                                 .updateCategory(
-                                                    _inputCat3!,
+                                                    _inputEngCat3!,
+                                                    _inputArabCat3!,
+                                                    _inputMalayCat3!,
                                                     _inputChildType3!,
                                                     _inputWordType3!,
                                                     '$_catID3');
@@ -732,7 +943,7 @@ class _EditDataState extends State<EditData>
           textAlign: TextAlign.center,
           style: TextStyle(
               fontFamily: 'MeQuran2',
-              color: isSelected ? Colors.cyanAccent : null,
+              color: isSelected ? Colors.cyanAccent : Colors.amber,
               fontSize: 24),
         ),
       ),
@@ -773,17 +984,97 @@ class _EditDataState extends State<EditData>
       document.isparent!
           ? Card(
               color:
-                  Provider.of<ThemeProvider>(context, listen: false)
-                          .isDarkMode
+                  Provider.of<ThemeProvider>(context, listen: false).isDarkMode
                       ? Color(0xff4C6A7A)
                       : Color(0xffE0BD61),
               child: ListTile(
                   leading: Icon(Icons.navigate_next),
-                  title: Text(document.name!),
+                  title: Text(document.name!,
+                      style: TextStyle(fontFamily: 'MeQuran2')),
                   subtitle: Text(
-                      'ID: ${document.categoryId}, Type: ${document.type}, Child: ${document.childType}'),
-                  trailing: Text(
-                      "${list.length} ${AppLocalizations.of(context)!.items}")))
+                    'ID: ${document.categoryId}, Type: ${document.type}, Child: ${document.childType}',
+                  ),
+                  trailing: SizedBox(
+                    width: 100,
+                    child: Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.edit),
+                          onPressed: () async {
+                            List<WordDetail> label =
+                                await Provider.of<AyaProvider>(
+                                        context,
+                                        listen: false)
+                                    .getList(
+                                        document.parent ?? '',
+                                        Provider.of<AyaProvider>(context,
+                                                listen: false)
+                                            .getLangID(context));
+                            popUp(document, label);
+                          },
+                        ),
+                        Spacer(),
+                        IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () async {
+                            showModalBottomSheet<void>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Container(
+                                  height: 100,
+                                  color: Colors.amber,
+                                  child: Center(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Colors.redAccent,
+                                              elevation: 2,
+                                              minimumSize: const Size(200, 40),
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(8),
+                                                ),
+                                              ),
+                                            ),
+                                            child: const Text('Confirm Delete'),
+                                            onPressed: () {
+                                              print(document.id);
+                                              Provider.of<DeleteProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .deleteRelationship(
+                                                      document.id);
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(snackBar);
+                                              Navigator.pop(context);
+                                              Navigator.pop(context);
+                                              Navigator.pop(context);
+                                            }),
+                                        TextButton(
+                                          child: Text(
+                                            'Cancel',
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .backgroundColor),
+                                          ),
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  )))
           : list.isNotEmpty
               ? Card(
                   color: Provider.of<ThemeProvider>(context, listen: false)
@@ -792,41 +1083,180 @@ class _EditDataState extends State<EditData>
                       : Color(0xffFCD77A),
                   child: ListTile(
                       leading: Icon(Icons.arrow_right),
-                      title: Text(document.name!),
+                      title: Text(document.name!,
+                          style: TextStyle(fontFamily: 'MeQuran2')),
                       subtitle: Text(
                           'ID: ${document.categoryId}, Type: ${document.type ?? "None"}, Child: ${document.childType}'),
-                      trailing: IconButton(
-                        icon: Icon(Icons.edit),
-                        onPressed: () async {
-                          List<WordDetail> label =
-                              await Provider.of<AyaProvider>(context,
-                                      listen: false)
-                                  .getList(
-                                      document.parent ?? '',
-                                      Provider.of<AyaProvider>(context,
-                                              listen: false)
-                                          .getLangID(context));
-                          popUp(document, label);
-                        },
+                      trailing: SizedBox(
+                        width: 100,
+                        child: Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.edit),
+                              onPressed: () async {
+                                List<WordDetail> label =
+                                    await Provider.of<AyaProvider>(context,
+                                            listen: false)
+                                        .getList(
+                                            document.parent ?? '',
+                                            Provider.of<AyaProvider>(context,
+                                                    listen: false)
+                                                .getLangID(context));
+                                popUp(document, label);
+                              },
+                            ),
+                            Spacer(),
+                            IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () async {
+                                showModalBottomSheet<void>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return Container(
+                                      height: 100,
+                                      color: Colors.amber,
+                                      child: Center(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  primary: Colors.redAccent,
+                                                  elevation: 2,
+                                                  minimumSize:
+                                                      const Size(200, 40),
+                                                  shape:
+                                                      const RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(8),
+                                                    ),
+                                                  ),
+                                                ),
+                                                child: const Text(
+                                                    'Confirm Delete'),
+                                                onPressed: () {
+                                                  print(document.id);
+                                                  Provider.of<DeleteProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .deleteRelationship(
+                                                          document.id);
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(snackBar);
+                                                  Navigator.pop(context);
+                                                  Navigator.pop(context);
+                                                  Navigator.pop(context);
+                                                }),
+                                            TextButton(
+                                              child: Text(
+                                                'Cancel',
+                                                style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .backgroundColor),
+                                              ),
+                                              onPressed: () =>
+                                                  Navigator.pop(context),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                       )),
                 )
               : ListTile(
                   leading: Icon(Icons.remove),
-                  title: Text(document.name!),
+                  title: Text(document.name!,
+                      style: TextStyle(fontFamily: 'MeQuran2')),
                   subtitle: Text(
                       'ID: ${document.categoryId}, Type: ${document.type ?? "None"}, Child: ${document.childType}'),
-                  trailing: IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () async {
-                      List<WordDetail> label = await Provider.of<AyaProvider>(
-                              context,
-                              listen: false)
-                          .getList(
-                              document.parent ?? '',
-                              Provider.of<AyaProvider>(context, listen: false)
-                                  .getLangID(context));
-                      popUp(document, label);
-                    },
+                  trailing: SizedBox(
+                    width: 100,
+                    child: Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.edit),
+                          onPressed: () async {
+                            List<WordDetail> label =
+                                await Provider.of<AyaProvider>(
+                                        context,
+                                        listen: false)
+                                    .getList(
+                                        document.parent ?? '',
+                                        Provider.of<AyaProvider>(context,
+                                                listen: false)
+                                            .getLangID(context));
+                            popUp(document, label);
+                          },
+                        ),
+                        Spacer(),
+                        IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () async {
+                            showModalBottomSheet<void>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Container(
+                                  height: 100,
+                                  color: Colors.amber,
+                                  child: Center(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Colors.redAccent,
+                                              elevation: 2,
+                                              minimumSize: const Size(200, 40),
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(8),
+                                                ),
+                                              ),
+                                            ),
+                                            child: const Text('Confirm Delete'),
+                                            onPressed: () {
+                                              print(document.id);
+                                              Provider.of<DeleteProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .deleteRelationship(
+                                                      document.id);
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(snackBar);
+                                              Navigator.pop(context);
+                                              Navigator.pop(context);
+                                              Navigator.pop(context);
+                                            }),
+                                        TextButton(
+                                          child: Text(
+                                            'Cancel',
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .backgroundColor),
+                                          ),
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ));
 
   Future<dynamic> popUp(WordDetail document, List<WordDetail> label) {
@@ -842,17 +1272,24 @@ class _EditDataState extends State<EditData>
             height: MediaQuery.of(context).size.height * 0.4,
             child: AlertDialog(
               content: DropdownSearch<String>(
-                dropdownSearchBaseStyle: TextStyle(fontFamily: 'MeQuran2'),
-                showSearchBox: true,
-                mode: Mode.DIALOG,
-                showSelectedItems: true,
-                dropdownBuilder: _style,
-                popupItemBuilder: _style1,
-                items: list,
-                dropdownSearchDecoration: InputDecoration(
-                  labelText:
-                      "Word detail from parent ${document.parent!.split('/').last}",
+                popupProps: PopupProps.dialog(
+                  showSelectedItems: true,
+                  itemBuilder: _style1,
+                  dialogProps: DialogProps(
+                    contentTextStyle:
+                        TextStyle(fontFamily: 'MeQuran2', fontSize: 24),
+                  ),
+                  showSearchBox: true,
+                  textStyle: TextStyle(fontFamily: 'MeQuran2', fontSize: 24),
                 ),
+                dropdownBuilder: _style,
+                dropdownDecoratorProps: DropDownDecoratorProps(
+                  dropdownSearchDecoration: InputDecoration(
+                    labelText:
+                        "Word detail from parent ${document.parent!.split('/').last}",
+                  ),
+                ),
+                items: list,
                 onChanged: (String? value) {
                   setState(() {
                     data = value;
@@ -892,9 +1329,11 @@ class _EditDataState extends State<EditData>
   Future<void> addData({
     required String parent,
     required String wordType,
-    required String name,
+    required String engName,
+    required String? malayName,
+    required String? arabName,
     required String childType,
-    String? categoryId,
+    required String? categoryId,
     required bool newCat,
     required bool newRel,
   }) async {
@@ -908,9 +1347,12 @@ class _EditDataState extends State<EditData>
       await Provider.of<AyaProvider>(context, listen: false).addNewCategory(
           categoryID: int.parse(catID),
           parent: parent,
-          name: name,
           childType: childType,
-          wordType: wordType);
+          wordType: wordType,
+          malayName: malayName!,
+          arabName: arabName!,
+          engName: engName,
+          newCat: newCat);
     } else {
       setState(() {
         catID = categoryId;
@@ -920,7 +1362,8 @@ class _EditDataState extends State<EditData>
       await Provider.of<AyaProvider>(context, listen: false).addNewRelationship(
           relationshipID: int.parse(id),
           wordID: widget.wordId,
-          categoryID: int.parse(catID));
+          categoryID: int.parse(catID),
+          newCat: newCat);
     }
     print('data added');
   }

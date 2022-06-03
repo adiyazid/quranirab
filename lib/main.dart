@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
 import 'package:quranirab/provider/bookmark.provider.dart';
+import 'package:quranirab/provider/delete.provider.dart';
 import 'package:quranirab/provider/language.provider.dart';
 import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
@@ -65,7 +66,9 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider<LangProvider>(
             create: (context) => LangProvider()),
         ChangeNotifierProvider<BookMarkProvider>(
-            create: (context) => BookMarkProvider())
+            create: (context) => BookMarkProvider()),
+        ChangeNotifierProvider<DeleteProvider>(
+            create: (context) => DeleteProvider())
       ],
       child: ChangeNotifierProvider(
           create: (context) => ThemeProvider(),

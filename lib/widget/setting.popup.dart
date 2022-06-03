@@ -1,4 +1,5 @@
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
@@ -37,7 +38,7 @@ class _SettingPopupState extends State<SettingPopup>
 
   bool get isDarkMode {
     if (themeMode == ThemeMode.system) {
-      final brightness = SchedulerBinding.instance!.window.platformBrightness;
+      final brightness = SchedulerBinding.instance.window.platformBrightness;
       return brightness == Brightness.dark;
     } else {
       return themeMode == ThemeMode.dark;
@@ -46,14 +47,15 @@ class _SettingPopupState extends State<SettingPopup>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _controller = TabController(length: 3, vsync: this, initialIndex: 0);
     // Create TabController for getting the index of current tab
     _controller.addListener(() {
       setState(() {});
       if (_controller.indexIsChanging) {
-        print(_controller.index);
+        if (kDebugMode) {
+          print(_controller.index);
+        }
       }
     });
   }
@@ -91,7 +93,7 @@ class _SettingPopupState extends State<SettingPopup>
     ];
     final font = Provider.of<AyaProvider>(context);
     final themeProvider = Provider.of<ThemeProvider>(context);
-    final brightness = SchedulerBinding.instance!.window.platformBrightness;
+    final brightness = SchedulerBinding.instance.window.platformBrightness;
     return StatefulBuilder(builder: (context, setState) {
       return CustomPopupMenu(
         controller: _custom,
@@ -319,7 +321,7 @@ Widget buildMenuItem({
   );
 }
 
-void SelectedItem(BuildContext context, int index) {
+void selectedItem(BuildContext context, int index) {
   Navigator.of(context).pop();
 }
 

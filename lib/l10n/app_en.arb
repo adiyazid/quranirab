@@ -55,5 +55,13 @@
   "beginningSurah": "Beginning Surah",
   "nextPage": "Next Page",
   "items": "Items",
-  "wordDetail": "Word Detail for Word"
+  "wordDetail": "Detail for ",
+  "startTheQuiz": "Start the Quiz",
+  "back": "Back",
+  "next": "Next",
+  "question": "Question ",
+  "wordType": "Word Type",
+  "sentence": "Sentence",
+  "seeResult": "See Result",
+  "pleaseAnswerQuestion": "Please answer the questions"
 }
