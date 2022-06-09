@@ -3,12 +3,12 @@ import 'package:flutter/scheduler.dart';
 import 'package:get_storage/get_storage.dart';
 
 class ThemeProvider extends ChangeNotifier {
+  ThemeMode? themeMode;
+  var box = GetStorage();
+
   ThemeProvider() {
     getLocal();
   }
-
-  ThemeMode? themeMode;
-  var box = GetStorage();
 
   bool get isDarkMode {
     if (themeMode == ThemeMode.system) {
@@ -27,7 +27,6 @@ class ThemeProvider extends ChangeNotifier {
 
   Future<void> getLocal() async {
     var bool = await box.read('dark');
-    print(box.read('dark'));
     if (bool == null) {
       themeMode = ThemeMode.system;
     } else {

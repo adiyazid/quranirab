@@ -53,7 +53,7 @@ class _MyAppState extends State<MyApp> {
       _locale = value;
     });
   }
-
+  var bool = GetStorage().read('dark');
   @override
   Widget build(BuildContext context) {
     final appUser = AppUser();
