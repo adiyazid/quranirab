@@ -42,7 +42,7 @@ class _AppbarState extends State<Appbar> {
                           backgroundColor: Colors.teal, label: Text('Premium'))
                       : user.role == 'tester'
                           ? Chip(
-                              backgroundColor: Colors.indigo,
+                              backgroundColor: Colors.amber,
                               label: Text('Tester'))
                           : Container(),
             );

@@ -41,7 +41,7 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
             ),
             height: 57,
             child: CustomScrollView(
-              slivers: [Appbar()],
+              slivers: const [Appbar()],
             ),
           ),
           Container(

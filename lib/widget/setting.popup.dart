@@ -54,10 +54,10 @@ class _SettingPopupState extends State<SettingPopup>
     _controller = TabController(
         length: 3,
         vsync: this,
-        initialIndex: dark
-            ? 2
-            : dark == null
-                ? 0
+        initialIndex: dark == null
+            ? 0
+            : dark
+                ? 2
                 : 1);
     // Create TabController for getting the index of current tab
     _controller.addListener(() {
