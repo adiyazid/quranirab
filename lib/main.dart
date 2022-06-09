@@ -32,7 +32,6 @@ Future<void> main() async {
             measurementId: "G-GF36EVS4JQ")
         : null,
   );
-
   runApp(MyApp());
 }
 
@@ -48,7 +47,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Locale _locale = Locale('en');
-  var dark = GetStorage().read('dark');
 
   void setLocale(Locale value) {
     setState(() {
@@ -72,7 +70,9 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider<BookMarkProvider>(
             create: (context) => BookMarkProvider()),
         ChangeNotifierProvider<DeleteProvider>(
-            create: (context) => DeleteProvider())
+            create: (context) => DeleteProvider()),
+        ChangeNotifierProvider<ThemeProvider>(
+            create: (context) => ThemeProvider())
       ],
       child: ChangeNotifierProvider(
           create: (context) => ThemeProvider(),

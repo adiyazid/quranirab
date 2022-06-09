@@ -35,12 +35,16 @@ class _AppbarState extends State<Appbar> {
             if (user.role == 'No Data') return Container();
             return Padding(
               padding: EdgeInsets.all(16.0),
-              child: user.role! == 'user'
+              child: user.role == 'user'
                   ? Chip(label: Text('Standard'))
-                  : user.role! == 'premium-user'
+                  : user.role == 'premium-user'
                       ? Chip(
                           backgroundColor: Colors.teal, label: Text('Premium'))
-                      : Container(),
+                      : user.role == 'tester'
+                          ? Chip(
+                              backgroundColor: Colors.indigo,
+                              label: Text('Tester'))
+                          : Container(),
             );
           }),
         ],

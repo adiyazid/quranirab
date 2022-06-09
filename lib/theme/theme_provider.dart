@@ -7,7 +7,7 @@ class ThemeProvider extends ChangeNotifier {
     getLocal();
   }
 
-  ThemeMode themeMode = ThemeMode.system;
+  ThemeMode? themeMode;
   var box = GetStorage();
 
   bool get isDarkMode {
@@ -19,18 +19,21 @@ class ThemeProvider extends ChangeNotifier {
     }
   }
 
-  void toggleTheme(bool isOn) {
+  Future<void> toggleTheme(bool isOn) async {
     themeMode = isOn ? ThemeMode.dark : ThemeMode.light;
-    box.write('dark', isOn);
-    getLocal();
+    await box.write('dark', isOn);
     notifyListeners();
   }
 
-  void getLocal() {
-    var bool = box.read('dark');
-    if (bool == null) themeMode = ThemeMode.system;
-    if (!bool) themeMode = ThemeMode.light;
-    if (bool) themeMode = ThemeMode.dark;
+  Future<void> getLocal() async {
+    var bool = await box.read('dark');
+    print(box.read('dark'));
+    if (bool == null) {
+      themeMode = ThemeMode.system;
+    } else {
+      if (!bool) themeMode = ThemeMode.light;
+      if (bool) themeMode = ThemeMode.dark;
+    }
     notifyListeners();
   }
 }
