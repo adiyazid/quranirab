@@ -59,7 +59,9 @@ class QuranThemes {
     // icon color white and orange
     // textSelectionTheme:
     // const TextSelectionThemeData(cursorColor: Colors.orange),
-    colorScheme: const ColorScheme.dark(),
+    colorScheme: const ColorScheme.dark(
+      primary: Color(0xFF67748E),
+    ),
     textSelectionTheme: TextSelectionThemeData(selectionColor: Colors.white),
   );
   static final lightTheme = ThemeData(
@@ -70,7 +72,9 @@ class QuranThemes {
     secondaryHeaderColor: Colors.black,
     scaffoldBackgroundColor: Colors.white,
     primaryColor: const Color(0xFFFFC896),
-    colorScheme: ColorScheme.light(),
+    colorScheme: ColorScheme.light(
+      primary: Color(0xFFFFC896),
+    ),
     iconTheme: const IconThemeData(color: Color(0xFFE86F00)),
     indicatorColor: Colors.orange,
     primarySwatch: Colors.orange,

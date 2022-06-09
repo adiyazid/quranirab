@@ -36,14 +36,22 @@ class _AppbarState extends State<Appbar> {
             return Padding(
               padding: EdgeInsets.all(16.0),
               child: user.role == 'user'
-                  ? Chip(label: Text('Standard'))
+                  ? Chip(
+                      backgroundColor: Colors.amber,
+                      label: Text(
+                        'Standard',
+                        style: TextStyle(color: Colors.black),
+                      ))
                   : user.role == 'premium-user'
                       ? Chip(
                           backgroundColor: Colors.teal, label: Text('Premium'))
                       : user.role == 'tester'
                           ? Chip(
                               backgroundColor: Colors.amber,
-                              label: Text('Tester'))
+                              label: Text(
+                                'Tester',
+                                style: TextStyle(color: Colors.black),
+                              ))
                           : Container(),
             );
           }),

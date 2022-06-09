@@ -30,8 +30,12 @@ class _HomePageState extends State<HomePage>
     getList();
     snackBar = SnackBar(
         backgroundColor: Colors.tealAccent,
-        content: Text('This content only unlock for paid version'),
-        action: SnackBarAction(label: 'Upgrade now!', onPressed: () {}));
+        content: Text(
+          'This content only unlock for paid version',
+          style: TextStyle(color: Colors.black),
+        ),
+        action: SnackBarAction(
+            textColor: Colors.black, label: 'Upgrade now!', onPressed: () {}));
     _tabController = TabController(length: 2, vsync: this);
     super.initState();
   }
@@ -64,9 +68,7 @@ class _HomePageState extends State<HomePage>
                 ),
                 height: 57,
                 child: CustomScrollView(
-                  slivers: const [
-                    Appbar()
-                  ],
+                  slivers: const [Appbar()],
                 ),
               ),
               SizedBox(
