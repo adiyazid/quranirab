@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:get_storage/get_storage.dart';
 
 class ThemeProvider extends ChangeNotifier {
+  ThemeProvider() {
+    getLocal();
+  }
+
   ThemeMode themeMode = ThemeMode.system;
+  var box = GetStorage();
 
   bool get isDarkMode {
     if (themeMode == ThemeMode.system) {
@@ -15,6 +21,16 @@ class ThemeProvider extends ChangeNotifier {
 
   void toggleTheme(bool isOn) {
     themeMode = isOn ? ThemeMode.dark : ThemeMode.light;
+    box.write('dark', isOn);
+    getLocal();
+    notifyListeners();
+  }
+
+  void getLocal() {
+    var bool = box.read('dark');
+    if (bool == null) themeMode = ThemeMode.system;
+    if (!bool) themeMode = ThemeMode.light;
+    if (bool) themeMode = ThemeMode.dark;
     notifyListeners();
   }
 }

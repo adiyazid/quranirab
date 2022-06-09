@@ -48,6 +48,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Locale _locale = Locale('en');
+  var dark = GetStorage().read('dark');
 
   void setLocale(Locale value) {
     setState(() {
