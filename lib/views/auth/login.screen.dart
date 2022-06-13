@@ -46,7 +46,7 @@ class _SigninWidgetState extends State<SigninWidget>
 
   @override
   Widget build(BuildContext context) {
-    final appUser = Provider.of<AppUser>(context);
+    final appUser = Provider.of<AppUser>(context, listen: false);
     final theme = Provider.of<ThemeProvider>(context);
     // Figma Flutter Generator SigninWidget - FRAME
     return SafeArea(
@@ -320,29 +320,17 @@ class _SigninWidgetState extends State<SigninWidget>
                                       ),
                                     );
                                   } else {
-                                    setState(() {});
+                                    if (mounted) {
+                                      setState(() {});
+                                    }
                                     loading = true;
                                     try {
                                       await appUser.signIn(
                                           email: _email.text,
                                           password: _pass.text);
-                                      setState(() {});
                                       loading = false;
-                                      showTopSnackBar(
-                                          context,
-                                          CustomSnackBar.success(
-                                            message:
-                                                AppLocalizations.of(context)!
-                                                    .loginSuccess,
-                                          ),
-                                          showOutAnimationDuration:
-                                              Duration(milliseconds: 200),
-                                          hideOutAnimationDuration:
-                                              Duration(milliseconds: 250),
-                                          displayDuration:
-                                              Duration(milliseconds: 1000));
                                     } catch (e) {
-                                      setState(() {});
+                                      setState((){});
                                       loading = false;
                                       showTopSnackBar(
                                           context,
