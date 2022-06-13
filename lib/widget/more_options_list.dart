@@ -41,7 +41,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
   @override
   Widget build(BuildContext context) {
     var role = Provider.of<AppUser>(context, listen: false).role;
-
+    var themeProvider = Provider.of<ThemeProvider>(context);
     return Consumer<AyaProvider>(builder: (context, aya, child) {
       List<WordDetail> parent = aya.getParent();
       return aya.loadingCategory
@@ -78,7 +78,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                                     builder: (context) =>
                                         EditData(widget.wordId)));
                           },
-                          child: Text('Edit')),
+                          child: Text('Edit',style: TextStyle(color: themeProvider.isDarkMode? Colors.white:Colors.black),)),
                     ),
                   const Divider(
                     thickness: 1,
