@@ -7,7 +7,6 @@ import 'package:quranirab/provider/delete.provider.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:tree_view/tree_view.dart';
-
 import '../../models/word.detail.dart';
 import '../../theme/theme_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
