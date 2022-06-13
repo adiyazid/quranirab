@@ -24,9 +24,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class SurahScreen extends StatefulWidget {
   final List allpages;
   final String sura_id;
-  final String name;
-  final String detail;
-  final int index;
+  final String? name;
+  final String? detail;
+  final int? index;
 
   const SurahScreen(
       this.allpages, this.sura_id, this.name, this.detail, this.index,
@@ -90,7 +90,7 @@ class _SurahScreenState extends State<SurahScreen>
   void initState() {
     // TODO: implement initState
     _tabController = TabController(vsync: this, length: 2, initialIndex: 1);
-    i = widget.index;
+    i = widget.index!;
 
     getHizb();
     getData();
@@ -597,7 +597,7 @@ class topSurah extends StatelessWidget {
                 ),
               ),
               subtitle: Text(
-                widget1.detail,
+                widget1.detail!,
                 style: TextStyle(
                   color: Colors.grey,
                   fontSize: MediaQuery.of(context).size.width < 500 ? 14 : 20,

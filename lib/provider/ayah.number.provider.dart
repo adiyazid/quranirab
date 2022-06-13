@@ -9614,7 +9614,7 @@ class AyaProvider extends ChangeNotifier {
     }
   }
 
-  getStart(int id, int currentPage) async {
+  getStart(int? id, int? currentPage) async {
     sura_id = id;
     var jsonData = {
       "split_sura": [

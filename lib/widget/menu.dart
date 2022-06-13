@@ -6,6 +6,7 @@ import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/auth/landing.page.dart';
 import 'package:quranirab/views/home.page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:quranirab/views/test.dart';
 import '../views/user.profile/user.profile.dart';
 
 class Menu extends StatelessWidget {
@@ -116,6 +117,18 @@ class Menu extends StatelessWidget {
                         builder: (context) => const LeaderBoardMenu()));
               },
             ),
+            const SizedBox(height: 16),
+            buildMenuItem(
+                text: AppLocalizations.of(context)!.home,
+                icon: Icons.home_outlined,
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const HomePage1()));
+                },
+                darkMode: themeProvider.isDarkMode),
             const SizedBox(height: 16),
             buildMenuItem(
               darkMode: themeProvider.isDarkMode,

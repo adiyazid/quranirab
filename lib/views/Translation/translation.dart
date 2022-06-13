@@ -160,10 +160,10 @@ class _TranslationState extends State<Translation> {
                                                                           .sura_id,
                                                                       widget
                                                                           .widget
-                                                                          .name,
+                                                                          .name!,
                                                                       widget
                                                                           .widget
-                                                                          .detail,
+                                                                          .detail!,
                                                                       pages);
                                                                 }
                                                               },
