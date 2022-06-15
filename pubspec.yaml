@@ -76,6 +76,7 @@ dependencies:
   universal_html:
   loading_animation_widget: ^1.2.0+1
   flutter_stripe: ^3.1.0
+  flutter_stripe_web: ^1.1.0
 
 dev_dependencies:
   flutter_test:
