@@ -1,15 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
+import 'package:quranirab/provider/ayah.number.provider.dart';
+import 'package:quranirab/provider/bookmark.provider.dart';
 import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/surah.screen.dart';
-import 'package:skeleton_loader/skeleton_loader.dart';
-import 'package:quranirab/provider/ayah.number.provider.dart';
-import 'package:quranirab/provider/bookmark.provider.dart';
 import 'package:quranirab/widget/menu.dart';
+import 'package:skeleton_loader/skeleton_loader.dart';
+
 import '../widget/appbar.widget.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -35,7 +37,36 @@ class _HomePageState extends State<HomePage>
           style: TextStyle(color: Colors.black),
         ),
         action: SnackBarAction(
-            textColor: Colors.black, label: 'Upgrade now!', onPressed: () {}));
+            textColor: Colors.black,
+            label: 'Upgrade now!',
+            onPressed: () async {
+              await showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    content: CardField(
+                      onCardChanged: (card) {
+                        print(card);
+                      },
+                    ),
+                    actions: [
+                      ElevatedButton.icon(
+                          onPressed: () async {
+                            final paymentMethod = await Stripe.instance
+                                .createPaymentMethod(PaymentMethodParams.card(
+                                    paymentMethodData: PaymentMethodData(
+                                        billingDetails: BillingDetails())));
+                          },
+                          label: Text('Pay Now'),
+                          icon: Icon(
+                            Icons.payment,
+                          ))
+                    ],
+                  );
+                },
+              );
+              // create payment method
+            }));
     _tabController = TabController(length: 2, vsync: this);
     super.initState();
   }

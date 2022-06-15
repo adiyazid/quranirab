@@ -657,7 +657,7 @@ class _EditDataState extends State<EditData>
                   title: Text(document.name!,
                       style: TextStyle(fontFamily: 'MeQuran2')),
                   subtitle: Text(
-                    'ID: ${document.categoryId}, Type: ${document.type}, Child: ${document.childType}',
+                    'ID: ${document.categoryId}, Type: ${document.type}, Child: ${document.childType} , Parent${document.parent}',
                   ),
                   trailing: SizedBox(
                     width: 100,
@@ -751,7 +751,7 @@ class _EditDataState extends State<EditData>
                       title: Text(document.name!,
                           style: TextStyle(fontFamily: 'MeQuran2')),
                       subtitle: Text(
-                          'ID: ${document.categoryId}, Type: ${document.type ?? "None"}, Child: ${document.childType}'),
+                          'ID: ${document.categoryId}, Type: ${document.type ?? "None"}, Child: ${document.childType}, Parent${document.parent}'),
                       trailing: SizedBox(
                         width: 100,
                         child: Row(
@@ -841,7 +841,7 @@ class _EditDataState extends State<EditData>
                   title: Text(document.name!,
                       style: TextStyle(fontFamily: 'MeQuran2')),
                   subtitle: Text(
-                      'ID: ${document.categoryId}, Type: ${document.type ?? "None"}, Child: ${document.childType}'),
+                      'ID: ${document.categoryId}, Type: ${document.type ?? "None"}, Child: ${document.childType} , Parent${document.parent}'),
                   trailing: SizedBox(
                     width: 100,
                     child: Row(

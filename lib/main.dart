@@ -1,19 +1,20 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:provider/provider.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
 import 'package:quranirab/provider/bookmark.provider.dart';
 import 'package:quranirab/provider/delete.provider.dart';
 import 'package:quranirab/provider/language.provider.dart';
 import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:quranirab/views/auth/landing.page.dart';
-import 'framework/horizontal.scroll.web.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'framework/horizontal.scroll.web.dart';
 import 'framework/ms.language.dart';
 
 Future<void> main() async {
@@ -32,6 +33,8 @@ Future<void> main() async {
             measurementId: "G-GF36EVS4JQ")
         : null,
   );
+  Stripe.publishableKey =
+      'pk_test_51LAnarLF64Xc9eoG5f7uKxHVJxFbQwJ7s4rjrZlVx9XGQnXYGEjKgQz5SJSdg3hxObGbBX9NIh3ivzNFo2nu90E800b0WdcGJP';
   runApp(MyApp());
 }
 
@@ -53,6 +56,7 @@ class _MyAppState extends State<MyApp> {
       _locale = value;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     final appUser = AppUser();
