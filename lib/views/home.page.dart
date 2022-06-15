@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
 import 'package:quranirab/provider/bookmark.provider.dart';
 import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
+import 'package:quranirab/views/payment/payment.screen.dart';
 import 'package:quranirab/views/surah.screen.dart';
 import 'package:quranirab/widget/menu.dart';
 import 'package:skeleton_loader/skeleton_loader.dart';
@@ -25,6 +25,8 @@ class _HomePageState extends State<HomePage>
   late TabController _tabController;
   late var snackBar;
 
+  bool checkout = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -37,36 +39,10 @@ class _HomePageState extends State<HomePage>
           style: TextStyle(color: Colors.black),
         ),
         action: SnackBarAction(
-            textColor: Colors.black,
-            label: 'Upgrade now!',
-            onPressed: () async {
-              await showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    content: CardField(
-                      onCardChanged: (card) {
-                        print(card);
-                      },
-                    ),
-                    actions: [
-                      ElevatedButton.icon(
-                          onPressed: () async {
-                            final paymentMethod = await Stripe.instance
-                                .createPaymentMethod(PaymentMethodParams.card(
-                                    paymentMethodData: PaymentMethodData(
-                                        billingDetails: BillingDetails())));
-                          },
-                          label: Text('Pay Now'),
-                          icon: Icon(
-                            Icons.payment,
-                          ))
-                    ],
-                  );
-                },
-              );
-              // create payment method
-            }));
+          textColor: Colors.black,
+          label: 'Upgrade now!',
+          onPressed: _launchUrl,
+        ));
     _tabController = TabController(length: 2, vsync: this);
     super.initState();
   }
@@ -1901,5 +1877,11 @@ class _HomePageState extends State<HomePage>
     setState(() {
       _list = allData;
     });
+  }
+
+  void _launchUrl() async {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => PaymentScreen()));
+    // if (!await launchUrl(_url)) throw 'Could not launch $_url';
   }
 }
