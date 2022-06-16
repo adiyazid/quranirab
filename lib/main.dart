@@ -30,6 +30,7 @@ Future<void> main() async {
         ChangeNotifierProvider<LangProvider>(
             create: (context) => LangProvider())
       ],
+
       child: ChangeNotifierProvider(
           create: (context) => FontSizeController(),
           builder: (context, _) {
