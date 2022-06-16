@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide Card;
 import 'package:quranirab/provider/user.provider.dart';
+import 'package:quranirab/views/payment/web.payment.dart';
 
 import '../../services/stripe.service.dart';
 
@@ -81,6 +82,18 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     }
                   },
                   child: const Text('Create customer'),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => WebViewXPage()));
+                  },
+                  child: const Text('Checkout Using WebView'),
                 ),
               ),
               Padding(

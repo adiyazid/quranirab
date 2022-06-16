@@ -22,19 +22,19 @@ class Model1 {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['aya'] = this.aya;
-    data['created_at'] = this.createdAt;
-    data['id'] = this.id;
-    data['medina_mushaf_page_id'] = this.medinaMushafPageId;
-    data['sura_id'] = this.suraId;
-    data['text'] = this.text;
-    data['updated_at'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['aya'] = aya;
+    data['created_at'] = createdAt;
+    data['id'] = id;
+    data['medina_mushaf_page_id'] = medinaMushafPageId;
+    data['sura_id'] = suraId;
+    data['text'] = text;
+    data['updated_at'] = updatedAt;
     return data;
   }
 
   @override
   String toString() {
-    return '$aya, $text' ;
+    return '$aya, $text';
   }
 }
