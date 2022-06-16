@@ -32,7 +32,6 @@ Future<void> main() async {
             measurementId: "G-GF36EVS4JQ")
         : null,
   );
-
   runApp(MyApp());
 }
 
