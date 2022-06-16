@@ -1,14 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:quranirab/theme/theme_provider.dart';
-import 'package:quranirab/views/surah.screen.dart';
-import 'package:skeleton_loader/skeleton_loader.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
 import 'package:quranirab/provider/bookmark.provider.dart';
+import 'package:quranirab/theme/theme_provider.dart';
+import 'package:quranirab/views/surah.screen.dart';
 import 'package:quranirab/widget/menu.dart';
+import 'package:skeleton_loader/skeleton_loader.dart';
+
 import '../widget/appbar.widget.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -148,9 +149,10 @@ class _HomePageState extends State<HomePage>
                                                       .pages!
                                                       .first));
 
-                                          // Provider.of<AyaProvider>(context,
-                                          //     listen: false)
-                                          //     .getPage(439);
+                                          ///todo: modify to go direct pages
+                                          Provider.of<AyaProvider>(context,
+                                                  listen: false)
+                                              .getPage(467);
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
@@ -437,9 +439,11 @@ class _HomePageState extends State<HomePage>
                                                                   int.parse(
                                                                       a.first));
 
-                                                          // Provider.of<AyaProvider>(context,
-                                                          //     listen: false)
-                                                          //     .getPage(447);
+                                                          ///todo: modify to go direct pages
+                                                          Provider.of<AyaProvider>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .getPage(467);
                                                           Navigator.push(
                                                               context,
                                                               MaterialPageRoute(
@@ -652,9 +656,11 @@ class _HomePageState extends State<HomePage>
                                                                   int.parse(
                                                                       a.first));
 
-                                                          // Provider.of<AyaProvider>(context,
-                                                          //     listen: false)
-                                                          //     .getPage(439);
+                                                          ///todo: modify to go direct pages
+                                                          Provider.of<AyaProvider>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .getPage(467);
                                                           Navigator.push(
                                                               context,
                                                               MaterialPageRoute(
@@ -1124,9 +1130,11 @@ class _HomePageState extends State<HomePage>
                                                                   int.parse(
                                                                       a.first));
 
-                                                          // Provider.of<AyaProvider>(context,
-                                                          //     listen: false)
-                                                          //     .getPage(439);
+                                                          ///todo: modify to go direct pages
+                                                          Provider.of<AyaProvider>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .getPage(467);
                                                           Navigator.push(
                                                               context,
                                                               MaterialPageRoute(
@@ -1338,9 +1346,11 @@ class _HomePageState extends State<HomePage>
                                                                   int.parse(
                                                                       a.first));
 
-                                                          // Provider.of<AyaProvider>(context,
-                                                          //     listen: false)
-                                                          //     .getPage(439);
+                                                          ///todo: modify to go direct pages
+                                                          Provider.of<AyaProvider>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .getPage(467);
                                                           Navigator.push(
                                                               context,
                                                               MaterialPageRoute(

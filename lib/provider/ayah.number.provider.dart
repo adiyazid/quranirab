@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:quranirab/models/word.detail.dart';
+
 import '../models/break.index.model.dart';
 import '../models/slicing.data.model.dart';
 import '../models/surah.split.model.dart';
@@ -401,6 +403,7 @@ class AyaProvider extends ChangeNotifier {
     }
   }
 
+  ///todo: add surah index
   Future<void> readJsonData() async {
     var jsonData = {
       "page_1": [5, 10, 15, 22, 28, 34, 37],
@@ -7843,13 +7846,13 @@ class AyaProvider extends ChangeNotifier {
       ],
       "page_467": [
         10,
-        24,
-        36,
+        25,
+        32,
         47,
         59,
         73,
         89,
-        99,
+        157,
       ],
       "page_468": [
         10,
