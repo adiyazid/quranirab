@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/models/category.dart';
 import 'package:quranirab/theme/theme_provider.dart';
-import 'package:quranirab/widget/LanguagePopup.dart';
-import 'package:quranirab/widget/setting.popup.dart';
 import 'package:quranirab/widget/menu.dart';
+
+import '../widget/appbar.widget.dart';
 
 class LeaderBoardTable extends StatefulWidget {
   const LeaderBoardTable({Key? key}) : super(key: key);
@@ -17,13 +18,10 @@ class LeaderBoardTable extends StatefulWidget {
 class _LeaderBoardTableState extends State<LeaderBoardTable> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     init();
   }
 
-  //
-  // final usernameRef = FirebaseFirestore.instance.collection('quranIrabUsers');
   var dataTable = [];
   var oldDataTable = [];
   bool _sortAscending = false;
@@ -31,6 +29,14 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
   _onSortId(int index, bool ascending) {
     setState(() {
       _sortAscending = ascending;
+      for (var element in dataTable) {
+        if (kDebugMode) {
+          print(element['scores']);
+        }
+      }
+      oldDataTable.sort((a, b) => ascending
+          ? a['scores'].compareTo(b['scores'])
+          : b['scores'].compareTo(a['scores']));
       dataTable.sort((a, b) => ascending
           ? a['scores'].compareTo(b['scores'])
           : b['scores'].compareTo(a['scores']));
@@ -57,7 +63,7 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
         var time = DateTime.parse(doc['last-updated'].toDate().toString());
         setState(() {
           var diff = now.difference(time).inDays;
-          if (diff < 30) {
+          if (diff < 30 && doc['scores'] != 0) {
             dataTable.add(doc);
           }
         });
@@ -82,57 +88,27 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
       drawer: const Menu(),
       body: DefaultTabController(
           length: 2,
-          child: NestedScrollView(
-              headerSliverBuilder: (context, value) {
-                return [
-                  SliverAppBar(
-                    iconTheme: Theme.of(context).iconTheme,
-                    leading: IconButton(
-                      icon: const Icon(
-                        Icons.menu,
-                      ),
-                      onPressed: () {
-                        Scaffold.of(context).openDrawer();
-                      },
-                    ),
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    title: const CircleAvatar(
-                      backgroundImage: AssetImage('assets/quranirab.png'),
-                      radius: 18.0,
-                    ),
-                    centerTitle: false,
-                    floating: true,
-                    actions: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20.0),
-                        child: IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.search,
-                              size: 26.0,
-                            )),
-                      ),
-                      const Padding(
-                          padding: EdgeInsets.only(right: 20.0),
-                          child: LangPopup()),
-                      const Padding(
-                          padding: EdgeInsets.only(right: 20.0),
-                          child: SettingPopup()),
-                    ],
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                        width: 2.0,
+                        color: themeProvider.isDarkMode
+                            ? Colors.white
+                            : const Color(0xffE86F00)),
                   ),
-                ];
-              },
-              body: Container(
+                ),
+                height: 57,
+                child: CustomScrollView(
+                  slivers: const [Appbar()],
+                ),
+              ),
+              Container(
                   width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
+                  height: MediaQuery.of(context).size.height - 57,
                   decoration: BoxDecoration(
-                    border: Border(
-                      top: BorderSide(
-                          width: 2.0,
-                          color: themeProvider.isDarkMode
-                              ? Colors.white
-                              : const Color(0xffE86F00)),
-                    ),
                     color: themeProvider.isDarkMode
                         ? const Color(0xff808BA1)
                         : const Color.fromRGBO(255, 237, 173, 1),
@@ -152,7 +128,10 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                       ? Colors.white
                                       : const Color.fromRGBO(0, 0, 0, 1),
                                   fontFamily: 'Source Serif Pro',
-                                  fontSize: 64,
+                                  fontSize:
+                                      MediaQuery.of(context).size.width > 600
+                                          ? 64
+                                          : 40,
                                   letterSpacing:
                                       0 /*percentages not used in flutter. defaulting to zero*/,
                                   fontWeight: FontWeight.normal,
@@ -163,7 +142,9 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 20.0),
                             child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.35,
+                              width: MediaQuery.of(context).size.width > 600
+                                  ? MediaQuery.of(context).size.width * 0.35
+                                  : 400,
                               child: TabBar(
                                   unselectedLabelColor: themeProvider.isDarkMode
                                       ? const Color(0xffD2D6DA)
@@ -175,35 +156,51 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                           ? const Color(0xffBABABA)
                                           : const Color(0xffFFFAD0)),
                                   tabs: [
-                                    Text(
-                                      'All time',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: themeProvider.isDarkMode
-                                              ? Colors.white
-                                              : const Color.fromRGBO(
-                                                  0, 0, 0, 1),
-                                          fontFamily: 'Source Serif Pro',
-                                          fontSize: 36,
-                                          letterSpacing:
-                                              0 /*percentages not used in flutter. defaulting to zero*/,
-                                          fontWeight: FontWeight.normal,
-                                          height: 1),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        'All time',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: themeProvider.isDarkMode
+                                                ? Colors.white
+                                                : const Color.fromRGBO(
+                                                    0, 0, 0, 1),
+                                            fontFamily: 'Source Serif Pro',
+                                            fontSize: MediaQuery.of(context)
+                                                        .size
+                                                        .width >
+                                                    600
+                                                ? 36
+                                                : 24,
+                                            letterSpacing:
+                                                0 /*percentages not used in flutter. defaulting to zero*/,
+                                            fontWeight: FontWeight.normal,
+                                            height: 1),
+                                      ),
                                     ),
-                                    Text(
-                                      'Last 30 days',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: themeProvider.isDarkMode
-                                              ? Colors.white
-                                              : const Color.fromRGBO(
-                                                  0, 0, 0, 1),
-                                          fontFamily: 'Source Serif Pro',
-                                          fontSize: 36,
-                                          letterSpacing:
-                                              0 /*percentages not used in flutter. defaulting to zero*/,
-                                          fontWeight: FontWeight.normal,
-                                          height: 1),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        'Last 30 days',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: themeProvider.isDarkMode
+                                                ? Colors.white
+                                                : const Color.fromRGBO(
+                                                    0, 0, 0, 1),
+                                            fontFamily: 'Source Serif Pro',
+                                            fontSize: MediaQuery.of(context)
+                                                        .size
+                                                        .width >
+                                                    600
+                                                ? 36
+                                                : 24,
+                                            letterSpacing:
+                                                0 /*percentages not used in flutter. defaulting to zero*/,
+                                            fontWeight: FontWeight.normal,
+                                            height: 1),
+                                      ),
                                     ),
                                   ]),
                             ),
@@ -298,7 +295,7 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                                               ? Colors.white
                                                               : Colors.black),
                                                     ),
-                                                    numeric: false,
+                                                    numeric: true,
                                                     onSort: _onSortId),
                                               ],
                                               rows: oldDataTable
@@ -512,7 +509,9 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                             ]),
                           )),
                         ]),
-                  )))),
+                  )),
+            ],
+          )),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -15,11 +16,15 @@ class AppUser extends ChangeNotifier {
   User? get user => FirebaseAuth.instance.currentUser;
 
   factory AppUser() => AppUser._();
+  String role = 'None';
 
   static AppUser get instance => AppUser();
+  FirebaseFirestore db = FirebaseFirestore.instance;
 
   signOut() async {
     await FirebaseAuth.instance.signOut();
+    role = '';
+    notifyListeners();
   }
 
   Future<void> signIn({required String email, required String password}) async {
@@ -36,6 +41,19 @@ class AppUser extends ChangeNotifier {
         throw (e.toString());
       }
     }
+  }
+
+  Future<void> getRole() async {
+    final docRef =
+        db.collection("quranIrabUsers").doc(AppUser.instance.user!.uid);
+    role = await docRef.get().then(
+          (value) {
+            var role = value['role'] ?? 'None';
+            return role;
+          },
+        ) ??
+        'None';
+    notifyListeners();
   }
 
   Future<void> updateName(String name) async {
@@ -62,5 +80,53 @@ class AppUser extends ChangeNotifier {
     } catch (e) {
       rethrow;
     }
+  }
+
+  final firestoreInstance = FirebaseFirestore.instance;
+
+  Future<void> updatedata(
+      String firstname, String lastname, String email) async {
+    await firestoreInstance
+        .collection("quranIrabUsers")
+        .doc(AppUser.instance.user!.uid)
+        .set({
+      "first_name": firstname,
+      "last_name": lastname,
+      "email": email,
+      "profileImage": AppUser.instance.user!.photoURL ?? "",
+      "uid": AppUser.instance.user!.uid
+    }, SetOptions(merge: true)).then((value) {
+      print("Data added sucessfully");
+    });
+    var imageURL = AppUser.instance.user!.photoURL ?? "";
+    var displayName = "$firstname $lastname";
+    AppUser.instance.user!.updateDisplayName(displayName);
+    AppUser.instance.user!.updatePhotoURL(imageURL);
+  }
+
+  Future<void> getData(
+      String firstname, String lastname, String email, String url) async {
+    await firestoreInstance
+        .collection("quranIrabUsers")
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        firstname = doc["first_name"];
+        lastname = doc["last_name"];
+        email = doc["email"];
+        url = doc["profileImage"];
+      }
+    });
+  }
+
+  Future<void> updateImage(String url) async {
+    user!.updatePhotoURL(url);
+    notifyListeners();
+  }
+
+  Future<void> updatePass(String newpass, String oldpass) async {
+    AppUser.instance.signIn(email: user!.email!, password: oldpass);
+    user!.updatePassword(newpass);
+    notifyListeners();
   }
 }

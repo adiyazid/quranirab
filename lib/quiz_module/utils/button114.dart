@@ -4,7 +4,6 @@ button114(String text, TextStyle style, Color color, double _radius, Function _c
   return Stack(
     children: <Widget>[
       Container(
-          width: 60,
           padding: const EdgeInsets.only(top: 10, bottom: 10),
           decoration: BoxDecoration(
             color: (enable) ? color : Colors.grey.withOpacity(0.5),

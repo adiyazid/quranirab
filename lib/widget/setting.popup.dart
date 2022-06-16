@@ -1,9 +1,11 @@
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
-import 'package:quranirab/models/font.size.dart';
+import 'package:quranirab/provider/ayah.number.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingPopup extends StatefulWidget {
   const SettingPopup({Key? key}) : super(key: key);
@@ -20,6 +22,8 @@ class _SettingPopupState extends State<SettingPopup>
 
   var visible = true;
 
+  final _custom = CustomPopupMenuController();
+
   bool get indexIsChanging => _indexIsChangingCount != 0;
 
   final int _indexIsChangingCount = 0;
@@ -30,32 +34,11 @@ class _SettingPopupState extends State<SettingPopup>
 
   late TabController _controller;
 
-  List<Widget> list = [
-    const Tab(
-        child: Text(
-          'Auto',
-          style: TextStyle(fontSize: 12),
-        ),
-        icon: Icon(Icons.brightness_auto)),
-    const Tab(
-        child: Text(
-          'Light Mode',
-          style: TextStyle(fontSize: 12),
-        ),
-        icon: Icon(Icons.light_mode)),
-    const Tab(
-        child: Text(
-          'Dark Mode',
-          style: TextStyle(fontSize: 12),
-        ),
-        icon: Icon(Icons.dark_mode)),
-  ];
-
   ThemeMode themeMode = ThemeMode.system;
 
   bool get isDarkMode {
     if (themeMode == ThemeMode.system) {
-      final brightness = SchedulerBinding.instance!.window.platformBrightness;
+      final brightness = SchedulerBinding.instance.window.platformBrightness;
       return brightness == Brightness.dark;
     } else {
       return themeMode == ThemeMode.dark;
@@ -64,14 +47,15 @@ class _SettingPopupState extends State<SettingPopup>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _controller = TabController(length: list.length, vsync: this);
+    _controller = TabController(length: 3, vsync: this, initialIndex: 0);
     // Create TabController for getting the index of current tab
     _controller.addListener(() {
       setState(() {});
       if (_controller.indexIsChanging) {
-        print(_controller.index);
+        if (kDebugMode) {
+          print(_controller.index);
+        }
       }
     });
   }
@@ -84,10 +68,35 @@ class _SettingPopupState extends State<SettingPopup>
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> list = [
+      const Tab(
+          child: Text(
+            'Auto',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 12),
+          ),
+          icon: Icon(Icons.brightness_auto)),
+      Tab(
+          child: Text(
+            AppLocalizations.of(context)!.lightMode,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 12),
+          ),
+          icon: Icon(Icons.light_mode)),
+      Tab(
+          child: Text(
+            AppLocalizations.of(context)!.darkMode,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 12),
+          ),
+          icon: Icon(Icons.dark_mode)),
+    ];
+    final font = Provider.of<AyaProvider>(context);
     final themeProvider = Provider.of<ThemeProvider>(context);
-    final brightness = SchedulerBinding.instance!.window.platformBrightness;
+    final brightness = SchedulerBinding.instance.window.platformBrightness;
     return StatefulBuilder(builder: (context, setState) {
       return CustomPopupMenu(
+        controller: _custom,
         child: const Icon(Icons.settings),
         pressType: PressType.singleClick,
         showArrow: false,
@@ -117,33 +126,33 @@ class _SettingPopupState extends State<SettingPopup>
                         padding: padding,
                         children: <Widget>[
                           const SizedBox(height: 10),
-                          Stack(
-                            children: <Widget>[
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(35, 16, 0, 15),
-                                child: Text(
-                                  'Setting',
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Row(
+                              children: <Widget>[
+                                Text(
+                                  AppLocalizations.of(context)!.setting,
                                   style: TextStyle(
-                                      color:
-                                          Theme.of(context).textSelectionColor,
+                                      color: Theme.of(context)
+                                          .textSelectionTheme
+                                          .selectionColor,
                                       fontSize: 16),
                                 ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(450, 0, 0, 0),
-                                child: IconButton(
+                                Spacer(),
+                                IconButton(
                                   onPressed: () async {
-                                    Navigator.of(context).maybePop();
+                                    _custom.hideMenu();
                                   },
                                   icon: const Icon(Icons.close),
-                                  color: Theme.of(context).textSelectionColor,
+                                  color: Theme.of(context)
+                                      .textSelectionTheme
+                                      .selectionColor,
                                   iconSize: 20,
                                   splashRadius: 15,
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                           const SizedBox(height: 5),
                           Center(
@@ -163,71 +172,82 @@ class _SettingPopupState extends State<SettingPopup>
                                     color: Theme.of(context).dividerColor,
                                     width: 1,
                                   )),
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        0, 10, 380, 16),
-                                    child: Text('Theme',
-                                        style: TextStyle(
-                                          color: Theme.of(context)
-                                              .textSelectionColor,
-                                          fontSize: 16,
-                                        )),
-                                  ),
-                                  TabBar(
-                                    indicatorColor:
-                                        Theme.of(context).iconTheme.color,
-                                    onTap: (index) async {
-                                      if (_controller.index == 1) {
-                                        themeProvider.toggleTheme(false);
-                                      } else if (_controller.index == 2) {
-                                        themeProvider.toggleTheme(true);
-                                      } else {
-                                        if (brightness.toString() ==
-                                                "Brightness.light" &&
-                                            themeProvider.isDarkMode == true) {
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Text(
+                                          AppLocalizations.of(context)!.theme,
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .textSelectionTheme
+                                                .selectionColor,
+                                            fontSize: 16,
+                                          )),
+                                    ),
+                                    TabBar(
+                                      indicatorColor:
+                                          Theme.of(context).iconTheme.color,
+                                      onTap: (index) async {
+                                        if (_controller.index == 1) {
                                           themeProvider.toggleTheme(false);
-                                        }
-                                        if (brightness.toString() ==
-                                            "Brightness.dark") {
+                                        } else if (_controller.index == 2) {
                                           themeProvider.toggleTheme(true);
+                                        } else {
+                                          if (brightness.toString() ==
+                                                  "Brightness.light" &&
+                                              themeProvider.isDarkMode ==
+                                                  true) {
+                                            themeProvider.toggleTheme(false);
+                                          }
+                                          if (brightness.toString() ==
+                                              "Brightness.dark") {
+                                            themeProvider.toggleTheme(true);
+                                          }
                                         }
-                                      }
-                                    },
-                                    controller: _controller,
-                                    tabs: list,
-                                  ),
-                                ],
+                                      },
+                                      controller: _controller,
+                                      tabs: list,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                          Center(
-                            child: Container(
-                              width: 500,
-                              height: 130,
-                              margin: const EdgeInsets.all(10),
-                              padding: const EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.only(
-                                      topRight: Radius.circular(10.0),
-                                      bottomRight: Radius.circular(10.0),
-                                      topLeft: Radius.circular(10.0),
-                                      bottomLeft: Radius.circular(10.0)),
-                                  color: Theme.of(context).focusColor,
-                                  border: Border.all(
-                                    color: Theme.of(context).dividerColor,
-                                    width: 1,
-                                  )),
+                          Container(
+                            width: 500,
+                            height: 130,
+                            margin: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                borderRadius: const BorderRadius.only(
+                                    topRight: Radius.circular(10.0),
+                                    bottomRight: Radius.circular(10.0),
+                                    topLeft: Radius.circular(10.0),
+                                    bottomLeft: Radius.circular(10.0)),
+                                color: Theme.of(context).focusColor,
+                                border: Border.all(
+                                  color: Theme.of(context).dividerColor,
+                                  width: 1,
+                                )),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        0, 10, 370, 16),
-                                    child: Text('Font Size',
+                                  Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Text(
+                                        AppLocalizations.of(context)!.fontSize,
                                         style: TextStyle(
                                             color: Theme.of(context)
-                                                .textSelectionColor,
+                                                .textSelectionTheme
+                                                .selectionColor,
                                             fontSize: 16)),
                                   ),
                                   Center(
@@ -237,7 +257,7 @@ class _SettingPopupState extends State<SettingPopup>
                                             size: 20),
                                         Center(
                                             child: Text(
-                                          '${fontData.size}',
+                                          '${font.value}',
                                           style: const TextStyle(fontSize: 30),
                                         )),
                                         const Icon(Icons.plus_one, size: 20),
@@ -248,10 +268,9 @@ class _SettingPopupState extends State<SettingPopup>
                                       onPressed: (int newIndex) {
                                         if (newIndex == 0) {
                                           setState(() {
-                                            if (fontData.size != 0) {
-                                              fontData.size = fontData.size - 1;
-                                              Provider.of<FontSizeController>(
-                                                      context,
+                                            if (font.value != 0 &&
+                                                font.value > 10) {
+                                              Provider.of<AyaProvider>(context,
                                                       listen: false)
                                                   .decrement();
                                             }
@@ -259,16 +278,11 @@ class _SettingPopupState extends State<SettingPopup>
                                           });
                                         } else if (newIndex == 2) {
                                           setState(() {
-                                            // fontData.index = 2;
-                                            // fontData.size = 60;
-                                            if (fontData.size != 38) {
-                                              fontData.size = fontData.size + 1;
-                                              Provider.of<FontSizeController>(
-                                                      context,
-                                                      listen: false)
-                                                  .increment();
-                                              no++;
-                                            }
+                                            Provider.of<AyaProvider>(context,
+                                                    listen: false)
+                                                .increment();
+
+                                            no++;
                                           });
                                         }
                                       },
@@ -307,7 +321,7 @@ Widget buildMenuItem({
   );
 }
 
-void SelectedItem(BuildContext context, int index) {
+void selectedItem(BuildContext context, int index) {
   Navigator.of(context).pop();
 }
 
