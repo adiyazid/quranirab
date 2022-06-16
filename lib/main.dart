@@ -12,6 +12,8 @@ import 'package:quranirab/provider/language.provider.dart';
 import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/auth/landing.page.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_web/webview_flutter_web.dart';
 
 import 'framework/horizontal.scroll.web.dart';
 import 'framework/ms.language.dart';
@@ -19,6 +21,7 @@ import 'framework/ms.language.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
+  WebView.platform = WebWebViewPlatform();
   await Firebase.initializeApp(
     // Replace with actual values
     options: kIsWeb == true

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:url_launcher/url_launcher.dart';
 
 import '../.env.dart';
 
@@ -44,14 +43,15 @@ class StripeService {
   }
 
   static Future<Map<String, dynamic>?> createPaymentIntent(
-      String amount, String currency, String description) async {
+      String amount, String currency) async {
     try {
       Map<String, dynamic> body = {
-        'amount':
-            amount, // amount charged will be specified when the method is called
-        'currency': currency, // the currency
+        'amount': amount,
+        // amount charged will be specified when the method is called
+        'description': 'buy premium QuranIrab',
+        'currency': currency,
+        // the currency
         'payment_method_types[]': 'card',
-        'description': description,
       };
 
       var response = await http.post(Uri.parse(paymentIntentURL), //api url
@@ -87,9 +87,64 @@ class StripeService {
     return null;
   }
 
-  static launchPaymentUrl(String url) async {
-    await canLaunch(url) ? await launch(url) : throw 'Could not launch url';
+  static getEvent() {}
+
+  static getIntent(String id) async {
+    try {
+      var response = await http.get(
+          Uri.parse('${paymentIntentURL}/$id'), //api url
+          headers: headers //headers of the request specified in the base class
+          );
+
+      return jsonDecode(response.body); //decode the response to json
+    } catch (error) {
+      print('Error occured : ${error.toString()}');
+    }
+    return null;
   }
 
-  static getEvent() {}
+  static getCustomer(custId) async {
+    try {
+      var response = await http.get(Uri.parse('${customer}/$custId'), //api url
+          headers: headers //headers of the request specified in the base class
+          );
+      return jsonDecode(response.body); //decode the response to json
+    } catch (error) {
+      print('Error occured : ${error.toString()}');
+    }
+    return null;
+  }
+
+  static confirmPayment(paymentId, paymentMethodId) async {
+    try {
+      Map<String, dynamic> body = {"payment_method": '$paymentMethodId'};
+
+      var response = await http.post(
+          Uri.parse(paymentIntentURL + '/' + paymentId + '/confirm'), //api url
+          body: body, //request body
+          headers: headers //headers of the request specified in the base class
+          );
+      return jsonDecode(response.body); //decode the response to json
+    } catch (error) {
+      print('Error occured : ${error.toString()}');
+    }
+    return null;
+  }
+
+  static linkCustomerWithPaymentMethod(custId, paymentMethod) async {
+    try {
+      Map<String, dynamic> body = {"customer": custId};
+
+      var response = await http.post(
+          Uri.parse(paymentMethodURL + '/' + paymentMethod + '/attach'),
+          //api url
+          body: body, //request body
+          headers: headers //headers of the request specified in the base class
+          );
+      return jsonDecode(response.body); //decode the response to json
+    } catch (error) {
+      print('Error occured : ${error.toString()}');
+    }
+    return null;
+  }
 }

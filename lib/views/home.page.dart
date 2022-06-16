@@ -1880,6 +1880,8 @@ class _HomePageState extends State<HomePage>
   }
 
   void _launchUrl() async {
+    ///todo:for testing purpose
+    // GetStorage().erase();
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => PaymentScreen()));
     // if (!await launchUrl(_url)) throw 'Could not launch $_url';

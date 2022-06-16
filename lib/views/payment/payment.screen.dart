@@ -1,7 +1,11 @@
-import 'package:flutter/foundation.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart' hide Card;
+import 'package:get_storage/get_storage.dart';
+import 'package:provider/provider.dart';
+import 'package:quranirab/models/payment.output.dart';
 import 'package:quranirab/provider/user.provider.dart';
-import 'package:quranirab/views/payment/web.payment.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../services/stripe.service.dart';
 
@@ -14,35 +18,77 @@ class PaymentScreen extends StatefulWidget {
 
 class _PaymentScreenState extends State<PaymentScreen> {
   final _phone = TextEditingController();
+  var custId = GetStorage().read('custID');
+  PaymentOutput? _paymentOutput;
 
   Future<void> checkout(BuildContext context, String phone) async {
     try {
-      var customer = await StripeService.createCustomer(
-          AppUser.instance.user!.displayName!,
-          '+6' + phone,
-          AppUser.instance.user!.email!,
-          'QuranIrab User');
-      var paymentMethod = await StripeService.createCardPaymentMethod(
+      var customer;
+      var paymentIntent;
+      var paymentMethod;
+      if (custId == null) {
+        customer = await StripeService.createCustomer(
+            AppUser.instance.user!.displayName!,
+            '+6' + phone,
+            AppUser.instance.user!.email!,
+            'QuranIrab User');
+        setState(() {});
+        custId = customer['id'];
+        GetStorage().write('custID', customer['id']);
+      } else {
+        customer = await StripeService.getCustomer(custId);
+      }
+
+      paymentMethod = await StripeService.createCardPaymentMethod(
           number: '4111 1111 1111 1111',
           expMonth: '12',
           expYear: '2023',
           cvc: '111');
-      // String description = 'QuranIrab';
-      // var paymentIntent =
-      //     await StripeService.createPaymentIntent('5000', 'MYR', description);
-      // // print(json.encode(paymentIntent));
-      // if (paymentIntent != null) {
-      //   var confirmPayment = await Stripe.instance.confirmPayment(
-      //     paymentIntent['client_secret'],
-      //     PaymentMethodParams.cardFromMethodId(
-      //       paymentMethodData: paymentMethod['id'],
-      //     ),
-      //   );
-      // }
+      setState(() {});
+      var paymentMethodID = paymentMethod['id'];
+
+      ///todo:for invoice purpose;
+      // await StripeService.linkCustomerWithPaymentMethod(
+      //     custId, paymentMethodID);
+
+      var id = await GetStorage().read('intent');
+      if (id == null) {
+        paymentIntent = await StripeService.createPaymentIntent('5000', 'MYR');
+        String newId = paymentIntent!['id'];
+        GetStorage().write('intent', newId);
+      } else {
+        paymentIntent = await StripeService.getIntent(id);
+      }
       showDialog(
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Customer ID' + customer!['id']),
+              title: Text('Customer ID: ' + customer!['id']),
+              content: Text('Payment ID: ' + paymentIntent!['id']),
+              actions: [
+                ElevatedButton.icon(
+                  onPressed: () async {
+                    try {
+                      print(paymentIntent!['id'] + ' ' + paymentMethodID);
+                      var paymentConfirm = await StripeService.confirmPayment(
+                          paymentIntent!['id'], paymentMethodID);
+                      setState(() {});
+                      _paymentOutput =
+                          paymentOutputFromJson(jsonEncode(paymentConfirm));
+                      Navigator.pop(context);
+                      if (_paymentOutput!.status == 'succeeded') {
+                        Provider.of<AppUser>(context, listen: false)
+                            .updateRole();
+                      }
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('Payment ${_paymentOutput!.status}')));
+                    } catch (e) {
+                      print(e.toString());
+                    }
+                  },
+                  label: Text('Confirm Payment'),
+                  icon: Icon(Icons.save),
+                )
+              ],
             );
           },
           context: context);
@@ -66,49 +112,53 @@ class _PaymentScreenState extends State<PaymentScreen> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              TextField(
-                controller: _phone,
-                decoration: InputDecoration(label: Text('Phone Number')),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  onPressed: () async {
-                    if (_phone.text.isNotEmpty) {
-                      await checkout(context, _phone.text);
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Insert Phone Number')));
-                    }
-                  },
-                  child: const Text('Create customer'),
+              if (custId == null)
+                TextField(
+                  controller: _phone,
+                  decoration: InputDecoration(label: Text('Phone Number')),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  onPressed: () async {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => WebViewXPage()));
-                  },
-                  child: const Text('Checkout Using WebView'),
+              if (custId == null)
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      if (_phone.text.isNotEmpty) {
+                        await checkout(context, _phone.text);
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Insert Phone Number')));
+                      }
+                    },
+                    child: const Text('Check Out'),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  onPressed: () async {
-                    try {
-                      var event = await StripeService.getEvent();
-                    } catch (e) {}
-                    await StripeService.launchPaymentUrl(
-                        'https://buy.stripe.com/test_14kaGT1NgdAf4lW4gg');
-                  },
-                  child: const Text('Checkout Using Url Launcher'),
-                ),
-              ),
+              if (_paymentOutput != null)
+                Flexible(
+                  child: ListView(
+                    children: [
+                      ListTile(
+                          title: Text('Payment ID'),
+                          subtitle: Text(_paymentOutput!.id)),
+                      ListTile(
+                          title: Text('Payment Status'),
+                          subtitle: Text(_paymentOutput!.status)),
+                      ListTile(
+                          title: Text('Payment Amount'),
+                          subtitle: Text(_paymentOutput!.currency +
+                              ' ' +
+                              _paymentOutput!.amount.toString().substring(
+                                  0,
+                                  _paymentOutput!.amount.toString().length -
+                                      2))),
+                      ElevatedButton(
+                          onPressed: () {
+                            launchUrl(Uri.parse(
+                                _paymentOutput!.charges.data.last.receiptUrl));
+                          },
+                          child: Text('Get Receipt')),
+                    ],
+                  ),
+                )
             ],
           ),
         ),

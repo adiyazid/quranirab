@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
 import 'package:quranirab/provider/user.provider.dart';
-import 'package:quranirab/views/payment/payment.screen.dart';
+import 'package:quranirab/views/home.page.dart';
 
 import 'login.screen.dart';
 
@@ -16,7 +16,7 @@ class LandingPage extends StatelessWidget {
 
     return Consumer<AppUser>(builder: (context, user, child) {
       if (user.user != null) {
-        return const PaymentScreen();
+        return const HomePage();
       }
       return SigninWidget();
     });
