@@ -92,7 +92,7 @@ class StripeService {
   static getIntent(String id) async {
     try {
       var response = await http.get(
-          Uri.parse('${paymentIntentURL}/$id'), //api url
+          Uri.parse('$paymentIntentURL/$id'), //api url
           headers: headers //headers of the request specified in the base class
           );
 
@@ -105,7 +105,7 @@ class StripeService {
 
   static getCustomer(custId) async {
     try {
-      var response = await http.get(Uri.parse('${customer}/$custId'), //api url
+      var response = await http.get(Uri.parse('$customer/$custId'), //api url
           headers: headers //headers of the request specified in the base class
           );
       return jsonDecode(response.body); //decode the response to json
