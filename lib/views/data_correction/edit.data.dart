@@ -1,14 +1,12 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:flutter/material.dart';
-import 'package:group_radio_button/group_radio_button.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
 import 'package:quranirab/provider/delete.provider.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:tree_view/tree_view.dart';
-
 import '../../models/word.detail.dart';
 import '../../theme/theme_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -28,22 +26,14 @@ class _EditDataState extends State<EditData>
   late Animation<double> _animation;
   late AnimationController _animationController;
 
-  final _option = ['Add New', 'Use existing category'];
-
-  String _inputType = 'Add New';
-
   final _formKey = GlobalKey<FormState>();
   final _formKey2 = GlobalKey<FormState>();
   String? _inputParent;
-  String? _inputParent2;
   String? _inputEngCat;
-  String? _inputEngCat2;
   String? _inputEngCat3;
   String? _inputChildType;
-  String? _inputChildType2;
   String? _inputChildType3;
   String? _inputWordType;
-  String? _inputWordType2;
   String? _inputWordType3;
   List<String> childType = ['unique', 'all', 'multiple', 'none'];
 
@@ -52,14 +42,11 @@ class _EditDataState extends State<EditData>
     content: const Text('Delete Success'),
   );
   int? _catID;
-  int? _catID2;
   int? _catID3;
 
   var _inputMalayCat;
-  var _inputMalayCat2;
   var _inputMalayCat3;
   var _inputArabCat;
-  var _inputArabCat2;
   var _inputArabCat3;
 
   @override
@@ -120,7 +107,7 @@ class _EditDataState extends State<EditData>
                           return AlertDialog(
                             title: Text('Add New Word Relationship'),
                             content: SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.87,
+                              height: MediaQuery.of(context).size.height * 0.5,
                               child: Form(
                                 key: _formKey,
                                 child: Column(
@@ -182,7 +169,9 @@ class _EditDataState extends State<EditData>
                                               if (newList
                                                       .contains(element.name) ==
                                                   false) {
-                                                newList.add(element.name!);
+                                                setState(() {
+                                                  newList.add(element.name!);
+                                                });
                                               }
                                             }
                                           });
@@ -190,86 +179,9 @@ class _EditDataState extends State<EditData>
                                       },
                                       selectedItem: 'Choose parent',
                                     ),
-                                    RadioGroup<String>.builder(
-                                      groupValue: newList.isEmpty
-                                          ? "Add New"
-                                          : _inputType,
-                                      onChanged: (value) => setState(() {
-                                        _inputType = value!;
-                                      }),
-                                      items: _option,
-                                      itemBuilder: (item) => RadioButtonBuilder(
-                                        item,
-                                      ),
-                                    ),
-                                    if (_inputType == 'Add New' ||
-                                        newList.isEmpty)
-                                      TextFormField(
-                                        decoration: InputDecoration(
-                                            label: Text(
-                                                'New English Category Name')),
-                                        onChanged: (value) {
-                                          setState(() {
-                                            _inputEngCat = value;
-                                            _catID = null;
-                                          });
-                                        },
-                                        validator: (value) {
-                                          if (_inputType == 'Add New' &&
-                                                  value == null ||
-                                              value!.isEmpty &&
-                                                  _inputType == 'Add New') {
-                                            return 'Please enter some text';
-                                          }
-                                          return null;
-                                        },
-                                      ),
-                                    if (_inputType == 'Add New' ||
-                                        newList.isEmpty)
-                                      TextFormField(
-                                        decoration: InputDecoration(
-                                            label:
-                                                Text('New Arab Category Name')),
-                                        onChanged: (value) {
-                                          setState(() {
-                                            _inputArabCat = value;
-                                            _catID = null;
-                                          });
-                                        },
-                                        validator: (value) {
-                                          if (_inputType == 'Add New' &&
-                                                  value == null ||
-                                              value!.isEmpty &&
-                                                  _inputType == 'Add New') {
-                                            return 'Please enter some text';
-                                          }
-                                          return null;
-                                        },
-                                      ),
-                                    if (_inputType == 'Add New' ||
-                                        newList.isEmpty)
-                                      TextFormField(
-                                        decoration: InputDecoration(
-                                            label: Text(
-                                                'New Malay Category Name')),
-                                        onChanged: (value) {
-                                          setState(() {
-                                            _inputMalayCat = value;
-                                            _catID = null;
-                                          });
-                                        },
-                                        validator: (value) {
-                                          if (_inputType == 'Add New' &&
-                                                  value == null ||
-                                              value!.isEmpty &&
-                                                  _inputType == 'Add New') {
-                                            return 'Please enter some text';
-                                          }
-                                          return null;
-                                        },
-                                      ),
-                                    if (_inputType != 'Add New' &&
-                                        newList.isNotEmpty)
+                                    if (newList.isEmpty)
+                                      Text('Getting child from parent data...'),
+                                    if (newList.isNotEmpty)
                                       DropdownSearch<String>(
                                           validator: (value) {
                                             if (value ==
@@ -314,76 +226,78 @@ class _EditDataState extends State<EditData>
                                           },
                                           selectedItem:
                                               'Choose child category'),
-                                    DropdownSearch<String>(
-                                        validator: (value) {
-                                          if (value == 'Choose child type') {
-                                            return 'Please choose one child type';
-                                          }
-                                          return null;
-                                        },
-                                        popupProps: PopupProps.dialog(
-                                          showSelectedItems: true,
-                                          itemBuilder: _style1,
-                                          dialogProps: DialogProps(
-                                            contentTextStyle: TextStyle(
+                                    if (newList.isNotEmpty)
+                                      DropdownSearch<String>(
+                                          validator: (value) {
+                                            if (value == 'Choose child type') {
+                                              return 'Please choose one child type';
+                                            }
+                                            return null;
+                                          },
+                                          popupProps: PopupProps.dialog(
+                                            showSelectedItems: true,
+                                            itemBuilder: _style1,
+                                            dialogProps: DialogProps(
+                                              contentTextStyle: TextStyle(
+                                                  fontFamily: 'MeQuran2',
+                                                  fontSize: 24),
+                                            ),
+                                            showSearchBox: true,
+                                            textStyle: TextStyle(
                                                 fontFamily: 'MeQuran2',
                                                 fontSize: 24),
                                           ),
-                                          showSearchBox: true,
-                                          textStyle: TextStyle(
-                                              fontFamily: 'MeQuran2',
-                                              fontSize: 24),
-                                        ),
-                                        dropdownBuilder: _style,
-                                        dropdownDecoratorProps:
-                                            const DropDownDecoratorProps(
-                                          dropdownSearchDecoration:
-                                              InputDecoration(
-                                            labelText: "Child Type",
+                                          dropdownBuilder: _style,
+                                          dropdownDecoratorProps:
+                                              const DropDownDecoratorProps(
+                                            dropdownSearchDecoration:
+                                                InputDecoration(
+                                              labelText: "Child Type",
+                                            ),
                                           ),
-                                        ),
-                                        items: childType,
-                                        onChanged: (String? value) {
-                                          setState(() {
-                                            _inputChildType = value;
-                                          });
-                                        },
-                                        selectedItem: 'Choose child type'),
-                                    DropdownSearch<String>(
-                                        validator: (value) {
-                                          if (value == 'Choose word type') {
-                                            return 'Please choose one word type';
-                                          }
-                                          return null;
-                                        },
-                                        popupProps: PopupProps.dialog(
-                                          showSelectedItems: true,
-                                          itemBuilder: _style1,
-                                          dialogProps: DialogProps(
-                                            contentTextStyle: TextStyle(
+                                          items: childType,
+                                          onChanged: (String? value) {
+                                            setState(() {
+                                              _inputChildType = value;
+                                            });
+                                          },
+                                          selectedItem: 'Choose child type'),
+                                    if (newList.isNotEmpty)
+                                      DropdownSearch<String>(
+                                          validator: (value) {
+                                            if (value == 'Choose word type') {
+                                              return 'Please choose one word type';
+                                            }
+                                            return null;
+                                          },
+                                          popupProps: PopupProps.dialog(
+                                            showSelectedItems: true,
+                                            itemBuilder: _style1,
+                                            dialogProps: DialogProps(
+                                              contentTextStyle: TextStyle(
+                                                  fontFamily: 'MeQuran2',
+                                                  fontSize: 24),
+                                            ),
+                                            showSearchBox: true,
+                                            textStyle: TextStyle(
                                                 fontFamily: 'MeQuran2',
                                                 fontSize: 24),
                                           ),
-                                          showSearchBox: true,
-                                          textStyle: TextStyle(
-                                              fontFamily: 'MeQuran2',
-                                              fontSize: 24),
-                                        ),
-                                        dropdownBuilder: _style,
-                                        dropdownDecoratorProps:
-                                            const DropDownDecoratorProps(
-                                          dropdownSearchDecoration:
-                                              InputDecoration(
-                                            labelText: "Word Type",
+                                          dropdownBuilder: _style,
+                                          dropdownDecoratorProps:
+                                              const DropDownDecoratorProps(
+                                            dropdownSearchDecoration:
+                                                InputDecoration(
+                                              labelText: "Word Type",
+                                            ),
                                           ),
-                                        ),
-                                        items: wordType,
-                                        onChanged: (String? value) {
-                                          setState(() {
-                                            _inputWordType = value;
-                                          });
-                                        },
-                                        selectedItem: 'Choose word type'),
+                                          items: wordType,
+                                          onChanged: (String? value) {
+                                            setState(() {
+                                              _inputWordType = value;
+                                            });
+                                          },
+                                          selectedItem: 'Choose word type'),
                                     ElevatedButton(
                                         onPressed: () async {
                                           // Validate returns true if the form is valid, or false otherwise.
@@ -394,259 +308,10 @@ class _EditDataState extends State<EditData>
                                                 parent: _inputParent!,
                                                 wordType: _inputWordType!,
                                                 childType: _inputChildType!,
-                                                newCat: _inputType == 'Add New'
-                                                    ? true
-                                                    : false,
                                                 newRel: true,
                                                 engName: _inputEngCat!,
                                                 malayName: _inputMalayCat!,
                                                 arabName: _inputArabCat!);
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              const SnackBar(
-                                                  backgroundColor:
-                                                      Colors.cyanAccent,
-                                                  content:
-                                                      Text('Adding Data...')),
-                                            );
-                                            Navigator.pop(context);
-                                            Navigator.pop(context);
-                                            Navigator.pop(context);
-                                          }
-                                        },
-                                        child: Text('Submit'))
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        });
-                      });
-                  _animationController.reverse();
-                },
-              ),
-              Bubble(
-                title: "Add Word Category",
-                iconColor: Colors.white,
-                bubbleColor: themeProvider.isDarkMode
-                    ? Colors.blueGrey
-                    : Colors.orangeAccent,
-                icon: Icons.category,
-                titleStyle: TextStyle(fontSize: 16, color: Colors.white),
-                onPress: () {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return StatefulBuilder(builder: (context, setState) {
-                          return AlertDialog(
-                            title: Text('Add New Word Category'),
-                            content: SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.87,
-                              child: Form(
-                                key: _formKey2,
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    DropdownSearch<String>(
-                                      validator: (value) {
-                                        if (value == 'Choose parent') {
-                                          return 'Please choose one parent ancestry';
-                                        }
-                                        return null;
-                                      },
-                                      popupProps: PopupProps.dialog(
-                                        showSelectedItems: true,
-                                        itemBuilder: _style1,
-                                        dialogProps: DialogProps(
-                                          contentTextStyle: TextStyle(
-                                              fontFamily: 'MeQuran2',
-                                              fontSize: 24),
-                                        ),
-                                        showSearchBox: true,
-                                        textStyle: TextStyle(
-                                            fontFamily: 'MeQuran2',
-                                            fontSize: 24),
-                                      ),
-                                      dropdownBuilder: _style,
-                                      dropdownDecoratorProps:
-                                          const DropDownDecoratorProps(
-                                        dropdownSearchDecoration:
-                                            InputDecoration(
-                                          labelText: "Parent Ancestry",
-                                        ),
-                                      ),
-                                      items: list,
-                                      onChanged: (String? value) {
-                                        aya.wordDetail.forEach((element) async {
-                                          if (element.name == value) {
-                                            setState(() {
-                                              _inputParent2 =
-                                                  "${element.parent}/${element.categoryId}";
-                                            });
-                                          }
-                                          newList.clear();
-
-                                          label =
-                                              await Provider.of<AyaProvider>(
-                                                      context,
-                                                      listen: false)
-                                                  .getList(
-                                                      _inputParent ?? '',
-                                                      Provider.of<AyaProvider>(
-                                                              context,
-                                                              listen: false)
-                                                          .getLangID(context));
-                                          label.forEach((element) {
-                                            if (_inputParent2 ==
-                                                element.parent) {
-                                              if (newList
-                                                      .contains(element.name) ==
-                                                  false) {
-                                                newList.add(element.name!);
-                                              }
-                                            }
-                                          });
-                                        });
-                                      },
-                                      selectedItem: 'Choose parent',
-                                    ),
-                                    TextFormField(
-                                      decoration: InputDecoration(
-                                          label: Text(
-                                              'New English Category Name')),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _inputEngCat2 = value;
-                                          _catID2 = null;
-                                        });
-                                      },
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please enter some text';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                    TextFormField(
-                                      decoration: InputDecoration(
-                                          label:
-                                              Text('New Arabic Category Name')),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _inputArabCat2 = value;
-                                          _catID2 = null;
-                                        });
-                                      },
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please enter some text';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                    TextFormField(
-                                      decoration: InputDecoration(
-                                          label:
-                                              Text('New Malay Category Name')),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _inputMalayCat2 = value;
-                                          _catID2 = null;
-                                        });
-                                      },
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please enter some text';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                    DropdownSearch<String>(
-                                        validator: (value) {
-                                          if (value == 'Choose child type') {
-                                            return 'Please choose one child type';
-                                          }
-                                          return null;
-                                        },
-                                        popupProps: PopupProps.dialog(
-                                          showSelectedItems: true,
-                                          itemBuilder: _style1,
-                                          dialogProps: DialogProps(
-                                            contentTextStyle: TextStyle(
-                                                fontFamily: 'MeQuran2',
-                                                fontSize: 24),
-                                          ),
-                                          showSearchBox: true,
-                                          textStyle: TextStyle(
-                                              fontFamily: 'MeQuran2',
-                                              fontSize: 24),
-                                        ),
-                                        dropdownBuilder: _style,
-                                        dropdownDecoratorProps:
-                                            const DropDownDecoratorProps(
-                                          dropdownSearchDecoration:
-                                              InputDecoration(
-                                            labelText: "Child Type",
-                                          ),
-                                        ),
-                                        items: childType,
-                                        onChanged: (String? value) {
-                                          setState(() {
-                                            _inputChildType2 = value;
-                                          });
-                                        },
-                                        selectedItem: 'Choose child type'),
-                                    DropdownSearch<String>(
-                                        validator: (value) {
-                                          if (value == 'Choose word type') {
-                                            return 'Please choose one word type';
-                                          }
-                                          return null;
-                                        },
-                                        popupProps: PopupProps.dialog(
-                                          showSelectedItems: true,
-                                          itemBuilder: _style1,
-                                          dialogProps: DialogProps(
-                                            contentTextStyle: TextStyle(
-                                                fontFamily: 'MeQuran2',
-                                                fontSize: 24),
-                                          ),
-                                          showSearchBox: true,
-                                          textStyle: TextStyle(
-                                              fontFamily: 'MeQuran2',
-                                              fontSize: 24),
-                                        ),
-                                        dropdownBuilder: _style,
-                                        dropdownDecoratorProps:
-                                            const DropDownDecoratorProps(
-                                          dropdownSearchDecoration:
-                                              InputDecoration(
-                                            labelText: "Word Type",
-                                          ),
-                                        ),
-                                        items: wordType,
-                                        onChanged: (String? value) {
-                                          setState(() {
-                                            _inputWordType2 = value;
-                                          });
-                                        },
-                                        selectedItem: 'Choose word type'),
-                                    ElevatedButton(
-                                        onPressed: () async {
-                                          // Validate returns true if the form is valid, or false otherwise.
-                                          if (_formKey2.currentState!
-                                              .validate()) {
-                                            await addData(
-                                                categoryId: "$_catID2",
-                                                parent: _inputParent2!,
-                                                wordType: _inputWordType2!,
-                                                childType: _inputChildType2!,
-                                                newCat: true,
-                                                newRel: false,
-                                                malayName: _inputMalayCat2!,
-                                                arabName: _inputArabCat2!,
-                                                engName: _inputEngCat2!);
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
                                               const SnackBar(
@@ -992,7 +657,7 @@ class _EditDataState extends State<EditData>
                   title: Text(document.name!,
                       style: TextStyle(fontFamily: 'MeQuran2')),
                   subtitle: Text(
-                    'ID: ${document.categoryId}, Type: ${document.type}, Child: ${document.childType}',
+                    'ID: ${document.categoryId}, Type: ${document.type}, Child: ${document.childType} , Parent${document.parent}',
                   ),
                   trailing: SizedBox(
                     width: 100,
@@ -1086,7 +751,7 @@ class _EditDataState extends State<EditData>
                       title: Text(document.name!,
                           style: TextStyle(fontFamily: 'MeQuran2')),
                       subtitle: Text(
-                          'ID: ${document.categoryId}, Type: ${document.type ?? "None"}, Child: ${document.childType}'),
+                          'ID: ${document.categoryId}, Type: ${document.type ?? "None"}, Child: ${document.childType}, Parent${document.parent}'),
                       trailing: SizedBox(
                         width: 100,
                         child: Row(
@@ -1176,7 +841,7 @@ class _EditDataState extends State<EditData>
                   title: Text(document.name!,
                       style: TextStyle(fontFamily: 'MeQuran2')),
                   subtitle: Text(
-                      'ID: ${document.categoryId}, Type: ${document.type ?? "None"}, Child: ${document.childType}'),
+                      'ID: ${document.categoryId}, Type: ${document.type ?? "None"}, Child: ${document.childType} , Parent${document.parent}'),
                   trailing: SizedBox(
                     width: 100,
                     child: Row(
@@ -1334,36 +999,20 @@ class _EditDataState extends State<EditData>
     required String? arabName,
     required String childType,
     required String? categoryId,
-    required bool newCat,
     required bool newRel,
   }) async {
     var id = await Provider.of<AyaProvider>(context, listen: false)
         .getLastRelationshipId();
     var catID;
-    if (newCat) {
-      setState(() {});
-      catID = await Provider.of<AyaProvider>(context, listen: false)
-          .getLastCategoryId();
-      await Provider.of<AyaProvider>(context, listen: false).addNewCategory(
-          categoryID: int.parse(catID),
-          parent: parent,
-          childType: childType,
-          wordType: wordType,
-          malayName: malayName!,
-          arabName: arabName!,
-          engName: engName,
-          newCat: newCat);
-    } else {
-      setState(() {
-        catID = categoryId;
-      });
-    }
+    setState(() {
+      catID = categoryId;
+    });
     if (newRel) {
       await Provider.of<AyaProvider>(context, listen: false).addNewRelationship(
-          relationshipID: int.parse(id),
-          wordID: widget.wordId,
-          categoryID: int.parse(catID),
-          newCat: newCat);
+        relationshipID: int.parse(id),
+        wordID: widget.wordId,
+        categoryID: int.parse(catID),
+      );
     }
     print('data added');
   }

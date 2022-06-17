@@ -58,7 +58,7 @@ class _QuizScoreState extends State<QuizScore> {
                 ),
                 height: 57,
                 child: CustomScrollView(
-                  slivers: const [Appbar()],
+                  slivers: [Appbar()],
                 ),
               ),
               Align(
