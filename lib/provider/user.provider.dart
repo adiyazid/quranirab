@@ -16,21 +16,24 @@ class AppUser extends ChangeNotifier {
   User? get user => FirebaseAuth.instance.currentUser;
 
   factory AppUser() => AppUser._();
-  String role = 'None';
+  String? role = 'No data';
 
   static AppUser get instance => AppUser();
   FirebaseFirestore db = FirebaseFirestore.instance;
 
   signOut() async {
     await FirebaseAuth.instance.signOut();
-    role = '';
+    role = 'No data';
     notifyListeners();
   }
 
   Future<void> signIn({required String email, required String password}) async {
     try {
       await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((value) async {
+        await getRole();
+      });
       print('Sign in Successful');
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -46,14 +49,19 @@ class AppUser extends ChangeNotifier {
   Future<void> getRole() async {
     final docRef =
         db.collection("quranIrabUsers").doc(AppUser.instance.user!.uid);
-    role = await docRef.get().then(
-          (value) {
-            var role = value['role'] ?? 'None';
-            return role;
-          },
-        ) ??
-        'None';
-    notifyListeners();
+    await docRef.get().then(
+      (value) {
+        role = value['role'];
+        notifyListeners();
+      },
+    );
+  }
+
+  Future<void> updateRole() async {
+    db
+        .collection("quranIrabUsers")
+        .doc(AppUser.instance.user!.uid)
+        .set({"role": "premium-user"}, SetOptions(merge: true));
   }
 
   Future<void> updateName(String name) async {
@@ -90,6 +98,7 @@ class AppUser extends ChangeNotifier {
         .collection("quranIrabUsers")
         .doc(AppUser.instance.user!.uid)
         .set({
+      "role": 'user',
       "first_name": firstname,
       "last_name": lastname,
       "email": email,

@@ -4,7 +4,6 @@ import 'package:quranirab/models/category.dart';
 import 'package:quranirab/quiz_module/LeaderBoard.Table.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/widget/menu.dart';
-
 import '../widget/appbar.widget.dart';
 
 class LeaderBoardMenu extends StatefulWidget {

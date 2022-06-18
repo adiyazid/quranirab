@@ -2,6 +2,7 @@ import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
@@ -45,10 +46,19 @@ class _SettingPopupState extends State<SettingPopup>
     }
   }
 
+  var dark = GetStorage().read('dark');
+
   @override
   void initState() {
     super.initState();
-    _controller = TabController(length: 3, vsync: this, initialIndex: 0);
+    _controller = TabController(
+        length: 3,
+        vsync: this,
+        initialIndex: dark == null
+            ? 0
+            : dark
+                ? 2
+                : 1);
     // Create TabController for getting the index of current tab
     _controller.addListener(() {
       setState(() {});

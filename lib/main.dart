@@ -14,6 +14,9 @@ import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/auth/landing.page.dart';
 
 import 'firebase_options.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_web/webview_flutter_web.dart';
+
 import 'framework/horizontal.scroll.web.dart';
 import 'framework/ms.language.dart';
 
@@ -52,13 +55,18 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<AppUser>.value(value: appUser),
+        ChangeNotifierProvider<AppUser>(
+          create: (context) => AppUser(),
+        ),
         ChangeNotifierProvider<AyaProvider>(create: (context) => AyaProvider()),
         ChangeNotifierProvider<LangProvider>(
             create: (context) => LangProvider()),
         ChangeNotifierProvider<BookMarkProvider>(
             create: (context) => BookMarkProvider()),
         ChangeNotifierProvider<DeleteProvider>(
-            create: (context) => DeleteProvider())
+            create: (context) => DeleteProvider()),
+        ChangeNotifierProvider<ThemeProvider>(
+            create: (context) => ThemeProvider())
       ],
       child: ChangeNotifierProvider(
           create: (context) => ThemeProvider(),

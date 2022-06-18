@@ -10763,12 +10763,11 @@ class AyaProvider extends ChangeNotifier {
     return id;
   }
 
-  Future<void> addNewRelationship(
-      {required int relationshipID,
-      required int wordID,
-      required int categoryID,
-      required bool newCat}) async {
-    if (newCat) categoryID = categoryID + 1;
+  Future<void> addNewRelationship({
+    required int relationshipID,
+    required int wordID,
+    required int categoryID,
+  }) async {
     await wordRelationship.doc('${relationshipID + 1}').set({
       "active": "f",
       "created_at": DateTime.now().toString(),
@@ -10776,32 +10775,6 @@ class AyaProvider extends ChangeNotifier {
       "updated_at": DateTime.now().toString(),
       "word_category_id": "$categoryID",
       "word_id": "$wordID",
-    });
-  }
-
-  addNewCategory(
-      {required bool newCat,
-      required int categoryID,
-      required String wordType,
-      required String engName,
-      required String malayName,
-      required String arabName,
-      required String childType,
-      required String parent}) async {
-    if (newCat) {
-      var id = await getLastTransId();
-      await addTranslation(
-          engName, malayName, arabName, categoryID, int.parse(id));
-    }
-    await wordCategory.doc('${categoryID + 1}').set({
-      "active": "t",
-      "ancestry": parent,
-      "child_type": childType,
-      "created_at": DateTime.now().toString(),
-      "id": "${categoryID + 1}",
-      "tname": engName,
-      "updated_at": DateTime.now().toString(),
-      "word_type": wordType,
     });
   }
 

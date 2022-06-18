@@ -8,6 +8,7 @@ import 'package:quranirab/widget/appbar.widget.dart';
 import 'package:quranirab/widget/menu.dart';
 import 'package:quranirab/quiz_module/quiz.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class QuizHome extends StatefulWidget {
   final int page;
 
@@ -41,7 +42,7 @@ class _QuizHomeState extends State<QuizHome> {
               ),
               height: 57,
               child: CustomScrollView(
-                slivers: const [Appbar()],
+                slivers: [Appbar()],
               ),
             ),
             Align(

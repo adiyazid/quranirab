@@ -572,7 +572,9 @@ class _SignupWidgetState extends State<SignupWidget>
                                     ),
                                   );
                                 } else {
-                                  setState(() {});
+                                  if (mounted) {
+                                    setState(() {});
+                                  }
                                   loading = true;
                                   try {
                                     await appUser.signUp(
@@ -581,11 +583,6 @@ class _SignupWidgetState extends State<SignupWidget>
                                         lastName: _lastName.text,
                                         firstName: _firstName.text);
                                     await addUser();
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                LandingPage()));
                                     showTopSnackBar(
                                       context,
                                       CustomSnackBar.success(
@@ -593,10 +590,20 @@ class _SignupWidgetState extends State<SignupWidget>
                                             .newAccCreated,
                                       ),
                                     );
-                                    setState(() {});
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                LandingPage()));
+
+                                    if (mounted) {
+                                      setState(() {});
+                                    }
                                     loading = false;
                                   } catch (e) {
-                                    setState(() {});
+                                    if (mounted) {
+                                      setState(() {});
+                                    }
                                     loading = false;
                                     if (e.toString() ==
                                         '[firebase_auth/email-already-in-use] The email address is already in use by another account.') {
