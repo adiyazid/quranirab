@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:422246535912:android:f23ab06d55e927ef2cef5d",
+        "mobilesdk_app_id": "1:422246535912:android:58d01547387a26f42cef5d",
         "android_client_info": {
-          "package_name": "com.example.quranirab"
+          "package_name": "com.aqwise.quranirab"
         }
       },
       "oauth_client": [

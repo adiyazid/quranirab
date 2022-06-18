@@ -13,6 +13,7 @@ import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/auth/landing.page.dart';
 
+import 'firebase_options.dart';
 import 'framework/horizontal.scroll.web.dart';
 import 'framework/ms.language.dart';
 
@@ -20,17 +21,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
   await Firebase.initializeApp(
-    // Replace with actual values
-    options: kIsWeb == true
-        ? const FirebaseOptions(
-            apiKey: "AIzaSyC8qmY0DC3tRKcyV0r8YXmymr-c1y78r0Y",
-            authDomain: "quranirab-74bba.firebaseapp.com",
-            projectId: "quranirab-74bba",
-            storageBucket: "quranirab-74bba.appspot.com",
-            messagingSenderId: "422246535912",
-            appId: "1:422246535912:web:b9fb40db672516fa2cef5d",
-            measurementId: "G-GF36EVS4JQ")
-        : null,
+    options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(MyApp());
 }

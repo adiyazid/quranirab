@@ -1,4 +1,4 @@
-package com.example.quranirab
+package com.aqwise.quranirab
 
 import io.flutter.embedding.android.FlutterActivity
 
