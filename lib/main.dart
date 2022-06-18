@@ -1,19 +1,19 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:provider/provider.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
 import 'package:quranirab/provider/bookmark.provider.dart';
 import 'package:quranirab/provider/delete.provider.dart';
 import 'package:quranirab/provider/language.provider.dart';
 import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:quranirab/views/auth/landing.page.dart';
-import 'framework/horizontal.scroll.web.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'framework/horizontal.scroll.web.dart';
 import 'framework/ms.language.dart';
 
 Future<void> main() async {
@@ -69,7 +69,6 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider<DeleteProvider>(
             create: (context) => DeleteProvider())
       ],
-
       child: ChangeNotifierProvider(
           create: (context) => ThemeProvider(),
           builder: (context, _) {
