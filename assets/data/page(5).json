@@ -1,0 +1,60 @@
+{
+  "plist": {
+    "dictparent": {
+      "type": "suras",
+      "arrayparent": {
+        "dictchild": {
+          "keychild": [
+            "name",
+            "aname",
+            "tname",
+            "ename",
+            "ayaNumbers",
+            "translations",
+            "texts",
+            "juz"
+          ],
+          "ayah_name": [
+            "البقرة",
+            "ﮎ",
+            "Al-Baqara",
+            "The Cow",
+            "ﰸﰹ"
+          ],
+          "ayah_array": [
+            {
+              "integer": [
+                25,
+                26,
+                27,
+                28,
+                29
+              ]
+            },
+            {
+              "ayah": [
+                "ﭑﭒﭓﭔﭕﭖﭗﭘ&lt;br /&gt;ﭙﭚﭛﭜﭝﭞﭟﭠﭡﭢ&lt;br /&gt;ﭣﭤﭥﭦﭧﭨﭩﭪﭫﭬﭭﭮﭯ&lt;br /&gt;ﭰﭱﭲﭳﭴﭵﭶﭷﭸ&lt;br /&gt;",
+                "ﭹﭺﭻﭼﭽﭾﭿﮀﮁﮂﮃ&lt;br /&gt;ﮄﮅﮆﮇﮈﮉﮊﮋﮌ&lt;br /&gt;ﮍﮎﮏﮐﮑﮒﮓﮔﮕ&lt;br /&gt;ﮖﮗﮘﮙﮚﮛﮜﮝﮞﮟ&lt;br /&gt;ﮠﮡﮢﮣﮤﮥ",
+                "ﮦﮧﮨ&lt;br /&gt;ﮩﮪﮫﮬﮭﮮﮯﮰﮱﯓﯔ&lt;br /&gt;ﯕﯖﯗﯘﯙﯚﯛﯜ&lt;br /&gt;",
+                "ﯝﯞﯟﯠﯡﯢﯣ&lt;br /&gt;ﯤﯥﯦﯧﯨﯩﯪﯫ",
+                "ﯬ&lt;br /&gt;ﯭﯮﯯﯰﯱﯲﯳﯴﯵﯶ&lt;br /&gt;ﯷﯸﯹﯺﯻﯼﯽﯾﯿﰀ"
+              ]
+            }
+          ],
+          "translations": {
+            "language": "english",
+            "translation_list": {
+              "translation": [
+                "And give good tidings to those who believe and do righteous deeds that they will have gardens [in Paradise] beneath which rivers flow. Whenever they are provided with a provision of fruit therefrom, they will say, &quot;This is what we were provided with before.&quot; And it is given to them in likeness. And they will have therein purified spouses, and they will abide therein eternally.",
+                "Indeed, Allah is not timid to present an example - that of a mosquito or what is smaller than it. And those who have believed know that it is the truth from their Lord. But as for those who disbelieve, they say, &quot;What did Allah intend by this as an example?&quot; He misleads many thereby and guides many thereby. And He misleads not except the defiantly disobedient,",
+                "Who break the covenant of Allah after contracting it and sever that which Allah has ordered to be joined and cause corruption on earth. It is those who are the losers.",
+                "How can you disbelieve in Allah when you were lifeless and He brought you to life; then He will cause you to die, then He will bring you [back] to life, and then to Him you will be returned.",
+                "It is He who created for you all of that which is on the earth. Then He directed Himself to the heaven, [His being above all creation], and made them seven heavens, and He is Knowing of all things."
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
