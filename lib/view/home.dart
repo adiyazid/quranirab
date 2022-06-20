@@ -42,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
               onPressed: () async {
                 try {
-                  Navigator.pushNamed(
+                  Navigator.pushReplacementNamed(
                     context,
                     RoutesName.loginPage,
                   );
