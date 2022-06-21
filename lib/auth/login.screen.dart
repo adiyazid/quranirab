@@ -331,7 +331,7 @@ class _SigninWidgetState extends State<SigninWidget>
                                           .then((value) {
                                         setState(() {});
                                         loading = false;
-                                        Navigator.pushNamed(
+                                        Navigator.pushReplacementNamed(
                                             context, RoutesName.homePage);
                                       });
                                     } catch (e) {
@@ -455,10 +455,10 @@ class _SigninWidgetState extends State<SigninWidget>
               bubbleColor:
                   theme.isDarkMode ? Colors.blueGrey : Colors.orangeAccent,
               icon: Icons.language,
-              titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+              titleStyle: const TextStyle(fontSize: 16, color: Colors.white),
               onPress: () {
                 MyApp.of(context)!
-                    .setLocale(Locale.fromSubtags(languageCode: 'en'));
+                    .setLocale(const Locale.fromSubtags(languageCode: 'en'));
                 _animationController.reverse();
               },
             ),
@@ -468,10 +468,10 @@ class _SigninWidgetState extends State<SigninWidget>
               bubbleColor:
                   theme.isDarkMode ? Colors.blueGrey : Colors.orangeAccent,
               icon: Icons.language,
-              titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+              titleStyle: const TextStyle(fontSize: 16, color: Colors.white),
               onPress: () {
                 MyApp.of(context)!
-                    .setLocale(Locale.fromSubtags(languageCode: 'mas'));
+                    .setLocale(const Locale.fromSubtags(languageCode: 'mas'));
                 _animationController.reverse();
               },
             ),

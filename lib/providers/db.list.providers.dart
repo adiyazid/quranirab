@@ -139,4 +139,36 @@ class DbListProvider extends ChangeNotifier {
     notifyListeners();
     print(chinese + french + spanish + bengali);
   }
+
+  Future<void> remove(int number, String id) async {
+    if (number == 1) {
+      var position = chinese.indexOf(id);
+      nameC.removeAt(position);
+      idC.removeAt(position);
+      chinese.removeAt(position);
+      save('4');
+      notifyListeners();
+    } else if (number == 2) {
+      var position = french.indexOf(id);
+      nameF.removeAt(position);
+      idF.removeAt(position);
+      french.removeAt(position);
+      save('5');
+      notifyListeners();
+    } else if (number == 3) {
+      var position = spanish.indexOf(id);
+      nameS.removeAt(position);
+      idS.removeAt(position);
+      spanish.removeAt(position);
+      save('6');
+      notifyListeners();
+    } else if (number == 4) {
+      var position = bengali.indexOf(id);
+      nameB.removeAt(position);
+      idB.removeAt(position);
+      bengali.removeAt(position);
+      save('7');
+      notifyListeners();
+    }
+  }
 }

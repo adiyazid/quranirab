@@ -58,6 +58,7 @@ class _GetWordTranslationState extends State<GetWordTranslation> {
       "name": 'Benggali',
     },
   ];
+
   @override
   initState() {
     getTranslationCategory();
@@ -66,20 +67,21 @@ class _GetWordTranslationState extends State<GetWordTranslation> {
   }
 
   _saveForm() async {
-    var form = formKey.currentState;
-    if (form!.validate()) {
+    if (formKey.currentState!.validate()) {
       var duplicate =
           _list.any((element) => element['language_id'] == _language);
       if (duplicate) {
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('This language already in database')));
+      } else if (_language == '') {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('Select Language')));
       } else {
-        form.save();
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text('Adding data...')));
         await addLanguage(_name.text, _language).then((value) {
           Navigator.pop(context);
-          Navigator.pushNamed(context, RoutesName.homePage);
+          Navigator.pushReplacementNamed(context, RoutesName.homePage);
         });
       }
     } else {
@@ -92,6 +94,7 @@ class _GetWordTranslationState extends State<GetWordTranslation> {
   Widget build(BuildContext context) {
     final theme = Provider.of<ThemeProvider>(context);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text('Word category id ${widget.documentId}'),
       ),
@@ -108,6 +111,8 @@ class _GetWordTranslationState extends State<GetWordTranslation> {
                 children: [
                   Flexible(
                     child: Table(
+                      defaultVerticalAlignment:
+                          TableCellVerticalAlignment.middle,
                       defaultColumnWidth: const FixedColumnWidth(120.0),
                       border: TableBorder.all(
                           color: Colors.black,
@@ -116,25 +121,46 @@ class _GetWordTranslationState extends State<GetWordTranslation> {
                       children: [
                         TableRow(children: [
                           Column(children: const [
-                            Text('Id', style: TextStyle(fontSize: 20.0))
+                            Text('Id', style: TextStyle(fontSize: 18))
                           ]),
                           Column(children: const [
                             Text('Language Name',
-                                style: TextStyle(fontSize: 20.0))
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 18))
                           ]),
                         ]),
                         TableRow(children: [
-                          Column(children: [Text('Javatpoint')]),
-                          Column(children: [Text('Flutter')]),
+                          Column(children: const [Text('1')]),
+                          Column(children: const [Text('Arabic')]),
                         ]),
                         TableRow(children: [
-                          Column(children: [Text('Javatpoint')]),
-                          Column(children: [Text('MySQL')]),
+                          Column(children: const [Text('2')]),
+                          Column(children: const [Text('English')]),
+                        ]),
+                        TableRow(children: [
+                          Column(children: const [Text('3')]),
+                          Column(children: const [Text('Malay')]),
+                        ]),
+                        TableRow(children: [
+                          Column(children: const [Text('4')]),
+                          Column(children: const [Text('Chinese')]),
+                        ]),
+                        TableRow(children: [
+                          Column(children: const [Text('5')]),
+                          Column(children: const [Text('French')]),
+                        ]),
+                        TableRow(children: [
+                          Column(children: const [Text('6')]),
+                          Column(children: const [Text('Spanish')]),
+                        ]),
+                        TableRow(children: [
+                          Column(children: const [Text('7')]),
+                          Column(children: const [Text('Bengali')]),
                         ]),
                       ],
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     width: 400,
                     height: MediaQuery.of(context).size.height * 0.7,
                     child: ListView.builder(
@@ -160,12 +186,14 @@ class _GetWordTranslationState extends State<GetWordTranslation> {
       floatingActionButton: FloatingActionButton.extended(
           onPressed: () async {
             await showDialog(
+              barrierDismissible: false,
               context: context,
               builder: (BuildContext context) {
                 return Form(
                   key: formKey,
                   child: AlertDialog(
                     title: DropDownTextField(
+                      clearOption: false,
                       listSpace: 20,
                       listPadding: ListPadding(top: 20),
                       enableSearch: false,
@@ -183,13 +211,20 @@ class _GetWordTranslationState extends State<GetWordTranslation> {
                         DropDownValueModel(name: 'Benggali', value: "7"),
                       ],
                       listTextStyle: const TextStyle(color: Colors.red),
-                      dropDownItemCount: 8,
+                      dropDownItemCount: 4,
                       onChanged: (val) {
                         setState(() {});
                         _language = val.value;
                       },
                     ),
-                    content: TextField(
+                    content: TextFormField(
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please insert name';
+                        } else {
+                          return null;
+                        }
+                      },
                       controller: _name,
                       decoration:
                           const InputDecoration(hintText: 'Insert text'),
@@ -197,6 +232,9 @@ class _GetWordTranslationState extends State<GetWordTranslation> {
                     actions: [
                       IconButton(
                           onPressed: () {
+                            setState(() {});
+                            _name.clear();
+                            _language = '';
                             Navigator.pop(context);
                           },
                           icon: const Icon(Icons.close)),

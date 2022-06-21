@@ -37,9 +37,9 @@ class _LandingPageState extends State<LandingPage> {
   Future<void> navigate() async {
     var user = Provider.of<AppUser>(context, listen: false).user;
     if (user != null) {
-      Navigator.pushNamed(context, RoutesName.homePage);
+      Navigator.pushReplacementNamed(context, RoutesName.homePage);
     } else {
-      Navigator.pushNamed(context, RoutesName.loginPage);
+      Navigator.pushReplacementNamed(context, RoutesName.loginPage);
     }
   }
 }

@@ -499,7 +499,7 @@ class _SignupWidgetState extends State<SignupWidget>
                                       });
                                     },
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 8,
                                   ),
                                   Expanded(
@@ -508,7 +508,7 @@ class _SignupWidgetState extends State<SignupWidget>
                                           .iAgreeTermCondition,
                                       textAlign: TextAlign.left,
                                       maxLines: 3,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontFamily: 'Poppins',
                                           fontSize: 18,
                                           letterSpacing:
@@ -521,7 +521,7 @@ class _SignupWidgetState extends State<SignupWidget>
                               ),
                             ),
                             InkWell(
-                              onTap: () => Navigator.pushNamed(
+                              onTap: () => Navigator.pushReplacementNamed(
                                   context, RoutesName.loginPage),
                               child: Text(
                                 AppLocalizations.of(context)!.haveAccSignIn,
@@ -602,19 +602,20 @@ class _SignupWidgetState extends State<SignupWidget>
                                         password: _pass1.text,
                                         lastName: _lastName.text,
                                         firstName: _firstName.text);
-                                    await addUser();
-                                    showTopSnackBar(
-                                      context,
-                                      CustomSnackBar.success(
-                                        message: AppLocalizations.of(context)!
-                                            .newAccCreated,
-                                      ),
-                                    );
-                                    Navigator.pushReplacement(
+                                    await addUser().then((value) {
+                                      showTopSnackBar(
                                         context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                LandingPage()));
+                                        CustomSnackBar.success(
+                                          message: AppLocalizations.of(context)!
+                                              .newAccCreated,
+                                        ),
+                                      );
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const LandingPage()));
+                                    });
 
                                     if (mounted) {
                                       setState(() {});
@@ -661,7 +662,7 @@ class _SignupWidgetState extends State<SignupWidget>
                                   child: Text(
                                     AppLocalizations.of(context)!.signUp,
                                     textAlign: TextAlign.left,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontFamily: 'Poppins',
                                         fontSize: 24,
                                         letterSpacing:
@@ -691,10 +692,10 @@ class _SignupWidgetState extends State<SignupWidget>
               bubbleColor:
                   theme.isDarkMode ? Colors.blueGrey : Colors.orangeAccent,
               icon: Icons.language,
-              titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+              titleStyle: const TextStyle(fontSize: 16, color: Colors.white),
               onPress: () {
                 MyApp.of(context)!
-                    .setLocale(Locale.fromSubtags(languageCode: 'ar'));
+                    .setLocale(const Locale.fromSubtags(languageCode: 'ar'));
                 _animationController.reverse();
               },
             ),
@@ -704,10 +705,10 @@ class _SignupWidgetState extends State<SignupWidget>
               bubbleColor:
                   theme.isDarkMode ? Colors.blueGrey : Colors.orangeAccent,
               icon: Icons.language,
-              titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+              titleStyle: const TextStyle(fontSize: 16, color: Colors.white),
               onPress: () {
                 MyApp.of(context)!
-                    .setLocale(Locale.fromSubtags(languageCode: 'en'));
+                    .setLocale(const Locale.fromSubtags(languageCode: 'en'));
                 _animationController.reverse();
               },
             ),
@@ -717,10 +718,10 @@ class _SignupWidgetState extends State<SignupWidget>
               bubbleColor:
                   theme.isDarkMode ? Colors.blueGrey : Colors.orangeAccent,
               icon: Icons.language,
-              titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+              titleStyle: const TextStyle(fontSize: 16, color: Colors.white),
               onPress: () {
                 MyApp.of(context)!
-                    .setLocale(Locale.fromSubtags(languageCode: 'mas'));
+                    .setLocale(const Locale.fromSubtags(languageCode: 'mas'));
                 _animationController.reverse();
               },
             ),
@@ -731,7 +732,7 @@ class _SignupWidgetState extends State<SignupWidget>
               bubbleColor:
                   theme.isDarkMode ? Colors.blueGrey : Colors.orangeAccent,
               icon: theme.isDarkMode ? Icons.wb_sunny : Icons.nightlight_round,
-              titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+              titleStyle: const TextStyle(fontSize: 16, color: Colors.white),
               onPress: () {
                 theme.isDarkMode
                     ? theme.toggleTheme(false)

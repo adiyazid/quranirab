@@ -84,156 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: Consumer<DbListProvider>(builder: (context, list, child) {
           return TabBarView(children: [
-            Scrollbar(
-              child: PaginateFirestore(
-                padding: const EdgeInsets.all(32),
-                // Use SliverAppBar in header to make it sticky
-                header: SliverToBoxAdapter(
-                    child: Center(
-                        child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: SimpleGroupedChips<int>(
-                    controller: chipsController,
-                    values: List.generate(5, (index) => index),
-                    itemTitle: const [
-                      'No Chinese translation',
-                      'No French translation',
-                      'No Spanish translation',
-                      'No Bengali translation',
-                      'Show All'
-                    ],
-                    backgroundColorItem: Colors.black26,
-                    isScrolling: false,
-                    chipGroupStyle: ChipGroupStyle.minimize(
-                      backgroundColorItem: Colors.red[400],
-                      itemTitleStyle: const TextStyle(
-                        fontSize: 14,
-                      ),
-                    ),
-                    onItemSelected: (values) {
-                      setState(() {});
-                      filter = values;
-                    },
-                  ),
-                ))),
-                footer: const SliverToBoxAdapter(
-                    child: Center(
-                        child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Text('End of the list'),
-                ))),
-                // item builder type is compulsory.
-                itemBuilderType: PaginateBuilderType.listView,
-                //Change types accordingly
-                itemBuilder: (context, documentSnapshots, index) {
-                  final data = documentSnapshots[index].data() as Map?;
-                  if (filter == 0) {
-                    return list.chinese.contains(documentSnapshots[index].id)
-                        ? Container()
-                        : ListTile(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                context,
-                                RoutesName.viewDataPage,
-                                arguments: GetWordTranslation(data!['id']),
-                              );
-                            },
-                            leading:
-                                const CircleAvatar(child: Icon(Icons.person)),
-                            title: data == null
-                                ? const Text('Error in data')
-                                : Text(data['tname']),
-                            subtitle: checkLanguage(data!['id'], list));
-                  } else if (filter == 1) {
-                    return list.french.contains(documentSnapshots[index].id)
-                        ? Container()
-                        : ListTile(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                context,
-                                RoutesName.viewDataPage,
-                                arguments: GetWordTranslation(data!['id']),
-                              );
-                            },
-                            leading:
-                                const CircleAvatar(child: Icon(Icons.person)),
-                            title: data == null
-                                ? const Text('Error in data')
-                                : Text(data['tname']),
-                            subtitle: checkLanguage(data!['id'], list));
-                  } else if (filter == 2) {
-                    return list.spanish.contains(documentSnapshots[index].id)
-                        ? Container()
-                        : ListTile(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                context,
-                                RoutesName.viewDataPage,
-                                arguments: GetWordTranslation(data!['id']),
-                              );
-                            },
-                            leading:
-                                const CircleAvatar(child: Icon(Icons.person)),
-                            title: data == null
-                                ? const Text('Error in data')
-                                : Text(data['tname']),
-                            subtitle: checkLanguage(data!['id'], list));
-                  } else if (filter == 3) {
-                    return list.bengali.contains(documentSnapshots[index].id)
-                        ? Container()
-                        : ListTile(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                context,
-                                RoutesName.viewDataPage,
-                                arguments: GetWordTranslation(data!['id']),
-                              );
-                            },
-                            leading:
-                                const CircleAvatar(child: Icon(Icons.person)),
-                            title: data == null
-                                ? const Text('Error in data')
-                                : Text(data['tname']),
-                            subtitle: checkLanguage(data!['id'], list));
-                  } else if (filter == 4) {
-                    return ListTile(
-                        onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            RoutesName.viewDataPage,
-                            arguments: GetWordTranslation(data!['id']),
-                          );
-                        },
-                        leading: const CircleAvatar(child: Icon(Icons.person)),
-                        title: data == null
-                            ? const Text('Error in data')
-                            : Text(data['tname']),
-                        subtitle: checkLanguage(data!['id'], list));
-                  } else {
-                    return ListTile(
-                        onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            RoutesName.viewDataPage,
-                            arguments: GetWordTranslation(data!['id']),
-                          );
-                        },
-                        leading: const CircleAvatar(child: Icon(Icons.person)),
-                        title: data == null
-                            ? const Text('Error in data')
-                            : Text(data['tname']),
-                        subtitle: checkLanguage(data!['id'], list));
-                  }
-                },
-                // orderBy is compulsory to enable pagination
-                query: FirebaseFirestore.instance
-                    .collection('word_categories')
-                    .orderBy('created_at'),
-                itemsPerPage: 5,
-                // to fetch real-time data
-                isLive: true,
-              ),
-            ),
+            buildScrollbar(list),
             ListView.builder(
               itemCount: list.chinese.length,
               itemBuilder: (BuildContext context, int index) {
@@ -251,8 +102,29 @@ class _MyHomePageState extends State<MyHomePage> {
                   trailing: ButtonBar(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
-                      IconButton(onPressed: () {}, icon: Icon(Icons.delete))
+                      IconButton(
+                          onPressed: () {}, icon: const Icon(Icons.edit)),
+                      IconButton(
+                          onPressed: () {
+                            try {
+                              var id = list.idC[index];
+                              FirebaseFirestore.instance
+                                  .collection('category_translations')
+                                  .doc(id)
+                                  .delete();
+                              var catID = list.chinese[index];
+                              Provider.of<DbListProvider>(context,
+                                      listen: false)
+                                  .remove(1, catID);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('Deleting data...')));
+                            } catch (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(e.toString())));
+                            }
+                          },
+                          icon: const Icon(Icons.delete))
                     ],
                   ),
                 );
@@ -266,6 +138,34 @@ class _MyHomePageState extends State<MyHomePage> {
                   leading: const CircleAvatar(child: Icon(Icons.person)),
                   title: Text(list.nameF[index]),
                   subtitle: Text(list.french[index]),
+                  trailing: ButtonBar(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                          onPressed: () {}, icon: const Icon(Icons.edit)),
+                      IconButton(
+                          onPressed: () {
+                            try {
+                              var id = list.idF[index];
+                              FirebaseFirestore.instance
+                                  .collection('category_translations')
+                                  .doc(id)
+                                  .delete();
+                              var catID = list.french[index];
+                              Provider.of<DbListProvider>(context,
+                                      listen: false)
+                                  .remove(2, catID);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('Deleting data...')));
+                            } catch (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(e.toString())));
+                            }
+                          },
+                          icon: const Icon(Icons.delete))
+                    ],
+                  ),
                 );
               },
             ),
@@ -277,6 +177,34 @@ class _MyHomePageState extends State<MyHomePage> {
                   leading: const CircleAvatar(child: Icon(Icons.person)),
                   title: Text(list.nameS[index]),
                   subtitle: Text(list.spanish[index]),
+                  trailing: ButtonBar(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                          onPressed: () {}, icon: const Icon(Icons.edit)),
+                      IconButton(
+                          onPressed: () {
+                            try {
+                              var id = list.idS[index];
+                              FirebaseFirestore.instance
+                                  .collection('category_translations')
+                                  .doc(id)
+                                  .delete();
+                              var catID = list.spanish[index];
+                              Provider.of<DbListProvider>(context,
+                                      listen: false)
+                                  .remove(3, catID);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('Deleting data...')));
+                            } catch (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(e.toString())));
+                            }
+                          },
+                          icon: const Icon(Icons.delete))
+                    ],
+                  ),
                 );
               },
             ),
@@ -288,11 +216,188 @@ class _MyHomePageState extends State<MyHomePage> {
                   leading: const CircleAvatar(child: Icon(Icons.person)),
                   title: Text(list.nameB[index]),
                   subtitle: Text(list.bengali[index]),
+                  trailing: ButtonBar(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                          onPressed: () {}, icon: const Icon(Icons.edit)),
+                      IconButton(
+                          onPressed: () {
+                            try {
+                              var id = list.idB[index];
+                              FirebaseFirestore.instance
+                                  .collection('category_translations')
+                                  .doc(id)
+                                  .delete();
+                              var catID = list.bengali[index];
+                              Provider.of<DbListProvider>(context,
+                                      listen: false)
+                                  .remove(4, catID);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('Deleting data...')));
+                            } catch (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(e.toString())));
+                            }
+                          },
+                          icon: const Icon(Icons.delete))
+                    ],
+                  ),
                 );
               },
             )
           ]);
         }),
+      ),
+    );
+  }
+
+  Scrollbar buildScrollbar(DbListProvider list) {
+    return Scrollbar(
+      child: PaginateFirestore(
+        padding: const EdgeInsets.all(32),
+        // Use SliverAppBar in header to make it sticky
+        header: SliverToBoxAdapter(
+            child: Center(
+                child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SimpleGroupedChips<int>(
+            controller: chipsController,
+            values: List.generate(5, (index) => index),
+            itemTitle: const [
+              'No Chinese translation',
+              'No French translation',
+              'No Spanish translation',
+              'No Bengali translation',
+              'Show All'
+            ],
+            backgroundColorItem: Colors.black26,
+            isScrolling: false,
+            chipGroupStyle: ChipGroupStyle.minimize(
+              backgroundColorItem: Colors.red[400],
+              itemTitleStyle: const TextStyle(
+                fontSize: 14,
+              ),
+            ),
+            onItemSelected: (values) {
+              setState(() {});
+              filter = values;
+            },
+          ),
+        ))),
+        footer: const SliverToBoxAdapter(
+            child: Center(
+                child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Text('End of the list'),
+        ))),
+        // item builder type is compulsory.
+        itemBuilderType: PaginateBuilderType.listView,
+        //Change types accordingly
+        itemBuilder: (context, documentSnapshots, index) {
+          final data = documentSnapshots[index].data() as Map?;
+          if (filter == 0) {
+            return list.chinese.contains(documentSnapshots[index].id)
+                ? Container()
+                : ListTile(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        RoutesName.viewDataPage,
+                        arguments: GetWordTranslation(data!['id']),
+                      );
+                    },
+                    leading: const CircleAvatar(child: Icon(Icons.person)),
+                    title: data == null
+                        ? const Text('Error in data')
+                        : Text(data['tname']),
+                    subtitle: checkLanguage(data!['id'], list));
+          } else if (filter == 1) {
+            return list.french.contains(documentSnapshots[index].id)
+                ? Container()
+                : ListTile(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        RoutesName.viewDataPage,
+                        arguments: GetWordTranslation(data!['id']),
+                      );
+                    },
+                    leading: const CircleAvatar(child: Icon(Icons.person)),
+                    title: data == null
+                        ? const Text('Error in data')
+                        : Text(data['tname']),
+                    subtitle: checkLanguage(data!['id'], list));
+          } else if (filter == 2) {
+            return list.spanish.contains(documentSnapshots[index].id)
+                ? Container()
+                : ListTile(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        RoutesName.viewDataPage,
+                        arguments: GetWordTranslation(data!['id']),
+                      );
+                    },
+                    leading: const CircleAvatar(child: Icon(Icons.person)),
+                    title: data == null
+                        ? const Text('Error in data')
+                        : Text(data['tname']),
+                    subtitle: checkLanguage(data!['id'], list));
+          } else if (filter == 3) {
+            return list.bengali.contains(documentSnapshots[index].id)
+                ? Container()
+                : ListTile(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        RoutesName.viewDataPage,
+                        arguments: GetWordTranslation(data!['id']),
+                      );
+                    },
+                    leading: const CircleAvatar(child: Icon(Icons.person)),
+                    title: data == null
+                        ? const Text('Error in data')
+                        : Text(data['tname']),
+                    subtitle: checkLanguage(data!['id'], list));
+          } else if (filter == 4) {
+            return ListTile(
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    RoutesName.viewDataPage,
+                    arguments: GetWordTranslation(data!['id']),
+                  );
+                },
+                leading: const CircleAvatar(child: Icon(Icons.person)),
+                title: data == null
+                    ? const Text('Error in data')
+                    : Text(data['tname']),
+                subtitle: checkLanguage(data!['id'], list));
+          } else {
+            return ListTile(
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    RoutesName.viewDataPage,
+                    arguments: GetWordTranslation(data!['id']),
+                  );
+                },
+                leading: const CircleAvatar(child: Icon(Icons.person)),
+                title: data == null
+                    ? const Text('Error in data')
+                    : Text(data['tname']),
+                subtitle: checkLanguage(data!['id'], list));
+          }
+        },
+        // orderBy is compulsory to enable pagination
+        query: FirebaseFirestore.instance
+            .collection('word_categories')
+            .orderBy('created_at'),
+        itemsPerPage: 5,
+        // to fetch real-time data
+        isLive: true,
       ),
     );
   }
