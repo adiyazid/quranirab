@@ -3,18 +3,20 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:multiquranirab/Routes/route.dart';
+import 'package:multiquranirab/auth/landing.page.dart';
 import 'package:multiquranirab/providers/db.list.providers.dart';
 import 'package:multiquranirab/providers/user.provider.dart';
 import 'package:multiquranirab/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'Routes/onGenerateRoute.dart';
-import 'auth/landing.page.dart';
 import 'firebase_options.dart';
 import 'framework/horizontal.scroll.web.dart';
 import 'framework/ms.language.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -80,12 +82,14 @@ class _MyAppState extends State<MyApp> {
               GlobalCupertinoLocalizations.delegate,
               MsMaterialLocalizations.delegate,
             ],
+            initialRoute: RoutesName.landingPage,
             onGenerateRoute: RouteGenerator.generateRoute,
             supportedLocales: const [
               Locale('ms', 'MY'),
               Locale('en', ''),
               Locale('ar', ''),
             ],
+            themeMode: ThemeMode.light,
             theme: theme,
             darkTheme: darkTheme,
             debugShowCheckedModeBanner: false,

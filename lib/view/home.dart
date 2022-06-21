@@ -30,6 +30,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   GroupController chipsController = GroupController(isMultipleSelection: false);
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -39,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
           centerTitle: true,
           leading: const CircleAvatar(
             radius: 10,
-            backgroundImage: AssetImage('quranirab.png'),
+            backgroundImage: AssetImage('assets/quranirab.png'),
           ),
           title: Text(widget.title),
           bottom: const PreferredSize(
@@ -237,10 +238,23 @@ class _MyHomePageState extends State<MyHomePage> {
               itemCount: list.chinese.length,
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      RoutesName.viewDataPage,
+                      arguments: GetWordTranslation(list.chinese[index]),
+                    );
+                  },
                   leading: const CircleAvatar(child: Icon(Icons.person)),
                   title: Text(list.nameC[index]),
                   subtitle: Text(list.chinese[index]),
+                  trailing: ButtonBar(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
+                      IconButton(onPressed: () {}, icon: Icon(Icons.delete))
+                    ],
+                  ),
                 );
               },
             ),

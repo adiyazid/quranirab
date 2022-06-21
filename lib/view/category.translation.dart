@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
-import 'package:editable/editable.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:multiquranirab/providers/db.list.providers.dart';
@@ -21,7 +20,7 @@ class GetWordTranslation extends StatefulWidget {
 class _GetWordTranslationState extends State<GetWordTranslation> {
   List _list = [];
   late String _language;
-  final formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   final _name = TextEditingController();
 
@@ -105,26 +104,44 @@ class _GetWordTranslationState extends State<GetWordTranslation> {
             )
           : Center(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.4,
-                    child: Editable(
-                      columns: cols,
-                      rows: rows,
-                      zebraStripe: true,
-                      stripeColor2: Theme.of(context).secondaryHeaderColor,
-                      borderColor: Colors.blueGrey,
+                  Flexible(
+                    child: Table(
+                      defaultColumnWidth: const FixedColumnWidth(120.0),
+                      border: TableBorder.all(
+                          color: Colors.black,
+                          style: BorderStyle.solid,
+                          width: 2),
+                      children: [
+                        TableRow(children: [
+                          Column(children: const [
+                            Text('Id', style: TextStyle(fontSize: 20.0))
+                          ]),
+                          Column(children: const [
+                            Text('Language Name',
+                                style: TextStyle(fontSize: 20.0))
+                          ]),
+                        ]),
+                        TableRow(children: [
+                          Column(children: [Text('Javatpoint')]),
+                          Column(children: [Text('Flutter')]),
+                        ]),
+                        TableRow(children: [
+                          Column(children: [Text('Javatpoint')]),
+                          Column(children: [Text('MySQL')]),
+                        ]),
+                      ],
                     ),
                   ),
                   Container(
                     width: 400,
-                    height: MediaQuery.of(context).size.height * 0.5,
+                    height: MediaQuery.of(context).size.height * 0.7,
                     child: ListView.builder(
                       itemCount: _list.length,
                       itemBuilder: (BuildContext context, int index) {
                         _list.sort((a, b) =>
-                            b['language_id'].compareTo(a['language_id']));
+                            a['language_id'].compareTo(b['language_id']));
                         return Card(
                           child: ListTile(
                             title: Text(

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:multiquranirab/Routes/route.dart';
+import 'package:multiquranirab/auth/landing.page.dart';
 import 'package:multiquranirab/view/category.translation.dart';
 
-import '../auth/landing.page.dart';
 import '../auth/login.screen.dart';
 import '../auth/signup.screen.dart';
 import '../view/home.dart';
@@ -16,6 +16,9 @@ class RouteGenerator {
               title: 'QuranIrab Multi Language',
             ),
             routeName: settings.name);
+      case RoutesName.landingPage:
+        return _GeneratePageRoute(
+            widget: const LandingPage(), routeName: settings.name);
       case RoutesName.loginPage:
         return _GeneratePageRoute(
             widget: const SigninWidget(), routeName: settings.name);
@@ -24,10 +27,9 @@ class RouteGenerator {
             widget: const SignupWidget(), routeName: settings.name);
       case RoutesName.viewDataPage:
         final args = settings.arguments as GetWordTranslation;
-
         return _GeneratePageRoute(
             widget: GetWordTranslation(args.documentId),
-            routeName: settings.name ?? '1');
+            routeName: settings.name);
       default:
         return _GeneratePageRoute(
             widget: const LandingPage(), routeName: settings.name);
@@ -89,7 +91,7 @@ class _GeneratePageRoute extends PageRouteBuilder {
                 Animation<double> secondaryAnimation) {
               return widget;
             },
-            transitionDuration: Duration(milliseconds: 500),
+            transitionDuration: const Duration(milliseconds: 500),
             transitionsBuilder: (BuildContext context,
                 Animation<double> animation,
                 Animation<double> secondaryAnimation,
