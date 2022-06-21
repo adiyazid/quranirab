@@ -50,14 +50,8 @@ class _SigninWidgetState extends State<SigninWidget>
     // Figma Flutter Generator SigninWidget - FRAME
     return SafeArea(
       child: Scaffold(
-        body: loading
-            ? Center(
-                child: LoadingAnimationWidget.fourRotatingDots(
-                  size: 200,
-                  color:
-                      theme.isDarkMode ? Colors.blueGrey : Colors.orangeAccent,
-                ),
-              )
+        body: buildLoading()
+            ? Loading(theme: theme)
             : Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
@@ -496,6 +490,27 @@ class _SigninWidgetState extends State<SigninWidget>
           iconColor: theme.isDarkMode ? Colors.white : Colors.black,
         ),
         //BUTTON LOCATION
+      ),
+    );
+  }
+
+  bool buildLoading() => loading;
+}
+
+class Loading extends StatelessWidget {
+  const Loading({
+    Key? key,
+    required this.theme,
+  }) : super(key: key);
+
+  final ThemeProvider theme;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: LoadingAnimationWidget.fourRotatingDots(
+        size: 200,
+        color: theme.isDarkMode ? Colors.blueGrey : Colors.orangeAccent,
       ),
     );
   }

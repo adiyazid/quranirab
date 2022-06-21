@@ -103,7 +103,59 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                          onPressed: () {}, icon: const Icon(Icons.edit)),
+                          onPressed: () async {
+                            await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                var name = list.nameC[index];
+                                var id = list.idC[index];
+                                return AlertDialog(
+                                  title: const Text('Change Name'),
+                                  content: TextField(
+                                    onChanged: (e) {
+                                      setState(() {});
+                                      name = e;
+                                    },
+                                    decoration: InputDecoration(
+                                      hintText: name,
+                                    ),
+                                  ),
+                                  actions: [
+                                    IconButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        icon: const Icon(Icons.close)),
+                                    IconButton(
+                                        onPressed: () async {
+                                          FirebaseFirestore.instance
+                                              .collection(
+                                                  'category_translations')
+                                              .doc(id)
+                                              .set({
+                                            "name": name,
+                                            "updated_At":
+                                                DateTime.now().toString()
+                                          }, SetOptions(merge: true));
+                                          await Provider.of<DbListProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .update(id, name, 1)
+                                              .then((value) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(const SnackBar(
+                                                    content: Text(
+                                                        'Updating data...')));
+                                            Navigator.pop(context);
+                                          });
+                                        },
+                                        icon: const Icon(Icons.check)),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          icon: const Icon(Icons.edit)),
                       IconButton(
                           onPressed: () {
                             try {
@@ -134,7 +186,13 @@ class _MyHomePageState extends State<MyHomePage> {
               itemCount: list.french.length,
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      RoutesName.viewDataPage,
+                      arguments: GetWordTranslation(list.french[index]),
+                    );
+                  },
                   leading: const CircleAvatar(child: Icon(Icons.person)),
                   title: Text(list.nameF[index]),
                   subtitle: Text(list.french[index]),
@@ -142,7 +200,59 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                          onPressed: () {}, icon: const Icon(Icons.edit)),
+                          onPressed: () async {
+                            await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                var name = list.nameF[index];
+                                var id = list.idF[index];
+                                return AlertDialog(
+                                  title: const Text('Change Name'),
+                                  content: TextField(
+                                    onChanged: (e) {
+                                      setState(() {});
+                                      name = e;
+                                    },
+                                    decoration: InputDecoration(
+                                      hintText: name,
+                                    ),
+                                  ),
+                                  actions: [
+                                    IconButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        icon: const Icon(Icons.close)),
+                                    IconButton(
+                                        onPressed: () async {
+                                          FirebaseFirestore.instance
+                                              .collection(
+                                                  'category_translations')
+                                              .doc(id)
+                                              .set({
+                                            "name": name,
+                                            "updated_At":
+                                                DateTime.now().toString()
+                                          }, SetOptions(merge: true));
+                                          await Provider.of<DbListProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .update(id, name, 2)
+                                              .then((value) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(const SnackBar(
+                                                    content: Text(
+                                                        'Updating data...')));
+                                            Navigator.pop(context);
+                                          });
+                                        },
+                                        icon: const Icon(Icons.check)),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          icon: const Icon(Icons.edit)),
                       IconButton(
                           onPressed: () {
                             try {
@@ -173,7 +283,13 @@ class _MyHomePageState extends State<MyHomePage> {
               itemCount: list.spanish.length,
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      RoutesName.viewDataPage,
+                      arguments: GetWordTranslation(list.spanish[index]),
+                    );
+                  },
                   leading: const CircleAvatar(child: Icon(Icons.person)),
                   title: Text(list.nameS[index]),
                   subtitle: Text(list.spanish[index]),
@@ -181,7 +297,59 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                          onPressed: () {}, icon: const Icon(Icons.edit)),
+                          onPressed: () async {
+                            await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                var name = list.nameS[index];
+                                var id = list.idS[index];
+                                return AlertDialog(
+                                  title: const Text('Change Name'),
+                                  content: TextField(
+                                    onChanged: (e) {
+                                      setState(() {});
+                                      name = e;
+                                    },
+                                    decoration: InputDecoration(
+                                      hintText: name,
+                                    ),
+                                  ),
+                                  actions: [
+                                    IconButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        icon: const Icon(Icons.close)),
+                                    IconButton(
+                                        onPressed: () async {
+                                          FirebaseFirestore.instance
+                                              .collection(
+                                                  'category_translations')
+                                              .doc(id)
+                                              .set({
+                                            "name": name,
+                                            "updated_At":
+                                                DateTime.now().toString()
+                                          }, SetOptions(merge: true));
+                                          await Provider.of<DbListProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .update(id, name, 3)
+                                              .then((value) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(const SnackBar(
+                                                    content: Text(
+                                                        'Updating data...')));
+                                            Navigator.pop(context);
+                                          });
+                                        },
+                                        icon: const Icon(Icons.check)),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          icon: const Icon(Icons.edit)),
                       IconButton(
                           onPressed: () {
                             try {
@@ -212,7 +380,13 @@ class _MyHomePageState extends State<MyHomePage> {
               itemCount: list.bengali.length,
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      RoutesName.viewDataPage,
+                      arguments: GetWordTranslation(list.bengali[index]),
+                    );
+                  },
                   leading: const CircleAvatar(child: Icon(Icons.person)),
                   title: Text(list.nameB[index]),
                   subtitle: Text(list.bengali[index]),
@@ -220,7 +394,59 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                          onPressed: () {}, icon: const Icon(Icons.edit)),
+                          onPressed: () async {
+                            await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                var name = list.nameB[index];
+                                var id = list.idB[index];
+                                return AlertDialog(
+                                  title: const Text('Change Name'),
+                                  content: TextField(
+                                    onChanged: (e) {
+                                      setState(() {});
+                                      name = e;
+                                    },
+                                    decoration: InputDecoration(
+                                      hintText: name,
+                                    ),
+                                  ),
+                                  actions: [
+                                    IconButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        icon: const Icon(Icons.close)),
+                                    IconButton(
+                                        onPressed: () async {
+                                          FirebaseFirestore.instance
+                                              .collection(
+                                                  'category_translations')
+                                              .doc(id)
+                                              .set({
+                                            "name": name,
+                                            "updated_At":
+                                                DateTime.now().toString()
+                                          }, SetOptions(merge: true));
+                                          await Provider.of<DbListProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .update(id, name, 4)
+                                              .then((value) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(const SnackBar(
+                                                    content: Text(
+                                                        'Updating data...')));
+                                            Navigator.pop(context);
+                                          });
+                                        },
+                                        icon: const Icon(Icons.check)),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          icon: const Icon(Icons.edit)),
                       IconButton(
                           onPressed: () {
                             try {

@@ -84,6 +84,8 @@ dependencies:
   adaptive_theme: ^3.0.0
   editable: ^2.0.0
   checkbox_grouped: ^1.8.0
+  double_back_to_close_app: ^2.1.0
+  awesome_snackbar_content: ^0.0.5
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

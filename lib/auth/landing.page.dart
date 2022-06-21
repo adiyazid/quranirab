@@ -1,12 +1,11 @@
-import 'dart:async';
-
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:multiquranirab/auth/login.screen.dart';
+import 'package:multiquranirab/view/home.dart';
 import 'package:provider/provider.dart';
 
-import '../Routes/route.dart';
 import '../providers/user.provider.dart';
-import '../theme/theme_provider.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -19,27 +18,39 @@ class _LandingPageState extends State<LandingPage> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 3), navigate);
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Provider.of<ThemeProvider>(context);
-
-    return Center(
-      child: LoadingAnimationWidget.fourRotatingDots(
-        size: 200,
-        color: theme.isDarkMode ? Colors.blueGrey : Colors.orangeAccent,
-      ),
-    );
-  }
-
-  Future<void> navigate() async {
     var user = Provider.of<AppUser>(context, listen: false).user;
     if (user != null) {
-      Navigator.pushReplacementNamed(context, RoutesName.homePage);
+      return Scaffold(
+          body: DoubleBackToCloseApp(
+              snackBar: SnackBar(
+                elevation: 0,
+                behavior: SnackBarBehavior.fixed,
+                backgroundColor: Colors.transparent,
+                content: AwesomeSnackbarContent(
+                  title: 'Exit? ',
+                  message: 'Press back again to exit!',
+                  contentType: ContentType.warning,
+                ),
+              ),
+              child: const MyHomePage(title: 'Multi Quran Irab')));
     } else {
-      Navigator.pushReplacementNamed(context, RoutesName.loginPage);
+      return Scaffold(
+          body: DoubleBackToCloseApp(
+              snackBar: SnackBar(
+                elevation: 0,
+                behavior: SnackBarBehavior.fixed,
+                backgroundColor: Colors.transparent,
+                content: AwesomeSnackbarContent(
+                  title: 'Exit? ',
+                  message: 'Press back again to exit!',
+                  contentType: ContentType.warning,
+                ),
+              ),
+              child: const SigninWidget()));
     }
   }
 }

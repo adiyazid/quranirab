@@ -14,6 +14,7 @@ class DbListProvider extends ChangeNotifier {
   List idF = [];
   List idS = [];
   List idB = [];
+
   void add(String id, String name, lang, String catId) {
     if (lang == '4') {
       if (!chinese.contains(id)) {
@@ -168,6 +169,33 @@ class DbListProvider extends ChangeNotifier {
       idB.removeAt(position);
       bengali.removeAt(position);
       save('7');
+      notifyListeners();
+    }
+  }
+
+  Future<void> update(id, name, int i) async {
+    if (i == 1) {
+      var position = idC.indexOf(id);
+      nameC.replaceRange(position, position + 1, [name]);
+      await save('4');
+      notifyListeners();
+    }
+    if (i == 2) {
+      var position = idF.indexOf(id);
+      nameF.replaceRange(position, position + 1, [name]);
+      await save('5');
+      notifyListeners();
+    }
+    if (i == 3) {
+      var position = idS.indexOf(id);
+      nameS.replaceRange(position, position + 1, [name]);
+      await save('6');
+      notifyListeners();
+    }
+    if (i == 4) {
+      var position = idB.indexOf(id);
+      nameB.replaceRange(position, position + 1, [name]);
+      await save('7');
       notifyListeners();
     }
   }
