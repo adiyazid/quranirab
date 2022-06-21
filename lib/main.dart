@@ -1,9 +1,11 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:multiquranirab/providers/db.list.providers.dart';
+import 'package:multiquranirab/providers/user.provider.dart';
 import 'package:multiquranirab/theme/theme_provider.dart';
-import 'package:multiquranirab/user.provider.dart';
 import 'package:provider/provider.dart';
 
 import 'Routes/onGenerateRoute.dart';
@@ -44,41 +46,50 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<AppUser>.value(value: appUser),
-        ChangeNotifierProvider<AppUser>(
-          create: (context) => AppUser(),
-        ),
-      ],
-      child: ChangeNotifierProvider(
-          create: (context) => ThemeProvider(),
-          builder: (context, _) {
-            final themeProvider =
-                Provider.of<ThemeProvider>(context, listen: true);
-            return MaterialApp(
-              title: "QuranIrab Web App",
-              scrollBehavior: MyCustomScrollBehavior(),
-              home: const LandingPage(),
-              locale: _locale,
-              themeMode: themeProvider.themeMode,
-              localizationsDelegates: const [
-                AppLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-                MsMaterialLocalizations.delegate,
-              ],
-              onGenerateRoute: RouteGenerator.generateRoute,
-              supportedLocales: const [
-                Locale('ms', 'MY'),
-                Locale('en', ''),
-                Locale('ar', ''),
-              ],
-              theme: QuranThemes.lightTheme,
-              darkTheme: QuranThemes.darkTheme,
-              debugShowCheckedModeBanner: false,
-            );
-          }),
-    );
+        providers: [
+          ChangeNotifierProvider<AppUser>.value(value: appUser),
+          ChangeNotifierProvider<AppUser>(
+            create: (context) => AppUser(),
+          ),
+          ChangeNotifierProvider<ThemeProvider>(
+              create: (context) => ThemeProvider()),
+          ChangeNotifierProvider<DbListProvider>(
+              create: (context) => DbListProvider())
+        ],
+        child: AdaptiveTheme(
+          light: ThemeData(
+            // brightness: Brightness.light,
+            colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.red)
+                .copyWith(secondary: Colors.amber),
+          ),
+          dark: ThemeData(
+            // brightness: Brightness.dark,
+            colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.red)
+                .copyWith(secondary: Colors.amber),
+          ),
+          initial: AdaptiveThemeMode.light,
+          builder: (theme, darkTheme) => MaterialApp(
+            title: "QuranIrab Web App",
+            scrollBehavior: MyCustomScrollBehavior(),
+            home: const LandingPage(),
+            locale: _locale,
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+              MsMaterialLocalizations.delegate,
+            ],
+            onGenerateRoute: RouteGenerator.generateRoute,
+            supportedLocales: const [
+              Locale('ms', 'MY'),
+              Locale('en', ''),
+              Locale('ar', ''),
+            ],
+            theme: theme,
+            darkTheme: darkTheme,
+            debugShowCheckedModeBanner: false,
+          ),
+        ));
   }
 }

@@ -9,8 +9,8 @@ import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 import '../../Routes/route.dart';
 import '../../main.dart';
+import '../providers/user.provider.dart';
 import '../theme/theme_provider.dart';
-import '../user.provider.dart';
 import 'landing.page.dart';
 
 class SignupWidget extends StatefulWidget {

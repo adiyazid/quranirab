@@ -5,8 +5,8 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../Routes/route.dart';
+import '../providers/user.provider.dart';
 import '../theme/theme_provider.dart';
-import '../user.provider.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);

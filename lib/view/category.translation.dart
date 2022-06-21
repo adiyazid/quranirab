@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
+import 'package:editable/editable.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:multiquranirab/providers/db.list.providers.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Routes/route.dart';
 import '../theme/theme_provider.dart';
@@ -24,6 +25,40 @@ class _GetWordTranslationState extends State<GetWordTranslation> {
 
   final _name = TextEditingController();
 
+  List cols = [
+    {"title": 'Id', 'widthFactor': 0.1, 'key': 'id'},
+    {"title": 'Language Name', 'widthFactor': 0.2, 'key': 'name'},
+  ];
+  List rows = [
+    {
+      "id": '1',
+      "name": 'Arabic',
+    },
+    {
+      "id": '2',
+      "name": 'English',
+    },
+    {
+      "id": '3',
+      "name": 'Malay',
+    },
+    {
+      "id": '4',
+      "name": 'Chinese',
+    },
+    {
+      "id": '5',
+      "name": 'French',
+    },
+    {
+      "id": '6',
+      "name": 'Spanish',
+    },
+    {
+      "id": '7',
+      "name": 'Benggali',
+    },
+  ];
   @override
   initState() {
     getTranslationCategory();
@@ -34,13 +69,20 @@ class _GetWordTranslationState extends State<GetWordTranslation> {
   _saveForm() async {
     var form = formKey.currentState;
     if (form!.validate()) {
-      form.save();
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Adding data...')));
-      await addLanguage(_name.text, _language).then((value) {
-        Navigator.pop(context);
-        Navigator.pushNamed(context, RoutesName.homePage);
-      });
+      var duplicate =
+          _list.any((element) => element['language_id'] == _language);
+      if (duplicate) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('This language already in database')));
+      } else {
+        form.save();
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('Adding data...')));
+        await addLanguage(_name.text, _language).then((value) {
+          Navigator.pop(context);
+          Navigator.pushNamed(context, RoutesName.homePage);
+        });
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Please insert all field')));
@@ -52,7 +94,7 @@ class _GetWordTranslationState extends State<GetWordTranslation> {
     final theme = Provider.of<ThemeProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.documentId),
+        title: Text('Word category id ${widget.documentId}'),
       ),
       body: _list.isEmpty
           ? Center(
@@ -66,11 +108,23 @@ class _GetWordTranslationState extends State<GetWordTranslation> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
+                    height: MediaQuery.of(context).size.height * 0.4,
+                    child: Editable(
+                      columns: cols,
+                      rows: rows,
+                      zebraStripe: true,
+                      stripeColor2: Theme.of(context).secondaryHeaderColor,
+                      borderColor: Colors.blueGrey,
+                    ),
+                  ),
+                  Container(
                     width: 400,
-                    height: MediaQuery.of(context).size.height * 0.6,
+                    height: MediaQuery.of(context).size.height * 0.5,
                     child: ListView.builder(
                       itemCount: _list.length,
                       itemBuilder: (BuildContext context, int index) {
+                        _list.sort((a, b) =>
+                            b['language_id'].compareTo(a['language_id']));
                         return Card(
                           child: ListTile(
                             title: Text(
@@ -83,69 +137,62 @@ class _GetWordTranslationState extends State<GetWordTranslation> {
                       },
                     ),
                   ),
-                  ElevatedButton.icon(
-                    onPressed: () async {
-                      await showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return Form(
-                            key: formKey,
-                            child: AlertDialog(
-                              title: DropDownTextField(
-                                listSpace: 20,
-                                listPadding: ListPadding(top: 20),
-                                enableSearch: false,
-                                validator: (value) {
-                                  if (value == null) {
-                                    return "Required field";
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                                dropDownList: const [
-                                  DropDownValueModel(
-                                      name: 'Chinese', value: "4"),
-                                  DropDownValueModel(
-                                      name: 'French', value: "5"),
-                                  DropDownValueModel(
-                                      name: 'Spanish', value: "6"),
-                                  DropDownValueModel(
-                                      name: 'Benggali', value: "7"),
-                                ],
-                                listTextStyle:
-                                    const TextStyle(color: Colors.red),
-                                dropDownItemCount: 8,
-                                onChanged: (val) {
-                                  setState(() {});
-                                  _language = val.value;
-                                },
-                              ),
-                              content: TextField(
-                                controller: _name,
-                                decoration: const InputDecoration(
-                                    hintText: 'Insert text'),
-                              ),
-                              actions: [
-                                IconButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    icon: const Icon(Icons.close)),
-                                IconButton(
-                                    onPressed: _saveForm,
-                                    icon: const Icon(Icons.check))
-                              ],
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    icon: const Icon(Icons.add),
-                    label: const Text('ADD NEW TRANSLATION'),
-                  )
                 ],
               ),
             ),
+      floatingActionButton: FloatingActionButton.extended(
+          onPressed: () async {
+            await showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return Form(
+                  key: formKey,
+                  child: AlertDialog(
+                    title: DropDownTextField(
+                      listSpace: 20,
+                      listPadding: ListPadding(top: 20),
+                      enableSearch: false,
+                      validator: (value) {
+                        if (value == null) {
+                          return "Required field";
+                        } else {
+                          return null;
+                        }
+                      },
+                      dropDownList: const [
+                        DropDownValueModel(name: 'Chinese', value: "4"),
+                        DropDownValueModel(name: 'French', value: "5"),
+                        DropDownValueModel(name: 'Spanish', value: "6"),
+                        DropDownValueModel(name: 'Benggali', value: "7"),
+                      ],
+                      listTextStyle: const TextStyle(color: Colors.red),
+                      dropDownItemCount: 8,
+                      onChanged: (val) {
+                        setState(() {});
+                        _language = val.value;
+                      },
+                    ),
+                    content: TextField(
+                      controller: _name,
+                      decoration:
+                          const InputDecoration(hintText: 'Insert text'),
+                    ),
+                    actions: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(Icons.close)),
+                      IconButton(
+                          onPressed: _saveForm, icon: const Icon(Icons.check))
+                    ],
+                  ),
+                );
+              },
+            );
+          },
+          icon: const Icon(Icons.add),
+          label: const Text('Add new translation')),
     );
   }
 
@@ -161,6 +208,7 @@ class _GetWordTranslationState extends State<GetWordTranslation> {
 
   Future<void> addLanguage(String text, String language) async {
     int? id;
+
     await FirebaseFirestore.instance
         .collection('category_translations')
         .orderBy('created_at', descending: true)
@@ -170,6 +218,8 @@ class _GetWordTranslationState extends State<GetWordTranslation> {
       for (var item in snapshot.docs) {
         setState(() {});
         id = int.parse(item['id']) + 1;
+        Provider.of<DbListProvider>(context, listen: false)
+            .add(widget.documentId, text, language, '$id');
       }
     });
     await FirebaseFirestore.instance
@@ -183,10 +233,5 @@ class _GetWordTranslationState extends State<GetWordTranslation> {
       "updated_at": DateTime.now().toString(),
       "word_category_id": widget.documentId
     });
-    final prefs = await SharedPreferences.getInstance();
-    List<String> local = prefs.getStringList('lang') ?? <String>[];
-    setState(() {});
-    local.add(widget.documentId);
-    await prefs.setStringList('lang', local);
   }
 }
