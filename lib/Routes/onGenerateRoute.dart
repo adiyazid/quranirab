@@ -11,6 +11,9 @@ class RouteGenerator {
     switch (settings.name) {
       case RoutesName.homePage:
         return _GeneratePageRoute(widget: HomePage(), routeName: settings.name);
+      case RoutesName.landingPage:
+        return _GeneratePageRoute(
+            widget: LandingPage(), routeName: settings.name);
       case RoutesName.loginPage:
         return _GeneratePageRoute(
             widget: SigninWidget(), routeName: settings.name);

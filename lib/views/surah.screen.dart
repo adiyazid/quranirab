@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:quran/quran.dart';
 import 'package:quranirab/models/font.size.dart';
 import 'package:quranirab/models/item.model.dart';
+import 'package:quranirab/provider/language.provider.dart';
 import 'package:quranirab/quiz_module/quiz.home.dart';
 import 'package:quranirab/views/sura.slice/sura.slice.dart';
 import 'package:quranirab/widget/TranslationPopup.dart';
@@ -48,10 +49,10 @@ class _SurahScreenState extends State<SurahScreen>
 
   late TabController _tabController;
 
-  Future<void> getTranslation() async {
+  Future<void> getTranslation(String id) async {
     // Get docs from collection reference
     QuerySnapshot querySnapshot = await _collectionTranslate
-        .where('translation_id', isEqualTo: "2")
+        .where('translation_id', isEqualTo: id)
         .where('sura_id', isEqualTo: widget.sura_id)
         .get();
     // Get data from docs and convert map to List
@@ -91,7 +92,6 @@ class _SurahScreenState extends State<SurahScreen>
 
     getHizb();
     getData();
-    getTranslation();
     getStartAyah(widget.allpages[i]);
 
     super.initState();
@@ -118,6 +118,8 @@ class _SurahScreenState extends State<SurahScreen>
         });
       }
     });
+    var id = Provider.of<LangProvider>(context, listen: false).langId;
+    await getTranslation(id);
   }
 
   Future<void> nextPage(String id) async {
@@ -139,7 +141,8 @@ class _SurahScreenState extends State<SurahScreen>
         _list = a;
       });
     });
-    await getTranslation();
+    await getTranslation(
+        Provider.of<LangProvider>(context, listen: false).langId);
   }
 
   Future<void> getStartAyah(String id) async {

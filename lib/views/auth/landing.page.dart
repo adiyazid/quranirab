@@ -21,7 +21,7 @@ class _LandingPageState extends State<LandingPage> {
   Widget build(BuildContext context) {
     // Provider.of<AyaProvider>(context, listen: false).getScreenSize(context);
     // Provider.of<AyaProvider>(context, listen: false).getFontSize(context);
-    var user = Provider.of<AppUser>(context);
+    var user = Provider.of<AppUser>(context).user;
     if (user != null) {
       return HomePage();
     } else {
