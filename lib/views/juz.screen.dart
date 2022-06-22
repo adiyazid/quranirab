@@ -56,7 +56,7 @@ class _JuzScreenState extends State<JuzScreen>
     // Get docs from collection reference
     QuerySnapshot querySnapshot = await _collectionTranslate
         .where('translation_id', isEqualTo: "2")
-        .where('sura_id', isEqualTo: widget.sura_id)
+        .where('sura_id', isEqualTo: Provider.of<AyaProvider>(context, listen: false).surahNo.toString())
         .get();
     // Get data from docs and convert map to List
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
@@ -94,11 +94,12 @@ class _JuzScreenState extends State<JuzScreen>
     i = widget.index!;
 
     //getSurah();
+
     getHizb();
     getData();
     getTranslation();
     getStartAyah(widget.allpages[i]);
-
+    widget.sura_id = Provider.of<AyaProvider>(context, listen: false).surahNo.toString();
     super.initState();
   }
 
@@ -116,7 +117,7 @@ class _JuzScreenState extends State<JuzScreen>
     // Get docs from collection reference
     await _collectionRef
         .where('medina_mushaf_page_id', isEqualTo: widget.allpages[i])
-        .where('sura_id', isEqualTo: widget.sura_id)
+        .where('sura_id', isEqualTo: Provider.of<AyaProvider>(context, listen: false).surahNo.toString())
         .orderBy('created_at')
         .get()
         .then((QuerySnapshot querySnapshot) {
@@ -126,6 +127,7 @@ class _JuzScreenState extends State<JuzScreen>
         });
       }
     });
+    await getTranslation();
   }
 
   Future<void> getSurah() async {
@@ -149,7 +151,7 @@ class _JuzScreenState extends State<JuzScreen>
     // Get docs from collection reference
     await _collectionRef
         .where('medina_mushaf_page_id', isEqualTo: id)
-        .where('sura_id', isEqualTo: widget.sura_id)
+        .where('sura_id', isEqualTo: Provider.of<AyaProvider>(context, listen: false).surahNo.toString())
         .orderBy('created_at')
         .get()
         .then((QuerySnapshot querySnapshot) {
@@ -170,7 +172,7 @@ class _JuzScreenState extends State<JuzScreen>
     // Get docs from collection reference
     await _collectionRefs
         .where('id', isEqualTo: id)
-        .where('sura_id', isEqualTo: widget.sura_id)
+        .where('sura_id', isEqualTo: Provider.of<AyaProvider>(context, listen: false).surahNo.toString())
         .orderBy('created_at')
         .get()
         .then((QuerySnapshot querySnapshot) {
@@ -180,6 +182,7 @@ class _JuzScreenState extends State<JuzScreen>
         });
       }
     });
+    await getTranslation();
   }
 
   bool isDark = false;
@@ -259,7 +262,7 @@ class _JuzScreenState extends State<JuzScreen>
             ),
             SuraSlice(
                 "${Provider.of<AyaProvider>(context, listen: false).page}",
-                widget.sura_id),
+                "${Provider.of<AyaProvider>(context, listen: false).surahNo}"),
           ],
         ),
       ),
@@ -316,7 +319,7 @@ class _JuzScreenState extends State<JuzScreen>
                   await Provider.of<AyaProvider>(context,
                       listen: false)
                       .getStart(
-                      int.parse(widget.sura_id),
+                      Provider.of<AyaProvider>(context, listen: false).surahNo,
                       Provider.of<AyaProvider>(context,
                           listen: false)
                           .page);
@@ -361,7 +364,7 @@ class _JuzScreenState extends State<JuzScreen>
                       await Provider.of<AyaProvider>(context,
                           listen: false)
                           .getStart(
-                          int.parse(widget.sura_id),
+                          Provider.of<AyaProvider>(context, listen: false).surahNo,
                           Provider.of<AyaProvider>(context,
                               listen: false)
                               .page);
@@ -406,7 +409,7 @@ class _JuzScreenState extends State<JuzScreen>
                       await Provider.of<AyaProvider>(context,
                           listen: false)
                           .getStart(
-                          int.parse(widget.sura_id),
+                          Provider.of<AyaProvider>(context, listen: false).surahNo,
                           Provider.of<AyaProvider>(context,
                               listen: false)
                               .page);
@@ -445,7 +448,7 @@ class _JuzScreenState extends State<JuzScreen>
                   await Provider.of<AyaProvider>(context,
                       listen: false)
                       .getStart(
-                      int.parse(widget.sura_id),
+                      Provider.of<AyaProvider>(context, listen: false).surahNo,
                       Provider.of<AyaProvider>(context,
                           listen: false)
                           .page);
@@ -490,7 +493,7 @@ class _JuzScreenState extends State<JuzScreen>
                       await Provider.of<AyaProvider>(context,
                           listen: false)
                           .getStart(
-                          int.parse(widget.sura_id),
+                          Provider.of<AyaProvider>(context, listen: false).surahNo,
                           Provider.of<AyaProvider>(context,
                               listen: false)
                               .page);
@@ -542,7 +545,7 @@ class _JuzScreenState extends State<JuzScreen>
     await Provider.of<AyaProvider>(context, listen: false).readSliceData();
     await Provider.of<AyaProvider>(context, listen: false).readAya();
     await Provider.of<AyaProvider>(context, listen: false).getStart(
-        int.parse(widget.sura_id),
+        Provider.of<AyaProvider>(context, listen: false).surahNo,
         Provider.of<AyaProvider>(context, listen: false).page);
     if (Provider.of<AyaProvider>(context, listen: false).visible == true) {
       await Provider.of<AyaProvider>(context, listen: false).set();
@@ -576,24 +579,36 @@ class topSurah extends StatelessWidget {
     return Column(
       children: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Flexible(
-            child: ListTile(
-              title: Text(
-                "${widget.name}",
+          const SizedBox(
+            width: 15,
+            height: 40,
+          ),
+      Expanded(
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+              Text(
+                getSurahName(Provider.of<AyaProvider>(context, listen: false).surahNo),
                 style: TextStyle(
                   fontSize: MediaQuery.of(context).size.width < 500 ? 15 : 20,
                 ),
               ),
-              subtitle: Text(
-                widget1.detail!,
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: MediaQuery.of(context).size.width < 500 ? 14 : 20,
-                ),
-              ),
-              trailing: Icon(Icons.keyboard_arrow_down_outlined),
-            ),
-          ),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      getSurahNameEnglish(Provider.of<AyaProvider>(context, listen: false).surahNo),
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: MediaQuery.of(context).size.width < 500 ? 14 : 20,
+                      ),
+                    ),
+                   // Icon(Icons.keyboard_arrow_down_outlined),
+                  ],
+                )
+
+            ],
+          ),),
           const SizedBox(
             width: 5,
             height: 40,
@@ -608,7 +623,7 @@ class topSurah extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  'Juz ${getJuzNumber(int.parse(widget2.sura_id), start ?? 1)} / Hizb $hizb - Page ${aya.page}',
+                  'Juz ${getJuzNumber(aya.surahNo, start ?? 1)} / Hizb $hizb - Page ${aya.page}',
                   style: TextStyle(
                     fontSize:
                     MediaQuery.of(context).size.width < 500 ? 15 : 20,

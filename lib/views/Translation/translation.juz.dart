@@ -1,6 +1,7 @@
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quran/quran.dart';
 
 import '../../provider/ayah.number.provider.dart';
 import '../../provider/bookmark.provider.dart';
@@ -95,16 +96,17 @@ class _TranslationJuzState extends State<TranslationJuz> {
                                       : const Color(0xffFFEEB0),
                                 ),
                                 width: 70,
-                                child: Center(
+                                child: Consumer<AyaProvider>(builder: (context, aya, child) {
+                                  return Center(
                                   child: Text(
-                                    '${widget.widget.sura_id}:${widget.start! + index}',
+                                    '${aya.surahNo}:${widget.start ?? 1 + index}',
                                     style: TextStyle(
                                       fontSize: fontsize.value,
                                       color: Theme.of(
                                           context)
                                           .textSelectionTheme.selectionColor,),
                                   ),
-                                ),
+                                );})
                               ),
                               const SizedBox(width: 8),
                               CustomPopupMenu(
@@ -134,7 +136,8 @@ class _TranslationJuzState extends State<TranslationJuz> {
                                                       .selectionColor,
                                                 ),
                                                 Expanded(
-                                                  child: InkWell(
+                                                  child: Consumer<AyaProvider>(builder: (context, aya, child) {
+                                                    return InkWell(
                                                     onTap: () async {
                                                       // Obtain shared preferences.
                                                       if (item.text ==
@@ -152,19 +155,13 @@ class _TranslationJuzState extends State<TranslationJuz> {
                                                         }
                                                         String
                                                         ayahNo =
-                                                            "${widget.widget.sura_id}:${widget.start! + index}";
+                                                            "${aya.surahNo}:${widget.start ?? 1 + index}";
                                                         await Provider.of<BookMarkProvider>(context, listen: false).addtoBookmark(
                                                             context,
                                                             ayahNo,
-                                                            widget
-                                                                .widget
-                                                                .sura_id,
-                                                            widget
-                                                                .widget
-                                                                .name!,
-                                                            widget
-                                                                .widget
-                                                                .detail!,
+                                                            "${aya.surahNo}",
+                                                            getSurahName(aya.surahNo),
+                                                            getSurahNameEnglish(aya.surahNo),
                                                             pages);
                                                       }
                                                     },
@@ -191,8 +188,8 @@ class _TranslationJuzState extends State<TranslationJuz> {
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                                ),
+                                                  );
+              })),
                                               ],
                                             ),
                                           ),

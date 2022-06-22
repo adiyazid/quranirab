@@ -1,5 +1,9 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/surah.screen.dart';
@@ -20,17 +24,95 @@ class HomePage1 extends StatefulWidget {
 class _HomePageState extends State<HomePage1>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+
   //int count=0;
+  List juz = [1, 2];
+  final List _juzstName = [
+    "Al-Faatiha",
+    "Al-Baqara",
+    "Al-Baqara",
+    "Aal-i-Imraan",
+    "An-Nisaa",
+    "An-Nisaa",
+    "Al-Maaida",
+    "Al-An'aam",
+    "Al-A'raaf",
+    "Al-Anfaal",
+    "At-Tawba",
+    "Hud",
+    "Yusuf",
+    "Al-Hijr",
+    "Al-Israa",
+    "Al-Kahf",
+    "Al-Anbiyaa",
+    "Al-Muminoon",
+    "Al-Furqaan",
+    "An-Naml",
+    "Al-Ankaboot",
+    "Al-Ahzaab",
+    "Yaseen",
+    "Az-Zumar",
+    "Fussilat",
+    "Al-Ahqaf",
+    "Adh-Dhaariyat",
+    "Al-Mujaadila",
+    "Al-Mulk",
+    "An-Naba"
+  ];
+  final List _juzseName = [
+    "The Opening",
+    "The Cow",
+    "The Cow",
+    "The Family of Imraan",
+    "The Women",
+    "The Women",
+    "The Table",
+    "The Cattle",
+    "The Heights",
+    "The Spoils of War",
+    "The Repentance",
+    "Hud",
+    "Joseph",
+    "The Rock",
+    "The Night Journey",
+    "The Cave",
+    "The Prophets",
+    "The Believers",
+    "The Criterion",
+    "The Ant",
+    "The Spider",
+    "The Clans",
+    "Yaseen",
+    "The Groups",
+    "Explained in detail",
+    "The Dunes",
+    "The Winnowing Winds",
+    "The Pleading Woman",
+    "The Sovereignty",
+    "The Announcement"
+  ];
+  late final List<Map<String?, dynamic>> _juz = List.generate(
+      2,
+          (index) =>
+      {
+        "id": juz[index].toString(),
+        "tname": _juzstName[index],
+        "ename": _juzseName[index],
+        "height": Random().nextInt(150) + 50.5
+      });
 
   var j;
   List _juzsName = [];
+  late List<Map<String?, dynamic>> _items = [];
+
   @override
   void initState() {
     // TODO: implement initState
     getList();
     getJuzs();
     getSurah();
-    getJuzsName();
+    //_items=[];
+    //getJuzsName();
 
     _tabController = TabController(length: 2, vsync: this);
     super.initState();
@@ -55,7 +137,10 @@ class _HomePageState extends State<HomePage1>
           body: Column(
             children: [
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.1,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.1,
                 child: CustomScrollView(
                   slivers: const [Appbar()],
                 ),
@@ -63,7 +148,10 @@ class _HomePageState extends State<HomePage1>
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32.0),
                 child: Container(
-                    height: MediaQuery.of(context).size.height * 0.25,
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height * 0.25,
                     alignment: Alignment.topLeft,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
@@ -88,7 +176,8 @@ class _HomePageState extends State<HomePage1>
                           builder: (context, bm, child) {
                             if (bm.bookmarkList.isNotEmpty) {
                               return Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceAround,
                                 children: [
                                   Align(
                                     child: Text(
@@ -98,7 +187,10 @@ class _HomePageState extends State<HomePage1>
                                           decoration: TextDecoration.underline,
                                           fontFamily: 'Open Sans',
                                           fontSize:
-                                          MediaQuery.of(context).size.width <
+                                          MediaQuery
+                                              .of(context)
+                                              .size
+                                              .width <
                                               600
                                               ? 20
                                               : 24,
@@ -110,7 +202,10 @@ class _HomePageState extends State<HomePage1>
                                   ),
                                   SizedBox(
                                       height:
-                                      MediaQuery.of(context).size.height * 0.15,
+                                      MediaQuery
+                                          .of(context)
+                                          .size
+                                          .height * 0.15,
                                       child: ListView.builder(
                                         itemBuilder:
                                             (BuildContext context, int index) {
@@ -123,7 +218,8 @@ class _HomePageState extends State<HomePage1>
                                           return InkWell(
                                             onTap: () async {
                                               var a = await getTotalPage(
-                                                  bm.bookmarkList[index].suraId!);
+                                                  bm.bookmarkList[index]
+                                                      .suraId!);
                                               Provider.of<AyaProvider>(context,
                                                   listen: false)
                                                   .getPage(int.parse(bm
@@ -153,11 +249,14 @@ class _HomePageState extends State<HomePage1>
                                                       builder: (context) =>
                                                           SurahScreen(
                                                             a,
-                                                            bm.bookmarkList[index]
+                                                            bm
+                                                                .bookmarkList[index]
                                                                 .suraId!,
-                                                            bm.bookmarkList[index]
+                                                            bm
+                                                                .bookmarkList[index]
                                                                 .tname!,
-                                                            bm.bookmarkList[index]
+                                                            bm
+                                                                .bookmarkList[index]
                                                                 .ename!,
                                                             a.indexOf(bm
                                                                 .bookmarkList[index]
@@ -170,19 +269,25 @@ class _HomePageState extends State<HomePage1>
                                                   right: 16.0),
                                               child: Container(
                                                 decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.only(
-                                                    topLeft: Radius.circular(10),
-                                                    topRight: Radius.circular(10),
-                                                    bottomLeft: Radius.circular(10),
+                                                  borderRadius: BorderRadius
+                                                      .only(
+                                                    topLeft: Radius.circular(
+                                                        10),
+                                                    topRight: Radius.circular(
+                                                        10),
+                                                    bottomLeft: Radius.circular(
+                                                        10),
                                                     bottomRight:
                                                     Radius.circular(10),
                                                   ),
-                                                  color: themeProvider.isDarkMode
+                                                  color: themeProvider
+                                                      .isDarkMode
                                                       ? Color(0xff67748E)
                                                       : Color.fromRGBO(
                                                       255, 255, 255, 1),
                                                   border: Border.all(
-                                                    color: themeProvider.isDarkMode
+                                                    color: themeProvider
+                                                        .isDarkMode
                                                         ? Color(0xffD2D6DA)
                                                         : Color.fromRGBO(
                                                         231, 111, 0, 1),
@@ -225,16 +330,19 @@ class _HomePageState extends State<HomePage1>
                                                             ),
                                                             color: themeProvider
                                                                 .isDarkMode
-                                                                ? Color.fromRGBO(
+                                                                ? Color
+                                                                .fromRGBO(
                                                                 128,
                                                                 138,
                                                                 177,
                                                                 1)
-                                                                : Color(0xffFFB55F),
+                                                                : Color(
+                                                                0xffFFB55F),
                                                             border: Border.all(
                                                               color: themeProvider
                                                                   .isDarkMode
-                                                                  ? Color.fromRGBO(
+                                                                  ? Color
+                                                                  .fromRGBO(
                                                                   128,
                                                                   138,
                                                                   177,
@@ -275,7 +383,10 @@ class _HomePageState extends State<HomePage1>
                                         decoration: TextDecoration.underline,
                                         fontFamily: 'Open Sans',
                                         fontSize:
-                                        MediaQuery.of(context).size.width < 600
+                                        MediaQuery
+                                            .of(context)
+                                            .size
+                                            .width < 600
                                             ? 20
                                             : 24,
                                         letterSpacing: -0.38723403215408325,
@@ -292,7 +403,10 @@ class _HomePageState extends State<HomePage1>
                                     style: TextStyle(
                                         fontFamily: 'Open Sans',
                                         fontSize:
-                                        MediaQuery.of(context).size.width < 600
+                                        MediaQuery
+                                            .of(context)
+                                            .size
+                                            .width < 600
                                             ? 20
                                             : 24,
                                         letterSpacing: -0.38723403215408325,
@@ -312,7 +426,10 @@ class _HomePageState extends State<HomePage1>
                 padding: const EdgeInsets.only(
                     left: 32.0, right: 32.0, bottom: 32.0),
                 child: Container(
-                  height: MediaQuery.of(context).size.height * 0.55,
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height * 0.55,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(10),
@@ -337,7 +454,10 @@ class _HomePageState extends State<HomePage1>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.05,
+                          height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * 0.05,
                           width: 180,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -372,7 +492,10 @@ class _HomePageState extends State<HomePage1>
                           ),
                         ),
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.48,
+                          height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * 0.48,
                           child: TabBarView(
                               controller: _tabController,
                               children: [
@@ -380,7 +503,10 @@ class _HomePageState extends State<HomePage1>
                                   children: [
                                     Expanded(
                                       child: _list.isNotEmpty
-                                          ? MediaQuery.of(context).size.width >
+                                          ? MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width >
                                           600
                                           ? GridView.builder(
                                         controller:
@@ -388,7 +514,8 @@ class _HomePageState extends State<HomePage1>
                                         gridDelegate:
                                         SliverGridDelegateWithFixedCrossAxisCount(
                                             crossAxisCount:
-                                            MediaQuery.of(context)
+                                            MediaQuery
+                                                .of(context)
                                                 .size
                                                 .width <
                                                 1200
@@ -439,18 +566,19 @@ class _HomePageState extends State<HomePage1>
                                                 Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
-                                                        builder: (context) => SurahScreen(
-                                                            a,
-                                                            _list[index]
-                                                            [
-                                                            "id"],
-                                                            _list[index]
-                                                            [
-                                                            "tname"],
-                                                            _list[index]
-                                                            [
-                                                            "ename"],
-                                                            0)));
+                                                        builder: (context) =>
+                                                            SurahScreen(
+                                                                a,
+                                                                _list[index]
+                                                                [
+                                                                "id"],
+                                                                _list[index]
+                                                                [
+                                                                "tname"],
+                                                                _list[index]
+                                                                [
+                                                                "ename"],
+                                                                0)));
                                               },
                                               child: Container(
                                                 width: 400,
@@ -584,7 +712,8 @@ class _HomePageState extends State<HomePage1>
                                                           TextAlign
                                                               .left,
                                                           style: TextStyle(
-                                                              color: Color.fromRGBO(
+                                                              color: Color
+                                                                  .fromRGBO(
                                                                   151,
                                                                   151,
                                                                   151,
@@ -655,18 +784,19 @@ class _HomePageState extends State<HomePage1>
                                                 Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
-                                                        builder: (context) => SurahScreen(
-                                                            a,
-                                                            _list[index]
-                                                            [
-                                                            "id"],
-                                                            _list[index]
-                                                            [
-                                                            "tname"],
-                                                            _list[index]
-                                                            [
-                                                            "ename"],
-                                                            0)));
+                                                        builder: (context) =>
+                                                            SurahScreen(
+                                                                a,
+                                                                _list[index]
+                                                                [
+                                                                "id"],
+                                                                _list[index]
+                                                                [
+                                                                "tname"],
+                                                                _list[index]
+                                                                [
+                                                                "ename"],
+                                                                0)));
                                               },
                                               child: Container(
                                                 width: 400,
@@ -800,14 +930,18 @@ class _HomePageState extends State<HomePage1>
                                                           TextAlign
                                                               .left,
                                                           style: TextStyle(
-                                                              color: Color.fromRGBO(
+                                                              color: Color
+                                                                  .fromRGBO(
                                                                   151,
                                                                   151,
                                                                   151,
                                                                   1),
                                                               fontFamily:
                                                               'Open Sans',
-                                                              fontSize: MediaQuery.of(context).size.width <
+                                                              fontSize: MediaQuery
+                                                                  .of(context)
+                                                                  .size
+                                                                  .width <
                                                                   600
                                                                   ? 20
                                                                   : 24,
@@ -831,19 +965,22 @@ class _HomePageState extends State<HomePage1>
                                       )
                                           : SkeletonLoader(
                                         builder: SizedBox(
-                                          height: MediaQuery.of(context)
+                                          height: MediaQuery
+                                              .of(context)
                                               .size
                                               .height *
                                               0.45,
                                           child:
-                                          MediaQuery.of(context)
+                                          MediaQuery
+                                              .of(context)
                                               .size
                                               .width >
                                               600
                                               ? GridView.builder(
                                             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                                 crossAxisCount:
-                                                MediaQuery.of(context)
+                                                MediaQuery
+                                                    .of(context)
                                                     .size
                                                     .width <
                                                     1200
@@ -884,13 +1021,17 @@ class _HomePageState extends State<HomePage1>
                                                         bottomRight:
                                                         Radius.circular(10),
                                                       ),
-                                                      color: themeProvider.isDarkMode
+                                                      color: themeProvider
+                                                          .isDarkMode
                                                           ? Color(0xff67748E)
-                                                          : Color.fromRGBO(255, 255, 255, 1),
+                                                          : Color.fromRGBO(
+                                                          255, 255, 255, 1),
                                                       border: Border.all(
-                                                        color: themeProvider.isDarkMode
+                                                        color: themeProvider
+                                                            .isDarkMode
                                                             ? Color(0xffD2D6DA)
-                                                            : Color.fromRGBO(231, 111, 0, 1),
+                                                            : Color.fromRGBO(
+                                                            231, 111, 0, 1),
                                                         width:
                                                         1,
                                                       )),
@@ -908,28 +1049,45 @@ class _HomePageState extends State<HomePage1>
                                                           BoxDecoration(
                                                             borderRadius:
                                                             BorderRadius.only(
-                                                              topLeft: Radius.circular(10),
-                                                              topRight: Radius.circular(10),
-                                                              bottomLeft: Radius.circular(10),
-                                                              bottomRight: Radius.circular(10),
+                                                              topLeft: Radius
+                                                                  .circular(10),
+                                                              topRight: Radius
+                                                                  .circular(10),
+                                                              bottomLeft: Radius
+                                                                  .circular(10),
+                                                              bottomRight: Radius
+                                                                  .circular(10),
                                                             ),
-                                                            color: themeProvider.isDarkMode
-                                                                ? Color(0xff808BA1)
-                                                                : Color.fromRGBO(255, 181, 94, 1),
+                                                            color: themeProvider
+                                                                .isDarkMode
+                                                                ? Color(
+                                                                0xff808BA1)
+                                                                : Color
+                                                                .fromRGBO(
+                                                                255, 181, 94,
+                                                                1),
                                                           ),
                                                           child:
                                                           Center(
                                                             child:
                                                             Text(
                                                               '',
-                                                              textAlign: TextAlign.left,
-                                                              style: TextStyle(fontFamily: 'Open Sans', fontSize: 24, letterSpacing: -0.38723403215408325, fontWeight: FontWeight.normal, height: 1),
+                                                              textAlign: TextAlign
+                                                                  .left,
+                                                              style: TextStyle(
+                                                                  fontFamily: 'Open Sans',
+                                                                  fontSize: 24,
+                                                                  letterSpacing: -0.38723403215408325,
+                                                                  fontWeight: FontWeight
+                                                                      .normal,
+                                                                  height: 1),
                                                             ),
                                                           )),
                                                       Spacer(),
                                                       Column(
                                                         mainAxisAlignment:
-                                                        MainAxisAlignment.center,
+                                                        MainAxisAlignment
+                                                            .center,
                                                         children: const [
                                                           Text(
                                                             '',
@@ -939,7 +1097,8 @@ class _HomePageState extends State<HomePage1>
                                                                 fontFamily: 'Open Sans',
                                                                 fontSize: 24,
                                                                 letterSpacing: -0.38723403215408325,
-                                                                fontWeight: FontWeight.normal,
+                                                                fontWeight: FontWeight
+                                                                    .normal,
                                                                 height: 1),
                                                           ),
                                                           Text(
@@ -947,11 +1106,15 @@ class _HomePageState extends State<HomePage1>
                                                             textAlign:
                                                             TextAlign.left,
                                                             style: TextStyle(
-                                                                color: Color.fromRGBO(151, 151, 151, 1),
+                                                                color: Color
+                                                                    .fromRGBO(
+                                                                    151, 151,
+                                                                    151, 1),
                                                                 fontFamily: 'Open Sans',
                                                                 fontSize: 24,
                                                                 letterSpacing: -0.38723403215408325,
-                                                                fontWeight: FontWeight.normal,
+                                                                fontWeight: FontWeight
+                                                                    .normal,
                                                                 height: 1),
                                                           )
                                                         ],
@@ -982,7 +1145,8 @@ class _HomePageState extends State<HomePage1>
                                                     width: 400,
                                                     height: 100,
                                                     decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.only(
+                                                        borderRadius: BorderRadius
+                                                            .only(
                                                           topLeft:
                                                           Radius.circular(10),
                                                           topRight:
@@ -992,11 +1156,18 @@ class _HomePageState extends State<HomePage1>
                                                           bottomRight:
                                                           Radius.circular(10),
                                                         ),
-                                                        color: themeProvider.isDarkMode ? Color(0xff67748E) : Color.fromRGBO(255, 255, 255, 1),
+                                                        color: themeProvider
+                                                            .isDarkMode ? Color(
+                                                            0xff67748E) : Color
+                                                            .fromRGBO(
+                                                            255, 255, 255, 1),
                                                         border: Border.all(
-                                                          color: themeProvider.isDarkMode
-                                                              ? Color(0xffD2D6DA)
-                                                              : Color.fromRGBO(231, 111, 0, 1),
+                                                          color: themeProvider
+                                                              .isDarkMode
+                                                              ? Color(
+                                                              0xffD2D6DA)
+                                                              : Color.fromRGBO(
+                                                              231, 111, 0, 1),
                                                           width:
                                                           1,
                                                         )),
@@ -1012,36 +1183,85 @@ class _HomePageState extends State<HomePage1>
                                                             100,
                                                             decoration:
                                                             BoxDecoration(
-                                                              borderRadius: BorderRadius.only(
-                                                                topLeft: Radius.circular(10),
-                                                                topRight: Radius.circular(10),
-                                                                bottomLeft: Radius.circular(10),
-                                                                bottomRight: Radius.circular(10),
+                                                              borderRadius: BorderRadius
+                                                                  .only(
+                                                                topLeft: Radius
+                                                                    .circular(
+                                                                    10),
+                                                                topRight: Radius
+                                                                    .circular(
+                                                                    10),
+                                                                bottomLeft: Radius
+                                                                    .circular(
+                                                                    10),
+                                                                bottomRight: Radius
+                                                                    .circular(
+                                                                    10),
                                                               ),
-                                                              color: themeProvider.isDarkMode ? Color(0xff808BA1) : Color.fromRGBO(255, 181, 94, 1),
+                                                              color: themeProvider
+                                                                  .isDarkMode
+                                                                  ? Color(
+                                                                  0xff808BA1)
+                                                                  : Color
+                                                                  .fromRGBO(
+                                                                  255, 181, 94,
+                                                                  1),
                                                             ),
                                                             child:
                                                             Center(
                                                               child: Text(
                                                                 '',
-                                                                textAlign: TextAlign.left,
-                                                                style: TextStyle(fontFamily: 'Open Sans', fontSize: 24, letterSpacing: -0.38723403215408325, fontWeight: FontWeight.normal, height: 1),
+                                                                textAlign: TextAlign
+                                                                    .left,
+                                                                style: TextStyle(
+                                                                    fontFamily: 'Open Sans',
+                                                                    fontSize: 24,
+                                                                    letterSpacing: -0.38723403215408325,
+                                                                    fontWeight: FontWeight
+                                                                        .normal,
+                                                                    height: 1),
                                                               ),
                                                             )),
                                                         Spacer(),
                                                         Column(
                                                           mainAxisAlignment:
-                                                          MainAxisAlignment.center,
+                                                          MainAxisAlignment
+                                                              .center,
                                                           children: [
                                                             Text(
                                                               '',
-                                                              textAlign: TextAlign.left,
-                                                              style: TextStyle(fontFamily: 'Open Sans', fontSize: 24, letterSpacing: -0.38723403215408325, fontWeight: FontWeight.normal, height: 1),
+                                                              textAlign: TextAlign
+                                                                  .left,
+                                                              style: TextStyle(
+                                                                  fontFamily: 'Open Sans',
+                                                                  fontSize: 24,
+                                                                  letterSpacing: -0.38723403215408325,
+                                                                  fontWeight: FontWeight
+                                                                      .normal,
+                                                                  height: 1),
                                                             ),
                                                             Text(
                                                               '',
-                                                              textAlign: TextAlign.left,
-                                                              style: TextStyle(color: Color.fromRGBO(151, 151, 151, 1), fontFamily: 'Open Sans', fontSize: MediaQuery.of(context).size.width < 600 ? 20 : 24, letterSpacing: -0.38723403215408325, fontWeight: FontWeight.normal, height: 1),
+                                                              textAlign: TextAlign
+                                                                  .left,
+                                                              style: TextStyle(
+                                                                  color: Color
+                                                                      .fromRGBO(
+                                                                      151, 151,
+                                                                      151, 1),
+                                                                  fontFamily: 'Open Sans',
+                                                                  fontSize: MediaQuery
+                                                                      .of(
+                                                                      context)
+                                                                      .size
+                                                                      .width <
+                                                                      600
+                                                                      ? 20
+                                                                      : 24,
+                                                                  letterSpacing: -0.38723403215408325,
+                                                                  fontWeight: FontWeight
+                                                                      .normal,
+                                                                  height: 1),
                                                             )
                                                           ],
                                                         ),
@@ -1069,233 +1289,331 @@ class _HomePageState extends State<HomePage1>
                                   children: [
                                     Expanded(
                                       child: _list.isNotEmpty
-                                          ? MediaQuery.of(context).size.width >
+                                          ? MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width >
                                           600
-                                          ? GridView.builder(
+                                          ? MasonryGridView.count(
                                         controller:
                                         ScrollController(),
-                                        gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount:
-                                            MediaQuery.of(context)
-                                                .size
-                                                .width <
-                                                1200
-                                                ? 2
-                                                : 3,
-                                            crossAxisSpacing: 5.0,
-                                            mainAxisSpacing: 5.0,
-                                            childAspectRatio:
-                                            4.5),
-                                        itemCount: _juzs.length,
+                                        //gridDelegate:
+                                        //SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount:
+                                        MediaQuery
+                                            .of(context)
+                                            .size
+                                            .width <
+                                            1200
+                                            ? 2
+                                            : 3,
+                                        crossAxisSpacing: 4.0,
+                                        mainAxisSpacing: 4.0,
+                                        //childAspectRatio:
+                                        //4.5),
+                                        shrinkWrap: true,
+                                        itemCount: 30,
                                         itemBuilder:
                                             (BuildContext context,
-                                            int index) {
+                                            int mainIndex) {
                                           //getJuzsName();
                                           return Padding(
                                             padding: const EdgeInsets
                                                 .symmetric(
                                                 horizontal: 16.0,
                                                 vertical: 8),
+
                                             child: InkWell(
-                                              onTap: () async {
+                                                onTap: () async {
+                                                  //print(index);
+                                                  var a =
+                                                  await getTotalJPage(
+                                                      _juzs[mainIndex]
+                                                      ["id"]);
+                                                  //var b= await getSPage(_juzs[index]["sura_id"]);
+                                                  Provider.of<AyaProvider>(
+                                                      context,
+                                                      listen: false)
+                                                      .getPage(
+                                                      int.parse(
+                                                          a.first));
+                                                  Provider.of<AyaProvider>(
+                                                      context,
+                                                      listen: false)
+                                                      .setDefault();
+                                                  Provider.of<AyaProvider>(
+                                                      context,
+                                                      listen: false)
+                                                      .getStart(
+                                                      Provider
+                                                          .of<AyaProvider>(
+                                                          context,
+                                                          listen: false)
+                                                          .surahNo,
+                                                      int.parse(
+                                                          a.first));
+                                                  //await getSurah();
+                                                  //await getJuzsName();
 
-                                                //print(index);
-                                                var a =
-                                                await getTotalJPage(
-                                                    _juzs[index]
-                                                    ["id"]);
-                                                //var b= await getSPage(_juzs[index]["sura_id"]);
-                                                Provider.of<AyaProvider>(
-                                                    context,
-                                                    listen: false)
-                                                    .getPage(
-                                                    int.parse(
-                                                        a.first));
-                                                Provider.of<AyaProvider>(
-                                                    context,
-                                                    listen: false)
-                                                    .setDefault();
-                                                Provider.of<AyaProvider>(
-                                                    context,
-                                                    listen: false)
-                                                    .getStart(
-                                                    int.parse(_juzs[
-                                                    index]
-                                                    ['sura_id']),
-                                                    int.parse(
-                                                        a.first));
-                                                //await getSurah();
-                                                //await getJuzsName();
 
-
-
-                                                // Provider.of<AyaProvider>(context,
-                                                //     listen: false)
-                                                //     .getPage(439);
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) => JuzScreen(
-                                                            a,
-                                                            _juzs[
-                                                            index]
-                                                            ['sura_id'],//juzId[index],
-                                                            _juzstName[index],
-                                                            _juzseName[index],
-                                                            0)));
-                                              },
-                                              child: Container(
-                                                width: 400,
-                                                height: 100,
-                                                decoration:
-                                                BoxDecoration(
-                                                    borderRadius:
-                                                    BorderRadius
-                                                        .only(
-                                                      topLeft: Radius
-                                                          .circular(
-                                                          10),
-                                                      topRight: Radius
-                                                          .circular(
-                                                          10),
-                                                      bottomLeft:
-                                                      Radius.circular(
-                                                          10),
-                                                      bottomRight:
-                                                      Radius.circular(
-                                                          10),
-                                                    ),
-                                                    color: themeProvider
-                                                        .isDarkMode
-                                                        ? Color(
-                                                        0xff67748E)
-                                                        : Color.fromRGBO(
-                                                        255,
-                                                        255,
-                                                        255,
-                                                        1),
-                                                    border: Border
-                                                        .all(
-                                                      color: themeProvider
-                                                          .isDarkMode
-                                                          ? Color(
-                                                          0xffD2D6DA)
-                                                          : Color.fromRGBO(
-                                                          231,
-                                                          111,
-                                                          0,
-                                                          1),
-                                                      width: 1,
-                                                    )),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                                  children: [
-                                                    Container(
-                                                        width: 50,
-                                                        height: 100,
-                                                        decoration:
-                                                        BoxDecoration(
-                                                          borderRadius:
-                                                          BorderRadius
-                                                              .only(
-                                                            topLeft: Radius
-                                                                .circular(
-                                                                10),
-                                                            topRight:
-                                                            Radius.circular(
-                                                                10),
-                                                            bottomLeft:
-                                                            Radius.circular(
-                                                                10),
-                                                            bottomRight:
-                                                            Radius.circular(
-                                                                10),
-                                                          ),
+                                                  // Provider.of<AyaProvider>(context,
+                                                  //     listen: false)
+                                                  //     .getPage(439);
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              JuzScreen(
+                                                                  a,
+                                                                  "${Provider
+                                                                      .of<
+                                                                      AyaProvider>(
+                                                                      context,
+                                                                      listen: false)
+                                                                      .surahNo}",
+                                                                  //juzId[index],
+                                                                  _juzstName[mainIndex],
+                                                                  _juzseName[mainIndex],
+                                                                  0)));
+                                                },
+                                                child: Container(
+                                                    width: 600,
+                                                    height: 125 *
+                                                        _juz.length.toDouble(),
+                                                    decoration:
+                                                    BoxDecoration(
+                                                        borderRadius:
+                                                        BorderRadius
+                                                            .only(
+                                                          topLeft: Radius
+                                                              .circular(
+                                                              10),
+                                                          topRight: Radius
+                                                              .circular(
+                                                              10),
+                                                          bottomLeft:
+                                                          Radius.circular(
+                                                              10),
+                                                          bottomRight:
+                                                          Radius.circular(
+                                                              10),
+                                                        ),
+                                                        color: themeProvider
+                                                            .isDarkMode
+                                                            ? Color(
+                                                            0xff67748E)
+                                                            : Color.fromRGBO(
+                                                            255,
+                                                            255,
+                                                            255,
+                                                            1),
+                                                        border: Border
+                                                            .all(
                                                           color: themeProvider
                                                               .isDarkMode
                                                               ? Color(
-                                                              0xff808BA1)
+                                                              0xffD2D6DA)
                                                               : Color.fromRGBO(
-                                                              255,
-                                                              181,
-                                                              94,
+                                                              231,
+                                                              111,
+                                                              0,
                                                               1),
-                                                        ),
-                                                        child: Center(
-                                                          child: Text(
-                                                            '${index + 1}',
-                                                            textAlign:
-                                                            TextAlign
-                                                                .left,
-                                                            style: TextStyle(
-                                                                fontFamily:
-                                                                'Open Sans',
-                                                                fontSize:
-                                                                24,
-                                                                letterSpacing:
-                                                                -0.38723403215408325,
-                                                                fontWeight: FontWeight
-                                                                    .normal,
-                                                                height:
-                                                                1),
-                                                          ),
+                                                          width: 1,
                                                         )),
-                                                    Spacer(),
-                                                    Column(
-                                                      mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .center,
-                                                      children: [
-                                                        Text(
-                                                          _juzstName[index],
-                                                          textAlign:
-                                                          TextAlign
-                                                              .left,
-                                                          style: TextStyle(
-                                                              fontFamily:
-                                                              'Open Sans',
-                                                              fontSize:
-                                                              24,
-                                                              letterSpacing:
-                                                              -0.38723403215408325,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .normal,
-                                                              height:
-                                                              1),
-                                                        ),
-                                                        Text(
-                                                          _juzseName[index],
-                                                          textAlign:
-                                                          TextAlign
-                                                              .left,
-                                                          style: TextStyle(
-                                                              color: Color.fromRGBO(
-                                                                  151,
-                                                                  151,
-                                                                  151,
-                                                                  1),
-                                                              fontFamily:
-                                                              'Open Sans',
-                                                              fontSize:
-                                                              22,
-                                                              letterSpacing:
-                                                              -0.38723403215408325,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .normal,
-                                                              height:
-                                                              1),
-                                                        )
-                                                      ],
-                                                    ),
-                                                    Spacer()
-                                                  ],
-                                                ),
-                                              ),
+                                                    child: GridView.builder(
+                                                        gridDelegate:
+                                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                                            crossAxisCount:
+                                                            MediaQuery
+                                                                .of(context)
+                                                                .size
+                                                                .width <
+                                                                1200
+                                                                ? 1
+                                                                : 1,
+                                                            crossAxisSpacing: 4.0,
+                                                            mainAxisSpacing: 4.0,
+                                                            childAspectRatio: 4.0),
+                                                        shrinkWrap: false,
+                                                        itemCount: _juz.length,
+                                                        itemBuilder:
+                                                            (
+                                                            BuildContext context,
+                                                            int index) {
+                                                          return Column(
+                                                              crossAxisAlignment: CrossAxisAlignment
+                                                                  .center,
+                                                              mainAxisSize: MainAxisSize
+                                                                  .max,
+                                                              mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceEvenly,
+                                                              children: [
+                                                                Container(
+                                                                  width: 400,
+                                                                  height: 100,
+                                                                  decoration:
+                                                                  BoxDecoration(
+                                                                      borderRadius:
+                                                                      BorderRadius
+                                                                          .only(
+                                                                        topLeft: Radius
+                                                                            .circular(
+                                                                            10),
+                                                                        topRight: Radius
+                                                                            .circular(
+                                                                            10),
+                                                                        bottomLeft:
+                                                                        Radius
+                                                                            .circular(
+                                                                            10),
+                                                                        bottomRight:
+                                                                        Radius
+                                                                            .circular(
+                                                                            10),
+                                                                      ),
+                                                                      color: themeProvider
+                                                                          .isDarkMode
+                                                                          ? Color(
+                                                                          0xff67748E)
+                                                                          : Color
+                                                                          .fromRGBO(
+                                                                          255,
+                                                                          255,
+                                                                          255,
+                                                                          1),
+                                                                      border: Border
+                                                                          .all(
+                                                                        color: themeProvider
+                                                                            .isDarkMode
+                                                                            ? Color(
+                                                                            0xffD2D6DA)
+                                                                            : Color
+                                                                            .fromRGBO(
+                                                                            231,
+                                                                            111,
+                                                                            0,
+                                                                            1),
+                                                                        width: 1,
+                                                                      )),
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                    children: [
+                                                                      Container(
+                                                                          width: 50,
+                                                                          height: 100,
+                                                                          decoration:
+                                                                          BoxDecoration(
+                                                                            borderRadius:
+                                                                            BorderRadius
+                                                                                .only(
+                                                                              topLeft: Radius
+                                                                                  .circular(
+                                                                                  10),
+                                                                              topRight:
+                                                                              Radius
+                                                                                  .circular(
+                                                                                  10),
+                                                                              bottomLeft:
+                                                                              Radius
+                                                                                  .circular(
+                                                                                  10),
+                                                                              bottomRight:
+                                                                              Radius
+                                                                                  .circular(
+                                                                                  10),
+                                                                            ),
+                                                                            color: themeProvider
+                                                                                .isDarkMode
+                                                                                ? Color(
+                                                                                0xff808BA1)
+                                                                                : Color
+                                                                                .fromRGBO(
+                                                                                255,
+                                                                                181,
+                                                                                94,
+                                                                                1),
+                                                                          ),
+                                                                          child: Center(
+                                                                            child: Text(
+                                                                              _juz[index]['id'],
+                                                                              //'${index + 1}',
+                                                                              textAlign:
+                                                                              TextAlign
+                                                                                  .left,
+                                                                              style: TextStyle(
+                                                                                  fontFamily:
+                                                                                  'Open Sans',
+                                                                                  fontSize:
+                                                                                  24,
+                                                                                  letterSpacing:
+                                                                                  -0.38723403215408325,
+                                                                                  fontWeight: FontWeight
+                                                                                      .normal,
+                                                                                  height:
+                                                                                  1),
+                                                                            ),
+                                                                          )),
+                                                                      Spacer(),
+                                                                      Column(
+                                                                        mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                        children: [
+                                                                          Text(
+                                                                            _juz[index]['tname'],
+                                                                            textAlign:
+                                                                            TextAlign
+                                                                                .left,
+                                                                            style: TextStyle(
+                                                                                fontFamily:
+                                                                                'Open Sans',
+                                                                                fontSize:
+                                                                                24,
+                                                                                letterSpacing:
+                                                                                -0.38723403215408325,
+                                                                                fontWeight:
+                                                                                FontWeight
+                                                                                    .normal,
+                                                                                height:
+                                                                                1),
+                                                                          ),
+                                                                          Text(
+                                                                            _juz[index]['ename'],
+                                                                            //_juzseName[index],
+                                                                            textAlign:
+                                                                            TextAlign
+                                                                                .left,
+                                                                            style: TextStyle(
+                                                                                color: Color
+                                                                                    .fromRGBO(
+                                                                                    151,
+                                                                                    151,
+                                                                                    151,
+                                                                                    1),
+                                                                                fontFamily:
+                                                                                'Open Sans',
+                                                                                fontSize:
+                                                                                22,
+                                                                                letterSpacing:
+                                                                                -0.38723403215408325,
+                                                                                fontWeight:
+                                                                                FontWeight
+                                                                                    .normal,
+                                                                                height:
+                                                                                1),
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                      Spacer()
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ]);
+                                                        }))
+
                                             ),
                                           );
                                         },
@@ -1343,18 +1661,22 @@ class _HomePageState extends State<HomePage1>
                                                 Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
-                                                        builder: (context) => SurahScreen(
-                                                            a,
-                                                            _juzs[index]
-                                                            [
-                                                            "sura_id"],
-                                                            _juzsName[index]
-                                                            [
-                                                            "tname"],
-                                                            _juzsName[index]
-                                                            [
-                                                            "ename"],
-                                                            0)));
+                                                        builder: (context) =>
+                                                            SurahScreen(
+                                                                a,
+                                                                "${Provider
+                                                                    .of<
+                                                                    AyaProvider>(
+                                                                    context,
+                                                                    listen: false)
+                                                                    .surahNo}",
+                                                                _juzsName[index]
+                                                                [
+                                                                "tname"],
+                                                                _juzsName[index]
+                                                                [
+                                                                "ename"],
+                                                                0)));
                                               },
                                               child: Container(
                                                 width: 400,
@@ -1488,14 +1810,18 @@ class _HomePageState extends State<HomePage1>
                                                           TextAlign
                                                               .left,
                                                           style: TextStyle(
-                                                              color: Color.fromRGBO(
+                                                              color: Color
+                                                                  .fromRGBO(
                                                                   151,
                                                                   151,
                                                                   151,
                                                                   1),
                                                               fontFamily:
                                                               'Open Sans',
-                                                              fontSize: MediaQuery.of(context).size.width <
+                                                              fontSize: MediaQuery
+                                                                  .of(context)
+                                                                  .size
+                                                                  .width <
                                                                   600
                                                                   ? 20
                                                                   : 24,
@@ -1519,7 +1845,8 @@ class _HomePageState extends State<HomePage1>
                                       )
                                           : SkeletonLoader(
                                         builder: SizedBox(
-                                          height: MediaQuery.of(context)
+                                          height: MediaQuery
+                                              .of(context)
                                               .size
                                               .height *
                                               0.5,
@@ -1527,7 +1854,8 @@ class _HomePageState extends State<HomePage1>
                                             gridDelegate:
                                             SliverGridDelegateWithFixedCrossAxisCount(
                                                 crossAxisCount:
-                                                MediaQuery.of(context)
+                                                MediaQuery
+                                                    .of(context)
                                                     .size
                                                     .width <
                                                     1200
@@ -1619,7 +1947,8 @@ class _HomePageState extends State<HomePage1>
                                                                 .isDarkMode
                                                                 ? Color(
                                                                 0xff808BA1)
-                                                                : Color.fromRGBO(
+                                                                : Color
+                                                                .fromRGBO(
                                                                 255,
                                                                 181,
                                                                 94,
@@ -1675,7 +2004,8 @@ class _HomePageState extends State<HomePage1>
                                                             TextAlign
                                                                 .left,
                                                             style: TextStyle(
-                                                                color: Color.fromRGBO(
+                                                                color: Color
+                                                                    .fromRGBO(
                                                                     151,
                                                                     151,
                                                                     151,
@@ -1764,6 +2094,7 @@ class _HomePageState extends State<HomePage1>
     setState(() {
       _list = allData;
     });
+    await getSurah();
   }
 
   List _totalJuzs = [];
@@ -1806,69 +2137,76 @@ class _HomePageState extends State<HomePage1>
       _juzs = allData;
       //print(allData.first);
     });
+    //await getJuzsName();
+    // await getJName();
   }
 
 
-  List _juzstName = ["Al-Faatiha","Al-Baqara","Al-Baqara","Aal-i-Imraan","An-Nisaa","An-Nisaa","Al-Maaida","Al-An'aam",
-    "Al-A'raaf","Al-Anfaal","At-Tawba","Hud","Yusuf","Al-Hijr","Al-Israa","Al-Kahf","Al-Anbiyaa","Al-Muminoon",
-    "Al-Furqaan","An-Naml","Al-Ankaboot","Al-Ahzaab","Yaseen","Az-Zumar","Fussilat","Al-Ahqaf","Adh-Dhaariyat",
-    "Al-Mujaadila","Al-Mulk","An-Naba"];
-  List _juzseName = ["The Opening","The Cow", "The Cow", "The Family of Imraan", "The Women", "The Women", "The Table", "The Cattle", "The Heights",
-    "The Spoils of War", "The Repentance", "Hud", "Joseph", "The Rock", "The Night Journey", "The Cave", "The Prophets", "The Believers",
-    "The Criterion", "The Ant", "The Spider", "The Clans", "Yaseen", "The Groups", "Explained in detail", "The Dunes", "The Winnowing Winds",
-    "The Pleading Woman", "The Sovereignty", "The Announcement"];
+  //int i=0;
+  List sId = [];
+  List jId = [];
+  List pageId = [];
+  List name = [];
+  List detail = [];
 
-
-  int i=0;
-  List sId=[];
-  List name=[];
-  List detail=[];
   Future<void> getSurah() async {
-    List s=[];
-    for( i = 0; i < _totalJuzs.length; i++) {
+    List s = [];
+    List p = [];
+    List juz = [];
+    for (int i = 1; i < 114; i++) {
       // Get docs from collection reference
-      await _collectionJ
-          .where('id', isEqualTo: _totalJuzs[i]["id"])
+      await FirebaseFirestore.instance.collection('sura_relationships')
+          .where('sura_id', isEqualTo: i.toString())
       // .where('sura_id', isEqualTo: widget.sura_id)
           .orderBy('created_at')
           .get()
           .then((QuerySnapshot querySnapshot) {
         for (var doc in querySnapshot.docs) {
           setState(() {
+            p.add(doc['medina_mushaf_page_id']);
+            //j.add(doc['juz_id']);
             s.add(doc['sura_id']);
             //widget.sura_id = int.parse(doc['sura_id']) as String;
           });
         }
         setState(() {
+          pageId = p;
+          //jId = j;
           sId = s;
-          //print(sId);
+          //print(pageId);
         });
-      });}
+      });
+    } //print(pageId);
     List t = [];
     List e = [];
-    for( int j = 0; j < sId.length; j++) {
-      await _collectionRef
-          .where('id', isEqualTo: sId[j])
+    for (int j = 0; j < pageId.length; j++) {
+      await _collectionJ
+          .where('id', isEqualTo: pageId[j].toString())
       // .where('sura_id', isEqualTo: widget.sura_id)
           .orderBy('created_at')
           .get()
           .then((QuerySnapshot querySnapshot) {
         for (var doc in querySnapshot.docs) {
           setState(() {
-            t.add(doc['tname']);
-            e.add(doc['ename']);
+            juz.add(doc['juz_id']);
+            //t.add(doc['tname']);
+            //e.add(doc['ename']);
             //widget.sura_id = int.parse(doc['sura_id']) as String;
           });
         }
         setState(() {
-          name = t;
-          detail = e;
-          //print(name);
+          jId = juz;
+          //name = t;
+          //detail = e;
+          //print(jId);
         });
       });
-    }
+    } //print(jId);
   }
+}
+/*
   List juzId=[];
+  List suraId=[];
   List tname=[];
   List ename=[];
 
@@ -1876,30 +2214,77 @@ class _HomePageState extends State<HomePage1>
     List s=[];
     List t = [];
     List e = [];
+    List j = [];
+   // List x =[[1,2]];
     for( int k = 0; k < _juzs.length; k++) {
       // Get docs from collection reference
+      await _collectionJ
+          .where('juz_id', isEqualTo: _juzs[k]["id"])
+      // .where('sura_id', isEqualTo: widget.sura_id)
+          .orderBy('created_at')
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+            var temp;
+        for (var doc in querySnapshot.docs) {
+          //var temp = doc['sura_id'];
+          if(temp!= doc['sura_id']) {
+            temp = doc['sura_id'];
+          setState(() {
+            s.add(doc['sura_id']);
+            j.add(doc['juz_id']);
+           // t.add(doc['tname']);
+           // e.add(doc['ename']);
+            //widget.sura_id = int.parse(doc['sura_id']) as String;
+          });}
+        }
+        setState(() {
+          suraId = s;
+          juzId = j;
+         // tname = t;
+         // ename = e;
+          //print(suraId.length);
+          //print(juzId);
+        });
+      });}
+
+    for( int j = 0; j < suraId.length; j++) {
+      // Get docs from collection reference
       await _collectionRef
-          .where('id', isEqualTo: _juzs[k]["sura_id"])
+          .where('id', isEqualTo: suraId[j])
       // .where('sura_id', isEqualTo: widget.sura_id)
           .orderBy('created_at')
           .get()
           .then((QuerySnapshot querySnapshot) {
         for (var doc in querySnapshot.docs) {
           setState(() {
-            s.add(doc['id']);
+            //s.add(doc['sura_id']);
             t.add(doc['tname']);
             e.add(doc['ename']);
             //widget.sura_id = int.parse(doc['sura_id']) as String;
           });
         }
         setState(() {
-          juzId = s;
+          //suraId = s;
           tname = t;
           ename = e;
-          //print(ename);
+          //print(ename.length);
         });
       });}
+
+    setState(() {
+      _items = List.generate(
+          118,
+              (index) => {
+            "id": juzId[index],
+            "tname": tname[index],
+            "ename": ename[index],
+            "height": Random().nextInt(150) + 50.5
+          });
+
+    });
   }
+
+
 
   List sura=[];
   Future<List> getSPage(String id) async {
@@ -1921,8 +2306,10 @@ class _HomePageState extends State<HomePage1>
   }
 
 
+
+
 }
-/*Future <void> getJuzsName() async {
+Future <void> getJuzsName() async {
     await Provider.of<BookMarkProvider>(context, listen: false).getList();
     List j=[];
     for (int count =0; count<= _juzs.length+1; count++){

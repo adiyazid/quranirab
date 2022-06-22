@@ -11,6 +11,7 @@ import '../models/surah.split.model.dart';
 class AyaProvider extends ChangeNotifier {
   WordDetail? data;
   var page = 1;
+  var surahNo = 1;
   var category = 'Waiting to retrieve data...';
   final storageRef = FirebaseStorage.instance.ref();
   double value = 12;
@@ -84,7 +85,25 @@ class AyaProvider extends ChangeNotifier {
     page = no;
     _sPos.clear();
     if (visible == true) visible = !visible;
+
     notifyListeners();
+    getSurahNo(page);
+  }
+
+
+  Future<void> getSurahNo(int page) async {
+    await FirebaseFirestore.instance
+        .collection('medina_mushaf_pages')
+        .where('id', isEqualTo: "$page")
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+          surahNo = int.parse(doc["sura_id"]);
+          notifyListeners();
+      }
+
+    //notifyListeners();
+  });
   }
 
   Future<void> readAya() async {
@@ -209,6 +228,7 @@ class AyaProvider extends ChangeNotifier {
       _sPos.clear();
       notifyListeners();
       getPage(page);
+      getSurahNo(page);
     }
   }
 
@@ -218,6 +238,7 @@ class AyaProvider extends ChangeNotifier {
       _sPos.clear();
       notifyListeners();
       getPage(page);
+      getSurahNo(page);
     }
   }
 
