@@ -1,6 +1,6 @@
 {
-    "name": "quranirab",
-    "short_name": "quranirab",
+    "name": "multiquranirab",
+    "short_name": "multiquranirab",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
