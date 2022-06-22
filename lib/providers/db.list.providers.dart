@@ -25,8 +25,8 @@ class DbListProvider extends ChangeNotifier {
         nameC.add(name);
         idC.add(catId);
       } else {
-        nameC.replaceRange(index, index + 1, [name]);
-        idC.replaceRange(index, index + 1, [catId]);
+        nameC.replaceRange(index, index, [name]);
+        idC.replaceRange(index, index, [catId]);
       }
     }
     if (lang == '5') {
@@ -38,8 +38,8 @@ class DbListProvider extends ChangeNotifier {
         nameF.add(name);
         idF.add(catId);
       } else {
-        nameF.replaceRange(index, index + 1, [name]);
-        idF.replaceRange(index, index + 1, [catId]);
+        nameF.replaceRange(index, index, [name]);
+        idF.replaceRange(index, index, [catId]);
       }
     }
     if (lang == '6') {
@@ -51,8 +51,8 @@ class DbListProvider extends ChangeNotifier {
         nameS.add(name);
         idS.add(catId);
       } else {
-        nameS.replaceRange(index, index + 1, [name]);
-        idS.replaceRange(index, index + 1, [catId]);
+        nameS.replaceRange(index, index, [name]);
+        idS.replaceRange(index, index, [catId]);
       }
     }
     if (lang == '7') {
@@ -64,8 +64,8 @@ class DbListProvider extends ChangeNotifier {
         nameB.add(name);
         idB.add(catId);
       } else {
-        nameB.replaceRange(index, index + 1, [name]);
-        idB.replaceRange(index, index + 1, [catId]);
+        nameB.replaceRange(index, index, [name]);
+        idB.replaceRange(index, index, [catId]);
       }
     }
     notifyListeners();
