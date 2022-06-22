@@ -55,10 +55,10 @@ dependencies:
   flutter_search_bar: ^2.1.0
   cool_dropdown: ^1.4.1
   flutter_svg:
-  cached_network_image: 3.0.0
+  cached_network_image:
   material_design_icons_flutter: ^5.0.5955-rc.1
   arabic_numbers: ^1.0.0
-  custom_pop_up_menu: ^1.2.2
+  custom_pop_up_menu:
   async: ^2.8.1
   responsive: ^0.3.11+11
   popover: ^0.2.6+3
@@ -66,7 +66,7 @@ dependencies:
   firebase_storage: ^10.2.13
   dio: ^4.0.6
   get_storage: ^2.0.3
-  dropdown_search: ^3.0.1
+  dropdown_search:
   tree_view: ^0.0.6
   floating_action_bubble: ^1.1.4
   group_radio_button: ^1.2.0

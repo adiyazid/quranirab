@@ -7,7 +7,7 @@ import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/widget/appbar.widget.dart';
 import 'package:quranirab/widget/menu.dart';
 import 'package:quranirab/quiz_module/quiz.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class QuizHome extends StatefulWidget {
   final int page;
 
@@ -61,7 +61,7 @@ class _QuizHomeState extends State<QuizHome> {
                           height: MediaQuery.of(context).size.height / 1.4,
                           child: Center(
                             child: button182(
-                                'Start the Quiz',
+                                AppLocalizations.of(context)!.startTheQuiz,
                                 const TextStyle(fontSize: 28),
                                 themeProvider.isDarkMode
                                     ? ManyColors.color4
@@ -75,7 +75,7 @@ class _QuizHomeState extends State<QuizHome> {
                           )),
                     ),
                     button114(
-                        'Back',
+                        AppLocalizations.of(context)!.back,
                         TextStyle(
                             color: themeProvider.isDarkMode
                                 ? Colors.white
