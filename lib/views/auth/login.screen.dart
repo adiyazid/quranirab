@@ -333,8 +333,12 @@ class _SigninWidgetState extends State<SigninWidget>
                                       Navigator.pushNamed(
                                           context, RoutesName.homePage);
                                     } catch (e) {
-                                      setState(() {});
-                                      loading = false;
+                                      if (mounted) {
+                                        setState(() {
+                                          loading = false;
+                                        });
+                                      }
+
                                       showTopSnackBar(
                                           context,
                                           CustomSnackBar.error(

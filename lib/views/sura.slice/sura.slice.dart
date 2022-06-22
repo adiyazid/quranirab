@@ -95,7 +95,10 @@ class _SuraSliceState extends State<SuraSlice> {
                             Directionality(
                               textDirection: TextDirection.rtl,
                               child: Card(
-                                color: Colors.transparent,
+                                elevation: 0,
+                                color: themeProvider.isDarkMode
+                                    ? const Color(0xff666666)
+                                    : const Color(0xFFffffff),
                                 child: Center(
                                   child: Wrap(
                                     alignment: WrapAlignment.start,

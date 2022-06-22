@@ -3,6 +3,7 @@ import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:quranirab/provider/language.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 
 import '../models/translation.dart';
@@ -18,6 +19,8 @@ class _TransPopupState extends State<TransPopup> {
   final padding = const EdgeInsets.symmetric(horizontal: 10);
   final FirebaseFirestore _fireStoreDataBase = FirebaseFirestore.instance;
 
+  final _menu = CustomPopupMenuController();
+
   Stream<List<TranslationModel>> getUserList() {
     return _fireStoreDataBase.collection('translations').snapshots().map(
         (snapShot) => snapShot.docs
@@ -29,6 +32,7 @@ class _TransPopupState extends State<TransPopup> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return CustomPopupMenu(
+      controller: _menu,
       child: const ImageIcon(
         AssetImage("assets/translation_icon.png"),
         size: 50,
@@ -102,7 +106,11 @@ class _TransPopupState extends State<TransPopup> {
                                                     themeProvider.isDarkMode,
                                                 align: TextAlign.left,
                                                 onTap: () {
-                                                  print(
+                                                  _menu.hideMenu();
+                                                  Provider.of<LangProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .changeLang(
                                                     asyncSnapshot.data![index]
                                                         .language_id,
                                                   );
@@ -125,7 +133,11 @@ class _TransPopupState extends State<TransPopup> {
                                                     themeProvider.isDarkMode,
                                                 align: TextAlign.left,
                                                 onTap: () {
-                                                  print(
+                                                  _menu.hideMenu();
+                                                  Provider.of<LangProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .changeLang(
                                                     asyncSnapshot.data![index]
                                                         .language_id,
                                                   );

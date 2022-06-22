@@ -43,32 +43,7 @@ class _SurahScreenState extends State<SurahScreen>
   var hizb;
   int? start;
 
-  List _translate = [];
-  final CollectionReference _collectionTranslate =
-      FirebaseFirestore.instance.collection('quran_translations');
-
   late TabController _tabController;
-
-  Future<void> getTranslation(String id) async {
-    // Get docs from collection reference
-    QuerySnapshot querySnapshot = await _collectionTranslate
-        .where('translation_id', isEqualTo: id)
-        .where('sura_id', isEqualTo: widget.sura_id)
-        .get();
-    // Get data from docs and convert map to List
-    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-    setState(() {
-      _translate = allData;
-    });
-    //convert dynamic map list into string list
-    var data = _translate.map((e) => e["text"]).toList();
-    setState(() {
-      _translate = data;
-    });
-    if (start != 1 && start != null) {
-      _translate.removeRange(0, start! - 1);
-    }
-  }
 
   bool visible = false;
 
@@ -91,8 +66,8 @@ class _SurahScreenState extends State<SurahScreen>
     i = widget.index;
 
     getHizb();
-    getData();
     getStartAyah(widget.allpages[i]);
+    getData();
 
     super.initState();
   }
@@ -119,7 +94,8 @@ class _SurahScreenState extends State<SurahScreen>
       }
     });
     var id = Provider.of<LangProvider>(context, listen: false).langId;
-    await getTranslation(id);
+    await Provider.of<LangProvider>(context, listen: false)
+        .getTranslation(id, widget.sura_id, start);
   }
 
   Future<void> nextPage(String id) async {
@@ -141,8 +117,9 @@ class _SurahScreenState extends State<SurahScreen>
         _list = a;
       });
     });
-    await getTranslation(
-        Provider.of<LangProvider>(context, listen: false).langId);
+    var langId = Provider.of<LangProvider>(context, listen: false).langId;
+    await Provider.of<LangProvider>(context, listen: false)
+        .getTranslation(langId, widget.sura_id, start);
   }
 
   Future<void> getStartAyah(String id) async {
@@ -224,20 +201,22 @@ class _SurahScreenState extends State<SurahScreen>
             physics: NeverScrollableScrollPhysics(),
             controller: _tabController,
             children: [
-              Translation(
-                themeProvider: themeProvider,
-                list: _list,
-                translate: _translate,
-                widget: widget,
-                start: start,
-                menuItems: menuItems,
-                i: i,
-                widget1: widget,
-                widget2: widget,
-                widget3: widget,
-                widget4: widget,
-                widget5: widget,
-              ),
+              Consumer<LangProvider>(builder: (context, lang, child) {
+                return Translation(
+                  themeProvider: themeProvider,
+                  list: _list,
+                  translate: lang.translate,
+                  widget: widget,
+                  start: start,
+                  menuItems: menuItems,
+                  i: i,
+                  widget1: widget,
+                  widget2: widget,
+                  widget3: widget,
+                  widget4: widget,
+                  widget5: widget,
+                );
+              }),
               SuraSlice(
                   "${Provider.of<AyaProvider>(context, listen: false).page}",
                   widget.sura_id),
