@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class LangProvider extends ChangeNotifier {
   String langId = '1';
   String? suraIds;
-  String? starts;
+  int? starts;
   List translate = [];
   final CollectionReference _collectionTranslate =
       FirebaseFirestore.instance.collection('quran_translations');

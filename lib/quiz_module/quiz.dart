@@ -1,9 +1,7 @@
-import 'dart:math';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import    'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/models/option-model.dart';
@@ -19,8 +17,8 @@ import '../word-relationship-model.dart';
 
 class Quiz extends StatefulWidget {
   final int page;
-
-  const Quiz(this.page, {Key? key}) : super(key: key);
+  final int oldScore;
+  const Quiz(this.page, this.oldScore, {Key? key}) : super(key: key);
 
   @override
   _QuizState createState() => _QuizState();
@@ -46,29 +44,26 @@ class _QuizState extends State<Quiz> {
   List<WordRelationship> answers = [];
 
   final PageController _controller = PageController(initialPage: 0);
-  var windowWidth;
-  var windowHeight;
-  double windowSize = 0;
   late String btnText;
   int btnIndex = 0;
   int score = 0;
   bool btnPressed = false;
-
+  String status = 'Loading ...';
   bool answered = false;
 
   @override
   void initState() {
-    btnText = AppLocalizations.of(context)!.next;
-    generateQuestions();
     super.initState();
+    Future.delayed(Duration.zero, () {
+      generateQuestions();
+      btnText = AppLocalizations.of(context)!.next;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     var themeProvider = Provider.of<ThemeProvider>(context);
-    windowWidth = MediaQuery.of(context).size.width;
-    windowHeight = MediaQuery.of(context).size.height;
-    windowSize = min(windowWidth, windowHeight);
+
     return Scaffold(
       backgroundColor:
           themeProvider.isDarkMode ? Color(0xff666666) : ManyColors.color17,
@@ -380,10 +375,23 @@ class _QuizState extends State<Quiz> {
               },
             )
           : Center(
-              child: SizedBox(
-                child: CircularProgressIndicator(),
-                width: 50,
-                height: 50,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    child: CircularProgressIndicator(),
+                    width: 50,
+                    height: 50,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(32.0),
+                    child: Text(
+                      status,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  )
+                ],
               ),
             ),
     );
@@ -490,12 +498,26 @@ class _QuizState extends State<Quiz> {
   }
 
   void generateQuestions() async {
+    setState(() {
+      status = 'Retrieving words ...';
+    });
     await getWords();
+    setState(() {
+      status = 'Retrieving questions ...';
+    });
     await getQuestion();
+    setState(() {
+      status = 'Retrieving non-translate options ...';
+    });
     await getNonTranslatedOptions();
+    setState(() {
+      status = 'Retrieving translated options ...';
+    });
     await getTranslatedOptions();
+    setState(() {
+      status = 'Finishing up ...';
+    });
     await getAnswers();
-
     setState(() {
       dataReady = true;
     });
@@ -533,10 +555,8 @@ class _QuizState extends State<Quiz> {
         .collection('quranIrabUsers')
         .doc(AppUser.instance.user!.uid)
         .collection('quizs');
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    int old = prefs.getInt('${widget.page}score') ?? 0;
+    int old = widget.oldScore;
     if (old < score) {
-      prefs.setInt('${widget.page}score', score);
       quiz
           // existing document in 'users' collection: "ABC123"
           .doc(widget.page.toString())
@@ -546,7 +566,8 @@ class _QuizState extends State<Quiz> {
               'score': score,
               'date-taken': DateTime.now(),
               'medina_mushaf_page_id': widget.page,
-              'level': level
+              'level': level,
+              'pic-url': AppUser.instance.user!.photoURL ?? ''
             },
             SetOptions(merge: true),
           )

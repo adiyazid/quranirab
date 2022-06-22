@@ -4,6 +4,7 @@ import 'package:quranirab/models/category.dart';
 import 'package:quranirab/quiz_module/LeaderBoard.Table.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/widget/menu.dart';
+
 import '../widget/appbar.widget.dart';
 
 class LeaderBoardMenu extends StatefulWidget {
@@ -15,12 +16,6 @@ class LeaderBoardMenu extends StatefulWidget {
 
 class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
   int diff = 0;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,14 +34,14 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                         : const Color(0xffE86F00)),
               ),
             ),
-            height: 57,
+            height: 77,
             child: CustomScrollView(
               slivers: const [Appbar()],
             ),
           ),
           Container(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height - 57,
+            height: MediaQuery.of(context).size.height - 77,
             decoration: BoxDecoration(
                 color: themeProvider.isDarkMode
                     ? const Color(0xff808BA1)
@@ -107,7 +102,9 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                       });
                     },
                     child: Container(
-                      width: MediaQuery.of(context).size.width<600? MediaQuery.of(context).size.width*0.7 :600,
+                      width: MediaQuery.of(context).size.width < 600
+                          ? MediaQuery.of(context).size.width * 0.7
+                          : 600,
                       height: MediaQuery.of(context).size.width > 600
                           ? MediaQuery.of(context).size.height * 0.15
                           : 100,
@@ -164,7 +161,9 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                               builder: (context) => const LeaderBoardTable()));
                     },
                     child: Container(
-                      width: MediaQuery.of(context).size.width<600? MediaQuery.of(context).size.width*0.7 :600,
+                      width: MediaQuery.of(context).size.width < 600
+                          ? MediaQuery.of(context).size.width * 0.7
+                          : 600,
                       height: MediaQuery.of(context).size.width > 600
                           ? MediaQuery.of(context).size.height * 0.15
                           : 100,
@@ -224,7 +223,9 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                               builder: (context) => const LeaderBoardTable()));
                     },
                     child: Container(
-                      width: MediaQuery.of(context).size.width<600? MediaQuery.of(context).size.width*0.7 :600,
+                      width: MediaQuery.of(context).size.width < 600
+                          ? MediaQuery.of(context).size.width * 0.7
+                          : 600,
                       height: MediaQuery.of(context).size.width > 600
                           ? MediaQuery.of(context).size.height * 0.15
                           : 100,
@@ -283,7 +284,9 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                               builder: (context) => const LeaderBoardTable()));
                     },
                     child: Container(
-                      width: MediaQuery.of(context).size.width<600? MediaQuery.of(context).size.width*0.7 :600,
+                      width: MediaQuery.of(context).size.width < 600
+                          ? MediaQuery.of(context).size.width * 0.7
+                          : 600,
                       height: MediaQuery.of(context).size.width > 600
                           ? MediaQuery.of(context).size.height * 0.15
                           : 100,

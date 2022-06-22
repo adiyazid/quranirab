@@ -98,10 +98,11 @@ class _TranslationState extends State<Translation> {
                                         child: Text(
                                           '${widget.widget.sura_id}:${widget.start! + index}',
                                           style: TextStyle(
-                                              fontSize: fontsize.value,
-                                              color: Theme.of(
-                                                  context)
-                                                  .textSelectionTheme.selectionColor,),
+                                            fontSize: fontsize.value,
+                                            color: Theme.of(context)
+                                                .textSelectionTheme
+                                                .selectionColor,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -244,6 +245,7 @@ class _TranslationState extends State<Translation> {
                                         child: Text(
                                           widget._translate[index],
                                           style: TextStyle(
+                                            fontFamily: 'MeQuran2',
                                             fontSize: fontsize.value,
                                           ),
                                         ),

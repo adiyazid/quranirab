@@ -128,20 +128,42 @@ class _TransPopupState extends State<TransPopup> {
                                             return buildMenuItem(
                                                 text: asyncSnapshot
                                                     .data![index].name,
-                                                enable: true,
-                                                darkMode:
-                                                    themeProvider.isDarkMode,
+                                                enable:
+                                                    Provider.of<LangProvider>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .langId ==
+                                                            asyncSnapshot
+                                                                .data![index]
+                                                                .language_id
+                                                        ? false
+                                                        : true,
+                                                darkMode: themeProvider
+                                                    .isDarkMode,
                                                 align: TextAlign.left,
-                                                onTap: () {
-                                                  _menu.hideMenu();
-                                                  Provider.of<LangProvider>(
-                                                          context,
-                                                          listen: false)
-                                                      .changeLang(
-                                                    asyncSnapshot.data![index]
-                                                        .language_id,
-                                                  );
-                                                });
+                                                onTap:
+                                                    Provider.of<LangProvider>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .langId ==
+                                                            asyncSnapshot
+                                                                .data![index]
+                                                                .language_id
+                                                        ? null
+                                                        : () {
+                                                            _menu.hideMenu();
+                                                            Provider.of<LangProvider>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .changeLang(
+                                                              asyncSnapshot
+                                                                  .data![index]
+                                                                  .language_id,
+                                                            );
+                                                          });
                                           },
                                         ),
                                       );
