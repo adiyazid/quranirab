@@ -1,15 +1,15 @@
 import 'package:floating_action_bubble/floating_action_bubble.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
-import 'package:quranirab/views/auth/signup.screen.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../Routes/route.dart';
 import '../../main.dart';
 
 class SigninWidget extends StatefulWidget {
@@ -328,9 +328,12 @@ class _SigninWidgetState extends State<SigninWidget>
                                       await appUser.signIn(
                                           email: _email.text,
                                           password: _pass.text);
+                                      setState(() {});
                                       loading = false;
+                                      Navigator.pushNamed(
+                                          context, RoutesName.homePage);
                                     } catch (e) {
-                                      setState((){});
+                                      setState(() {});
                                       loading = false;
                                       showTopSnackBar(
                                           context,
@@ -395,11 +398,8 @@ class _SigninWidgetState extends State<SigninWidget>
                                         height: 1),
                                   ),
                                   InkWell(
-                                    onTap: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const SignupWidget())),
+                                    onTap: () => Navigator.pushNamed(
+                                        context, RoutesName.registerPage),
                                     child: Text(
                                       AppLocalizations.of(context)!.signUp,
                                       textAlign: TextAlign.left,

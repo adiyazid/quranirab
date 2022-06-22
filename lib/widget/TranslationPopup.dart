@@ -1,8 +1,8 @@
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TransPopup extends StatefulWidget {
   const TransPopup({Key? key}) : super(key: key);
@@ -19,7 +19,7 @@ class _TransPopupState extends State<TransPopup> {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return CustomPopupMenu(
       child: const ImageIcon(
-        AssetImage("translation_icon.png"),
+        AssetImage("assets/translation_icon.png"),
         size: 50,
       ),
       pressType: PressType.singleClick,

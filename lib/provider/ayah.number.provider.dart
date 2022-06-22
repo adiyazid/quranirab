@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:quranirab/models/word.detail.dart';
+
 import '../models/break.index.model.dart';
 import '../models/slicing.data.model.dart';
 import '../models/surah.split.model.dart';
@@ -14,7 +16,7 @@ class AyaProvider extends ChangeNotifier {
   var page = 1;
   var category = 'Waiting to retrieve data...';
   final storageRef = FirebaseStorage.instance.ref();
-  double value = 12;
+  double value = 18;
   int? start;
   int? end;
   int nums = 0;
@@ -10712,23 +10714,23 @@ class AyaProvider extends ChangeNotifier {
     return labelCategory;
   }
 
-  void getFontSize(BuildContext context) {
-    if (maxScreen < 400) {
-      value = 11;
-    } else if (maxScreen < 600) {
-      value = 13;
-    } else if (maxScreen < 800) {
-      value = 22;
-    } else if (maxScreen < 1000) {
-      value = 23;
-    } else if (maxScreen < 1200) {
-      value = 25;
-    } else if (maxScreen < 1400) {
-      value = 25;
-    } else {
-      value = 25;
-    }
-  }
+  // void getFontSize(BuildContext context) {
+  //   if (maxScreen < 400) {
+  //     value = 11;
+  //   } else if (maxScreen < 600) {
+  //     value = 13;
+  //   } else if (maxScreen < 800) {
+  //     value = 22;
+  //   } else if (maxScreen < 1000) {
+  //     value = 23;
+  //   } else if (maxScreen < 1200) {
+  //     value = 25;
+  //   } else if (maxScreen < 1400) {
+  //     value = 25;
+  //   } else {
+  //     value = 25;
+  //   }
+  // }
 
   void getScreenSize(BuildContext context) {
     maxScreen = MediaQuery.of(context).size.width;
@@ -10785,6 +10787,8 @@ class AyaProvider extends ChangeNotifier {
       return "3";
     } else if (Localizations.localeOf(context).toString() == "ar_") {
       return "1";
+    } else {
+      return "2";
     }
   }
 

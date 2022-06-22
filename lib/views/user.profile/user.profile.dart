@@ -6,13 +6,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/widget/menu.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import '../../theme/theme_provider.dart';
 import '../../widget/appbar.widget.dart';
 import 'container.update.dart';
@@ -95,13 +96,13 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
                         : const Color(0xffE86F00)),
               ),
             ),
-            height: 57,
+            height: 87,
             child: CustomScrollView(
-              slivers: [Appbar()],
+              slivers: const [Appbar()],
             ),
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.05,
+            height: MediaQuery.of(context).size.height * 0.03,
           ),
           Text(
             AppLocalizations.of(context)!.userProfile,
@@ -248,7 +249,7 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
                 controller: fnamecontroller,
               ),
               SizedBox(
-                width: 18,
+                width: 40,
               ),
               NameUpdate(
                 text: last_name ?? AppLocalizations.of(context)!.lastName,

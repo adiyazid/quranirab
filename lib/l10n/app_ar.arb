@@ -54,7 +54,7 @@
   "prevPage": "Previous Page",
   "beginningSurah": "Beginning Surah",
   "nextPage": "Next Page",
-  "items":"Items",
+  "items": "Items",
   "wordDetail": "Detail for ",
   "startTheQuiz": "Start the Quiz",
   "back": "Back",
@@ -63,6 +63,6 @@
   "wordType": "Word Type",
   "sentence": "Sentence",
   "seeResult": "See Result",
-  "pleaseAnswerQuestion": "Please answer the questions"
-
+  "pleaseAnswerQuestion": "Please answer the questions",
+  "haveAccSignIn": "Have account? Sign in"
 }

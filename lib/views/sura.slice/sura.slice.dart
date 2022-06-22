@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
 
-import '../../widget/more_options_list.dart';
 import '../../theme/theme_provider.dart';
+import '../../widget/more_options_list.dart';
 
 class SuraSlice extends StatefulWidget {
   final String page;
@@ -81,7 +81,6 @@ class _SuraSliceState extends State<SuraSlice> {
               body: aya.breakIndex!.isNotEmpty
                   ? SingleChildScrollView(
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           for (int index = aya.checkSurahStart(
                                   Provider.of<AyaProvider>(context,
@@ -95,350 +94,387 @@ class _SuraSliceState extends State<SuraSlice> {
                               index++)
                             Directionality(
                               textDirection: TextDirection.rtl,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  for (int i = 0 + index != 0
-                                          ? aya.breakIndex![index - 1]
-                                          : 0;
-                                      i < aya.breakIndex![index];
-                                      i++)
-                                    aya.checkAya(
-                                      aya.slice![i].end,
-                                    )
-                                        ? Row(
-                                            children: [
-                                              Consumer<AyaProvider>(builder:
-                                                  (context, aya, child) {
-                                                return aya.checkSymbol(
-                                                        aya.slice![i].start)
-                                                    ? Row(
-                                                        children: [
-                                                          Text(" ﲿ ",
-                                                              textDirection:
-                                                                  TextDirection
-                                                                      .rtl,
+                              child: Card(
+                                color: Colors.transparent,
+                                child: Center(
+                                  child: Wrap(
+                                    alignment: WrapAlignment.start,
+                                    crossAxisAlignment:
+                                        WrapCrossAlignment.start,
+                                    children: [
+                                      for (int i = 0 + index != 0
+                                              ? aya.breakIndex![index - 1]
+                                              : 0;
+                                          i < aya.breakIndex![index];
+                                          i++)
+                                        aya.checkAya(
+                                          aya.slice![i].end,
+                                        )
+                                            ? FittedBox(
+                                                fit: BoxFit.fitWidth,
+                                                child: Row(
+                                                  children: [
+                                                    Consumer<AyaProvider>(
+                                                        builder: (context, aya,
+                                                            child) {
+                                                      return aya.checkSymbol(aya
+                                                              .slice![i].start)
+                                                          ? Row(
+                                                              children: [
+                                                                FittedBox(
+                                                                  fit: BoxFit
+                                                                      .fitWidth,
+                                                                  child: Text(
+                                                                      " ﲿ ",
+                                                                      textDirection:
+                                                                          TextDirection
+                                                                              .rtl,
+                                                                      softWrap:
+                                                                          true,
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontFamily:
+                                                                            'MeQuran2',
+                                                                        fontSize:
+                                                                            font.value,
+                                                                      )),
+                                                                ),
+                                                                InkWell(
+                                                                  onTap: () {
+                                                                    Scaffold.of(
+                                                                            context)
+                                                                        .openDrawer();
+                                                                    Provider.of<AyaProvider>(
+                                                                            context,
+                                                                            listen:
+                                                                                false)
+                                                                        .getCategoryName(
+                                                                            aya.slice![i].wordId,
+                                                                            aya.getLangID(context));
+
+                                                                    aya.setWords(aya
+                                                                        .list!
+                                                                        .join()
+                                                                        .split(
+                                                                            '')
+                                                                        .getRange(
+                                                                            aya.slice![i].start -
+                                                                                1,
+                                                                            aya.slice![i].end)
+                                                                        .join());
+                                                                    if (mounted) {
+                                                                      setState(
+                                                                          () {
+                                                                        aya.updateValue(
+                                                                            i);
+                                                                        aya.set();
+                                                                      });
+                                                                    }
+                                                                  },
+                                                                  child:
+                                                                      FittedBox(
+                                                                    fit: BoxFit
+                                                                        .fitWidth,
+                                                                    child: Text(
+                                                                        aya.list!
+                                                                            .join()
+                                                                            .split(
+                                                                                '')
+                                                                            .getRange(aya.slice![i].start - 1,
+                                                                                aya.slice![i].end)
+                                                                            .join(),
+                                                                        textDirection: TextDirection.rtl,
+                                                                        softWrap: true,
+                                                                        style: TextStyle(
+                                                                          fontFamily:
+                                                                              'MeQuran2',
+                                                                          fontSize:
+                                                                              font.value,
+                                                                          color: aya.getBoolean(i)
+                                                                              ? aya.getColor(aya.slice![i].wordId)
+                                                                              : null,
+                                                                          // aya.getBoolean(_slice[i]['start'] - 1)
+                                                                          //     ? aya.getColor(_slice[i]['word_id'])
+                                                                          //     : Colors.black)),
+                                                                        )),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            )
+                                                          : InkWell(
+                                                              onTap: () {
+                                                                Scaffold.of(
+                                                                        context)
+                                                                    .openDrawer();
+                                                                Provider.of<AyaProvider>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .getCategoryName(
+                                                                        aya
+                                                                            .slice![
+                                                                                i]
+                                                                            .wordId,
+                                                                        aya.getLangID(
+                                                                            context));
+                                                                aya.setWords(aya
+                                                                    .list!
+                                                                    .join()
+                                                                    .split('')
+                                                                    .getRange(
+                                                                        aya.slice![i].start -
+                                                                            1,
+                                                                        aya.slice![i]
+                                                                            .end)
+                                                                    .join());
+                                                                if (mounted) {
+                                                                  setState(() {
+                                                                    aya.updateValue(
+                                                                        i);
+                                                                    aya.set();
+                                                                  });
+                                                                }
+                                                              },
+                                                              child: FittedBox(
+                                                                fit: BoxFit
+                                                                    .fitWidth,
+                                                                child: Text(
+                                                                    aya.list!
+                                                                        .join()
+                                                                        .split(
+                                                                            '')
+                                                                        .getRange(
+                                                                            aya.slice![i].start -
+                                                                                1,
+                                                                            aya
+                                                                                .slice![
+                                                                                    i]
+                                                                                .end)
+                                                                        .join(),
+                                                                    textDirection:
+                                                                        TextDirection
+                                                                            .rtl,
+                                                                    softWrap:
+                                                                        true,
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontFamily:
+                                                                          'MeQuran2',
+                                                                      fontSize:
+                                                                          font.value,
+                                                                      color: aya.getBoolean(
+                                                                              i)
+                                                                          ? aya.getColor(aya
+                                                                              .slice![i]
+                                                                              .wordId)
+                                                                          : null,
+                                                                    )),
+                                                              ),
+                                                            );
+                                                    }),
+                                                    aya.list!
+                                                                    .join()
+                                                                    .split('')
+                                                                    .length -
+                                                                aya.slice![i]
+                                                                    .end <
+                                                            3
+                                                        ? FittedBox(
+                                                            fit:
+                                                                BoxFit.fitWidth,
+                                                            child: Text(
+                                                              " ${aya.list!.join().split('').length - aya.slice![i].end < 3 ? aya.ayaNumber.last : ""}",
                                                               softWrap: true,
                                                               style: TextStyle(
                                                                 fontFamily:
                                                                     'MeQuran2',
                                                                 fontSize:
                                                                     font.value,
-                                                              )),
-                                                          InkWell(
-                                                            onTap: () {
-                                                              Scaffold.of(
-                                                                      context)
-                                                                  .openDrawer();
-                                                              Provider.of<AyaProvider>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .getCategoryName(
-                                                                      aya
-                                                                          .slice![
-                                                                              i]
-                                                                          .wordId,
-                                                                      aya.getLangID(
-                                                                          context));
+                                                              ),
+                                                            ),
+                                                          )
+                                                        : Container(),
 
-                                                              aya.setWords(aya
-                                                                  .list!
-                                                                  .join()
-                                                                  .split('')
-                                                                  .getRange(
-                                                                      aya.slice![i].start -
-                                                                          1,
-                                                                      aya
-                                                                          .slice![
-                                                                              i]
-                                                                          .end)
-                                                                  .join());
-                                                              if (mounted) {
-                                                                setState(() {
-                                                                  aya.updateValue(
-                                                                      i);
-                                                                  aya.set();
-                                                                });
-                                                              }
-                                                            },
-                                                            child: Text(
-                                                                aya.list!
-                                                                    .join()
-                                                                    .split('')
-                                                                    .getRange(
-                                                                        aya.slice![i].start -
-                                                                            1,
-                                                                        aya
-                                                                            .slice![
-                                                                                i]
-                                                                            .end)
-                                                                    .join(),
-                                                                textDirection:
-                                                                    TextDirection
-                                                                        .rtl,
-                                                                softWrap: true,
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontFamily:
-                                                                      'MeQuran2',
-                                                                  fontSize: font
-                                                                      .value,
-                                                                  color: aya
-                                                                          .getBoolean(
-                                                                              i)
-                                                                      ? aya.getColor(aya
-                                                                          .slice![
-                                                                              i]
-                                                                          .wordId)
-                                                                      : null,
-                                                                  // aya.getBoolean(_slice[i]['start'] - 1)
-                                                                  //     ? aya.getColor(_slice[i]['word_id'])
-                                                                  //     : Colors.black)),
-                                                                )),
-                                                          ),
-                                                        ],
-                                                      )
-                                                    : InkWell(
-                                                        onTap: () {
-                                                          Scaffold.of(context)
-                                                              .openDrawer();
-                                                          Provider.of<AyaProvider>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .getCategoryName(
-                                                                  aya.slice![i]
-                                                                      .wordId,
-                                                                  aya.getLangID(
-                                                                      context));
-                                                          aya.setWords(aya.list!
-                                                              .join()
-                                                              .split('')
-                                                              .getRange(
-                                                                  aya.slice![i]
-                                                                          .start -
-                                                                      1,
-                                                                  aya.slice![i]
-                                                                      .end)
-                                                              .join());
-                                                          if (mounted) {
-                                                            setState(() {
-                                                              aya.updateValue(
-                                                                  i);
-                                                              aya.set();
-                                                            });
-                                                          }
-                                                        },
-                                                        child: Text(
-                                                            aya.list!
-                                                                .join()
-                                                                .split('')
-                                                                .getRange(
-                                                                    aya.slice![i].start -
-                                                                        1,
-                                                                    aya
-                                                                        .slice![
-                                                                            i]
-                                                                        .end)
-                                                                .join(),
-                                                            textDirection:
-                                                                TextDirection
-                                                                    .rtl,
-                                                            softWrap: true,
-                                                            style: TextStyle(
-                                                              fontFamily:
-                                                                  'MeQuran2',
-                                                              fontSize:
-                                                                  font.value,
-                                                              color: aya
-                                                                      .getBoolean(
-                                                                          i)
-                                                                  ? aya.getColor(aya
-                                                                      .slice![i]
-                                                                      .wordId)
-                                                                  : null,
-                                                            )),
-                                                      );
-                                              }),
-                                              aya.list!
-                                                              .join()
-                                                              .split('')
-                                                              .length -
-                                                          aya.slice![i].end <
-                                                      3
-                                                  ? Text(
-                                                      " ${aya.list!.join().split('').length - aya.slice![i].end < 3 ? aya.ayaNumber.last : ""}",
-                                                      softWrap: true,
-                                                      style: TextStyle(
-                                                        fontFamily: 'MeQuran2',
-                                                        fontSize: font.value,
-                                                      ),
-                                                    )
-                                                  : Container(),
-
-                                              //   SizedBox(width: 5,)
-                                            ],
-                                          )
-                                        : Row(
-                                            children: [
-                                              Consumer<AyaProvider>(builder:
-                                                  (context, aya, child) {
-                                                return aya.checkSymbol(
-                                                        aya.slice![i].start)
-                                                    ? Row(
-                                                        children: [
-                                                          Text(" ﲿ ",
-                                                              textDirection:
-                                                                  TextDirection
-                                                                      .rtl,
-                                                              softWrap: true,
-                                                              style: TextStyle(
-                                                                fontFamily:
-                                                                    'MeQuran2',
-                                                                fontSize:
-                                                                    font.value,
-                                                              )),
-                                                          InkWell(
-                                                            onTap: () {
-                                                              Scaffold.of(
-                                                                      context)
-                                                                  .openDrawer();
-                                                              Provider.of<AyaProvider>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .getCategoryName(
-                                                                      aya
-                                                                          .slice![
-                                                                              i]
-                                                                          .wordId,
-                                                                      aya.getLangID(
-                                                                          context));
-                                                              aya.setWords(aya
-                                                                  .list!
-                                                                  .join()
-                                                                  .split('')
-                                                                  .getRange(
-                                                                      aya.slice![i].start -
-                                                                          1,
-                                                                      aya
-                                                                          .slice![
-                                                                              i]
-                                                                          .end)
-                                                                  .join());
-                                                              if (mounted) {
-                                                                setState(() {
-                                                                  aya.updateValue(
-                                                                      i);
-                                                                  aya.set();
-                                                                });
-                                                              }
-                                                            },
-                                                            child: Text(
-                                                                aya.list!
-                                                                    .join()
-                                                                    .split('')
-                                                                    .getRange(
-                                                                        aya.slice![i].start -
-                                                                            1,
-                                                                        aya
-                                                                            .slice![
-                                                                                i]
-                                                                            .end)
-                                                                    .join(),
-                                                                textDirection:
-                                                                    TextDirection
-                                                                        .rtl,
-                                                                softWrap: true,
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontFamily:
-                                                                      'MeQuran2',
-                                                                  fontSize: font
-                                                                      .value,
-                                                                  color: aya
-                                                                          .getBoolean(
-                                                                              i)
-                                                                      ? aya.getColor(aya
-                                                                          .slice![
-                                                                              i]
-                                                                          .wordId)
-                                                                      : null,
-                                                                )),
-                                                          ),
-                                                        ],
-                                                      )
-                                                    : InkWell(
-                                                        onTap: () {
-                                                          Scaffold.of(context)
-                                                              .openDrawer();
-                                                          Provider.of<AyaProvider>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .getCategoryName(
-                                                                  aya.slice![i]
-                                                                      .wordId,
-                                                                  aya.getLangID(
-                                                                      context));
-                                                          aya.setWords(aya.list!
-                                                              .join()
-                                                              .split('')
-                                                              .getRange(
-                                                                  aya.slice![i]
-                                                                          .start -
-                                                                      1,
-                                                                  aya.slice![i]
-                                                                      .end)
-                                                              .join());
-                                                          if (mounted) {
-                                                            setState(() {
-                                                              aya.updateValue(
-                                                                  i);
-                                                              aya.set();
-                                                            });
-                                                          }
-                                                        },
-                                                        child: Text(
-                                                            aya.list!
-                                                                .join()
-                                                                .split('')
-                                                                .getRange(
-                                                                    aya.slice![i].start -
-                                                                        1,
-                                                                    aya
-                                                                        .slice![
-                                                                            i]
-                                                                        .end)
-                                                                .join()
-                                                                .replaceAll(
-                                                                    'ﲿ', ''),
-                                                            softWrap: true,
-                                                            style: TextStyle(
-                                                              fontFamily:
-                                                                  'MeQuran2',
-                                                              fontSize:
-                                                                  font.value,
-                                                              color: aya
-                                                                      .getBoolean(
-                                                                          i)
-                                                                  ? aya.getColor(aya
-                                                                      .slice![i]
-                                                                      .wordId)
-                                                                  : null,
-                                                            )),
-                                                      );
-                                              }),
-                                              Text(
-                                                "${aya.ayaNumber[aya.nums != 0 ? aya.nums - 1 : aya.nums]} ",
-                                                softWrap: true,
-                                                style: TextStyle(
-                                                  fontFamily: 'MeQuran2',
-                                                  fontSize: font.value,
+                                                    //   SizedBox(width: 5,)
+                                                  ],
                                                 ),
                                               )
-                                            ],
-                                          )
-                                ],
+                                            : FittedBox(
+                                                fit: BoxFit.fitWidth,
+                                                child: Row(
+                                                  children: [
+                                                    Consumer<AyaProvider>(
+                                                        builder: (context, aya,
+                                                            child) {
+                                                      return aya.checkSymbol(aya
+                                                              .slice![i].start)
+                                                          ? Row(
+                                                              children: [
+                                                                FittedBox(
+                                                                  fit: BoxFit
+                                                                      .fitWidth,
+                                                                  child: Text(
+                                                                      " ﲿ ",
+                                                                      textDirection:
+                                                                          TextDirection
+                                                                              .rtl,
+                                                                      softWrap:
+                                                                          true,
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontFamily:
+                                                                            'MeQuran2',
+                                                                        fontSize:
+                                                                            font.value,
+                                                                      )),
+                                                                ),
+                                                                InkWell(
+                                                                  onTap: () {
+                                                                    Scaffold.of(
+                                                                            context)
+                                                                        .openDrawer();
+                                                                    Provider.of<AyaProvider>(
+                                                                            context,
+                                                                            listen:
+                                                                                false)
+                                                                        .getCategoryName(
+                                                                            aya.slice![i].wordId,
+                                                                            aya.getLangID(context));
+                                                                    aya.setWords(aya
+                                                                        .list!
+                                                                        .join()
+                                                                        .split(
+                                                                            '')
+                                                                        .getRange(
+                                                                            aya.slice![i].start -
+                                                                                1,
+                                                                            aya.slice![i].end)
+                                                                        .join());
+                                                                    if (mounted) {
+                                                                      setState(
+                                                                          () {
+                                                                        aya.updateValue(
+                                                                            i);
+                                                                        aya.set();
+                                                                      });
+                                                                    }
+                                                                  },
+                                                                  child:
+                                                                      FittedBox(
+                                                                    fit: BoxFit
+                                                                        .fitWidth,
+                                                                    child: Text(
+                                                                        aya.list!
+                                                                            .join()
+                                                                            .split(
+                                                                                '')
+                                                                            .getRange(aya.slice![i].start - 1,
+                                                                                aya.slice![i].end)
+                                                                            .join(),
+                                                                        textDirection: TextDirection.rtl,
+                                                                        softWrap: true,
+                                                                        style: TextStyle(
+                                                                          fontFamily:
+                                                                              'MeQuran2',
+                                                                          fontSize:
+                                                                              font.value,
+                                                                          color: aya.getBoolean(i)
+                                                                              ? aya.getColor(aya.slice![i].wordId)
+                                                                              : null,
+                                                                        )),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            )
+                                                          : InkWell(
+                                                              onTap: () {
+                                                                Scaffold.of(
+                                                                        context)
+                                                                    .openDrawer();
+                                                                Provider.of<AyaProvider>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .getCategoryName(
+                                                                        aya
+                                                                            .slice![
+                                                                                i]
+                                                                            .wordId,
+                                                                        aya.getLangID(
+                                                                            context));
+                                                                aya.setWords(aya
+                                                                    .list!
+                                                                    .join()
+                                                                    .split('')
+                                                                    .getRange(
+                                                                        aya.slice![i].start -
+                                                                            1,
+                                                                        aya.slice![i]
+                                                                            .end)
+                                                                    .join());
+                                                                if (mounted) {
+                                                                  setState(() {
+                                                                    aya.updateValue(
+                                                                        i);
+                                                                    aya.set();
+                                                                  });
+                                                                }
+                                                              },
+                                                              child: FittedBox(
+                                                                fit: BoxFit
+                                                                    .fitWidth,
+                                                                child: Text(
+                                                                    aya.list!
+                                                                        .join()
+                                                                        .split(
+                                                                            '')
+                                                                        .getRange(
+                                                                            aya.slice![i].start -
+                                                                                1,
+                                                                            aya
+                                                                                .slice![
+                                                                                    i]
+                                                                                .end)
+                                                                        .join()
+                                                                        .replaceAll(
+                                                                            'ﲿ',
+                                                                            ''),
+                                                                    softWrap:
+                                                                        true,
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontFamily:
+                                                                          'MeQuran2',
+                                                                      fontSize:
+                                                                          font.value,
+                                                                      color: aya.getBoolean(
+                                                                              i)
+                                                                          ? aya.getColor(aya
+                                                                              .slice![i]
+                                                                              .wordId)
+                                                                          : null,
+                                                                    )),
+                                                              ),
+                                                            );
+                                                    }),
+                                                    FittedBox(
+                                                      fit: BoxFit.fitWidth,
+                                                      child: Text(
+                                                        "${aya.ayaNumber[aya.nums != 0 ? aya.nums - 1 : aya.nums]} ",
+                                                        softWrap: true,
+                                                        style: TextStyle(
+                                                          fontFamily:
+                                                              'MeQuran2',
+                                                          fontSize: font.value,
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              )
+                                    ],
+                                  ),
+                                ),
                               ),
                             ),
                           SizedBox(

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/user.provider.dart';
@@ -8,8 +9,8 @@ import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/auth/landing.page.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../Routes/route.dart';
 import '../../main.dart';
 
 class SignupWidget extends StatefulWidget {
@@ -517,6 +518,25 @@ class _SignupWidgetState extends State<SignupWidget>
                                     ),
                                   ),
                                 ],
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () => Navigator.pushNamed(
+                                  context, RoutesName.loginPage),
+                              child: Text(
+                                AppLocalizations.of(context)!.haveAccSignIn,
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    color: theme.isDarkMode
+                                        ? const Color.fromRGBO(255, 255, 255, 1)
+                                        : const Color.fromRGBO(0, 0, 0, 1),
+                                    fontFamily: 'Poppins',
+                                    fontSize: 16,
+                                    letterSpacing:
+                                        0 /*percentages not used in flutter. defaulting to zero*/,
+                                    fontWeight: FontWeight.normal,
+                                    height: 1),
                               ),
                             ),
 

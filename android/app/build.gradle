@@ -43,6 +43,7 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.aqwise.quranirab"
         minSdkVersion 21
+        ndkVersion "21.3.6528147"
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

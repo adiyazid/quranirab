@@ -1,15 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-
 import 'package:quran/quran.dart';
 import 'package:quranirab/models/font.size.dart';
 import 'package:quranirab/models/item.model.dart';
 import 'package:quranirab/quiz_module/quiz.home.dart';
 import 'package:quranirab/views/sura.slice/sura.slice.dart';
-
 import 'package:quranirab/widget/TranslationPopup.dart';
-
 import 'package:quranirab/widget/responsive.dart' as w;
 
 import '../provider/ayah.number.provider.dart';
@@ -19,7 +17,6 @@ import '../widget/menu.dart';
 import '../widget/search.popup.dart';
 import '../widget/setting.popup.dart';
 import 'Translation/translation.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SurahScreen extends StatefulWidget {
   final List allpages;
@@ -167,8 +164,8 @@ class _SurahScreenState extends State<SurahScreen>
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    Provider.of<AyaProvider>(context, listen: false).getScreenSize(context);
-    Provider.of<AyaProvider>(context, listen: false).getFontSize(context);
+    // Provider.of<AyaProvider>(context, listen: false).getScreenSize(context);
+    // Provider.of<AyaProvider>(context, listen: false).getFontSize(context);
     return Scaffold(
         backgroundColor: (themeProvider.isDarkMode)
             ? const Color(0xff666666)

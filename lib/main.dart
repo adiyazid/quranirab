@@ -12,6 +12,8 @@ import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/auth/landing.page.dart';
 
+import 'Routes/onGenerateRoute.dart';
+import 'Routes/route.dart';
 import 'firebase_options.dart';
 import 'framework/horizontal.scroll.web.dart';
 import 'framework/ms.language.dart';
@@ -82,6 +84,8 @@ class _MyAppState extends State<MyApp> {
                 GlobalCupertinoLocalizations.delegate,
                 MsMaterialLocalizations.delegate,
               ],
+              onGenerateRoute: RouteGenerator.generateRoute,
+              initialRoute: RoutesName.landingPage,
               supportedLocales: const [
                 Locale('ms', 'MY'),
                 Locale('en', ''),

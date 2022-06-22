@@ -63,5 +63,6 @@
   "wordType": "Jenis Perkataan",
   "sentence": "Ayat",
   "seeResult": "Lihat Keputusan",
-  "pleaseAnswerQuestion": "Sila jawab soalan berikut"
+  "pleaseAnswerQuestion": "Sila jawab soalan berikut",
+  "haveAccSignIn": "Sudah Ada Akaun? Log Masuk"
 }
