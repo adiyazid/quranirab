@@ -44,7 +44,7 @@ android {
         applicationId "com.aqwise.quranirab"
         minSdkVersion 21
         ndkVersion "21.3.6528147"
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }

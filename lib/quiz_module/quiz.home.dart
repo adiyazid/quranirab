@@ -36,6 +36,7 @@ class _QuizHomeState extends State<QuizHome> {
           themeProvider.isDarkMode ? Color(0xff808ba1) : Color(0xfffff5ec),
       drawer: const Menu(),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
             decoration: BoxDecoration(
