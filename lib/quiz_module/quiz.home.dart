@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -48,7 +49,7 @@ class _QuizHomeState extends State<QuizHome> {
                         : const Color(0xffE86F00)),
               ),
             ),
-            height: 77,
+            height: kIsWeb ? 57 : 77,
             child: CustomScrollView(
               slivers: const [Appbar()],
             ),
