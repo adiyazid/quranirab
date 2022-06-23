@@ -132,7 +132,6 @@ class _SurahScreenState extends State<SurahScreen>
         }
       }
     });
-    print('test $start');
     var ids = Provider.of<LangProvider>(context, listen: false).langId;
     await Provider.of<LangProvider>(context, listen: false)
         .getTranslation(ids, widget.sura_id, start);
