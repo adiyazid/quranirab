@@ -865,7 +865,7 @@ class _HomePageState extends State<HomePage>
                                             height: MediaQuery.of(context)
                                                     .size
                                                     .height *
-                                                0.45,
+                                                0.40,
                                             child:
                                                 MediaQuery.of(context)
                                                             .size
