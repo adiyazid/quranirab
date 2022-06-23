@@ -58,6 +58,7 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     var themeProvider = Provider.of<ThemeProvider>(context);
     // Figma Flutter Generator Desktop31Widget - FRAME
+
     return SafeArea(
       child: Scaffold(
           backgroundColor:
