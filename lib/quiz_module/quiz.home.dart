@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +22,7 @@ class QuizHome extends StatefulWidget {
 
 class _QuizHomeState extends State<QuizHome> {
   int? highscore;
+
   @override
   initState() {
     getHighScore();
@@ -36,69 +36,66 @@ class _QuizHomeState extends State<QuizHome> {
       backgroundColor:
           themeProvider.isDarkMode ? Color(0xff808ba1) : Color(0xfffff5ec),
       drawer: const Menu(),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                    width: 2.0,
-                    color: themeProvider.isDarkMode
-                        ? Colors.white
-                        : const Color(0xffE86F00)),
-              ),
-            ),
-            height: kIsWeb ? 57 : 77,
-            child: CustomScrollView(
-              slivers: const [Appbar()],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 77, bottom: 20),
-            child: Container(
-                margin: EdgeInsets.all(8),
-                color: themeProvider.isDarkMode
-                    ? Color(0xff808ba1)
-                    : Color(0xfffff5ec),
+      body: CustomScrollView(
+        slivers: [
+          Appbar(),
+          SliverToBoxAdapter(
+              child: Center(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        'Your high score is ' + highscore.toString(),
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 24),
-                      ),
-                    ),
-                    Center(
-                      child: button182(
-                          AppLocalizations.of(context)!.startTheQuiz,
-                          const TextStyle(fontSize: 28),
-                          themeProvider.isDarkMode
-                              ? ManyColors.color4
-                              : ManyColors.color0,
-                          10, () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    Quiz(widget.page, highscore!)));
-                      }, true),
-                    ),
-                  ],
-                )),
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height*0.3),
+                  child: Container(
+                      margin: EdgeInsets.all(8),
+                      color: themeProvider.isDarkMode
+                          ? Color(0xff808ba1)
+                          : Color(0xfffff5ec),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Text(
+                              'Your high score is ' + highscore.toString(),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 24),
+                            ),
+                          ),
+                          Center(
+                            child: button182(
+                                AppLocalizations.of(context)!.startTheQuiz,
+                                const TextStyle(fontSize: 28),
+                                themeProvider.isDarkMode
+                                    ? ManyColors.color4
+                                    : ManyColors.color0,
+                                10, () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          Quiz(widget.page, highscore!)));
+                            }, true),
+                          ),
+                        ],
+                      )),
+                ),
+                button114(
+                    AppLocalizations.of(context)!.back,
+                    TextStyle(
+                        color: themeProvider.isDarkMode
+                            ? Colors.white
+                            : Colors.black,
+                        fontSize: 18),
+                    themeProvider.isDarkMode
+                        ? Color(0xff808ba1)
+                        : Color(0xfffff5ec),
+                    10, () {
+                  Navigator.pop(context);
+                }, true),
+            ],
           ),
-          button114(
-              AppLocalizations.of(context)!.back,
-              TextStyle(
-                  color: themeProvider.isDarkMode ? Colors.white : Colors.black,
-                  fontSize: 18),
-              themeProvider.isDarkMode ? Color(0xff808ba1) : Color(0xfffff5ec),
-              10, () {
-            Navigator.pop(context);
-          }, true),
+              ))
         ],
       ),
     );
