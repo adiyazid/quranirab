@@ -79,7 +79,7 @@ class _HomePageState extends State<HomePage>
                 ),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.03,
+                height: MediaQuery.of(context).size.height * 0.02,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32.0),
@@ -334,7 +334,7 @@ class _HomePageState extends State<HomePage>
                 padding: const EdgeInsets.only(
                     left: 32.0, right: 32.0, bottom: 28.0),
                 child: Container(
-                  height: MediaQuery.of(context).size.height * 0.55,
+                  height: MediaQuery.of(context).size.height * 0.50,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(10),
@@ -394,7 +394,7 @@ class _HomePageState extends State<HomePage>
                           ),
                         ),
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.45,
+                          height: MediaQuery.of(context).size.height * 0.40,
                           child:
                               TabBarView(controller: _tabController, children: [
                             ///todo:surah
