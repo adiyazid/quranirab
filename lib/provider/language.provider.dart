@@ -15,8 +15,8 @@ class LangProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getTranslation(String id, suraId, start) async {
-    starts = start;
+  Future<void> getTranslation(String id, suraId, int? start) async {
+    starts = start ?? 1;
     suraIds = suraId;
     // Get docs from collection reference
     QuerySnapshot querySnapshot = await _collectionTranslate
@@ -30,7 +30,7 @@ class LangProvider extends ChangeNotifier {
     var data = translate.map((e) => e["text"]).toList();
     translate = data;
     if (start != 1 && start != null) {
-      translate.removeRange(0, start! - 1);
+      translate.removeRange(0, start - 1);
     }
     notifyListeners();
   }

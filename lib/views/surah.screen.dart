@@ -64,17 +64,15 @@ class _SurahScreenState extends State<SurahScreen>
     // TODO: implement initState
     _tabController = TabController(vsync: this, length: 2, initialIndex: 1);
     i = widget.index;
-
     getHizb();
-    getStartAyah(widget.allpages[i]);
     getData();
-
+    getStartAyah(widget.allpages[i]);
     super.initState();
   }
 
   final CollectionReference _collectionRef =
       FirebaseFirestore.instance.collection('quran_texts');
-  final CollectionReference _collectionRefs =
+  final CollectionReference _collectionStartAya =
       FirebaseFirestore.instance.collection('medina_mushaf_pages');
   final CollectionReference _collectionHizb =
       FirebaseFirestore.instance.collection('hizbs');
@@ -93,9 +91,6 @@ class _SurahScreenState extends State<SurahScreen>
         });
       }
     });
-    var id = Provider.of<LangProvider>(context, listen: false).langId;
-    await Provider.of<LangProvider>(context, listen: false)
-        .getTranslation(id, widget.sura_id, start);
   }
 
   Future<void> nextPage(String id) async {
@@ -123,19 +118,26 @@ class _SurahScreenState extends State<SurahScreen>
   }
 
   Future<void> getStartAyah(String id) async {
-    // Get docs from collection reference
-    await _collectionRefs
+    await _collectionStartAya
         .where('id', isEqualTo: id)
         .where('sura_id', isEqualTo: widget.sura_id)
         .orderBy('created_at')
         .get()
         .then((QuerySnapshot querySnapshot) {
       for (var doc in querySnapshot.docs) {
-        setState(() {
-          start = int.parse(doc['aya']);
-        });
+        if (doc.exists) {
+          setState(() {
+            start = int.parse(doc['aya']);
+          });
+        }
       }
     });
+    print('test $start');
+    var ids = Provider.of<LangProvider>(context, listen: false).langId;
+    await Provider.of<LangProvider>(context, listen: false)
+        .getTranslation(ids, widget.sura_id, start);
+
+    // Get docs from collection reference
   }
 
   bool isDark = false;
@@ -207,7 +209,7 @@ class _SurahScreenState extends State<SurahScreen>
                   list: _list,
                   translate: lang.translate,
                   widget: widget,
-                  start: start,
+                  start: start ?? 1,
                   menuItems: menuItems,
                   i: i,
                   widget1: widget,

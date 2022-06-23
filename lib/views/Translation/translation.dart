@@ -14,7 +14,7 @@ class Translation extends StatefulWidget {
     required List list,
     required List translate,
     required this.widget,
-    required this.start,
+    this.start,
     required this.menuItems,
     required this.widget1,
     required this.i,
