@@ -579,7 +579,7 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                                 oldDataTable[index]["name"],
                                                 style: TextStyle(
                                                     color: Colors.black)),
-                                            subtitle: Text(
+                                            subtitle: Text("Total Quiz: "+
                                                 oldDataTable[index]
                                                         ["total-quiz"]
                                                     .toString(),
@@ -587,7 +587,7 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                                     color: Colors.black)),
                                             trailing: Text(
                                                 oldDataTable[index]["scores"]
-                                                    .toString(),
+                                                    .toString() + " scores",
                                                 style: TextStyle(
                                                     color: Colors.black)),
                                             tileColor: themeProvider.isDarkMode
@@ -620,14 +620,14 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                                 dataTable[index]["name"],
                                                 style: TextStyle(
                                                     color: Colors.black)),
-                                            subtitle: Text(
+                                            subtitle: Text("Total Quiz: "+
                                                 dataTable[index]["total-quiz"]
                                                     .toString(),
                                                 style: TextStyle(
                                                     color: Colors.black)),
                                             trailing: Text(
                                                 dataTable[index]["scores"]
-                                                    .toString(),
+                                                    .toString() + " scores",
                                                 style: TextStyle(
                                                     color: Colors.black)),
                                             tileColor: themeProvider.isDarkMode

@@ -40,6 +40,7 @@ class _QuizScoreState extends State<QuizScore> {
   var windowWidth;
   var windowHeight;
   double windowSize = 0;
+
   @override
   Widget build(BuildContext context) {
     windowWidth = MediaQuery.of(context).size.width;
@@ -51,128 +52,122 @@ class _QuizScoreState extends State<QuizScore> {
         backgroundColor:
             themeProvider.isDarkMode ? Color(0xff808ba1) : Color(0xfffff5ec),
         drawer: const Menu(),
-        body: DefaultTabController(
-          length: 3,
-          child: Stack(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                        width: 2.0,
-                        color: themeProvider.isDarkMode
-                            ? Colors.white
-                            : const Color(0xffE86F00)),
-                  ),
-                ),
-                height: 57,
-                child: CustomScrollView(
-                  slivers: [Appbar()],
-                ),
+        body: CustomScrollView(
+          slivers: [
+            Appbar(),
+            SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  Align(
+                      alignment: Alignment.center,
+                      child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 40, vertical: 40),
+                          child: Container(
+                            color: themeProvider.isDarkMode
+                                ? Color(0xff808ba1)
+                                : Color(0xfffff5ec),
+                            width:
+                                MediaQuery.of(context).size.width / 1.4,
+                            height: MediaQuery.of(context).size.height /
+                                1.4,
+                            child: Column(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.center,
+                              crossAxisAlignment:
+                                  CrossAxisAlignment.center,
+                              children: [
+                                const SizedBox(
+                                  height: 50,
+                                ),
+                                const Text(
+                                  "Your Score",
+                                  style: TextStyle(
+                                      fontSize: 34,
+                                      fontWeight: FontWeight.w800,
+                                      color: Colors.black),
+                                ),
+                                const SizedBox(
+                                  height: 50,
+                                ),
+                                AutoSizeText(
+                                  "${widget.score}" " / " +
+                                      '${widget.questionsCount}',
+                                  //"${questions.length}",
+                                  style: const TextStyle(
+                                      fontSize: 34,
+                                      fontWeight: FontWeight.w800,
+                                      color: Colors.black),
+                                ),
+                                const SizedBox(
+                                  height: 50,
+                                ),
+                                Center(
+                                  child: Wrap(
+                                    alignment: WrapAlignment.center,
+                                    runSpacing: 10,
+                                    children: [
+                                      button182(
+                                          'Play Again',
+                                          const TextStyle(fontSize: 28),
+                                          themeProvider.isDarkMode
+                                              ? AppColor.secondaryColor
+                                              : AppColor.pripmaryColor,
+                                          10, () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    QuizHome(
+                                                        widget.page)));
+                                      }, true),
+                                      //insert route to play again at quiz screen
+                                      const SizedBox(
+                                        width: 10,
+                                        height: 10,
+                                      ),
+                                      button182(
+                                          'Back to Page',
+                                          const TextStyle(fontSize: 28),
+                                          themeProvider.isDarkMode
+                                              ? AppColor.secondaryColor
+                                              : AppColor.pripmaryColor,
+                                          10, () {
+                                        Navigator.pop(context);
+                                      }, true),
+                                      //insert route to return to back to surah page
+                                      const SizedBox(
+                                        width: 10,
+                                        height: 10,
+                                      ),
+                                      button182(
+                                          'Leaderboard',
+                                          const TextStyle(fontSize: 28),
+                                          themeProvider.isDarkMode
+                                              ? AppColor.secondaryColor
+                                              : AppColor.pripmaryColor,
+                                          10, () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const LeaderBoardMenu()));
+                                      }, true),
+                                      const SizedBox(
+                                        width: 10,
+                                        height: 10,
+                                      ),
+                                      //insert route to leaderboard
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          )))
+                ],
               ),
-              Align(
-                  alignment: Alignment.center,
-                  child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 40, vertical: 40),
-                      child: Container(
-                        color: themeProvider.isDarkMode
-                            ? Color(0xff808ba1)
-                            : Color(0xfffff5ec),
-                        width: MediaQuery.of(context).size.width / 1.4,
-                        height: MediaQuery.of(context).size.height / 1.4,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const SizedBox(
-                              height: 50,
-                            ),
-                            const Text(
-                              "Your Score",
-                              style: TextStyle(
-                                  fontSize: 34,
-                                  fontWeight: FontWeight.w800,
-                                  color: Colors.black),
-                            ),
-                            const SizedBox(
-                              height: 50,
-                            ),
-                            AutoSizeText(
-                              "${widget.score}" " / " +
-                                  '${widget.questionsCount}',
-                              //"${questions.length}",
-                              style: const TextStyle(
-                                  fontSize: 34,
-                                  fontWeight: FontWeight.w800,
-                                  color: Colors.black),
-                            ),
-                            const SizedBox(
-                              height: 50,
-                            ),
-                            Center(
-                              child: Wrap(
-                                alignment: WrapAlignment.center,
-                                runSpacing: 10,
-                                children: [
-                                  button182(
-                                      'Play Again',
-                                      const TextStyle(fontSize: 28),
-                                      themeProvider.isDarkMode
-                                          ? AppColor.secondaryColor
-                                          : AppColor.pripmaryColor,
-                                      10, () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                QuizHome(widget.page)));
-                                  }, true),
-                                  //insert route to play again at quiz screen
-                                  const SizedBox(
-                                    width: 10,
-                                    height: 10,
-                                  ),
-                                  button182(
-                                      'Back to Page',
-                                      const TextStyle(fontSize: 28),
-                                      themeProvider.isDarkMode
-                                          ? AppColor.secondaryColor
-                                          : AppColor.pripmaryColor,
-                                      10, () {
-                                    Navigator.pop(context);
-                                  }, true),
-                                  //insert route to return to back to surah page
-                                  const SizedBox(
-                                    width: 10,
-                                    height: 10,
-                                  ),
-                                  button182(
-                                      'Leaderboard',
-                                      const TextStyle(fontSize: 28),
-                                      themeProvider.isDarkMode
-                                          ? AppColor.secondaryColor
-                                          : AppColor.pripmaryColor,
-                                      10, () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const LeaderBoardMenu()));
-                                  }, true),
-                                  const SizedBox(
-                                    width: 10,
-                                    height: 10,
-                                  ),
-                                  //insert route to leaderboard
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      )))
-            ],
-          ),
+            )
+          ],
         ));
   }
 
