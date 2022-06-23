@@ -13,14 +13,7 @@ class LandingPage extends StatefulWidget {
 
 class _LandingPageState extends State<LandingPage> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    // Provider.of<AyaProvider>(context, listen: false).getScreenSize(context);
-    // Provider.of<AyaProvider>(context, listen: false).getFontSize(context);
     var user = Provider.of<AppUser>(context).user;
     if (user != null) {
       return HomePage();

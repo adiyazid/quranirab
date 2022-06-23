@@ -1855,9 +1855,11 @@ class _HomePageState extends State<HomePage>
 
     // Get data from docs and convert map to List
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-    setState(() {
-      _total = allData;
-    });
+    if (mounted) {
+      setState(() {
+        _total = allData;
+      });
+    }
     var data = _total.map((e) => e["medina_mushaf_page_id"]).toList();
     return data;
   }
@@ -1874,9 +1876,11 @@ class _HomePageState extends State<HomePage>
 
     // Get data from docs and convert map to List
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-    setState(() {
-      _list = allData;
-    });
+    if (mounted) {
+      setState(() {
+        _list = allData;
+      });
+    }
   }
 
   void _launchUrl() async {
