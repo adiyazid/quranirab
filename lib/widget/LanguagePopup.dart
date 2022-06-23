@@ -94,6 +94,46 @@ class _LangPopupState extends State<LangPopup> {
                                   MyApp.of(context)!.setLocale(
                                       Locale.fromSubtags(languageCode: 'ar'));
                                 }),
+                            buildMenuItem(
+                                text: 'Chinese',
+                                enable: true,
+                                darkMode: themeProvider.isDarkMode,
+                                align: TextAlign.center,
+                                onTap: () {
+                                  _menu.hideMenu();
+                                  MyApp.of(context)!.setLocale(
+                                      Locale.fromSubtags(languageCode: 'zh'));
+                                }),
+                            buildMenuItem(
+                                text: 'French',
+                                enable: true,
+                                darkMode: themeProvider.isDarkMode,
+                                align: TextAlign.center,
+                                onTap: () {
+                                  _menu.hideMenu();
+                                  MyApp.of(context)!.setLocale(
+                                      Locale.fromSubtags(languageCode: 'fr'));
+                                }),
+                            buildMenuItem(
+                                text: 'Spanish',
+                                enable: true,
+                                darkMode: themeProvider.isDarkMode,
+                                align: TextAlign.center,
+                                onTap: () {
+                                  _menu.hideMenu();
+                                  MyApp.of(context)!.setLocale(
+                                      Locale.fromSubtags(languageCode: 'es'));
+                                }),
+                            buildMenuItem(
+                                text: 'Bengali',
+                                enable: true,
+                                darkMode: themeProvider.isDarkMode,
+                                align: TextAlign.center,
+                                onTap: () {
+                                  _menu.hideMenu();
+                                  MyApp.of(context)!.setLocale(
+                                      Locale.fromSubtags(languageCode: 'ne'));
+                                }),
                           ],
                         ),
                       )),

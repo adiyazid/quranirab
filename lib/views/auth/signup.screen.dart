@@ -54,6 +54,12 @@ class _SignupWidgetState extends State<SignupWidget>
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _animationController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // Figma Flutter Generator SignupWidget - FRAME
     final appUser = Provider.of<AppUser>(context);
@@ -593,16 +599,18 @@ class _SignupWidgetState extends State<SignupWidget>
                                   );
                                 } else {
                                   if (mounted) {
-                                    setState(() {});
+                                    setState(() {
+                                      loading = true;
+                                    });
                                   }
-                                  loading = true;
+
                                   try {
                                     await appUser.signUp(
                                         email: _email.text,
                                         password: _pass1.text,
                                         lastName: _lastName.text,
                                         firstName: _firstName.text);
-                                    await addUser();
+                                    await addUser().then((value) {});
                                     showTopSnackBar(
                                       context,
                                       CustomSnackBar.success(
@@ -617,9 +625,10 @@ class _SignupWidgetState extends State<SignupWidget>
                                                 LandingPage()));
 
                                     if (mounted) {
-                                      setState(() {});
+                                      setState(() {
+                                        loading = false;
+                                      });
                                     }
-                                    loading = false;
                                   } catch (e) {
                                     if (mounted) {
                                       setState(() {});

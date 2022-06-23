@@ -40,8 +40,13 @@ class _SigninWidgetState extends State<SigninWidget>
     final curvedAnimation =
         CurvedAnimation(curve: Curves.bounceIn, parent: _animationController);
     _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation);
-
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _animationController.dispose();
   }
 
   @override
@@ -321,30 +326,35 @@ class _SigninWidgetState extends State<SigninWidget>
                                     );
                                   } else {
                                     if (mounted) {
-                                      setState(() {});
+                                      setState(() {
+                                        loading = true;
+                                      });
                                     }
-                                    loading = true;
-                                    try {
-                                      await appUser.signIn(
-                                          email: _email.text,
-                                          password: _pass.text);
-                                      setState(() {});
-                                      loading = false;
-                                      Navigator.pushNamed(
-                                          context, RoutesName.homePage);
-                                    } catch (e) {
+                                    await appUser
+                                        .signIn(
+                                            email: _email.text,
+                                            password: _pass.text)
+                                        .then((value) {
                                       if (mounted) {
                                         setState(() {
                                           loading = false;
                                         });
                                       }
-
-                                      showTopSnackBar(
-                                          context,
-                                          CustomSnackBar.error(
-                                            message: e.toString(),
-                                          ));
-                                    }
+                                      Navigator.pushNamed(
+                                              context, RoutesName.homePage)
+                                          .catchError((e) {
+                                        if (mounted) {
+                                          setState(() {
+                                            loading = false;
+                                          });
+                                        }
+                                        showTopSnackBar(
+                                            context,
+                                            CustomSnackBar.error(
+                                              message: e.toString(),
+                                            ));
+                                      });
+                                    });
                                   }
                                 },
                                 child: Container(
