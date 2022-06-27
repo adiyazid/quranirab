@@ -118,8 +118,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     return Scaffold(
       backgroundColor: Colors.teal[50],
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text('Flutter Credit Card View'),
+        title: Text('Buy Premium QuranIrab'),
       ),
       resizeToAvoidBottomInset: true,
       body: SafeArea(
