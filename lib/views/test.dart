@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
+import 'package:quran/quran.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/surah.screen.dart';
 import 'package:skeleton_loader/skeleton_loader.dart';
@@ -103,15 +104,19 @@ class _HomePageState extends State<HomePage1>
 
   var j;
   List _juzsName = [];
-  late List<Map<String?, dynamic>> _items = [];
+
+
+  bool dataReady = false;
+
+  late int temp = 0;
 
   @override
   void initState() {
     // TODO: implement initState
     getList();
     getJuzs();
+    //generateSurah();
     getSurah();
-    //_items=[];
     //getJuzsName();
 
     _tabController = TabController(length: 2, vsync: this);
@@ -1296,7 +1301,8 @@ class _HomePageState extends State<HomePage1>
                                           600
                                           ? MasonryGridView.count(
                                         controller:
-                                        ScrollController(),
+                                        ScrollController(
+                                            keepScrollOffset: false),
                                         //gridDelegate:
                                         //SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount:
@@ -1311,311 +1317,374 @@ class _HomePageState extends State<HomePage1>
                                         mainAxisSpacing: 4.0,
                                         //childAspectRatio:
                                         //4.5),
-                                        shrinkWrap: true,
+                                        shrinkWrap: false,
                                         itemCount: 30,
                                         itemBuilder:
                                             (BuildContext context,
                                             int mainIndex) {
                                           //getJuzsName();
+                                          //var jL=getJ(mainIndex);
+                                          //getSurah(mainIndex);
                                           return Padding(
-                                            padding: const EdgeInsets
-                                                .symmetric(
-                                                horizontal: 16.0,
-                                                vertical: 8),
+                                              padding: const EdgeInsets
+                                                  .symmetric(
+                                                  horizontal: 16.0,
+                                                  vertical: 8),
 
-                                            child: InkWell(
-                                                onTap: () async {
-                                                  //print(index);
-                                                  var a =
-                                                  await getTotalJPage(
-                                                      _juzs[mainIndex]
-                                                      ["id"]);
-                                                  //var b= await getSPage(_juzs[index]["sura_id"]);
-                                                  Provider.of<AyaProvider>(
-                                                      context,
-                                                      listen: false)
-                                                      .getPage(
-                                                      int.parse(
-                                                          a.first));
-                                                  Provider.of<AyaProvider>(
-                                                      context,
-                                                      listen: false)
-                                                      .setDefault();
-                                                  Provider.of<AyaProvider>(
-                                                      context,
-                                                      listen: false)
-                                                      .getStart(
-                                                      Provider
-                                                          .of<AyaProvider>(
-                                                          context,
-                                                          listen: false)
-                                                          .surahNo,
-                                                      int.parse(
-                                                          a.first));
-                                                  //await getSurah();
-                                                  //await getJuzsName();
+                                              child: InkWell(
+                                                  onTap: () async {
+                                                    //print(index);
+                                                    //await getSurah(mainIndex);
+                                                    var a =
+                                                    await getTotalJPage(
+                                                        _juzs[mainIndex]
+                                                        ["id"]);
+                                                    //var b= await getSPage(_juzs[index]["sura_id"]);
+                                                    Provider.of<AyaProvider>(
+                                                        context,
+                                                        listen: false)
+                                                        .getPage(
+                                                        int.parse(
+                                                            a.first));
+                                                    Provider.of<AyaProvider>(
+                                                        context,
+                                                        listen: false)
+                                                        .setDefault();
+                                                    Provider.of<AyaProvider>(
+                                                        context,
+                                                        listen: false)
+                                                        .getStart(
+                                                        Provider
+                                                            .of<AyaProvider>(
+                                                            context,
+                                                            listen: false)
+                                                            .surahNo,
+                                                        int.parse(
+                                                            a.first));
+
+                                                    //await getJuzsName();
 
 
-                                                  // Provider.of<AyaProvider>(context,
-                                                  //     listen: false)
-                                                  //     .getPage(439);
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              JuzScreen(
-                                                                  a,
-                                                                  "${Provider
-                                                                      .of<
-                                                                      AyaProvider>(
-                                                                      context,
-                                                                      listen: false)
-                                                                      .surahNo}",
-                                                                  //juzId[index],
-                                                                  _juzstName[mainIndex],
-                                                                  _juzseName[mainIndex],
-                                                                  0)));
-                                                },
-                                                child: Container(
-                                                    width: 600,
-                                                    height: 125 *
-                                                        _juz.length.toDouble(),
-                                                    decoration:
-                                                    BoxDecoration(
-                                                        borderRadius:
-                                                        BorderRadius
-                                                            .only(
-                                                          topLeft: Radius
-                                                              .circular(
-                                                              10),
-                                                          topRight: Radius
-                                                              .circular(
-                                                              10),
-                                                          bottomLeft:
-                                                          Radius.circular(
-                                                              10),
-                                                          bottomRight:
-                                                          Radius.circular(
-                                                              10),
-                                                        ),
-                                                        color: themeProvider
-                                                            .isDarkMode
-                                                            ? Color(
-                                                            0xff67748E)
-                                                            : Color.fromRGBO(
-                                                            255,
-                                                            255,
-                                                            255,
-                                                            1),
-                                                        border: Border
-                                                            .all(
+                                                    // Provider.of<AyaProvider>(context,
+                                                    //     listen: false)
+                                                    //     .getPage(439);
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (
+                                                                context) =>
+                                                                JuzScreen(
+                                                                    a,
+                                                                    "${Provider
+                                                                        .of<
+                                                                        AyaProvider>(
+                                                                        context,
+                                                                        listen: false)
+                                                                        .surahNo}",
+                                                                    //juzId[index],
+                                                                    _juzstName[mainIndex],
+                                                                    _juzseName[mainIndex],
+                                                                    0)));
+                                                  },
+                                                  child: Container(
+                                                      width: 600,
+                                                      height: 140.0 *
+                                                          juz1[mainIndex]
+                                                              .toDouble(),
+                                                      decoration:
+                                                      BoxDecoration(
+                                                          borderRadius:
+                                                          BorderRadius
+                                                              .only(
+                                                            topLeft: Radius
+                                                                .circular(
+                                                                10),
+                                                            topRight: Radius
+                                                                .circular(
+                                                                10),
+                                                            bottomLeft:
+                                                            Radius.circular(
+                                                                10),
+                                                            bottomRight:
+                                                            Radius.circular(
+                                                                10),
+                                                          ),
                                                           color: themeProvider
                                                               .isDarkMode
                                                               ? Color(
-                                                              0xffD2D6DA)
+                                                              0xff67748E)
                                                               : Color.fromRGBO(
-                                                              231,
-                                                              111,
-                                                              0,
+                                                              255,
+                                                              255,
+                                                              255,
                                                               1),
-                                                          width: 1,
-                                                        )),
-                                                    child: GridView.builder(
-                                                        gridDelegate:
-                                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                                            crossAxisCount:
-                                                            MediaQuery
-                                                                .of(context)
-                                                                .size
-                                                                .width <
-                                                                1200
-                                                                ? 1
-                                                                : 1,
-                                                            crossAxisSpacing: 4.0,
-                                                            mainAxisSpacing: 4.0,
-                                                            childAspectRatio: 4.0),
-                                                        shrinkWrap: false,
-                                                        itemCount: _juz.length,
-                                                        itemBuilder:
-                                                            (
-                                                            BuildContext context,
-                                                            int index) {
-                                                          return Column(
-                                                              crossAxisAlignment: CrossAxisAlignment
-                                                                  .center,
-                                                              mainAxisSize: MainAxisSize
-                                                                  .max,
-                                                              mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceEvenly,
-                                                              children: [
-                                                                Container(
-                                                                  width: 400,
-                                                                  height: 100,
-                                                                  decoration:
-                                                                  BoxDecoration(
-                                                                      borderRadius:
-                                                                      BorderRadius
-                                                                          .only(
-                                                                        topLeft: Radius
-                                                                            .circular(
-                                                                            10),
-                                                                        topRight: Radius
-                                                                            .circular(
-                                                                            10),
-                                                                        bottomLeft:
-                                                                        Radius
-                                                                            .circular(
-                                                                            10),
-                                                                        bottomRight:
-                                                                        Radius
-                                                                            .circular(
-                                                                            10),
-                                                                      ),
-                                                                      color: themeProvider
-                                                                          .isDarkMode
-                                                                          ? Color(
-                                                                          0xff67748E)
-                                                                          : Color
-                                                                          .fromRGBO(
-                                                                          255,
-                                                                          255,
-                                                                          255,
-                                                                          1),
-                                                                      border: Border
-                                                                          .all(
-                                                                        color: themeProvider
-                                                                            .isDarkMode
-                                                                            ? Color(
-                                                                            0xffD2D6DA)
-                                                                            : Color
-                                                                            .fromRGBO(
-                                                                            231,
-                                                                            111,
-                                                                            0,
-                                                                            1),
-                                                                        width: 1,
-                                                                      )),
-                                                                  child: Row(
-                                                                    mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                    children: [
-                                                                      Container(
-                                                                          width: 50,
-                                                                          height: 100,
-                                                                          decoration:
-                                                                          BoxDecoration(
-                                                                            borderRadius:
-                                                                            BorderRadius
-                                                                                .only(
-                                                                              topLeft: Radius
-                                                                                  .circular(
-                                                                                  10),
-                                                                              topRight:
-                                                                              Radius
-                                                                                  .circular(
-                                                                                  10),
-                                                                              bottomLeft:
-                                                                              Radius
-                                                                                  .circular(
-                                                                                  10),
-                                                                              bottomRight:
-                                                                              Radius
-                                                                                  .circular(
-                                                                                  10),
-                                                                            ),
+                                                          border: Border
+                                                              .all(
+                                                            color: themeProvider
+                                                                .isDarkMode
+                                                                ? Color(
+                                                                0xffD2D6DA)
+                                                                : Color
+                                                                .fromRGBO(
+                                                                231,
+                                                                111,
+                                                                0,
+                                                                1),
+                                                            width: 1,
+                                                          )),
+                                                      child: Column(children: [
+                                                        Center(
+                                                          child: Text(
+                                                            //_juz[index]['id'],
+                                                            'Juz ${mainIndex +
+                                                                1}',
+                                                            textAlign:
+                                                            TextAlign
+                                                                .left,
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                'Open Sans',
+                                                                fontSize:
+                                                                24,
+                                                                letterSpacing:
+                                                                -0.38723403215408325,
+                                                                fontWeight: FontWeight
+                                                                    .normal,
+                                                                height:
+                                                                1),
+                                                          ),
+                                                        ),
+                                                        dataReady ?
+                                                        /*ListView.builder(
+                                                    itemCount: juz1[mainIndex],
+                                                    itemBuilder:
+                                                    (BuildContext context,
+                                                    int subIndex) { return*/
+                                                        GridView.builder(
+                                                            gridDelegate:
+                                                            SliverGridDelegateWithFixedCrossAxisCount(
+                                                                crossAxisCount:
+                                                                MediaQuery
+                                                                    .of(context)
+                                                                    .size
+                                                                    .width <
+                                                                    1200
+                                                                    ? 1
+                                                                    : 1,
+                                                                crossAxisSpacing: 4.0,
+                                                                mainAxisSpacing: 4.0,
+                                                                childAspectRatio: 4.0),
+                                                            shrinkWrap: true,
+                                                            itemCount: juz1[mainIndex],
+                                                            //getJ(mainIndex).toInt(),
+                                                            itemBuilder:
+                                                                (
+                                                                BuildContext context,
+                                                                int index) {
+                                                              /*for(temp=0 ;temp<surJ.length;temp++){*/
+                                                              //temp=index;
+                                                              if (temp == 2 ||
+                                                                  (temp > 2 &&
+                                                                      temp <
+                                                                          suraJ
+                                                                              .length)) {
+                                                                temp = temp + 1;
+                                                              }
+                                                              /*return ListView.builder(
+                                                          itemCount: juz1[mainIndex],
+                                                          itemBuilder:
+                                                          (BuildContext context,
+                                                          int subIndex) {*/
+                                                              return Column(
+                                                                  crossAxisAlignment: CrossAxisAlignment
+                                                                      .center,
+                                                                  mainAxisSize: MainAxisSize
+                                                                      .max,
+                                                                  mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceEvenly,
+                                                                  children: [
+                                                                    Container(
+                                                                      width: 400,
+                                                                      height: 100,
+                                                                      decoration:
+                                                                      BoxDecoration(
+                                                                          borderRadius:
+                                                                          BorderRadius
+                                                                              .only(
+                                                                            topLeft: Radius
+                                                                                .circular(
+                                                                                10),
+                                                                            topRight: Radius
+                                                                                .circular(
+                                                                                10),
+                                                                            bottomLeft:
+                                                                            Radius
+                                                                                .circular(
+                                                                                10),
+                                                                            bottomRight:
+                                                                            Radius
+                                                                                .circular(
+                                                                                10),
+                                                                          ),
+                                                                          color: themeProvider
+                                                                              .isDarkMode
+                                                                              ? Color(
+                                                                              0xff67748E)
+                                                                              : Color
+                                                                              .fromRGBO(
+                                                                              255,
+                                                                              255,
+                                                                              255,
+                                                                              1),
+                                                                          border: Border
+                                                                              .all(
                                                                             color: themeProvider
                                                                                 .isDarkMode
                                                                                 ? Color(
-                                                                                0xff808BA1)
+                                                                                0xffD2D6DA)
                                                                                 : Color
                                                                                 .fromRGBO(
-                                                                                255,
-                                                                                181,
-                                                                                94,
+                                                                                231,
+                                                                                111,
+                                                                                0,
                                                                                 1),
-                                                                          ),
-                                                                          child: Center(
-                                                                            child: Text(
-                                                                              _juz[index]['id'],
-                                                                              //'${index + 1}',
-                                                                              textAlign:
-                                                                              TextAlign
-                                                                                  .left,
-                                                                              style: TextStyle(
-                                                                                  fontFamily:
-                                                                                  'Open Sans',
-                                                                                  fontSize:
-                                                                                  24,
-                                                                                  letterSpacing:
-                                                                                  -0.38723403215408325,
-                                                                                  fontWeight: FontWeight
-                                                                                      .normal,
-                                                                                  height:
-                                                                                  1),
-                                                                            ),
+                                                                            width: 1,
                                                                           )),
-                                                                      Spacer(),
-                                                                      Column(
+                                                                      child: Row(
                                                                         mainAxisAlignment:
                                                                         MainAxisAlignment
-                                                                            .center,
+                                                                            .spaceBetween,
                                                                         children: [
-                                                                          Text(
-                                                                            _juz[index]['tname'],
-                                                                            textAlign:
-                                                                            TextAlign
-                                                                                .left,
-                                                                            style: TextStyle(
-                                                                                fontFamily:
-                                                                                'Open Sans',
-                                                                                fontSize:
-                                                                                24,
-                                                                                letterSpacing:
-                                                                                -0.38723403215408325,
-                                                                                fontWeight:
-                                                                                FontWeight
-                                                                                    .normal,
-                                                                                height:
-                                                                                1),
-                                                                          ),
-                                                                          Text(
-                                                                            _juz[index]['ename'],
-                                                                            //_juzseName[index],
-                                                                            textAlign:
-                                                                            TextAlign
-                                                                                .left,
-                                                                            style: TextStyle(
-                                                                                color: Color
+                                                                          Container(
+                                                                              width: 50,
+                                                                              height: 100,
+                                                                              decoration:
+                                                                              BoxDecoration(
+                                                                                borderRadius:
+                                                                                BorderRadius
+                                                                                    .only(
+                                                                                  topLeft: Radius
+                                                                                      .circular(
+                                                                                      10),
+                                                                                  topRight:
+                                                                                  Radius
+                                                                                      .circular(
+                                                                                      10),
+                                                                                  bottomLeft:
+                                                                                  Radius
+                                                                                      .circular(
+                                                                                      10),
+                                                                                  bottomRight:
+                                                                                  Radius
+                                                                                      .circular(
+                                                                                      10),
+                                                                                ),
+                                                                                color: themeProvider
+                                                                                    .isDarkMode
+                                                                                    ? Color(
+                                                                                    0xff808BA1)
+                                                                                    : Color
                                                                                     .fromRGBO(
-                                                                                    151,
-                                                                                    151,
-                                                                                    151,
+                                                                                    255,
+                                                                                    181,
+                                                                                    94,
                                                                                     1),
-                                                                                fontFamily:
-                                                                                'Open Sans',
-                                                                                fontSize:
-                                                                                22,
-                                                                                letterSpacing:
-                                                                                -0.38723403215408325,
-                                                                                fontWeight:
-                                                                                FontWeight
-                                                                                    .normal,
-                                                                                height:
-                                                                                1),
-                                                                          )
+                                                                              ),
+                                                                              child: Center(
+                                                                                child: Text(
+                                                                                  //_juz[index]['id'],
+                                                                                  '${suraJ[index]}',
+                                                                                  textAlign:
+                                                                                  TextAlign
+                                                                                      .left,
+                                                                                  style: TextStyle(
+                                                                                      fontFamily:
+                                                                                      'Open Sans',
+                                                                                      fontSize:
+                                                                                      24,
+                                                                                      letterSpacing:
+                                                                                      -0.38723403215408325,
+                                                                                      fontWeight: FontWeight
+                                                                                          .normal,
+                                                                                      height:
+                                                                                      1),
+                                                                                ),
+                                                                              )),
+                                                                          Spacer(),
+                                                                          Column(
+                                                                            mainAxisAlignment:
+                                                                            MainAxisAlignment
+                                                                                .center,
+                                                                            children: [
+                                                                              Text(
+                                                                                //_juz[index]['tname'],
+                                                                                getSurahName(
+                                                                                    suraJ[index]),
+                                                                                textAlign:
+                                                                                TextAlign
+                                                                                    .left,
+                                                                                style: TextStyle(
+                                                                                    fontFamily:
+                                                                                    'Open Sans',
+                                                                                    fontSize:
+                                                                                    24,
+                                                                                    letterSpacing:
+                                                                                    -0.38723403215408325,
+                                                                                    fontWeight:
+                                                                                    FontWeight
+                                                                                        .normal,
+                                                                                    height:
+                                                                                    1),
+                                                                              ),
+                                                                              Text(
+                                                                                // _juz[index]['ename'],
+                                                                                getSurahNameEnglish(
+                                                                                    suraJ[index]),
+                                                                                //_juzseName[index],
+                                                                                textAlign:
+                                                                                TextAlign
+                                                                                    .left,
+                                                                                style: TextStyle(
+                                                                                    color: Color
+                                                                                        .fromRGBO(
+                                                                                        151,
+                                                                                        151,
+                                                                                        151,
+                                                                                        1),
+                                                                                    fontFamily:
+                                                                                    'Open Sans',
+                                                                                    fontSize:
+                                                                                    22,
+                                                                                    letterSpacing:
+                                                                                    -0.38723403215408325,
+                                                                                    fontWeight:
+                                                                                    FontWeight
+                                                                                        .normal,
+                                                                                    height:
+                                                                                    1),
+                                                                              )
+                                                                            ],
+                                                                          ),
+                                                                          Spacer()
                                                                         ],
                                                                       ),
-                                                                      Spacer()
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              ]);
-                                                        }))
+                                                                    ),
+                                                                  ]); //});
+                                                              //}
+                                                              return CircularProgressIndicator();
+                                                            }) //;})
+                                                            :
+                                                        Center(
+                                                          child: SizedBox(
+                                                            child: CircularProgressIndicator(),
+                                                            width: 50,
+                                                            height: 50,
+                                                          ),
 
-                                            ),
-                                          );
+                                                        ),
+                                                      ]))
+                                              ));
                                         },
                                       )
                                           : ListView.builder(
@@ -2094,7 +2163,7 @@ class _HomePageState extends State<HomePage1>
     setState(() {
       _list = allData;
     });
-    await getSurah();
+    //await getSurah();
   }
 
   List _totalJuzs = [];
@@ -2135,12 +2204,41 @@ class _HomePageState extends State<HomePage1>
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
     setState(() {
       _juzs = allData;
-      //print(allData.first);
     });
-    //await getJuzsName();
-    // await getJName();
   }
 
+  List juz1 = [
+    2,
+    1,
+    2,
+    2,
+    1,
+    2,
+    2,
+    2,
+    2,
+    2,
+    3,
+    2,
+    3,
+    2,
+    2,
+    3,
+    2,
+    3,
+    3,
+    3,
+    5,
+    4,
+    4,
+    3,
+    5,
+    7,
+    7,
+    9,
+    11,
+    37
+  ];
 
   //int i=0;
   List sId = [];
@@ -2148,65 +2246,90 @@ class _HomePageState extends State<HomePage1>
   List pageId = [];
   List name = [];
   List detail = [];
+  List suraJ = [];
 
   Future<void> getSurah() async {
     List s = [];
     List p = [];
     List juz = [];
-    for (int i = 1; i < 114; i++) {
+    for (int i = 1; i <= 114; i++) {
       // Get docs from collection reference
       await FirebaseFirestore.instance.collection('sura_relationships')
           .where('sura_id', isEqualTo: i.toString())
-      // .where('sura_id', isEqualTo: widget.sura_id)
           .orderBy('created_at')
           .get()
           .then((QuerySnapshot querySnapshot) {
         for (var doc in querySnapshot.docs) {
-          setState(() {
-            p.add(doc['medina_mushaf_page_id']);
-            //j.add(doc['juz_id']);
-            s.add(doc['sura_id']);
-            //widget.sura_id = int.parse(doc['sura_id']) as String;
-          });
+          //setState(() {
+          p.add(doc['medina_mushaf_page_id']);
+          s.add(doc['sura_id']);
+          //});
         }
-        setState(() {
-          pageId = p;
-          //jId = j;
-          sId = s;
-          //print(pageId);
-        });
+        //setState(() {
+        pageId = p;
+        sId = s;
+        //print(sId);
       });
-    } //print(pageId);
-    List t = [];
-    List e = [];
+      //});
+    } //print(sId.length);
+    List sur = [];
+    var temp, pre;
     for (int j = 0; j < pageId.length; j++) {
       await _collectionJ
           .where('id', isEqualTo: pageId[j].toString())
-      // .where('sura_id', isEqualTo: widget.sura_id)
           .orderBy('created_at')
           .get()
           .then((QuerySnapshot querySnapshot) {
         for (var doc in querySnapshot.docs) {
-          setState(() {
+          if (temp != doc['juz_id'] || pre != sId[j]) {
+            temp = doc['juz_id'];
+            pre = sId[j];
+            //setState(() {
             juz.add(doc['juz_id']);
-            //t.add(doc['tname']);
-            //e.add(doc['ename']);
-            //widget.sura_id = int.parse(doc['sura_id']) as String;
-          });
+            sur.add(int.parse(pre));
+            //});
+          }
         }
-        setState(() {
-          jId = juz;
-          //name = t;
-          //detail = e;
-          //print(jId);
-        });
+        //setState(() {
+        jId = juz;
+        suraJ = sur;
+        //print(surJ);
+        // print(sId);
       });
-    } //print(jId);
+      //});
+    }
+    setState(() {
+      dataReady = true;
+    });
+    print(jId);
+    print(suraJ);
+    print(suraJ.length);
   }
 }
-/*
+  /*void generateSurah() async {
+    await getSurah();
+
+    setState(() {
+      dataReady = true;
+    });
+  }*/
+ /*getJ(int id) async {
+    await getSurah();
+    int count=0;
+    for(int k =0; k < jId.length; k++){
+    if(jId[k] == id+1){
+      count=count+1;
+    }
+
+  }
+    print(count);
+    return count;
+}
+}
+
   List juzId=[];
   List suraId=[];
+
   List tname=[];
   List ename=[];
 
