@@ -47,6 +47,7 @@ class _SigninWidgetState extends State<SigninWidget>
   void dispose() {
     super.dispose();
     _animationController.dispose();
+    _animation.removeListener(() {});
   }
 
   @override
@@ -56,6 +57,7 @@ class _SigninWidgetState extends State<SigninWidget>
     // Figma Flutter Generator SigninWidget - FRAME
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: loading
             ? Center(
                 child: LoadingAnimationWidget.fourRotatingDots(
@@ -325,36 +327,38 @@ class _SigninWidgetState extends State<SigninWidget>
                                       ),
                                     );
                                   } else {
-                                    if (mounted) {
-                                      setState(() {
-                                        loading = true;
-                                      });
-                                    }
-                                    await appUser
-                                        .signIn(
-                                            email: _email.text,
-                                            password: _pass.text)
-                                        .then((value) {
+                                    try {
+                                      if (mounted) {
+                                        setState(() {
+                                          loading = true;
+                                        });
+                                        await appUser
+                                            .signIn(
+                                                email: _email.text,
+                                                password: _pass.text)
+                                            .then((value) {
+                                          if (mounted) {
+                                            setState(() {
+                                              loading = false;
+                                            });
+                                          }
+                                          Navigator.pushNamed(
+                                              context, RoutesName.homePage);
+                                        });
+                                      }
+                                    } catch (e) {
                                       if (mounted) {
                                         setState(() {
                                           loading = false;
                                         });
                                       }
-                                      Navigator.pushNamed(
-                                              context, RoutesName.homePage)
-                                          .catchError((e) {
-                                        if (mounted) {
-                                          setState(() {
-                                            loading = false;
-                                          });
-                                        }
-                                        showTopSnackBar(
-                                            context,
-                                            CustomSnackBar.error(
-                                              message: e.toString(),
-                                            ));
-                                      });
-                                    });
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                              content: Text(e
+                                                  .toString()
+                                                  .split("]")
+                                                  .last)));
+                                    }
                                   }
                                 },
                                 child: Container(

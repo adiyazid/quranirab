@@ -8004,7 +8004,7 @@ class AyaProvider extends ChangeNotifier {
         99,
       ],
       "page_483": [
-        10,
+        15,
         24,
         36,
         47,

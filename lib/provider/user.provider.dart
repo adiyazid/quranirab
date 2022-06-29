@@ -57,11 +57,12 @@ class AppUser extends ChangeNotifier {
     );
   }
 
-  Future<void> updateRole() async {
-    db
-        .collection("quranIrabUsers")
-        .doc(AppUser.instance.user!.uid)
-        .set({"role": "premium-user"}, SetOptions(merge: true));
+  Future<void> updateRole(url, pid) async {
+    db.collection("quranIrabUsers").doc(AppUser.instance.user!.uid).set(
+        {"role": "premium-user", "receipt-url": url, "payment-id": pid},
+        SetOptions(merge: true));
+    role = 'premium-user';
+    notifyListeners();
   }
 
   Future<void> updateName(String name) async {

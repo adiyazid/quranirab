@@ -36,7 +36,9 @@ class _HomePageState extends State<HomePage>
     snackBar = SnackBar(
         backgroundColor: Colors.tealAccent,
         content: Text(
-          'This content only unlock for paid version',
+          Provider.of<AppUser>(context, listen: false).role != 'premium-user'
+              ? 'This content only unlock for paid version'
+              : 'Show Receipt',
           style: TextStyle(color: Colors.black),
         ),
         action: SnackBarAction(
