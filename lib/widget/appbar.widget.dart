@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/views/payment/payment.screen.dart';
 import 'package:quranirab/widget/LanguagePopup.dart';
@@ -56,8 +55,7 @@ class _AppbarState extends State<Appbar> {
             if (user.role == 'No Data') return Container();
             return InkWell(
               onTap: () async {
-                var id = GetStorage().read('intent');
-                if (id != null) {
+                try {
                   var data = await FirebaseFirestore.instance
                       .collection('quranIrabUsers')
                       .doc(AppUser().user!.uid)
@@ -69,9 +67,10 @@ class _AppbarState extends State<Appbar> {
                         MaterialPageRoute(
                             builder: (context) => ReceiptScreen(data)));
                   } else {
-                    launchUrl(Uri.parse(data.charges.data.last.receiptUrl));
+                    launchUrl(Uri.parse(data));
                   }
-                } else {
+                } catch (e) {
+                  print(e);
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => PaymentScreen()));
                 }
@@ -110,8 +109,13 @@ class _AppbarState extends State<Appbar> {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       actions: <Widget>[
         SizedBox(width: 16),
-        if (Provider.of<AppUser>(context, listen: false).role != 'user')
-          SearchPopup(),
+        Consumer<AppUser>(builder: (context, user, child) {
+          if (user.role != 'user') {
+            return SearchPopup();
+          } else {
+            return Container();
+          }
+        }),
         SizedBox(width: 16),
         LangPopup(),
         SizedBox(width: 16),

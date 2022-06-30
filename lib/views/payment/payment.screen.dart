@@ -41,7 +41,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       var paymentIntent;
       var paymentMethod;
       var custId = Provider.of<AppUser>(context, listen: false).cid;
-      if (Provider.of<AppUser>(context, listen: false).cid != null) {
+      if (Provider.of<AppUser>(context, listen: false).cid == null) {
         customer = await StripeService.createCustomer(cardHolderName,
             '+6' + phone, AppUser.instance.user!.email!, cardHolderName);
         setState(() {});
@@ -213,16 +213,19 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             padding: const EdgeInsets.all(16.0),
                             child: TextFormField(
                               decoration: InputDecoration(
-                                  labelStyle: TextStyle(
-                                      color: theme.isDarkMode
-                                          ? Colors.white
-                                          : null),
-                                  border: OutlineInputBorder(),
-                                  hintStyle: TextStyle(
-                                      color: theme.isDarkMode
-                                          ? Colors.white
-                                          : null),
-                                  label: Text('Phone Number')),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(width: 1, color: Colors.blue),
+                                ),
+                                labelStyle: TextStyle(
+                                    color:
+                                        theme.isDarkMode ? Colors.white : null),
+                                border: OutlineInputBorder(),
+                                hintStyle: TextStyle(
+                                    color:
+                                        theme.isDarkMode ? Colors.white : null),
+                                label: Text('Phone Number'),
+                              ),
                               validator: (e) {
                                 if (e!.isEmpty) {
                                   return 'Phone number cannot be null';
