@@ -87,8 +87,6 @@ class StripeService {
     return null;
   }
 
-  static getEvent() {}
-
   static getIntent(String id) async {
     try {
       var response = await http.get(

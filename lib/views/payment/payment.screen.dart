@@ -24,7 +24,6 @@ class PaymentScreen extends StatefulWidget {
 
 class _PaymentScreenState extends State<PaymentScreen> {
   final _phone = TextEditingController();
-  var custId = GetStorage().read('custID');
   var intentId = GetStorage().read('intent');
   PaymentOutput? _paymentOutput;
 
@@ -41,15 +40,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
       var customer;
       var paymentIntent;
       var paymentMethod;
-      if (custId == null) {
+      var custId = Provider.of<AppUser>(context, listen: false).cid;
+      if (Provider.of<AppUser>(context, listen: false).cid != null) {
         customer = await StripeService.createCustomer(cardHolderName,
             '+6' + phone, AppUser.instance.user!.email!, cardHolderName);
         setState(() {});
         custId = customer['id'];
-        GetStorage().write('custID', customer['id']);
+        Provider.of<AppUser>(context, listen: false).setCid(custId);
       } else {
         customer = await StripeService.getCustomer(custId);
       }
+
       paymentMethod = await StripeService.createCardPaymentMethod(
           number: cardNumber,
           expMonth: expiryDate.substring(0, 2),
@@ -57,21 +58,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
           cvc: cvvCode);
       setState(() {});
       var paymentMethodID = paymentMethod['id'];
-      print(expiryDate.substring(0, 2) + '${expiryDate.substring(3)}');
-
-      ///todo:for invoice purpose;
-      // await StripeService.linkCustomerWithPaymentMethod(
-      //     custId, paymentMethodID);
       paymentIntent = await StripeService.createPaymentIntent('5000', 'MYR');
       var id = paymentIntent!['id'];
-      // var id = await GetStorage().read('intent');
-      // if (id == null) {
-      //   paymentIntent = await StripeService.createPaymentIntent('5000', 'MYR');
-      //   String newId = paymentIntent!['id'];
-      //   GetStorage().write('intent', newId);
-      // } else {
-      //   paymentIntent = await StripeService.getIntent(id);
-      // }
       showDialog(
           builder: (BuildContext context) {
             return AlertDialog(
@@ -81,8 +69,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   subtitle: Text('Amount: RM ' +
                       paymentIntent!['amount'].toString().substring(0, 2) +
                       '\n' +
-                      'Telephone No: ' +
-                      '6' +
+                      'Tel-No: ' +
                       _phone.text)),
               actions: [
                 ElevatedButton.icon(
@@ -98,7 +85,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       Navigator.pop(context);
                       if (_paymentOutput!.status == 'succeeded') {
                         Provider.of<AppUser>(context, listen: false).updateRole(
-                            _paymentOutput!.charges.data.last.receiptUrl, id);
+                            _paymentOutput!.charges.data.last.receiptUrl,
+                            id,
+                            custId);
                       }
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text('Payment ${_paymentOutput!.status}')));

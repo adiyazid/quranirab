@@ -46,8 +46,6 @@ class _SigninWidgetState extends State<SigninWidget>
   @override
   void dispose() {
     super.dispose();
-    _animationController.dispose();
-    _animation.removeListener(() {});
   }
 
   @override

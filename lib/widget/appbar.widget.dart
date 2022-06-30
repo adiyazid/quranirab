@@ -108,9 +108,10 @@ class _AppbarState extends State<Appbar> {
       elevation: 0,
       centerTitle: false,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      actions: const <Widget>[
+      actions: <Widget>[
         SizedBox(width: 16),
-        SearchPopup(),
+        if (Provider.of<AppUser>(context, listen: false).role != 'user')
+          SearchPopup(),
         SizedBox(width: 16),
         LangPopup(),
         SizedBox(width: 16),
