@@ -340,8 +340,8 @@ class _SigninWidgetState extends State<SigninWidget>
                                               loading = false;
                                             });
                                           }
-                                          // Navigator.pushNamed(
-                                          //     context, RoutesName.homePage);
+                                          Navigator.pushNamed(
+                                              context, RoutesName.homePage);
                                         });
                                       }
                                     } catch (e) {

@@ -118,6 +118,7 @@ flutter:
     - assets/Image1.png
     - assets/Image2.png
     - assets/Image7.png
+    - assets/translation_icon.png
     - assets/data/words.json
     - assets/data/alfatihah_words.json
     - assets/data/quran_text.json

@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:quran/quran.dart';
 import 'package:quranirab/models/word.detail.dart';
 
 import '../models/break.index.model.dart';
@@ -70,6 +71,8 @@ class AyaProvider extends ChangeNotifier {
 
   double maxScreen = 0.0;
 
+  var juz = 1;
+
   get sliceData => _sliceData;
   bool visible = false;
 
@@ -93,7 +96,6 @@ class AyaProvider extends ChangeNotifier {
     getSurahNo(page);
   }
 
-
   Future<void> getSurahNo(int page) async {
     await FirebaseFirestore.instance
         .collection('medina_mushaf_pages')
@@ -101,12 +103,12 @@ class AyaProvider extends ChangeNotifier {
         .get()
         .then((QuerySnapshot querySnapshot) {
       for (var doc in querySnapshot.docs) {
-          surahNo = int.parse(doc["sura_id"]);
-          notifyListeners();
+        surahNo = int.parse(doc["sura_id"]);
+        notifyListeners();
       }
 
-    //notifyListeners();
-  });
+      //notifyListeners();
+    });
   }
 
   Future<void> readAya() async {
@@ -10412,6 +10414,12 @@ class AyaProvider extends ChangeNotifier {
       breakIndex = <int>[];
       notifyListeners();
     }
+  }
+
+  Future<void> getJuz(int surahNumber, int verseNumber) async {
+    juz = getJuzNumber(surahNumber, verseNumber);
+    print('juz $juz $surahNumber $verseNumber');
+    notifyListeners();
   }
 
   void updateLoad() {

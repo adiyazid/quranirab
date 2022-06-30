@@ -72,7 +72,7 @@ class _SurahScreenState extends State<SurahScreen>
       });
     });
     // You need to save an instance of a GlobalKey in order to call ensureVisible in onOpen.
-    i = widget.index!;
+    i = widget.index;
 
     getHizb();
     getData();
@@ -145,7 +145,8 @@ class _SurahScreenState extends State<SurahScreen>
     var ids = Provider.of<LangProvider>(context, listen: false).langId;
     await Provider.of<LangProvider>(context, listen: false)
         .getTranslation(ids, widget.sura_id, start);
-
+    Provider.of<AyaProvider>(context, listen: false)
+        .getJuz(int.parse(widget.sura_id), start!);
     // Get docs from collection reference
   }
 
@@ -593,6 +594,7 @@ class TopSura extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(getJuzNumber(int.parse(widget2.sura_id), start ?? 1));
     return Column(
       children: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -628,7 +630,7 @@ class TopSura extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        'Juz ${getJuzNumber(int.parse(widget2.sura_id), start ?? 1)} / Hizb $hizb - Page ${aya.page}',
+                        'Juz ${aya.juz} / Hizb $hizb - Page ${aya.page}',
                         style: TextStyle(
                           fontSize:
                               MediaQuery.of(context).size.width < 500 ? 15 : 20,
