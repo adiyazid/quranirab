@@ -1,0 +1,2477 @@
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:nb_utils/nb_utils.dart';
+import 'package:provider/provider.dart';
+import 'package:quran/quran.dart';
+import 'package:quranirab/theme/theme_provider.dart';
+import 'package:quranirab/views/surah.screen.dart';
+import 'package:skeleton_loader/skeleton_loader.dart';
+import 'package:quranirab/provider/ayah.number.provider.dart';
+import 'package:quranirab/provider/bookmark.provider.dart';
+import 'package:quranirab/widget/menu.dart';
+import '../widget/appbar.widget.dart';
+import 'juz.screen.dart';
+
+class HomePage1 extends StatefulWidget {
+  const HomePage1({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage1> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage1>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  //int count=0;
+  List juz = [1, 2];
+  final List _juzstName = [
+    "Al-Faatiha",
+    "Al-Baqara",
+    "Al-Baqara",
+    "Aal-i-Imraan",
+    "An-Nisaa",
+    "An-Nisaa",
+    "Al-Maaida",
+    "Al-An'aam",
+    "Al-A'raaf",
+    "Al-Anfaal",
+    "At-Tawba",
+    "Hud",
+    "Yusuf",
+    "Al-Hijr",
+    "Al-Israa",
+    "Al-Kahf",
+    "Al-Anbiyaa",
+    "Al-Muminoon",
+    "Al-Furqaan",
+    "An-Naml",
+    "Al-Ankaboot",
+    "Al-Ahzaab",
+    "Yaseen",
+    "Az-Zumar",
+    "Fussilat",
+    "Al-Ahqaf",
+    "Adh-Dhaariyat",
+    "Al-Mujaadila",
+    "Al-Mulk",
+    "An-Naba"
+  ];
+  final List _juzseName = [
+    "The Opening",
+    "The Cow",
+    "The Cow",
+    "The Family of Imraan",
+    "The Women",
+    "The Women",
+    "The Table",
+    "The Cattle",
+    "The Heights",
+    "The Spoils of War",
+    "The Repentance",
+    "Hud",
+    "Joseph",
+    "The Rock",
+    "The Night Journey",
+    "The Cave",
+    "The Prophets",
+    "The Believers",
+    "The Criterion",
+    "The Ant",
+    "The Spider",
+    "The Clans",
+    "Yaseen",
+    "The Groups",
+    "Explained in detail",
+    "The Dunes",
+    "The Winnowing Winds",
+    "The Pleading Woman",
+    "The Sovereignty",
+    "The Announcement"
+  ];
+  late final List<Map<String?, dynamic>> _juz = List.generate(
+      2,
+          (index) =>
+      {
+        "id": juz[index].toString(),
+        "tname": _juzstName[index],
+        "ename": _juzseName[index],
+        "height": Random().nextInt(150) + 50.5
+      });
+
+  var j;
+  List _juzsName = [];
+
+
+  bool dataReady = false;
+
+  late int temp = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getList();
+    getJuzs();
+    //generateSurah();
+    getSurah();
+    //getJuzsName();
+
+    _tabController = TabController(length: 2, vsync: this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _tabController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var themeProvider = Provider.of<ThemeProvider>(context);
+
+    // Figma Flutter Generator Desktop31Widget - FRAME
+    return SafeArea(
+      child: Scaffold(
+          backgroundColor:
+          themeProvider.isDarkMode ? Color(0xff666666) : Colors.white,
+          drawer: const Menu(),
+          body: Column(
+            children: [
+              SizedBox(
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.1,
+                child: CustomScrollView(
+                  slivers: const [Appbar()],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                child: Container(
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height * 0.25,
+                    alignment: Alignment.topLeft,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                        bottomLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10),
+                      ),
+                      color: themeProvider.isDarkMode
+                          ? Color(0xff666666)
+                          : Colors.white,
+                      border: Border.all(
+                        color: themeProvider.isDarkMode
+                            ? Color(0xffD2D6DA)
+                            : Color.fromRGBO(231, 111, 0, 1),
+                        width: 1,
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Consumer<BookMarkProvider>(
+                          builder: (context, bm, child) {
+                            if (bm.bookmarkList.isNotEmpty) {
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceAround,
+                                children: [
+                                  Align(
+                                    child: Text(
+                                      'Bookmark',
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                          decoration: TextDecoration.underline,
+                                          fontFamily: 'Open Sans',
+                                          fontSize:
+                                          MediaQuery
+                                              .of(context)
+                                              .size
+                                              .width <
+                                              600
+                                              ? 20
+                                              : 24,
+                                          letterSpacing: -0.38723403215408325,
+                                          fontWeight: FontWeight.normal,
+                                          height: 1),
+                                    ),
+                                    alignment: Alignment.topLeft,
+                                  ),
+                                  SizedBox(
+                                      height:
+                                      MediaQuery
+                                          .of(context)
+                                          .size
+                                          .height * 0.15,
+                                      child: ListView.builder(
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          if (index == bm.bookmarkList.length) {
+                                            return IconButton(
+                                              onPressed: () => bm.deleteAll(),
+                                              icon: Icon(Icons.delete_sharp),
+                                            );
+                                          }
+                                          return InkWell(
+                                            onTap: () async {
+                                              var a = await getTotalPage(
+                                                  bm.bookmarkList[index]
+                                                      .suraId!);
+                                              Provider.of<AyaProvider>(context,
+                                                  listen: false)
+                                                  .getPage(int.parse(bm
+                                                  .bookmarkList[index]
+                                                  .pages!
+                                                  .first));
+                                              Provider.of<AyaProvider>(context,
+                                                  listen: false)
+                                                  .setDefault();
+                                              Provider.of<AyaProvider>(context,
+                                                  listen: false)
+                                                  .getStart(
+                                                  int.parse(bm
+                                                      .bookmarkList[index]
+                                                      .suraId!),
+                                                  int.parse(bm
+                                                      .bookmarkList[index]
+                                                      .pages!
+                                                      .first));
+
+                                              // Provider.of<AyaProvider>(context,
+                                              //     listen: false)
+                                              //     .getPage(439);
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          SurahScreen(
+                                                            a,
+                                                            bm
+                                                                .bookmarkList[index]
+                                                                .suraId!,
+                                                            bm
+                                                                .bookmarkList[index]
+                                                                .tname!,
+                                                            bm
+                                                                .bookmarkList[index]
+                                                                .ename!,
+                                                            a.indexOf(bm
+                                                                .bookmarkList[index]
+                                                                .pages!
+                                                                .first),
+                                                          )));
+                                            },
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 16.0),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius
+                                                      .only(
+                                                    topLeft: Radius.circular(
+                                                        10),
+                                                    topRight: Radius.circular(
+                                                        10),
+                                                    bottomLeft: Radius.circular(
+                                                        10),
+                                                    bottomRight:
+                                                    Radius.circular(10),
+                                                  ),
+                                                  color: themeProvider
+                                                      .isDarkMode
+                                                      ? Color(0xff67748E)
+                                                      : Color.fromRGBO(
+                                                      255, 255, 255, 1),
+                                                  border: Border.all(
+                                                    color: themeProvider
+                                                        .isDarkMode
+                                                        ? Color(0xffD2D6DA)
+                                                        : Color.fromRGBO(
+                                                        231, 111, 0, 1),
+                                                    width: 1,
+                                                  ),
+                                                ),
+                                                child: Padding(
+                                                  padding:
+                                                  const EdgeInsets.all(16.0),
+                                                  child: Center(
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceAround,
+                                                      children: [
+                                                        Text(
+                                                          bm.bookmarkList[index]
+                                                              .tname!,
+                                                          style: TextStyle(
+                                                              fontSize: 22),
+                                                        ),
+                                                        Container(
+                                                          width: 75,
+                                                          height: 25,
+                                                          decoration: BoxDecoration(
+                                                            borderRadius:
+                                                            BorderRadius.only(
+                                                              topLeft:
+                                                              Radius.circular(
+                                                                  10),
+                                                              topRight:
+                                                              Radius.circular(
+                                                                  10),
+                                                              bottomLeft:
+                                                              Radius.circular(
+                                                                  10),
+                                                              bottomRight:
+                                                              Radius.circular(
+                                                                  10),
+                                                            ),
+                                                            color: themeProvider
+                                                                .isDarkMode
+                                                                ? Color
+                                                                .fromRGBO(
+                                                                128,
+                                                                138,
+                                                                177,
+                                                                1)
+                                                                : Color(
+                                                                0xffFFB55F),
+                                                            border: Border.all(
+                                                              color: themeProvider
+                                                                  .isDarkMode
+                                                                  ? Color
+                                                                  .fromRGBO(
+                                                                  128,
+                                                                  138,
+                                                                  177,
+                                                                  1)
+                                                                  : Color(
+                                                                  0xffFFB55F),
+                                                              width: 1,
+                                                            ),
+                                                          ),
+                                                          child: Center(
+                                                            child: Text(bm
+                                                                .bookmarkList[index]
+                                                                .ayahNo!),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: bm.bookmarkList.length + 1,
+                                      )),
+                                ],
+                              );
+                            }
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Align(
+                                  child: Text(
+                                    'Bookmark',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        decoration: TextDecoration.underline,
+                                        fontFamily: 'Open Sans',
+                                        fontSize:
+                                        MediaQuery
+                                            .of(context)
+                                            .size
+                                            .width < 600
+                                            ? 20
+                                            : 24,
+                                        letterSpacing: -0.38723403215408325,
+                                        fontWeight: FontWeight.normal,
+                                        height: 1),
+                                  ),
+                                  alignment: Alignment.topLeft,
+                                ),
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    'You do not have any bookmark yet',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        fontFamily: 'Open Sans',
+                                        fontSize:
+                                        MediaQuery
+                                            .of(context)
+                                            .size
+                                            .width < 600
+                                            ? 20
+                                            : 24,
+                                        letterSpacing: -0.38723403215408325,
+                                        fontWeight: FontWeight.normal,
+                                        height: 1),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }),
+                    )),
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 32.0, right: 32.0, bottom: 32.0),
+                child: Container(
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height * 0.55,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
+                    ),
+                    color: themeProvider.isDarkMode
+                        ? Color(0xff666666)
+                        : Colors.white,
+                    border: Border.all(
+                      color: themeProvider.isDarkMode
+                          ? Color(0xffD2D6DA)
+                          : Color.fromRGBO(231, 111, 0, 1),
+                      width: 1,
+                    ),
+                  ),
+                  child: Padding(
+                    padding:
+                    const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * 0.05,
+                          width: 180,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TabBar(
+                              indicatorColor: themeProvider.isDarkMode
+                                  ? Colors.white
+                                  : Colors.black,
+                              controller: _tabController,
+                              tabs: const [
+                                Text(
+                                  'Sura',
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                      fontFamily: 'Open Sans',
+                                      fontSize: 24,
+                                      letterSpacing: -0.38723403215408325,
+                                      fontWeight: FontWeight.normal,
+                                      height: 1),
+                                ),
+                                Text(
+                                  'Juz',
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                      fontFamily: 'Open Sans',
+                                      fontSize: 24,
+                                      letterSpacing: -0.38723403215408325,
+                                      fontWeight: FontWeight.normal,
+                                      height: 1),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * 0.48,
+                          child: TabBarView(
+                              controller: _tabController,
+                              children: [
+                                Column(
+                                  children: [
+                                    Expanded(
+                                      child: _list.isNotEmpty
+                                          ? MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width >
+                                          600
+                                          ? GridView.builder(
+                                        controller:
+                                        ScrollController(),
+                                        gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount:
+                                            MediaQuery
+                                                .of(context)
+                                                .size
+                                                .width <
+                                                1200
+                                                ? 2
+                                                : 3,
+                                            crossAxisSpacing: 5.0,
+                                            mainAxisSpacing: 5.0,
+                                            childAspectRatio:
+                                            4.5),
+                                        itemCount: 114,
+                                        itemBuilder:
+                                            (BuildContext context,
+                                            int index) {
+                                          return Padding(
+                                            padding: const EdgeInsets
+                                                .symmetric(
+                                                horizontal: 16.0,
+                                                vertical: 8),
+                                            child: InkWell(
+                                              onTap: () async {
+                                                var a =
+                                                await getTotalPage(
+                                                    _list[index]
+                                                    ["id"]);
+                                                Provider.of<AyaProvider>(
+                                                    context,
+                                                    listen: false)
+                                                    .getPage(
+                                                    int.parse(
+                                                        a.first));
+                                                Provider.of<AyaProvider>(
+                                                    context,
+                                                    listen: false)
+                                                    .setDefault();
+                                                Provider.of<AyaProvider>(
+                                                    context,
+                                                    listen: false)
+                                                    .getStart(
+                                                    int.parse(_list[
+                                                    index]
+                                                    ['id']),
+                                                    int.parse(
+                                                        a.first));
+
+                                                // Provider.of<AyaProvider>(context,
+                                                //     listen: false)
+                                                //     .getPage(439);
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            SurahScreen(
+                                                                a,
+                                                                _list[index]
+                                                                [
+                                                                "id"],
+                                                                _list[index]
+                                                                [
+                                                                "tname"],
+                                                                _list[index]
+                                                                [
+                                                                "ename"],
+                                                                0)));
+                                              },
+                                              child: Container(
+                                                width: 400,
+                                                height: 100,
+                                                decoration:
+                                                BoxDecoration(
+                                                    borderRadius:
+                                                    BorderRadius
+                                                        .only(
+                                                      topLeft: Radius
+                                                          .circular(
+                                                          10),
+                                                      topRight: Radius
+                                                          .circular(
+                                                          10),
+                                                      bottomLeft:
+                                                      Radius.circular(
+                                                          10),
+                                                      bottomRight:
+                                                      Radius.circular(
+                                                          10),
+                                                    ),
+                                                    color: themeProvider
+                                                        .isDarkMode
+                                                        ? Color(
+                                                        0xff67748E)
+                                                        : Color.fromRGBO(
+                                                        255,
+                                                        255,
+                                                        255,
+                                                        1),
+                                                    border: Border
+                                                        .all(
+                                                      color: themeProvider
+                                                          .isDarkMode
+                                                          ? Color(
+                                                          0xffD2D6DA)
+                                                          : Color.fromRGBO(
+                                                          231,
+                                                          111,
+                                                          0,
+                                                          1),
+                                                      width: 1,
+                                                    )),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                                  children: [
+                                                    Container(
+                                                        width: 50,
+                                                        height: 100,
+                                                        decoration:
+                                                        BoxDecoration(
+                                                          borderRadius:
+                                                          BorderRadius
+                                                              .only(
+                                                            topLeft: Radius
+                                                                .circular(
+                                                                10),
+                                                            topRight:
+                                                            Radius.circular(
+                                                                10),
+                                                            bottomLeft:
+                                                            Radius.circular(
+                                                                10),
+                                                            bottomRight:
+                                                            Radius.circular(
+                                                                10),
+                                                          ),
+                                                          color: themeProvider
+                                                              .isDarkMode
+                                                              ? Color(
+                                                              0xff808BA1)
+                                                              : Color.fromRGBO(
+                                                              255,
+                                                              181,
+                                                              94,
+                                                              1),
+                                                        ),
+                                                        child: Center(
+                                                          child: Text(
+                                                            '${index + 1}',
+                                                            textAlign:
+                                                            TextAlign
+                                                                .left,
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                'Open Sans',
+                                                                fontSize:
+                                                                24,
+                                                                letterSpacing:
+                                                                -0.38723403215408325,
+                                                                fontWeight: FontWeight
+                                                                    .normal,
+                                                                height:
+                                                                1),
+                                                          ),
+                                                        )),
+                                                    Spacer(),
+                                                    Column(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .center,
+                                                      children: [
+                                                        Text(
+                                                          _list[index]
+                                                          [
+                                                          "tname"],
+                                                          textAlign:
+                                                          TextAlign
+                                                              .left,
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                              'Open Sans',
+                                                              fontSize:
+                                                              24,
+                                                              letterSpacing:
+                                                              -0.38723403215408325,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .normal,
+                                                              height:
+                                                              1),
+                                                        ),
+                                                        Text(
+                                                          _list[index]
+                                                          [
+                                                          "ename"],
+                                                          textAlign:
+                                                          TextAlign
+                                                              .left,
+                                                          style: TextStyle(
+                                                              color: Color
+                                                                  .fromRGBO(
+                                                                  151,
+                                                                  151,
+                                                                  151,
+                                                                  1),
+                                                              fontFamily:
+                                                              'Open Sans',
+                                                              fontSize:
+                                                              22,
+                                                              letterSpacing:
+                                                              -0.38723403215408325,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .normal,
+                                                              height:
+                                                              1),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    Spacer()
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      )
+                                          : ListView.builder(
+                                        controller:
+                                        ScrollController(),
+                                        itemCount: 114,
+                                        itemBuilder:
+                                            (BuildContext context,
+                                            int index) {
+                                          return Padding(
+                                            padding: const EdgeInsets
+                                                .symmetric(
+                                                horizontal: 8.0,
+                                                vertical: 8),
+                                            child: InkWell(
+                                              onTap: () async {
+                                                var a =
+                                                await getTotalPage(
+                                                    _list[index]
+                                                    ["id"]);
+                                                Provider.of<AyaProvider>(
+                                                    context,
+                                                    listen: false)
+                                                    .getPage(
+                                                    int.parse(
+                                                        a.first));
+                                                Provider.of<AyaProvider>(
+                                                    context,
+                                                    listen: false)
+                                                    .setDefault();
+                                                Provider.of<AyaProvider>(
+                                                    context,
+                                                    listen: false)
+                                                    .getStart(
+                                                    int.parse(_list[
+                                                    index]
+                                                    ['id']),
+                                                    int.parse(
+                                                        a.first));
+
+                                                // Provider.of<AyaProvider>(context,
+                                                //     listen: false)
+                                                //     .getPage(439);
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            SurahScreen(
+                                                                a,
+                                                                _list[index]
+                                                                [
+                                                                "id"],
+                                                                _list[index]
+                                                                [
+                                                                "tname"],
+                                                                _list[index]
+                                                                [
+                                                                "ename"],
+                                                                0)));
+                                              },
+                                              child: Container(
+                                                width: 400,
+                                                height: 100,
+                                                decoration:
+                                                BoxDecoration(
+                                                    borderRadius:
+                                                    BorderRadius
+                                                        .only(
+                                                      topLeft: Radius
+                                                          .circular(
+                                                          10),
+                                                      topRight: Radius
+                                                          .circular(
+                                                          10),
+                                                      bottomLeft:
+                                                      Radius.circular(
+                                                          10),
+                                                      bottomRight:
+                                                      Radius.circular(
+                                                          10),
+                                                    ),
+                                                    color: themeProvider
+                                                        .isDarkMode
+                                                        ? Color(
+                                                        0xff67748E)
+                                                        : Color.fromRGBO(
+                                                        255,
+                                                        255,
+                                                        255,
+                                                        1),
+                                                    border: Border
+                                                        .all(
+                                                      color: themeProvider
+                                                          .isDarkMode
+                                                          ? Color(
+                                                          0xffD2D6DA)
+                                                          : Color.fromRGBO(
+                                                          231,
+                                                          111,
+                                                          0,
+                                                          1),
+                                                      width: 1,
+                                                    )),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                                  children: [
+                                                    Container(
+                                                        width: 50,
+                                                        height: 100,
+                                                        decoration:
+                                                        BoxDecoration(
+                                                          borderRadius:
+                                                          BorderRadius
+                                                              .only(
+                                                            topLeft: Radius
+                                                                .circular(
+                                                                10),
+                                                            topRight:
+                                                            Radius.circular(
+                                                                10),
+                                                            bottomLeft:
+                                                            Radius.circular(
+                                                                10),
+                                                            bottomRight:
+                                                            Radius.circular(
+                                                                10),
+                                                          ),
+                                                          color: themeProvider
+                                                              .isDarkMode
+                                                              ? Color(
+                                                              0xff808BA1)
+                                                              : Color.fromRGBO(
+                                                              255,
+                                                              181,
+                                                              94,
+                                                              1),
+                                                        ),
+                                                        child: Center(
+                                                          child: Text(
+                                                            '${index + 1}',
+                                                            textAlign:
+                                                            TextAlign
+                                                                .left,
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                'Open Sans',
+                                                                fontSize:
+                                                                24,
+                                                                letterSpacing:
+                                                                -0.38723403215408325,
+                                                                fontWeight: FontWeight
+                                                                    .normal,
+                                                                height:
+                                                                1),
+                                                          ),
+                                                        )),
+                                                    Spacer(),
+                                                    Column(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .center,
+                                                      children: [
+                                                        Text(
+                                                          _list[index]
+                                                          [
+                                                          "tname"],
+                                                          textAlign:
+                                                          TextAlign
+                                                              .left,
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                              'Open Sans',
+                                                              fontSize:
+                                                              24,
+                                                              letterSpacing:
+                                                              -0.38723403215408325,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .normal,
+                                                              height:
+                                                              1),
+                                                        ),
+                                                        Text(
+                                                          _list[index]
+                                                          [
+                                                          "ename"],
+                                                          textAlign:
+                                                          TextAlign
+                                                              .left,
+                                                          style: TextStyle(
+                                                              color: Color
+                                                                  .fromRGBO(
+                                                                  151,
+                                                                  151,
+                                                                  151,
+                                                                  1),
+                                                              fontFamily:
+                                                              'Open Sans',
+                                                              fontSize: MediaQuery
+                                                                  .of(context)
+                                                                  .size
+                                                                  .width <
+                                                                  600
+                                                                  ? 20
+                                                                  : 24,
+                                                              letterSpacing:
+                                                              -0.38723403215408325,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .normal,
+                                                              height:
+                                                              1),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    Spacer()
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      )
+                                          : SkeletonLoader(
+                                        builder: SizedBox(
+                                          height: MediaQuery
+                                              .of(context)
+                                              .size
+                                              .height *
+                                              0.45,
+                                          child:
+                                          MediaQuery
+                                              .of(context)
+                                              .size
+                                              .width >
+                                              600
+                                              ? GridView.builder(
+                                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                                crossAxisCount:
+                                                MediaQuery
+                                                    .of(context)
+                                                    .size
+                                                    .width <
+                                                    1200
+                                                    ? 2
+                                                    : 3,
+                                                crossAxisSpacing:
+                                                5.0,
+                                                mainAxisSpacing:
+                                                5.0,
+                                                childAspectRatio:
+                                                4),
+                                            itemCount: 114,
+                                            itemBuilder:
+                                                (BuildContext
+                                            context,
+                                                int index) {
+                                              return Padding(
+                                                padding: const EdgeInsets
+                                                    .symmetric(
+                                                    horizontal:
+                                                    32.0,
+                                                    vertical:
+                                                    8),
+                                                child:
+                                                Container(
+                                                  width: 400,
+                                                  height: 100,
+                                                  decoration:
+                                                  BoxDecoration(
+                                                      borderRadius: BorderRadius
+                                                          .only(
+                                                        topLeft:
+                                                        Radius.circular(10),
+                                                        topRight:
+                                                        Radius.circular(10),
+                                                        bottomLeft:
+                                                        Radius.circular(10),
+                                                        bottomRight:
+                                                        Radius.circular(10),
+                                                      ),
+                                                      color: themeProvider
+                                                          .isDarkMode
+                                                          ? Color(0xff67748E)
+                                                          : Color.fromRGBO(
+                                                          255, 255, 255, 1),
+                                                      border: Border.all(
+                                                        color: themeProvider
+                                                            .isDarkMode
+                                                            ? Color(0xffD2D6DA)
+                                                            : Color.fromRGBO(
+                                                            231, 111, 0, 1),
+                                                        width:
+                                                        1,
+                                                      )),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                    children: [
+                                                      Container(
+                                                          width:
+                                                          50,
+                                                          height:
+                                                          100,
+                                                          decoration:
+                                                          BoxDecoration(
+                                                            borderRadius:
+                                                            BorderRadius.only(
+                                                              topLeft: Radius
+                                                                  .circular(10),
+                                                              topRight: Radius
+                                                                  .circular(10),
+                                                              bottomLeft: Radius
+                                                                  .circular(10),
+                                                              bottomRight: Radius
+                                                                  .circular(10),
+                                                            ),
+                                                            color: themeProvider
+                                                                .isDarkMode
+                                                                ? Color(
+                                                                0xff808BA1)
+                                                                : Color
+                                                                .fromRGBO(
+                                                                255, 181, 94,
+                                                                1),
+                                                          ),
+                                                          child:
+                                                          Center(
+                                                            child:
+                                                            Text(
+                                                              '',
+                                                              textAlign: TextAlign
+                                                                  .left,
+                                                              style: TextStyle(
+                                                                  fontFamily: 'Open Sans',
+                                                                  fontSize: 24,
+                                                                  letterSpacing: -0.38723403215408325,
+                                                                  fontWeight: FontWeight
+                                                                      .normal,
+                                                                  height: 1),
+                                                            ),
+                                                          )),
+                                                      Spacer(),
+                                                      Column(
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                        children: const [
+                                                          Text(
+                                                            '',
+                                                            textAlign:
+                                                            TextAlign.left,
+                                                            style: TextStyle(
+                                                                fontFamily: 'Open Sans',
+                                                                fontSize: 24,
+                                                                letterSpacing: -0.38723403215408325,
+                                                                fontWeight: FontWeight
+                                                                    .normal,
+                                                                height: 1),
+                                                          ),
+                                                          Text(
+                                                            '',
+                                                            textAlign:
+                                                            TextAlign.left,
+                                                            style: TextStyle(
+                                                                color: Color
+                                                                    .fromRGBO(
+                                                                    151, 151,
+                                                                    151, 1),
+                                                                fontFamily: 'Open Sans',
+                                                                fontSize: 24,
+                                                                letterSpacing: -0.38723403215408325,
+                                                                fontWeight: FontWeight
+                                                                    .normal,
+                                                                height: 1),
+                                                          )
+                                                        ],
+                                                      ),
+                                                      Spacer()
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          )
+                                              : ListView.builder(
+                                            itemCount: 114,
+                                            itemBuilder:
+                                                (BuildContext
+                                            context,
+                                                int index) {
+                                              return Padding(
+                                                padding: const EdgeInsets
+                                                    .symmetric(
+                                                    horizontal:
+                                                    8.0,
+                                                    vertical:
+                                                    8),
+                                                child: InkWell(
+                                                  child:
+                                                  Container(
+                                                    width: 400,
+                                                    height: 100,
+                                                    decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius
+                                                            .only(
+                                                          topLeft:
+                                                          Radius.circular(10),
+                                                          topRight:
+                                                          Radius.circular(10),
+                                                          bottomLeft:
+                                                          Radius.circular(10),
+                                                          bottomRight:
+                                                          Radius.circular(10),
+                                                        ),
+                                                        color: themeProvider
+                                                            .isDarkMode ? Color(
+                                                            0xff67748E) : Color
+                                                            .fromRGBO(
+                                                            255, 255, 255, 1),
+                                                        border: Border.all(
+                                                          color: themeProvider
+                                                              .isDarkMode
+                                                              ? Color(
+                                                              0xffD2D6DA)
+                                                              : Color.fromRGBO(
+                                                              231, 111, 0, 1),
+                                                          width:
+                                                          1,
+                                                        )),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                      children: [
+                                                        Container(
+                                                            width:
+                                                            50,
+                                                            height:
+                                                            100,
+                                                            decoration:
+                                                            BoxDecoration(
+                                                              borderRadius: BorderRadius
+                                                                  .only(
+                                                                topLeft: Radius
+                                                                    .circular(
+                                                                    10),
+                                                                topRight: Radius
+                                                                    .circular(
+                                                                    10),
+                                                                bottomLeft: Radius
+                                                                    .circular(
+                                                                    10),
+                                                                bottomRight: Radius
+                                                                    .circular(
+                                                                    10),
+                                                              ),
+                                                              color: themeProvider
+                                                                  .isDarkMode
+                                                                  ? Color(
+                                                                  0xff808BA1)
+                                                                  : Color
+                                                                  .fromRGBO(
+                                                                  255, 181, 94,
+                                                                  1),
+                                                            ),
+                                                            child:
+                                                            Center(
+                                                              child: Text(
+                                                                '',
+                                                                textAlign: TextAlign
+                                                                    .left,
+                                                                style: TextStyle(
+                                                                    fontFamily: 'Open Sans',
+                                                                    fontSize: 24,
+                                                                    letterSpacing: -0.38723403215408325,
+                                                                    fontWeight: FontWeight
+                                                                        .normal,
+                                                                    height: 1),
+                                                              ),
+                                                            )),
+                                                        Spacer(),
+                                                        Column(
+                                                          mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                          children: [
+                                                            Text(
+                                                              '',
+                                                              textAlign: TextAlign
+                                                                  .left,
+                                                              style: TextStyle(
+                                                                  fontFamily: 'Open Sans',
+                                                                  fontSize: 24,
+                                                                  letterSpacing: -0.38723403215408325,
+                                                                  fontWeight: FontWeight
+                                                                      .normal,
+                                                                  height: 1),
+                                                            ),
+                                                            Text(
+                                                              '',
+                                                              textAlign: TextAlign
+                                                                  .left,
+                                                              style: TextStyle(
+                                                                  color: Color
+                                                                      .fromRGBO(
+                                                                      151, 151,
+                                                                      151, 1),
+                                                                  fontFamily: 'Open Sans',
+                                                                  fontSize: MediaQuery
+                                                                      .of(
+                                                                      context)
+                                                                      .size
+                                                                      .width <
+                                                                      600
+                                                                      ? 20
+                                                                      : 24,
+                                                                  letterSpacing: -0.38723403215408325,
+                                                                  fontWeight: FontWeight
+                                                                      .normal,
+                                                                  height: 1),
+                                                            )
+                                                          ],
+                                                        ),
+                                                        Spacer()
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        items: 1,
+                                        period: Duration(seconds: 2),
+                                        highlightColor:
+                                        themeProvider.isDarkMode
+                                            ? Colors.grey
+                                            : Color(0xffaa9f9f),
+                                        direction: SkeletonDirection.rtl,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Expanded(
+                                      child: _list.isNotEmpty
+                                          ? MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width >
+                                          600
+                                          ? MasonryGridView.count(
+                                        controller:
+                                        ScrollController(
+                                            keepScrollOffset: false),
+                                        //gridDelegate:
+                                        //SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount:
+                                        MediaQuery
+                                            .of(context)
+                                            .size
+                                            .width <
+                                            1200
+                                            ? 2
+                                            : 3,
+                                        crossAxisSpacing: 4.0,
+                                        mainAxisSpacing: 4.0,
+                                        //childAspectRatio:
+                                        //4.5),
+                                        shrinkWrap: false,
+                                        itemCount: 30,
+                                        itemBuilder:
+                                            (BuildContext context,
+                                            int mainIndex) {
+                                          //getJuzsName();
+                                          //var jL=getJ(mainIndex);
+                                          //getSurah(mainIndex);
+                                          return Padding(
+                                              padding: const EdgeInsets
+                                                  .symmetric(
+                                                  horizontal: 16.0,
+                                                  vertical: 8),
+
+                                              child: InkWell(
+                                                  onTap: () async {
+                                                    //print(index);
+                                                    //await getSurah(mainIndex);
+                                                    var a =
+                                                    await getTotalJPage(
+                                                        _juzs[mainIndex]
+                                                        ["id"]);
+                                                    //var b= await getSPage(_juzs[index]["sura_id"]);
+                                                    Provider.of<AyaProvider>(
+                                                        context,
+                                                        listen: false)
+                                                        .getPage(
+                                                        int.parse(
+                                                            a.first));
+                                                    Provider.of<AyaProvider>(
+                                                        context,
+                                                        listen: false)
+                                                        .setDefault();
+                                                    Provider.of<AyaProvider>(
+                                                        context,
+                                                        listen: false)
+                                                        .getStart(
+                                                        Provider
+                                                            .of<AyaProvider>(
+                                                            context,
+                                                            listen: false)
+                                                            .surahNo,
+                                                        int.parse(
+                                                            a.first));
+
+                                                    //await getJuzsName();
+
+
+                                                    // Provider.of<AyaProvider>(context,
+                                                    //     listen: false)
+                                                    //     .getPage(439);
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (
+                                                                context) =>
+                                                                JuzScreen(
+                                                                    a,
+                                                                    "${Provider
+                                                                        .of<
+                                                                        AyaProvider>(
+                                                                        context,
+                                                                        listen: false)
+                                                                        .surahNo}",
+                                                                    //juzId[index],
+                                                                    _juzstName[mainIndex],
+                                                                    _juzseName[mainIndex],
+                                                                    0)));
+                                                  },
+                                                  child: Container(
+                                                      width: 600,
+                                                      height: 140.0 *
+                                                          juz1[mainIndex]
+                                                              .toDouble(),
+                                                      decoration:
+                                                      BoxDecoration(
+                                                          borderRadius:
+                                                          BorderRadius
+                                                              .only(
+                                                            topLeft: Radius
+                                                                .circular(
+                                                                10),
+                                                            topRight: Radius
+                                                                .circular(
+                                                                10),
+                                                            bottomLeft:
+                                                            Radius.circular(
+                                                                10),
+                                                            bottomRight:
+                                                            Radius.circular(
+                                                                10),
+                                                          ),
+                                                          color: themeProvider
+                                                              .isDarkMode
+                                                              ? Color(
+                                                              0xff67748E)
+                                                              : Color.fromRGBO(
+                                                              255,
+                                                              255,
+                                                              255,
+                                                              1),
+                                                          border: Border
+                                                              .all(
+                                                            color: themeProvider
+                                                                .isDarkMode
+                                                                ? Color(
+                                                                0xffD2D6DA)
+                                                                : Color
+                                                                .fromRGBO(
+                                                                231,
+                                                                111,
+                                                                0,
+                                                                1),
+                                                            width: 1,
+                                                          )),
+                                                      child: Column(children: [
+                                                        Center(
+                                                          child: Text(
+                                                            //_juz[index]['id'],
+                                                            'Juz ${mainIndex +
+                                                                1}',
+                                                            textAlign:
+                                                            TextAlign
+                                                                .left,
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                'Open Sans',
+                                                                fontSize:
+                                                                24,
+                                                                letterSpacing:
+                                                                -0.38723403215408325,
+                                                                fontWeight: FontWeight
+                                                                    .normal,
+                                                                height:
+                                                                1),
+                                                          ),
+                                                        ),
+                                                        dataReady ?
+                                                        /*ListView.builder(
+                                                    itemCount: juz1[mainIndex],
+                                                    itemBuilder:
+                                                    (BuildContext context,
+                                                    int subIndex) { return*/
+                                                        GridView.builder(
+                                                            gridDelegate:
+                                                            SliverGridDelegateWithFixedCrossAxisCount(
+                                                                crossAxisCount:
+                                                                MediaQuery
+                                                                    .of(context)
+                                                                    .size
+                                                                    .width <
+                                                                    1200
+                                                                    ? 1
+                                                                    : 1,
+                                                                crossAxisSpacing: 4.0,
+                                                                mainAxisSpacing: 4.0,
+                                                                childAspectRatio: 4.0),
+                                                            shrinkWrap: true,
+                                                            itemCount: juz1[mainIndex],
+                                                            //getJ(mainIndex).toInt(),
+                                                            itemBuilder:
+                                                                (
+                                                                BuildContext context,
+                                                                int index) {
+                                                              /*for(temp=0 ;temp<surJ.length;temp++){*/
+                                                              //temp=index;
+                                                              if (temp == 2 ||
+                                                                  (temp > 2 &&
+                                                                      temp <
+                                                                          suraJ
+                                                                              .length)) {
+                                                                temp = temp + 1;
+                                                              }
+                                                              /*return ListView.builder(
+                                                          itemCount: juz1[mainIndex],
+                                                          itemBuilder:
+                                                          (BuildContext context,
+                                                          int subIndex) {*/
+                                                              return Column(
+                                                                  crossAxisAlignment: CrossAxisAlignment
+                                                                      .center,
+                                                                  mainAxisSize: MainAxisSize
+                                                                      .max,
+                                                                  mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceEvenly,
+                                                                  children: [
+                                                                    Container(
+                                                                      width: 400,
+                                                                      height: 100,
+                                                                      decoration:
+                                                                      BoxDecoration(
+                                                                          borderRadius:
+                                                                          BorderRadius
+                                                                              .only(
+                                                                            topLeft: Radius
+                                                                                .circular(
+                                                                                10),
+                                                                            topRight: Radius
+                                                                                .circular(
+                                                                                10),
+                                                                            bottomLeft:
+                                                                            Radius
+                                                                                .circular(
+                                                                                10),
+                                                                            bottomRight:
+                                                                            Radius
+                                                                                .circular(
+                                                                                10),
+                                                                          ),
+                                                                          color: themeProvider
+                                                                              .isDarkMode
+                                                                              ? Color(
+                                                                              0xff67748E)
+                                                                              : Color
+                                                                              .fromRGBO(
+                                                                              255,
+                                                                              255,
+                                                                              255,
+                                                                              1),
+                                                                          border: Border
+                                                                              .all(
+                                                                            color: themeProvider
+                                                                                .isDarkMode
+                                                                                ? Color(
+                                                                                0xffD2D6DA)
+                                                                                : Color
+                                                                                .fromRGBO(
+                                                                                231,
+                                                                                111,
+                                                                                0,
+                                                                                1),
+                                                                            width: 1,
+                                                                          )),
+                                                                      child: Row(
+                                                                        mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                        children: [
+                                                                          Container(
+                                                                              width: 50,
+                                                                              height: 100,
+                                                                              decoration:
+                                                                              BoxDecoration(
+                                                                                borderRadius:
+                                                                                BorderRadius
+                                                                                    .only(
+                                                                                  topLeft: Radius
+                                                                                      .circular(
+                                                                                      10),
+                                                                                  topRight:
+                                                                                  Radius
+                                                                                      .circular(
+                                                                                      10),
+                                                                                  bottomLeft:
+                                                                                  Radius
+                                                                                      .circular(
+                                                                                      10),
+                                                                                  bottomRight:
+                                                                                  Radius
+                                                                                      .circular(
+                                                                                      10),
+                                                                                ),
+                                                                                color: themeProvider
+                                                                                    .isDarkMode
+                                                                                    ? Color(
+                                                                                    0xff808BA1)
+                                                                                    : Color
+                                                                                    .fromRGBO(
+                                                                                    255,
+                                                                                    181,
+                                                                                    94,
+                                                                                    1),
+                                                                              ),
+                                                                              child: Center(
+                                                                                child: Text(
+                                                                                  //_juz[index]['id'],
+                                                                                  '${suraJ[index]}',
+                                                                                  textAlign:
+                                                                                  TextAlign
+                                                                                      .left,
+                                                                                  style: TextStyle(
+                                                                                      fontFamily:
+                                                                                      'Open Sans',
+                                                                                      fontSize:
+                                                                                      24,
+                                                                                      letterSpacing:
+                                                                                      -0.38723403215408325,
+                                                                                      fontWeight: FontWeight
+                                                                                          .normal,
+                                                                                      height:
+                                                                                      1),
+                                                                                ),
+                                                                              )),
+                                                                          Spacer(),
+                                                                          Column(
+                                                                            mainAxisAlignment:
+                                                                            MainAxisAlignment
+                                                                                .center,
+                                                                            children: [
+                                                                              Text(
+                                                                                //_juz[index]['tname'],
+                                                                                getSurahName(
+                                                                                    suraJ[index]),
+                                                                                textAlign:
+                                                                                TextAlign
+                                                                                    .left,
+                                                                                style: TextStyle(
+                                                                                    fontFamily:
+                                                                                    'Open Sans',
+                                                                                    fontSize:
+                                                                                    24,
+                                                                                    letterSpacing:
+                                                                                    -0.38723403215408325,
+                                                                                    fontWeight:
+                                                                                    FontWeight
+                                                                                        .normal,
+                                                                                    height:
+                                                                                    1),
+                                                                              ),
+                                                                              Text(
+                                                                                // _juz[index]['ename'],
+                                                                                getSurahNameEnglish(
+                                                                                    suraJ[index]),
+                                                                                //_juzseName[index],
+                                                                                textAlign:
+                                                                                TextAlign
+                                                                                    .left,
+                                                                                style: TextStyle(
+                                                                                    color: Color
+                                                                                        .fromRGBO(
+                                                                                        151,
+                                                                                        151,
+                                                                                        151,
+                                                                                        1),
+                                                                                    fontFamily:
+                                                                                    'Open Sans',
+                                                                                    fontSize:
+                                                                                    22,
+                                                                                    letterSpacing:
+                                                                                    -0.38723403215408325,
+                                                                                    fontWeight:
+                                                                                    FontWeight
+                                                                                        .normal,
+                                                                                    height:
+                                                                                    1),
+                                                                              )
+                                                                            ],
+                                                                          ),
+                                                                          Spacer()
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  ]); //});
+                                                              //}
+                                                              return CircularProgressIndicator();
+                                                            }) //;})
+                                                            :
+                                                        Center(
+                                                          child: SizedBox(
+                                                            child: CircularProgressIndicator(),
+                                                            width: 50,
+                                                            height: 50,
+                                                          ),
+
+                                                        ),
+                                                      ]))
+                                              ));
+                                        },
+                                      )
+                                          : ListView.builder(
+                                        itemCount: 30,
+                                        itemBuilder:
+                                            (BuildContext context,
+                                            int index) {
+                                          return Padding(
+                                            padding: const EdgeInsets
+                                                .symmetric(
+                                                horizontal: 8.0,
+                                                vertical: 8),
+                                            child: InkWell(
+                                              onTap: () async {
+                                                //await getJuzsName(_juzs[index]["sura_id"]);
+                                                var a =
+                                                await getTotalJPage(
+                                                    _juzs[index]
+                                                    ["id"]);
+                                                Provider.of<AyaProvider>(
+                                                    context,
+                                                    listen: false)
+                                                    .getPage(
+                                                    int.parse(
+                                                        a.first));
+                                                Provider.of<AyaProvider>(
+                                                    context,
+                                                    listen: false)
+                                                    .setDefault();
+                                                Provider.of<AyaProvider>(
+                                                    context,
+                                                    listen: false)
+                                                    .getStart(
+                                                    int.parse(_juzs[
+                                                    index]
+                                                    ['sura_id']),
+                                                    int.parse(
+                                                        a.first));
+
+                                                // Provider.of<AyaProvider>(context,
+                                                //     listen: false)
+                                                //     .getPage(439);
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            SurahScreen(
+                                                                a,
+                                                                "${Provider
+                                                                    .of<
+                                                                    AyaProvider>(
+                                                                    context,
+                                                                    listen: false)
+                                                                    .surahNo}",
+                                                                _juzsName[index]
+                                                                [
+                                                                "tname"],
+                                                                _juzsName[index]
+                                                                [
+                                                                "ename"],
+                                                                0)));
+                                              },
+                                              child: Container(
+                                                width: 400,
+                                                height: 100,
+                                                decoration:
+                                                BoxDecoration(
+                                                    borderRadius:
+                                                    BorderRadius
+                                                        .only(
+                                                      topLeft: Radius
+                                                          .circular(
+                                                          10),
+                                                      topRight: Radius
+                                                          .circular(
+                                                          10),
+                                                      bottomLeft:
+                                                      Radius.circular(
+                                                          10),
+                                                      bottomRight:
+                                                      Radius.circular(
+                                                          10),
+                                                    ),
+                                                    color: themeProvider
+                                                        .isDarkMode
+                                                        ? Color(
+                                                        0xff67748E)
+                                                        : Color.fromRGBO(
+                                                        255,
+                                                        255,
+                                                        255,
+                                                        1),
+                                                    border: Border
+                                                        .all(
+                                                      color: themeProvider
+                                                          .isDarkMode
+                                                          ? Color(
+                                                          0xffD2D6DA)
+                                                          : Color.fromRGBO(
+                                                          231,
+                                                          111,
+                                                          0,
+                                                          1),
+                                                      width: 1,
+                                                    )),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                                  children: [
+                                                    Container(
+                                                        width: 50,
+                                                        height: 100,
+                                                        decoration:
+                                                        BoxDecoration(
+                                                          borderRadius:
+                                                          BorderRadius
+                                                              .only(
+                                                            topLeft: Radius
+                                                                .circular(
+                                                                10),
+                                                            topRight:
+                                                            Radius.circular(
+                                                                10),
+                                                            bottomLeft:
+                                                            Radius.circular(
+                                                                10),
+                                                            bottomRight:
+                                                            Radius.circular(
+                                                                10),
+                                                          ),
+                                                          color: themeProvider
+                                                              .isDarkMode
+                                                              ? Color(
+                                                              0xff808BA1)
+                                                              : Color.fromRGBO(
+                                                              255,
+                                                              181,
+                                                              94,
+                                                              1),
+                                                        ),
+                                                        child: Center(
+                                                          child: Text(
+                                                            '${index + 1}',
+                                                            textAlign:
+                                                            TextAlign
+                                                                .left,
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                'Open Sans',
+                                                                fontSize:
+                                                                24,
+                                                                letterSpacing:
+                                                                -0.38723403215408325,
+                                                                fontWeight: FontWeight
+                                                                    .normal,
+                                                                height:
+                                                                1),
+                                                          ),
+                                                        )),
+                                                    Spacer(),
+                                                    Column(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .center,
+                                                      children: [
+                                                        Text(
+                                                          _list[index]
+                                                          [
+                                                          "tname"],
+                                                          textAlign:
+                                                          TextAlign
+                                                              .left,
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                              'Open Sans',
+                                                              fontSize:
+                                                              24,
+                                                              letterSpacing:
+                                                              -0.38723403215408325,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .normal,
+                                                              height:
+                                                              1),
+                                                        ),
+                                                        Text(
+                                                          _list[index]
+                                                          [
+                                                          "ename"],
+                                                          textAlign:
+                                                          TextAlign
+                                                              .left,
+                                                          style: TextStyle(
+                                                              color: Color
+                                                                  .fromRGBO(
+                                                                  151,
+                                                                  151,
+                                                                  151,
+                                                                  1),
+                                                              fontFamily:
+                                                              'Open Sans',
+                                                              fontSize: MediaQuery
+                                                                  .of(context)
+                                                                  .size
+                                                                  .width <
+                                                                  600
+                                                                  ? 20
+                                                                  : 24,
+                                                              letterSpacing:
+                                                              -0.38723403215408325,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .normal,
+                                                              height:
+                                                              1),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    Spacer()
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      )
+                                          : SkeletonLoader(
+                                        builder: SizedBox(
+                                          height: MediaQuery
+                                              .of(context)
+                                              .size
+                                              .height *
+                                              0.5,
+                                          child: GridView.builder(
+                                            gridDelegate:
+                                            SliverGridDelegateWithFixedCrossAxisCount(
+                                                crossAxisCount:
+                                                MediaQuery
+                                                    .of(context)
+                                                    .size
+                                                    .width <
+                                                    1200
+                                                    ? 2
+                                                    : 3,
+                                                crossAxisSpacing: 5.0,
+                                                mainAxisSpacing: 5.0,
+                                                childAspectRatio: 4),
+                                            itemCount: 30,
+                                            itemBuilder:
+                                                (BuildContext context,
+                                                int index) {
+                                              return Padding(
+                                                padding: const EdgeInsets
+                                                    .symmetric(
+                                                    horizontal: 32.0,
+                                                    vertical: 8),
+                                                child: Container(
+                                                  width: 400,
+                                                  height: 100,
+                                                  decoration:
+                                                  BoxDecoration(
+                                                      borderRadius:
+                                                      BorderRadius
+                                                          .only(
+                                                        topLeft: Radius
+                                                            .circular(
+                                                            10),
+                                                        topRight: Radius
+                                                            .circular(
+                                                            10),
+                                                        bottomLeft: Radius
+                                                            .circular(
+                                                            10),
+                                                        bottomRight: Radius
+                                                            .circular(
+                                                            10),
+                                                      ),
+                                                      color: themeProvider
+                                                          .isDarkMode
+                                                          ? Color(
+                                                          0xff67748E)
+                                                          : Color
+                                                          .fromRGBO(
+                                                          255,
+                                                          255,
+                                                          255,
+                                                          1),
+                                                      border:
+                                                      Border.all(
+                                                        color: themeProvider
+                                                            .isDarkMode
+                                                            ? Color(
+                                                            0xffD2D6DA)
+                                                            : Color.fromRGBO(
+                                                            231,
+                                                            111,
+                                                            0,
+                                                            1),
+                                                        width: 1,
+                                                      )),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                    children: [
+                                                      Container(
+                                                          width: 50,
+                                                          height: 100,
+                                                          decoration:
+                                                          BoxDecoration(
+                                                            borderRadius:
+                                                            BorderRadius
+                                                                .only(
+                                                              topLeft: Radius
+                                                                  .circular(
+                                                                  10),
+                                                              topRight: Radius
+                                                                  .circular(
+                                                                  10),
+                                                              bottomLeft:
+                                                              Radius.circular(
+                                                                  10),
+                                                              bottomRight:
+                                                              Radius.circular(
+                                                                  10),
+                                                            ),
+                                                            color: themeProvider
+                                                                .isDarkMode
+                                                                ? Color(
+                                                                0xff808BA1)
+                                                                : Color
+                                                                .fromRGBO(
+                                                                255,
+                                                                181,
+                                                                94,
+                                                                1),
+                                                          ),
+                                                          child: Center(
+                                                            child: Text(
+                                                              '',
+                                                              textAlign:
+                                                              TextAlign
+                                                                  .left,
+                                                              style: TextStyle(
+                                                                  fontFamily:
+                                                                  'Open Sans',
+                                                                  fontSize:
+                                                                  24,
+                                                                  letterSpacing:
+                                                                  -0.38723403215408325,
+                                                                  fontWeight:
+                                                                  FontWeight
+                                                                      .normal,
+                                                                  height:
+                                                                  1),
+                                                            ),
+                                                          )),
+                                                      Spacer(),
+                                                      Column(
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                        children: const [
+                                                          Text(
+                                                            '',
+                                                            textAlign:
+                                                            TextAlign
+                                                                .left,
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                'Open Sans',
+                                                                fontSize:
+                                                                24,
+                                                                letterSpacing:
+                                                                -0.38723403215408325,
+                                                                fontWeight:
+                                                                FontWeight
+                                                                    .normal,
+                                                                height:
+                                                                1),
+                                                          ),
+                                                          Text(
+                                                            '',
+                                                            textAlign:
+                                                            TextAlign
+                                                                .left,
+                                                            style: TextStyle(
+                                                                color: Color
+                                                                    .fromRGBO(
+                                                                    151,
+                                                                    151,
+                                                                    151,
+                                                                    1),
+                                                                fontFamily:
+                                                                'Open Sans',
+                                                                fontSize:
+                                                                24,
+                                                                letterSpacing:
+                                                                -0.38723403215408325,
+                                                                fontWeight:
+                                                                FontWeight
+                                                                    .normal,
+                                                                height:
+                                                                1),
+                                                          )
+                                                        ],
+                                                      ),
+                                                      Spacer()
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        items: 1,
+                                        period: Duration(seconds: 2),
+                                        highlightColor:
+                                        themeProvider.isDarkMode
+                                            ? Colors.grey
+                                            : Color(0xffaa9f9f),
+                                        direction: SkeletonDirection.rtl,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ]),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          )),
+    );
+  }
+
+  List _total = [];
+
+  final CollectionReference _collectionSura =
+  FirebaseFirestore.instance.collection('sura_relationships');
+
+  Future<List> getTotalPage(String id) async {
+    QuerySnapshot querySnapshot = await _collectionSura
+        .where('sura_id', isEqualTo: id)
+        .orderBy('created_at')
+        .get();
+
+    // Get data from docs and convert map to List
+    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+    setState(() {
+      _total = allData;
+      //print(allData);
+    });
+    var data = _total.map((e) => e["medina_mushaf_page_id"]).toList();
+    //print(data);
+    //print(_total);
+    return data;
+  }
+
+  List _list = [];
+  final CollectionReference _collectionRef =
+  FirebaseFirestore.instance.collection('suras');
+
+  Future<void> getList() async {
+    await Provider.of<BookMarkProvider>(context, listen: false).getList();
+
+    // Get docs from collection reference
+    QuerySnapshot querySnapshot =
+    await _collectionRef.orderBy('created_at').get();
+
+    // Get data from docs and convert map to List
+    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+    setState(() {
+      _list = allData;
+    });
+    //await getSurah();
+  }
+
+  List _totalJuzs = [];
+
+  final CollectionReference _collectionJ =
+  FirebaseFirestore.instance.collection('medina_mushaf_pages');
+
+  Future<List> getTotalJPage(String id) async {
+    QuerySnapshot querySnapshot = await _collectionJ
+        .where('juz_id', isEqualTo: id)
+    //.where('sura_id',isEqualTo: sura_id)
+        .orderBy('created_at')
+        .get();
+
+    // Get data from docs and convert map to List
+    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+    setState(() {
+      _totalJuzs = allData;
+      //print(allData.length);
+    });
+    var data = _totalJuzs.map((e) => e['id']).toList();
+    //print(_totalJuzs);
+    return data;
+  }
+
+  List _juzs = [];
+  final CollectionReference _collectionJuzs =
+  FirebaseFirestore.instance.collection('juzs');
+
+  Future<void> getJuzs() async {
+    await Provider.of<BookMarkProvider>(context, listen: false).getList();
+
+    // Get docs from collection reference
+    QuerySnapshot querySnapshot =
+    await _collectionJuzs.orderBy('created_at').get();
+
+    // Get data from docs and convert map to List
+    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+    setState(() {
+      _juzs = allData;
+    });
+  }
+
+  List juz1 = [
+    2,
+    1,
+    2,
+    2,
+    1,
+    2,
+    2,
+    2,
+    2,
+    2,
+    3,
+    2,
+    3,
+    2,
+    2,
+    3,
+    2,
+    3,
+    3,
+    3,
+    5,
+    4,
+    4,
+    3,
+    5,
+    7,
+    7,
+    9,
+    11,
+    37
+  ];
+
+  //int i=0;
+  List sId = [];
+  List jId = [];
+  List pageId = [];
+  List name = [];
+  List detail = [];
+  List suraJ = [];
+
+  Future<void> getSurah() async {
+    List s = [];
+    List p = [];
+    List juz = [];
+    for (int i = 1; i <= 114; i++) {
+      // Get docs from collection reference
+      await FirebaseFirestore.instance.collection('sura_relationships')
+          .where('sura_id', isEqualTo: i.toString())
+          .orderBy('created_at')
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        for (var doc in querySnapshot.docs) {
+          //setState(() {
+          p.add(doc['medina_mushaf_page_id']);
+          s.add(doc['sura_id']);
+          //});
+        }
+        //setState(() {
+        pageId = p;
+        sId = s;
+        //print(sId);
+      });
+      //});
+    } //print(sId.length);
+    List sur = [];
+    var temp, pre;
+    for (int j = 0; j < pageId.length; j++) {
+      await _collectionJ
+          .where('id', isEqualTo: pageId[j].toString())
+          .orderBy('created_at')
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        for (var doc in querySnapshot.docs) {
+          if (temp != doc['juz_id'] || pre != sId[j]) {
+            temp = doc['juz_id'];
+            pre = sId[j];
+            //setState(() {
+            juz.add(doc['juz_id']);
+            sur.add(int.parse(pre));
+            //});
+          }
+        }
+        //setState(() {
+        jId = juz;
+        suraJ = sur;
+        //print(surJ);
+        // print(sId);
+      });
+      //});
+    }
+    setState(() {
+      dataReady = true;
+    });
+    print(jId);
+    print(suraJ);
+    print(suraJ.length);
+  }
+}
+  /*void generateSurah() async {
+    await getSurah();
+
+    setState(() {
+      dataReady = true;
+    });
+  }*/
+ /*getJ(int id) async {
+    await getSurah();
+    int count=0;
+    for(int k =0; k < jId.length; k++){
+    if(jId[k] == id+1){
+      count=count+1;
+    }
+
+  }
+    print(count);
+    return count;
+}
+}
+
+  List juzId=[];
+  List suraId=[];
+
+  List tname=[];
+  List ename=[];
+
+  Future<void> getJuzsName() async {
+    List s=[];
+    List t = [];
+    List e = [];
+    List j = [];
+   // List x =[[1,2]];
+    for( int k = 0; k < _juzs.length; k++) {
+      // Get docs from collection reference
+      await _collectionJ
+          .where('juz_id', isEqualTo: _juzs[k]["id"])
+      // .where('sura_id', isEqualTo: widget.sura_id)
+          .orderBy('created_at')
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+            var temp;
+        for (var doc in querySnapshot.docs) {
+          //var temp = doc['sura_id'];
+          if(temp!= doc['sura_id']) {
+            temp = doc['sura_id'];
+          setState(() {
+            s.add(doc['sura_id']);
+            j.add(doc['juz_id']);
+           // t.add(doc['tname']);
+           // e.add(doc['ename']);
+            //widget.sura_id = int.parse(doc['sura_id']) as String;
+          });}
+        }
+        setState(() {
+          suraId = s;
+          juzId = j;
+         // tname = t;
+         // ename = e;
+          //print(suraId.length);
+          //print(juzId);
+        });
+      });}
+
+    for( int j = 0; j < suraId.length; j++) {
+      // Get docs from collection reference
+      await _collectionRef
+          .where('id', isEqualTo: suraId[j])
+      // .where('sura_id', isEqualTo: widget.sura_id)
+          .orderBy('created_at')
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        for (var doc in querySnapshot.docs) {
+          setState(() {
+            //s.add(doc['sura_id']);
+            t.add(doc['tname']);
+            e.add(doc['ename']);
+            //widget.sura_id = int.parse(doc['sura_id']) as String;
+          });
+        }
+        setState(() {
+          //suraId = s;
+          tname = t;
+          ename = e;
+          //print(ename.length);
+        });
+      });}
+
+    setState(() {
+      _items = List.generate(
+          118,
+              (index) => {
+            "id": juzId[index],
+            "tname": tname[index],
+            "ename": ename[index],
+            "height": Random().nextInt(150) + 50.5
+          });
+
+    });
+  }
+
+
+
+  List sura=[];
+  Future<List> getSPage(String id) async {
+    QuerySnapshot querySnapshot = await _collectionSura
+        .where('sura_id', isEqualTo: id)
+        .orderBy('created_at')
+        .get();
+
+    // Get data from docs and convert map to List
+    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+    setState(() {
+      sura = allData;
+      //print(allData);
+    });
+    var data = sura.map((e) => e["sura_id"]).toList();
+    //print(data);
+    //print(_total);
+    return data;
+  }
+
+
+
+
+}
+Future <void> getJuzsName() async {
+    await Provider.of<BookMarkProvider>(context, listen: false).getList();
+    List j=[];
+    for (int count =0; count<= _juzs.length+1; count++){
+      //for(int counts =0; counts<= _list.length+1; counts++){
+      //if(_list[counts]["id"]==_juzs[count]["sura_id"]){
+        _juzsName[count]=_juzs[count]["sura_id"];
+      //}//}
+    }
+    print(_juzsName);
+  //for (int count = 0; count <= _juzs.length+1; count++) {
+    // Get docs from collection reference
+    //QuerySnapshot querySnapshot =
+    await _collectionJuzsName
+        .where('id', isEqualTo: _juzsName)
+        .orderBy('created_at').get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        setState(() {
+          j.add(doc['ename']);
+          //print(_juzseName);
+        });
+      }
+
+      setState(() {
+        _juzseName = j;
+        print(_juzseName);
+      });
+    });
+
+    // Get data from docs and convert map to List
+    //final allData = await querySnapshot.docs.map((doc) => doc.data()).toList();
+    /*for (var doc in querySnapshot.docs) {
+      _juzstName.add(doc["tname"]);
+      //_juzs.add(doc["ename"]);
+      setState(() {
+        _juzsName = allData;
+      });
+      //b=_juzstName.map((e) => e["tname"]).toList();
+      //_juzseName.map((e) => e["ename"]).toList();
+      print(_juzsName);
+    } *///return allData;
+  //} //return b;*/

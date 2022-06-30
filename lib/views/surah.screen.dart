@@ -72,7 +72,8 @@ class _SurahScreenState extends State<SurahScreen>
       });
     });
     // You need to save an instance of a GlobalKey in order to call ensureVisible in onOpen.
-    i = widget.index;
+    i = widget.index!;
+
     getHizb();
     getData();
     getStartAyah(widget.allpages[i]);
