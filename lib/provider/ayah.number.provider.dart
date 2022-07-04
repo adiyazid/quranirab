@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:quran/quran.dart';
 import 'package:quranirab/models/word.detail.dart';
 
 import '../models/break.index.model.dart';
@@ -10416,9 +10415,13 @@ class AyaProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> getJuz(int surahNumber, int verseNumber) async {
-    juz = getJuzNumber(surahNumber, verseNumber);
-    print('juz $juz $surahNumber $verseNumber');
+  Future<void> getJuz(int surahNumber, String pageNumber) async {
+    juz = await FirebaseFirestore.instance
+        .collection('medina_mushaf_pages')
+        .doc(pageNumber)
+        .get()
+        .then((value) => int.parse(value['juz_id']));
+    print(juz);
     notifyListeners();
   }
 

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:quran/quran.dart';
 import 'package:quranirab/models/font.size.dart';
 import 'package:quranirab/models/item.model.dart';
 import 'package:quranirab/provider/language.provider.dart';
@@ -145,8 +144,9 @@ class _SurahScreenState extends State<SurahScreen>
     var ids = Provider.of<LangProvider>(context, listen: false).langId;
     await Provider.of<LangProvider>(context, listen: false)
         .getTranslation(ids, widget.sura_id, start);
-    Provider.of<AyaProvider>(context, listen: false)
-        .getJuz(int.parse(widget.sura_id), start!);
+    Provider.of<AyaProvider>(context, listen: false).getJuz(
+        int.parse(widget.sura_id),
+        '${Provider.of<AyaProvider>(context, listen: false).page}');
     // Get docs from collection reference
   }
 
@@ -594,7 +594,6 @@ class TopSura extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(getJuzNumber(int.parse(widget2.sura_id), start ?? 1));
     return Column(
       children: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
