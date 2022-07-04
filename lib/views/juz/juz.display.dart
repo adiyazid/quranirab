@@ -162,7 +162,7 @@ class _JuzContainerState extends State<JuzContainer> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => SurahScreen(
-                              allPages, '$i', name, detail, index)));
+                              allPages, '${i + 1}', name, detail, index)));
                 },
                 title: Text('${widget.list[i]['tname']}'),
                 subtitle: Text('${widget.list[i]['ename']}'),

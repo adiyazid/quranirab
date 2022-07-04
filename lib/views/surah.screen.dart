@@ -116,7 +116,6 @@ class _SurahScreenState extends State<SurahScreen>
           a.add(doc['text']);
         });
       }
-
       setState(() {
         _list = a;
       });
@@ -141,6 +140,7 @@ class _SurahScreenState extends State<SurahScreen>
         }
       }
     });
+    print('starting at $start for page $id and sura id ${widget.sura_id}');
     var ids = Provider.of<LangProvider>(context, listen: false).langId;
     await Provider.of<LangProvider>(context, listen: false)
         .getTranslation(ids, widget.sura_id, start);
