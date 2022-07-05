@@ -66,6 +66,7 @@ class _SignupWidgetState extends State<SignupWidget>
     final theme = Provider.of<ThemeProvider>(context);
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: loading
             ? Center(
                 child: LoadingAnimationWidget.fourRotatingDots(

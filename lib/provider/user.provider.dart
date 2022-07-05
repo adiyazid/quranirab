@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AppUser extends ChangeNotifier {
+  String? cid;
+
   update() {
     notifyListeners();
   }
@@ -57,11 +59,15 @@ class AppUser extends ChangeNotifier {
     );
   }
 
-  Future<void> updateRole() async {
-    db
-        .collection("quranIrabUsers")
-        .doc(AppUser.instance.user!.uid)
-        .set({"role": "premium-user"}, SetOptions(merge: true));
+  Future<void> updateRole(url, pid, cid) async {
+    db.collection("quranIrabUsers").doc(AppUser.instance.user!.uid).set({
+      "role": "premium-user",
+      "receipt-url": url,
+      "payment-id": pid,
+      "cust-id": cid
+    }, SetOptions(merge: true));
+    role = 'premium-user';
+    notifyListeners();
   }
 
   Future<void> updateName(String name) async {
@@ -136,6 +142,11 @@ class AppUser extends ChangeNotifier {
   Future<void> updatePass(String newpass, String oldpass) async {
     AppUser.instance.signIn(email: user!.email!, password: oldpass);
     user!.updatePassword(newpass);
+    notifyListeners();
+  }
+
+  void setCid(custId) {
+    cid = custId;
     notifyListeners();
   }
 }

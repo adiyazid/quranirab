@@ -64,5 +64,13 @@
   "sentence": "句子",
   "seeResult": "查看结果",
   "pleaseAnswerQuestion": "请回答问题",
-  "haveAccSignIn": "有账号吗？登录"
+  "haveAccSignIn": "有账号吗？登录",
+  "featureTranslation": "Press translation tab \nto read translation",
+  "readingAya": "Reading Aya",
+  "swipeHorizontal": "Swipe horizontal to display overflow aya",
+  "wordsDetail": "Word Details",
+  "pressEach": "Press each word to display its details",
+  "customization": "Customization",
+  "clickTo": "Click to change font size and theme",
+  "clickToDisplay": "Click to display other translation languages"
 }

@@ -64,5 +64,13 @@
   "sentence": "Frase",
   "seeResult": "Ver resultado",
   "pleaseAnswerQuestion": "Por favor responde las preguntas",
-  "haveAccSignIn": "¿Tienes cuenta? Iniciar sesión"
+  "haveAccSignIn": "¿Tienes cuenta? Iniciar sesión",
+  "featureTranslation": "Press translation tab \nto read translation",
+  "readingAya": "Reading Aya",
+  "swipeHorizontal": "Swipe horizontal to display overflow aya",
+  "wordsDetail": "Word Details",
+  "pressEach": "Press each word to display its details",
+  "customization": "Customization",
+  "clickTo": "Click to change font size and theme",
+  "clickToDisplay": "Click to display other translation languages"
 }

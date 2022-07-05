@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:quran/quran.dart';
 import 'package:quranirab/models/font.size.dart';
 import 'package:quranirab/models/item.model.dart';
 import 'package:quranirab/provider/language.provider.dart';
-import 'package:quranirab/quiz_module/quiz.home.dart';
 import 'package:quranirab/views/sura.slice/sura.slice.dart';
 import 'package:quranirab/widget/TranslationPopup.dart';
 import 'package:quranirab/widget/responsive.dart' as w;
@@ -63,7 +63,16 @@ class _SurahScreenState extends State<SurahScreen>
   void initState() {
     // TODO: implement initState
     _tabController = TabController(vsync: this, length: 2, initialIndex: 1);
+    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
+      FeatureDiscovery.discoverFeatures(context, const <String>{
+        // Feature ids for every feature that you want to showcase in order.
+        'quranirab_1',
+        'quranirab_4',
+      });
+    });
+    // You need to save an instance of a GlobalKey in order to call ensureVisible in onOpen.
     i = widget.index;
+
     getHizb();
     getData();
     getStartAyah(widget.allpages[i]);
@@ -107,7 +116,6 @@ class _SurahScreenState extends State<SurahScreen>
           a.add(doc['text']);
         });
       }
-
       setState(() {
         _list = a;
       });
@@ -132,255 +140,170 @@ class _SurahScreenState extends State<SurahScreen>
         }
       }
     });
+    print('starting at $start for page $id and sura id ${widget.sura_id}');
     var ids = Provider.of<LangProvider>(context, listen: false).langId;
     await Provider.of<LangProvider>(context, listen: false)
         .getTranslation(ids, widget.sura_id, start);
-
+    Provider.of<AyaProvider>(context, listen: false).getJuz(
+        int.parse(widget.sura_id),
+        '${Provider.of<AyaProvider>(context, listen: false).page}');
     // Get docs from collection reference
   }
 
   bool isDark = false;
-  var c = '';
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    // Provider.of<AyaProvider>(context, listen: false).getScreenSize(context);
-    // Provider.of<AyaProvider>(context, listen: false).getFontSize(context);
-    return Scaffold(
-        backgroundColor: (themeProvider.isDarkMode)
-            ? const Color(0xff666666)
-            : const Color(0xFFffffff),
-        drawer: const Menu(),
-        body: NestedScrollView(
-          physics: const BouncingScrollPhysics(),
-          headerSliverBuilder: (context, value) {
-            return [
-              SliverAppBar(
-                iconTheme: Theme.of(context).iconTheme,
-                leading: IconButton(
-                  icon: const Icon(
-                    Icons.menu,
+    return SafeArea(
+      child: Scaffold(
+          backgroundColor: (themeProvider.isDarkMode)
+              ? const Color(0xff666666)
+              : const Color(0xFFffffff),
+          drawer: const Menu(),
+          body: NestedScrollView(
+            physics: const BouncingScrollPhysics(),
+            headerSliverBuilder: (context, value) {
+              return [
+                SliverAppBar(
+                  iconTheme: Theme.of(context).iconTheme,
+                  leading: IconButton(
+                    icon: const Icon(
+                      Icons.menu,
+                    ),
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
                   ),
-                  onPressed: () {
-                    Scaffold.of(context).openDrawer();
-                  },
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                  title: const CircleAvatar(
+                    backgroundImage: AssetImage('assets/quranirab.png'),
+                    radius: 18.0,
+                  ),
+                  centerTitle: false,
+                  floating: true,
+                  actions: [
+                    Padding(
+                        padding: EdgeInsets.only(right: 20.0),
+                        child: SearchPopup()),
+                    Padding(
+                        padding: EdgeInsets.only(right: 20.0),
+                        child: LangPopup()),
+                    DescribedFeatureOverlay(
+                      description: Text(AppLocalizations.of(context)!.clickTo),
+                      title: Text(AppLocalizations.of(context)!.customization),
+                      tapTarget: Padding(
+                        padding: EdgeInsets.only(right: 20.0),
+                        child: Icon(
+                          Icons.settings,
+                          color: Colors.black,
+                          size: 24,
+                        ),
+                      ),
+                      featureId: 'quranirab_4',
+                      child: Padding(
+                          padding: EdgeInsets.only(right: 20.0),
+                          child: SettingPopup()),
+                    ),
+                  ],
+                  bottom: PreferredSize(
+                    preferredSize: Size.fromHeight(140),
+                    child: TopSura(
+                        widget: widget,
+                        widget1: widget,
+                        hizb: hizb,
+                        widget2: widget,
+                        start: start,
+                        tabController: _tabController,
+                        themeProvider: themeProvider),
+                  ),
                 ),
-                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                title: const CircleAvatar(
-                  backgroundImage: AssetImage('assets/quranirab.png'),
-                  radius: 18.0,
-                ),
-                centerTitle: false,
-                floating: true,
-                actions: const [
-                  Padding(
-                      padding: EdgeInsets.only(right: 20.0),
-                      child: SearchPopup()),
-                  Padding(
-                      padding: EdgeInsets.only(right: 20.0),
-                      child: LangPopup()),
-                  Padding(
-                      padding: EdgeInsets.only(right: 20.0),
-                      child: SettingPopup()),
-                ],
-                bottom: PreferredSize(
-                  preferredSize: Size.fromHeight(140),
-                  child: topSurah(
-                      widget: widget,
-                      widget1: widget,
-                      hizb: hizb,
-                      widget2: widget,
-                      start: start,
-                      tabController: _tabController,
-                      themeProvider: themeProvider),
-                ),
-              ),
-            ];
-          },
-          body: TabBarView(
-            physics: NeverScrollableScrollPhysics(),
-            controller: _tabController,
-            children: [
-              Consumer<LangProvider>(builder: (context, lang, child) {
-                return Translation(
-                  themeProvider: themeProvider,
-                  list: _list,
-                  translate: lang.translate,
-                  widget: widget,
-                  start: start ?? 1,
-                  menuItems: menuItems,
-                  i: i,
-                  widget1: widget,
-                  widget2: widget,
-                  widget3: widget,
-                  widget4: widget,
-                  widget5: widget,
-                );
-              }),
-              SuraSlice(
-                  "${Provider.of<AyaProvider>(context, listen: false).page}",
-                  widget.sura_id),
-            ],
+              ];
+            },
+            body: TabBarView(
+              physics: NeverScrollableScrollPhysics(),
+              controller: _tabController,
+              children: [
+                Consumer<LangProvider>(builder: (context, lang, child) {
+                  return Translation(
+                    themeProvider: themeProvider,
+                    list: _list,
+                    translate: lang.translate,
+                    widget: widget,
+                    start: start ?? 1,
+                    menuItems: menuItems,
+                    i: i,
+                    widget1: widget,
+                    widget2: widget,
+                    widget3: widget,
+                    widget4: widget,
+                    widget5: widget,
+                  );
+                }),
+                SuraSlice(
+                    "${Provider.of<AyaProvider>(context, listen: false).page}",
+                    widget.sura_id),
+              ],
+            ),
           ),
-        ),
-        floatingActionButton: Padding(
-          padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).size.height * 0.08),
-          child: FloatingActionButton.extended(
-              backgroundColor: themeProvider.isDarkMode
-                  ? Colors.blueGrey
-                  : Colors.orangeAccent,
-              onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => QuizHome(
-                          Provider.of<AyaProvider>(context, listen: false)
-                              .page))),
-              label: Text(
-                AppLocalizations.of(context)!.takeAQuiz,
-                style: TextStyle(
-                    color:
-                        themeProvider.isDarkMode ? Colors.white : Colors.black),
-              )),
-        ),
-        bottomSheet: BottomSheet(
-          onClosing: () {},
-          builder: (BuildContext context) {
-            return Container(
-              decoration: BoxDecoration(
-                border: Border(
-                    top: BorderSide(
-                        color: (themeProvider.isDarkMode)
-                            ? const Color(0xffffffff)
-                            : const Color(0xffFFB55F))),
-                color: themeProvider.isDarkMode
-                    ? const Color(0xff666666)
-                    : Colors.white,
-              ),
-              height: MediaQuery.of(context).size.height * 0.1,
-              child: Align(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    MediaQuery.of(context).size.width < 600
-                        ? IconButton(
-                            icon: Icon(Icons.arrow_back_ios),
-                            onPressed: widget.allpages[i] !=
-                                    widget.allpages.first
-                                ? () async {
-                                    Provider.of<AyaProvider>(context,
-                                            listen: false)
-                                        .previousPage();
-                                    Provider.of<AyaProvider>(context,
-                                            listen: false)
-                                        .setDefault();
-                                    Provider.of<AyaProvider>(context,
-                                            listen: false)
-                                        .readJsonData();
-                                    Provider.of<AyaProvider>(context,
-                                            listen: false)
-                                        .readSliceData();
-                                    Provider.of<AyaProvider>(context,
-                                            listen: false)
-                                        .readAya();
-                                    await Provider.of<AyaProvider>(context,
-                                            listen: false)
-                                        .getStart(
-                                            int.parse(widget.sura_id),
-                                            Provider.of<AyaProvider>(context,
-                                                    listen: false)
-                                                .page);
-                                    if (i < int.parse(widget.allpages.last)) {
-                                      setState(() {
-                                        i--;
-                                      });
-                                      await getStartAyah(widget.allpages[i]);
-                                      await nextPage(widget.allpages[i]);
-                                    } else {
-                                      await getStartAyah(widget.allpages[i]);
-                                      await nextPage(widget.allpages[i]);
-                                    }
-                                  }
-                                : null,
-                          )
-                        : Flexible(
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 32, vertical: 18),
-                                    primary: (themeProvider.isDarkMode)
-                                        ? const Color(0xff808BA1)
-                                        : const Color(0xfffcd77a)),
-                                onPressed: widget.allpages[i] !=
-                                        widget.allpages.first
-                                    ? () async {
-                                        Provider.of<AyaProvider>(context,
-                                                listen: false)
-                                            .previousPage();
-                                        Provider.of<AyaProvider>(context,
-                                                listen: false)
-                                            .setDefault();
-                                        Provider.of<AyaProvider>(context,
-                                                listen: false)
-                                            .readJsonData();
-                                        Provider.of<AyaProvider>(context,
-                                                listen: false)
-                                            .readSliceData();
-                                        Provider.of<AyaProvider>(context,
-                                                listen: false)
-                                            .readAya();
-                                        await Provider.of<AyaProvider>(context,
-                                                listen: false)
-                                            .getStart(
-                                                int.parse(widget.sura_id),
-                                                Provider.of<AyaProvider>(
-                                                        context,
-                                                        listen: false)
-                                                    .page);
-                                        if (i <
-                                            int.parse(widget.allpages.last)) {
-                                          setState(() {
-                                            i--;
-                                          });
-                                          await getStartAyah(
-                                              widget.allpages[i]);
-                                          await nextPage(widget.allpages[i]);
-                                        } else {
-                                          await getStartAyah(
-                                              widget.allpages.first);
-                                          await nextPage(widget.allpages.first);
-                                        }
-                                      }
-                                    : null,
-                                child: Text(
-                                  AppLocalizations.of(context)!.prevPage,
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.black,
-                                  ),
-                                )),
-                          ),
-                    Consumer<AyaProvider>(builder: (context, number, child) {
-                      return ElevatedButton(
-                          onPressed:
-                              number.page == int.parse(widget.allpages.first)
-                                  ? null
-                                  : () async {
+          // floatingActionButton: Padding(
+          //   padding: EdgeInsets.only(
+          //       bottom: MediaQuery.of(context).size.height * 0.08),
+          //   child: FloatingActionButton.extended(
+          //       backgroundColor: themeProvider.isDarkMode
+          //           ? Colors.blueGrey
+          //           : Colors.orangeAccent,
+          //       onPressed: () => Navigator.push(
+          //           context,
+          //           MaterialPageRoute(
+          //               builder: (context) => QuizHome(
+          //                   Provider.of<AyaProvider>(context, listen: false)
+          //                       .page))),
+          //       label: Text(
+          //         AppLocalizations.of(context)!.takeAQuiz,
+          //         style: TextStyle(
+          //             color:
+          //                 themeProvider.isDarkMode ? Colors.white : Colors.black),
+          //       )),
+          // ),
+          bottomSheet: BottomSheet(
+            onClosing: () {},
+            builder: (BuildContext context) {
+              return Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                      top: BorderSide(
+                          color: (themeProvider.isDarkMode)
+                              ? const Color(0xffffffff)
+                              : const Color(0xffFFB55F))),
+                  color: themeProvider.isDarkMode
+                      ? const Color(0xff666666)
+                      : Colors.white,
+                ),
+                height: MediaQuery.of(context).size.height * 0.1,
+                child: Align(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      MediaQuery.of(context).size.width < 600
+                          ? IconButton(
+                              icon: Icon(Icons.arrow_back_ios),
+                              onPressed: widget.allpages[i] !=
+                                      widget.allpages.first
+                                  ? () async {
                                       Provider.of<AyaProvider>(context,
                                               listen: false)
-                                          .getPage(
-                                              int.parse(widget.allpages.first));
+                                          .previousPage();
                                       Provider.of<AyaProvider>(context,
                                               listen: false)
                                           .setDefault();
-                                      await Provider.of<AyaProvider>(context,
+                                      Provider.of<AyaProvider>(context,
                                               listen: false)
                                           .readJsonData();
-                                      await Provider.of<AyaProvider>(context,
+                                      Provider.of<AyaProvider>(context,
                                               listen: false)
                                           .readSliceData();
-                                      await Provider.of<AyaProvider>(context,
+                                      Provider.of<AyaProvider>(context,
                                               listen: false)
                                           .readAya();
                                       await Provider.of<AyaProvider>(context,
@@ -390,42 +313,98 @@ class _SurahScreenState extends State<SurahScreen>
                                               Provider.of<AyaProvider>(context,
                                                       listen: false)
                                                   .page);
-                                      await getStartAyah(widget.allpages.first);
-                                      await nextPage(widget.allpages.first);
-                                      setState(() {
-                                        i = 0;
-                                      });
-                                    },
-                          style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 32, vertical: 18),
-                              primary: (themeProvider.isDarkMode)
-                                  ? const Color(0xff4C6A7A)
-                                  : const Color(0xffffeeb0)),
-                          child: Text(
-                            AppLocalizations.of(context)!.beginningSurah,
-                            style: TextStyle(color: Colors.black, fontSize: 18),
-                          ));
-                    }),
-                    MediaQuery.of(context).size.width < 600
-                        ? IconButton(
-                            icon: Icon(Icons.arrow_forward_ios),
-                            onPressed: widget.allpages[i] !=
-                                    widget.allpages.last
-                                ? () async {
+                                      if (i < int.parse(widget.allpages.last)) {
+                                        setState(() {
+                                          i--;
+                                        });
+                                        await getStartAyah(widget.allpages[i]);
+                                        await nextPage(widget.allpages[i]);
+                                      } else {
+                                        await getStartAyah(widget.allpages[i]);
+                                        await nextPage(widget.allpages[i]);
+                                      }
+                                    }
+                                  : null,
+                            )
+                          : Flexible(
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 32, vertical: 18),
+                                      primary: (themeProvider.isDarkMode)
+                                          ? const Color(0xff808BA1)
+                                          : const Color(0xfffcd77a)),
+                                  onPressed: widget.allpages[i] !=
+                                          widget.allpages.first
+                                      ? () async {
+                                          Provider.of<AyaProvider>(context,
+                                                  listen: false)
+                                              .previousPage();
+                                          Provider.of<AyaProvider>(context,
+                                                  listen: false)
+                                              .setDefault();
+                                          Provider.of<AyaProvider>(context,
+                                                  listen: false)
+                                              .readJsonData();
+                                          Provider.of<AyaProvider>(context,
+                                                  listen: false)
+                                              .readSliceData();
+                                          Provider.of<AyaProvider>(context,
+                                                  listen: false)
+                                              .readAya();
+                                          await Provider.of<AyaProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .getStart(
+                                                  int.parse(widget.sura_id),
+                                                  Provider.of<AyaProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .page);
+                                          if (i <
+                                              int.parse(widget.allpages.last)) {
+                                            setState(() {
+                                              i--;
+                                            });
+                                            await getStartAyah(
+                                                widget.allpages[i]);
+                                            await nextPage(widget.allpages[i]);
+                                          } else {
+                                            await getStartAyah(
+                                                widget.allpages.first);
+                                            await nextPage(
+                                                widget.allpages.first);
+                                          }
+                                        }
+                                      : null,
+                                  child: Text(
+                                    AppLocalizations.of(context)!.prevPage,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                    ),
+                                  )),
+                            ),
+                      Consumer<AyaProvider>(builder: (context, number, child) {
+                        return ElevatedButton(
+                            onPressed: number.page ==
+                                    int.parse(widget.allpages.first)
+                                ? null
+                                : () async {
                                     Provider.of<AyaProvider>(context,
                                             listen: false)
-                                        .nextPage();
+                                        .getPage(
+                                            int.parse(widget.allpages.first));
                                     Provider.of<AyaProvider>(context,
                                             listen: false)
                                         .setDefault();
-                                    Provider.of<AyaProvider>(context,
+                                    await Provider.of<AyaProvider>(context,
                                             listen: false)
                                         .readJsonData();
-                                    Provider.of<AyaProvider>(context,
+                                    await Provider.of<AyaProvider>(context,
                                             listen: false)
                                         .readSliceData();
-                                    Provider.of<AyaProvider>(context,
+                                    await Provider.of<AyaProvider>(context,
                                             listen: false)
                                         .readAya();
                                     await Provider.of<AyaProvider>(context,
@@ -435,82 +414,132 @@ class _SurahScreenState extends State<SurahScreen>
                                             Provider.of<AyaProvider>(context,
                                                     listen: false)
                                                 .page);
-                                    if (i < int.parse(widget.allpages.last)) {
-                                      setState(() {
-                                        i++;
-                                      });
-                                      await getStartAyah(widget.allpages[i]);
-                                      await nextPage(widget.allpages[i]);
-                                    } else {
-                                      await getStartAyah(widget.allpages.last);
-                                      await nextPage(widget.allpages.last);
-                                    }
-                                  }
-                                : null,
-                          )
-                        : Flexible(
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 32, vertical: 18),
-                                    primary: (themeProvider.isDarkMode)
-                                        ? const Color(0xff808BA1)
-                                        : const Color(0xfffcd77a)),
-                                onPressed: widget.allpages[i] !=
-                                        widget.allpages.last
-                                    ? () async {
-                                        Provider.of<AyaProvider>(context,
-                                                listen: false)
-                                            .nextPage();
-                                        Provider.of<AyaProvider>(context,
-                                                listen: false)
-                                            .setDefault();
-                                        Provider.of<AyaProvider>(context,
-                                                listen: false)
-                                            .readJsonData();
-                                        Provider.of<AyaProvider>(context,
-                                                listen: false)
-                                            .readSliceData();
-                                        Provider.of<AyaProvider>(context,
-                                                listen: false)
-                                            .readAya();
-                                        await Provider.of<AyaProvider>(context,
-                                                listen: false)
-                                            .getStart(
-                                                int.parse(widget.sura_id),
-                                                Provider.of<AyaProvider>(
-                                                        context,
-                                                        listen: false)
-                                                    .page);
-                                        if (i <
-                                            int.parse(widget.allpages.last)) {
-                                          setState(() {
-                                            i++;
-                                          });
-                                          await getStartAyah(
-                                              widget.allpages[i]);
-                                          await nextPage(widget.allpages[i]);
-                                        } else {
-                                          await getStartAyah(
-                                              widget.allpages.last);
-                                          await nextPage(widget.allpages.last);
-                                        }
+                                    await getStartAyah(widget.allpages.first);
+                                    await nextPage(widget.allpages.first);
+                                    setState(() {
+                                      i = 0;
+                                    });
+                                  },
+                            style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 32, vertical: 18),
+                                primary: (themeProvider.isDarkMode)
+                                    ? const Color(0xff4C6A7A)
+                                    : const Color(0xffffeeb0)),
+                            child: Text(
+                              AppLocalizations.of(context)!.beginningSurah,
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 18),
+                            ));
+                      }),
+                      MediaQuery.of(context).size.width < 600
+                          ? IconButton(
+                              icon: Icon(Icons.arrow_forward_ios),
+                              onPressed: widget.allpages[i] !=
+                                      widget.allpages.last
+                                  ? () async {
+                                      Provider.of<AyaProvider>(context,
+                                              listen: false)
+                                          .nextPage();
+                                      Provider.of<AyaProvider>(context,
+                                              listen: false)
+                                          .setDefault();
+                                      Provider.of<AyaProvider>(context,
+                                              listen: false)
+                                          .readJsonData();
+                                      Provider.of<AyaProvider>(context,
+                                              listen: false)
+                                          .readSliceData();
+                                      Provider.of<AyaProvider>(context,
+                                              listen: false)
+                                          .readAya();
+                                      await Provider.of<AyaProvider>(context,
+                                              listen: false)
+                                          .getStart(
+                                              int.parse(widget.sura_id),
+                                              Provider.of<AyaProvider>(context,
+                                                      listen: false)
+                                                  .page);
+                                      if (i < int.parse(widget.allpages.last)) {
+                                        setState(() {
+                                          i++;
+                                        });
+                                        await getStartAyah(widget.allpages[i]);
+                                        await nextPage(widget.allpages[i]);
+                                      } else {
+                                        await getStartAyah(
+                                            widget.allpages.last);
+                                        await nextPage(widget.allpages.last);
                                       }
-                                    : null,
-                                child: Text(
-                                  AppLocalizations.of(context)!.nextPage,
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.black,
-                                  ),
-                                )),
-                          ),
-                  ],
+                                    }
+                                  : null,
+                            )
+                          : Flexible(
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 32, vertical: 18),
+                                      primary: (themeProvider.isDarkMode)
+                                          ? const Color(0xff808BA1)
+                                          : const Color(0xfffcd77a)),
+                                  onPressed: widget.allpages[i] !=
+                                          widget.allpages.last
+                                      ? () async {
+                                          Provider.of<AyaProvider>(context,
+                                                  listen: false)
+                                              .nextPage();
+                                          Provider.of<AyaProvider>(context,
+                                                  listen: false)
+                                              .setDefault();
+                                          Provider.of<AyaProvider>(context,
+                                                  listen: false)
+                                              .readJsonData();
+                                          Provider.of<AyaProvider>(context,
+                                                  listen: false)
+                                              .readSliceData();
+                                          Provider.of<AyaProvider>(context,
+                                                  listen: false)
+                                              .readAya();
+                                          await Provider.of<AyaProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .getStart(
+                                                  int.parse(widget.sura_id),
+                                                  Provider.of<AyaProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .page);
+                                          if (i <
+                                              int.parse(widget.allpages.last)) {
+                                            setState(() {
+                                              i++;
+                                            });
+                                            await getStartAyah(
+                                                widget.allpages[i]);
+                                            await nextPage(widget.allpages[i]);
+                                          } else {
+                                            await getStartAyah(
+                                                widget.allpages.last);
+                                            await nextPage(
+                                                widget.allpages.last);
+                                          }
+                                        }
+                                      : null,
+                                  child: Text(
+                                    AppLocalizations.of(context)!.nextPage,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                    ),
+                                  )),
+                            ),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          },
-        ));
+              );
+            },
+          )),
+    );
   }
 
   Future<double> checkFont() async {
@@ -542,8 +571,8 @@ class _SurahScreenState extends State<SurahScreen>
   }
 }
 
-class topSurah extends StatelessWidget {
-  const topSurah({
+class TopSura extends StatelessWidget {
+  const TopSura({
     Key? key,
     required this.widget,
     required this.widget1,
@@ -571,7 +600,7 @@ class topSurah extends StatelessWidget {
           Flexible(
             child: ListTile(
               title: Text(
-                "${widget.name}",
+                widget.name,
                 style: TextStyle(
                   fontSize: MediaQuery.of(context).size.width < 500 ? 15 : 20,
                 ),
@@ -600,7 +629,7 @@ class topSurah extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        'Juz ${getJuzNumber(int.parse(widget2.sura_id), start ?? 1)} / Hizb $hizb - Page ${aya.page}',
+                        'Juz ${aya.juz} / Hizb $hizb - Page ${aya.page}',
                         style: TextStyle(
                           fontSize:
                               MediaQuery.of(context).size.width < 500 ? 15 : 20,
@@ -610,7 +639,21 @@ class topSurah extends StatelessWidget {
                   }),
                 )
               : Container(),
-          TransPopup(),
+          DescribedFeatureOverlay(
+              contentLocation: ContentLocation.below,
+              description: Text(AppLocalizations.of(context)!.clickToDisplay),
+              title: Text(AppLocalizations.of(context)!.translations +
+                  " " +
+                  AppLocalizations.of(context)!.language),
+              tapTarget: ImageIcon(
+                AssetImage(
+                  "assets/translation_icon.png",
+                ),
+                color: Colors.black,
+                size: 50,
+              ),
+              featureId: 'quranirab_5',
+              child: TransPopup()),
         ]),
         Padding(
           padding: EdgeInsets.symmetric(
@@ -625,16 +668,27 @@ class topSurah extends StatelessWidget {
                     // Creates border
                     color: Theme.of(context).primaryColor),
                 tabs: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Tab(
-                      child: Text(
-                        AppLocalizations.of(context)!.translations,
-                        style: TextStyle(
-                            fontSize: 20,
-                            color: themeProvider.isDarkMode
-                                ? Colors.white
-                                : Colors.black),
+                  DescribedFeatureOverlay(
+                    title: Text(AppLocalizations.of(context)!.translations),
+                    description:
+                        Text(AppLocalizations.of(context)!.featureTranslation),
+                    tapTarget: Icon(
+                      Icons.check,
+                      size: 24,
+                      color: Colors.black,
+                    ),
+                    featureId: 'quranirab_2',
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Tab(
+                        child: Text(
+                          AppLocalizations.of(context)!.translations,
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: themeProvider.isDarkMode
+                                  ? Colors.white
+                                  : Colors.black),
+                        ),
                       ),
                     ),
                   ),

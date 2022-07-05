@@ -61,7 +61,7 @@ class Menu extends StatelessWidget {
                 icon: Icons.home_outlined,
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.pushNamed(context, RoutesName.homePage);
+                  Navigator.pushReplacementNamed(context, RoutesName.homePage);
                 },
                 darkMode: themeProvider.isDarkMode),
             const SizedBox(height: 16),
@@ -121,7 +121,7 @@ class Menu extends StatelessWidget {
               onTap: () async {
                 Navigator.pop(context);
                 await AppUser.instance.signOut();
-                Navigator.pushNamed(context, RoutesName.loginPage);
+                Navigator.pushReplacementNamed(context, RoutesName.loginPage);
               },
             )
           ],
