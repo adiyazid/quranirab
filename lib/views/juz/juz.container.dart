@@ -95,6 +95,12 @@ class _JuzContainerState extends State<JuzContainer> {
   Future<List> getJuzRange(int suraId) async {
     print('$suraId ${widget.mainIndex}');
     if (suraId == 11 && widget.mainIndex + 1 == 11) return ['221'];
+    if (suraId == 84 && widget.mainIndex + 1 == 30) return ['589'];
+    if (suraId == 88 && widget.mainIndex + 1 == 30) return ['592'];
+    if (suraId == 90 && widget.mainIndex + 1 == 30)
+      return [
+        '594',
+      ];
     List list = [];
     try {
       await FirebaseFirestore.instance
