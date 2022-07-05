@@ -100,6 +100,35 @@ class _JuzContainerState extends State<JuzContainer> {
     if (suraId == 90 && widget.mainIndex + 1 == 30) return ['594'];
 
     List list = [];
+    if (suraId == 5 && widget.mainIndex + 1 == 6) {
+      list.add('106');
+    } else if (suraId == 11 && widget.mainIndex + 1 == 11) {
+      list.add('221');
+    } else if (suraId == 12 && widget.mainIndex + 1 == 12) {
+      list.add('235');
+    } else if (suraId == 14 && widget.mainIndex + 1 == 13) {
+      list.add('255');
+    } else if (suraId == 16 && widget.mainIndex + 1 == 14) {
+      list.add('267');
+    } else if (suraId == 18 && widget.mainIndex + 1 == 15) {
+      list.add('293');
+    } else if (suraId == 20 && widget.mainIndex + 1 == 16) {
+      list.add('312');
+    } else if (suraId == 25 && widget.mainIndex + 1 == 18) {
+      list.add('359');
+    } else if (suraId == 28 && widget.mainIndex + 1 == 20) {
+      list.add('385');
+    } else if (suraId == 29 && widget.mainIndex + 1 == 20) {
+      list.add('396');
+    } else if (suraId == 30 && widget.mainIndex + 1 == 21) {
+      list.add('404');
+    } else if (suraId == 35 && widget.mainIndex + 1 == 22) {
+      list.add('434');
+    } else if (suraId == 36 && widget.mainIndex + 1 == 22) {
+      list.add('440');
+    } else if (suraId == 39 && widget.mainIndex + 1 == 23) {
+      list.add('458');
+    }
     try {
       await FirebaseFirestore.instance
           .collection('medina_mushaf_pages')
