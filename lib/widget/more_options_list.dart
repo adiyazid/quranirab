@@ -129,18 +129,12 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                       },
                     ),
                   SizedBox(
-                    height: kIsWeb
-                        ? MediaQuery.of(context).size.height * 0.7
-                        : MediaQuery.of(context).size.height * 0.6,
+                    height: MediaQuery.of(context).size.height * 0.7,
                     child: TreeView(
                       startExpanded: true,
                       children: _getChildList(parent),
                     ),
                   ),
-                  if (!kIsWeb)
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.1,
-                    )
                 ],
               ),
             )
