@@ -5,6 +5,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/models/payment.output.dart';
 import 'package:quranirab/provider/user.provider.dart';
+import 'package:quranirab/views/payment/generated/group1widget.dart';
+import 'package:quranirab/views/payment/generated/group2widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../services/stripe.service.dart';
@@ -106,63 +108,46 @@ class _PaymentScreenState extends State<PaymentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              if (custId == null)
-                TextField(
-                  controller: _phone,
-                  decoration: InputDecoration(label: Text('Phone Number')),
-                ),
-              if (custId == null)
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      if (_phone.text.isNotEmpty) {
-                        await checkout(context, _phone.text);
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Insert Phone Number')));
-                      }
-                    },
-                    child: const Text('Check Out'),
-                  ),
-                ),
-              if (_paymentOutput != null)
-                Flexible(
-                  child: ListView(
-                    children: [
-                      ListTile(
-                          title: Text('Payment ID'),
-                          subtitle: Text(_paymentOutput!.id)),
-                      ListTile(
-                          title: Text('Payment Status'),
-                          subtitle: Text(_paymentOutput!.status)),
-                      ListTile(
-                          title: Text('Payment Amount'),
-                          subtitle: Text(_paymentOutput!.currency +
-                              ' ' +
-                              _paymentOutput!.amount.toString().substring(
-                                  0,
-                                  _paymentOutput!.amount.toString().length -
-                                      2))),
-                      ElevatedButton(
-                          onPressed: () {
-                            launchUrl(Uri.parse(
-                                _paymentOutput!.charges.data.last.receiptUrl));
-                          },
-                          child: Text('Get Receipt')),
-                    ],
-                  ),
-                )
-            ],
-          ),
-        ),
-      ),
-    );
+        body: ClipRRect(
+          borderRadius: BorderRadius.zero,
+          child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                return SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Wrap(
+                      direction: Axis.horizontal,
+                      alignment: WrapAlignment.center,
+                      spacing:8.0,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.zero,
+                          child: Container(
+                            color: Color.fromARGB(255, 255, 255, 255),
+                          ),
+                        ),
+                        Container(
+                          /*left: 89.0,
+                          top: 115.0,
+                          right: null,
+                          bottom: null,*/
+                          margin: const EdgeInsets.all(40.0),
+                          width: 509.0,
+                          height: MediaQuery.of(context).size.height*0.8,
+                          child: Group1Widget(),
+                        ),
+                        Container(
+                          /*left: null,
+                          top: null,
+                          right: 86.0,
+                          bottom: 178.0,*/
+                          margin: const EdgeInsets.all(65.0),
+                          width: 509.0,
+                          height: MediaQuery.of(context).size.height*0.85,
+                          child: Group2Widget(),
+                        )
+                      ]),
+                );
+              }),
+        ));
   }
 }
