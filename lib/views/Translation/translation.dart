@@ -14,7 +14,7 @@ class Translation extends StatefulWidget {
     required List list,
     required List translate,
     required this.widget,
-    required this.start,
+    this.start,
     required this.menuItems,
     required this.widget1,
     required this.i,
@@ -98,10 +98,11 @@ class _TranslationState extends State<Translation> {
                                         child: Text(
                                           '${widget.widget.sura_id}:${widget.start! + index}',
                                           style: TextStyle(
-                                              fontSize: fontsize.value,
-                                              color: Theme.of(
-                                                  context)
-                                                  .textSelectionTheme.selectionColor,),
+                                            fontSize: fontsize.value,
+                                            color: Theme.of(context)
+                                                .textSelectionTheme
+                                                .selectionColor,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -160,10 +161,10 @@ class _TranslationState extends State<Translation> {
                                                                           .sura_id,
                                                                       widget
                                                                           .widget
-                                                                          .name!,
+                                                                          .name,
                                                                       widget
                                                                           .widget
-                                                                          .detail!,
+                                                                          .detail,
                                                                       pages);
                                                                 }
                                                               },
@@ -243,8 +244,8 @@ class _TranslationState extends State<Translation> {
                                       Flexible(
                                         child: Text(
                                           widget._translate[index],
-                                          textAlign: TextAlign.justify,
                                           style: TextStyle(
+                                            fontFamily: 'MeQuran2',
                                             fontSize: fontsize.value,
                                           ),
                                         ),

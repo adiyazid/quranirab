@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AppUser extends ChangeNotifier {
+  String? cid;
+
   update() {
     notifyListeners();
   }
@@ -16,21 +18,24 @@ class AppUser extends ChangeNotifier {
   User? get user => FirebaseAuth.instance.currentUser;
 
   factory AppUser() => AppUser._();
-  String role = 'None';
+  String? role = 'No data';
 
   static AppUser get instance => AppUser();
   FirebaseFirestore db = FirebaseFirestore.instance;
 
   signOut() async {
     await FirebaseAuth.instance.signOut();
-    role = '';
+    role = 'No data';
     notifyListeners();
   }
 
   Future<void> signIn({required String email, required String password}) async {
     try {
       await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((value) async {
+        await getRole();
+      });
       print('Sign in Successful');
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -46,13 +51,22 @@ class AppUser extends ChangeNotifier {
   Future<void> getRole() async {
     final docRef =
         db.collection("quranIrabUsers").doc(AppUser.instance.user!.uid);
-    role = await docRef.get().then(
-          (value) {
-            var role = value['role'] ?? 'None';
-            return role;
-          },
-        ) ??
-        'None';
+    await docRef.get().then(
+      (value) {
+        role = value['role'];
+        notifyListeners();
+      },
+    );
+  }
+
+  Future<void> updateRole(url, pid, cid) async {
+    db.collection("quranIrabUsers").doc(AppUser.instance.user!.uid).set({
+      "role": "premium-user",
+      "receipt-url": url,
+      "payment-id": pid,
+      "cust-id": cid
+    }, SetOptions(merge: true));
+    role = 'premium-user';
     notifyListeners();
   }
 
@@ -90,6 +104,7 @@ class AppUser extends ChangeNotifier {
         .collection("quranIrabUsers")
         .doc(AppUser.instance.user!.uid)
         .set({
+      "role": 'user',
       "first_name": firstname,
       "last_name": lastname,
       "email": email,
@@ -127,6 +142,11 @@ class AppUser extends ChangeNotifier {
   Future<void> updatePass(String newpass, String oldpass) async {
     AppUser.instance.signIn(email: user!.email!, password: oldpass);
     user!.updatePassword(newpass);
+    notifyListeners();
+  }
+
+  void setCid(custId) {
+    cid = custId;
     notifyListeners();
   }
 }

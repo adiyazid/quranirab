@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:get_storage/get_storage.dart';
 
 class ThemeProvider extends ChangeNotifier {
-  ThemeMode themeMode = ThemeMode.system;
+  ThemeMode? themeMode;
+  var box = GetStorage();
+
+  ThemeProvider() {
+    getLocal();
+  }
 
   bool get isDarkMode {
     if (themeMode == ThemeMode.system) {
@@ -13,8 +19,20 @@ class ThemeProvider extends ChangeNotifier {
     }
   }
 
-  void toggleTheme(bool isOn) {
+  Future<void> toggleTheme(bool isOn) async {
     themeMode = isOn ? ThemeMode.dark : ThemeMode.light;
+    await box.write('dark', isOn);
+    notifyListeners();
+  }
+
+  Future<void> getLocal() async {
+    var bool = await box.read('dark');
+    if (bool == null) {
+      themeMode = ThemeMode.system;
+    } else {
+      if (!bool) themeMode = ThemeMode.light;
+      if (bool) themeMode = ThemeMode.dark;
+    }
     notifyListeners();
   }
 }
@@ -41,7 +59,9 @@ class QuranThemes {
     // icon color white and orange
     // textSelectionTheme:
     // const TextSelectionThemeData(cursorColor: Colors.orange),
-    colorScheme: const ColorScheme.dark(),
+    colorScheme: const ColorScheme.dark(
+      primary: Color(0xFF67748E),
+    ),
     textSelectionTheme: TextSelectionThemeData(selectionColor: Colors.white),
   );
   static final lightTheme = ThemeData(
@@ -52,7 +72,9 @@ class QuranThemes {
     secondaryHeaderColor: Colors.black,
     scaffoldBackgroundColor: Colors.white,
     primaryColor: const Color(0xFFFFC896),
-    colorScheme: ColorScheme.light(),
+    colorScheme: ColorScheme.light(
+      primary: Color(0xFFFFC896),
+    ),
     iconTheme: const IconThemeData(color: Color(0xFFE86F00)),
     indicatorColor: Colors.orange,
     primarySwatch: Colors.orange,

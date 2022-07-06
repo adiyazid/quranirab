@@ -63,5 +63,14 @@
   "wordType": "Word Type",
   "sentence": "Sentence",
   "seeResult": "See Result",
-  "pleaseAnswerQuestion": "Please answer the questions"
+  "pleaseAnswerQuestion": "Please answer the questions",
+  "haveAccSignIn": "Have account? Sign in",
+  "featureTranslation": "Press translation tab \nto read translation",
+  "readingAya": "Reading Aya",
+  "swipeHorizontal": "Swipe horizontal to display overflow aya",
+  "wordsDetail": "Word Details",
+  "pressEach": "Press each word to display \nits details",
+  "customization": "Customization",
+  "clickTo": "Click to change font size and theme",
+  "clickToDisplay": "Click to display other translation languages"
 }

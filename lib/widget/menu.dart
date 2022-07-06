@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/quiz_module/LeaderBoard.Menu.dart';
 import 'package:quranirab/theme/theme_provider.dart';
-import 'package:quranirab/views/auth/landing.page.dart';
-import 'package:quranirab/views/home.page.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../Routes/route.dart';
 import '../views/user.profile/user.profile.dart';
 
 class Menu extends StatelessWidget {
@@ -61,10 +61,7 @@ class Menu extends StatelessWidget {
                 icon: Icons.home_outlined,
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const HomePage()));
+                  Navigator.pushReplacementNamed(context, RoutesName.homePage);
                 },
                 darkMode: themeProvider.isDarkMode),
             const SizedBox(height: 16),
@@ -124,8 +121,7 @@ class Menu extends StatelessWidget {
               onTap: () async {
                 Navigator.pop(context);
                 await AppUser.instance.signOut();
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => LandingPage()));
+                Navigator.pushReplacementNamed(context, RoutesName.loginPage);
               },
             )
           ],

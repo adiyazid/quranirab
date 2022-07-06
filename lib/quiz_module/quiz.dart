@@ -1,9 +1,7 @@
-import 'dart:math';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import    'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/models/option-model.dart';
@@ -19,8 +17,8 @@ import '../word-relationship-model.dart';
 
 class Quiz extends StatefulWidget {
   final int page;
-
-  const Quiz(this.page, {Key? key}) : super(key: key);
+  final int oldScore;
+  const Quiz(this.page, this.oldScore, {Key? key}) : super(key: key);
 
   @override
   _QuizState createState() => _QuizState();
@@ -46,346 +44,358 @@ class _QuizState extends State<Quiz> {
   List<WordRelationship> answers = [];
 
   final PageController _controller = PageController(initialPage: 0);
-  var windowWidth;
-  var windowHeight;
-  double windowSize = 0;
   late String btnText;
   int btnIndex = 0;
   int score = 0;
   bool btnPressed = false;
-
+  String status = 'Loading ...';
   bool answered = false;
 
   @override
   void initState() {
-    btnText = AppLocalizations.of(context)!.next;
-    generateQuestions();
     super.initState();
+    Future.delayed(Duration.zero, () {
+      generateQuestions();
+      btnText = AppLocalizations.of(context)!.next;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     var themeProvider = Provider.of<ThemeProvider>(context);
-    windowWidth = MediaQuery.of(context).size.width;
-    windowHeight = MediaQuery.of(context).size.height;
-    windowSize = min(windowWidth, windowHeight);
-    return Scaffold(
-      backgroundColor:
-          themeProvider.isDarkMode ? Color(0xff666666) : ManyColors.color17,
-      body: dataReady
-          ? PageView.builder(
-              controller: _controller,
-              onPageChanged: (page) {
-                if (page == wordList.length - 1) {
-                  setState(() {
-                    btnText = AppLocalizations.of(context)!.seeResult;
-                  });
-                }
-                setState(() {
-                  answered = false;
-                });
-              },
-              itemBuilder: (context, index) {
-                return Column(
-                  children: [
-                    const SizedBox(
-                      height: 30.0,
-                    ),
-                    Container(
-                      color: themeProvider.isDarkMode
-                          ? Color(0xff666666)
-                          : ManyColors.color17,
-                      padding: const EdgeInsets.all(10.0),
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.8,
-                      child: Column(
-                        children: [
-                          Center(
-                            child: Container(
-                              padding: const EdgeInsets.all(10.0),
-                              width: MediaQuery.of(context).size.width * 0.7,
-                              //0.8
-                              height: MediaQuery.of(context).size.height * 0.7,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Colors.grey,
-                                    spreadRadius: 3,
-                                    blurRadius: 9,
-                                    offset: Offset(3, 3),
-                                  ),
-                                ],
-                              ),
-                              child: Column(
-                                children: [
-                                  const SizedBox(
-                                    height: 40.0,
-                                  ),
-                                  Center(
-                                    child: SizedBox(
-                                      height: 40,
-                                      child: Text(
-                                        AppLocalizations.of(context)!.question +
-                                            (index + 1).toString() +
-                                            ' / ' +
-                                            wordList.length.toString(),
-                                        style: const TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 22.0,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 60),
-                                  Center(
-                                    child: SizedBox(
-                                      height: 40.0,
-                                      child: Text(
-                                        AppLocalizations.of(context)!.sentence,
-                                        //ayat_quran[index].toString(),
-                                        style: const TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 22.0,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                  ),
-                                  const Divider(
-                                    color: Colors.black,
-                                    indent: 30.0,
-                                    endIndent: 30.0,
-                                  ),
-                                  Center(
-                                    child: SizedBox(
-                                      height: 40.0,
-                                      child: Text(
-                                        wordList[index].text.toString(),
-                                        //word_quran[index].toString(),
-                                        style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 22.0,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'MeQuran2',
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const Divider(
-                                    color: Colors.black,
-                                    indent: 30.0,
-                                    endIndent: 30.0,
-                                  ),
-                                  Center(
-                                    child: SizedBox(
-                                      height: 60.0,
-                                      child: Text(
-                                        question.translation,
-                                        //question_quran[index].toString(),
-                                        style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 22.0,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'MeQuran2',
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Center(
-                                    child: SizedBox(
-                                      child: Text(
-                                        question.question,
-                                        //questions[index].question,
-                                        style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 18.0,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 20.00,
-                                  ),
-                                  Expanded(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        for (int i = 0;
-                                            i < options_arabic.length;
-                                            i++)
-                                          Flexible(
-                                            fit: FlexFit.loose,
-                                            flex: 1,
-                                            child: Container(
-                                              margin: const EdgeInsets.all(3),
-                                              child: RawMaterialButton(
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5)),
-                                                elevation: 0.0,
-                                                fillColor: btnPressed
-                                                    ? options_arabic[i]
-                                                            .isSelected
-                                                        ? options_arabic[i]
-                                                                .isCorrect
-                                                            ? Colors.green
-                                                            : Colors.red
-                                                        : !correctAnswer
-                                                            ? options_arabic[i]
-                                                                    .isCorrect
-                                                                ? Colors.green
-                                                                : !options_arabic[
-                                                                            i]
-                                                                        .isSelected
-                                                                    ? themeProvider
-                                                                            .isDarkMode
-                                                                        ? AppColor
-                                                                            .secondaryColor
-                                                                        : AppColor
-                                                                            .pripmaryColor
-                                                                    : null
-                                                            : themeProvider
-                                                                    .isDarkMode
-                                                                ? AppColor
-                                                                    .secondaryColor
-                                                                : AppColor
-                                                                    .pripmaryColor
-                                                    : themeProvider.isDarkMode
-                                                        ? AppColor
-                                                            .secondaryColor
-                                                        : AppColor
-                                                            .pripmaryColor,
-                                                onPressed: !answered
-                                                    ? () {
-                                                        selectedOption =
-                                                            options_arabic[i]
-                                                                .id;
-                                                        options_arabic[i]
-                                                            .isSelected = true;
-                                                        checkAnswer(
-                                                            wordList[index]
-                                                                .id
-                                                                .toString(),
-                                                            selectedOption);
 
-                                                        /**
-                                                if (questions[index]
-                                                .answers!
-                                                .values
-                                                .toList()[i]) {
-                                                score++;
-                                                print("yes");
-                                                } else {
-                                                print("no");
-                                                }
-                                             **/
-                                                        setState(() {
-                                                          btnPressed = true;
-                                                          answered = true;
-                                                        });
-                                                      }
-                                                    : null,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(5.0),
-                                                  child: AutoSizeText(
-                                                    options_arabic[i].text,
-                                                    //questions[index].answers!.keys.toList()[i],
-                                                    softWrap: false,
-                                                    style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 18.0,
-                                                      fontFamily: 'MeQuran2',
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor:
+            themeProvider.isDarkMode ? Color(0xff666666) : ManyColors.color17,
+        body: dataReady
+            ? PageView.builder(
+                controller: _controller,
+                onPageChanged: (page) {
+                  if (page == wordList.length - 1) {
+                    setState(() {
+                      btnText = AppLocalizations.of(context)!.seeResult;
+                    });
+                  }
+                  setState(() {
+                    answered = false;
+                  });
+                },
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      const SizedBox(
+                        height: 30.0,
+                      ),
+                      Container(
+                        color: themeProvider.isDarkMode
+                            ? Color(0xff666666)
+                            : ManyColors.color17,
+                        padding: const EdgeInsets.all(10.0),
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.8,
+                        child: Column(
+                          children: [
+                            Center(
+                              child: Container(
+                                padding: const EdgeInsets.all(10.0),
+                                width: MediaQuery.of(context).size.width * 0.7,
+                                //0.8
+                                height: MediaQuery.of(context).size.height * 0.7,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Colors.grey,
+                                      spreadRadius: 3,
+                                      blurRadius: 9,
+                                      offset: Offset(3, 3),
+                                    ),
+                                  ],
+                                ),
+                                child: Column(
+                                  children: [
+                                    const SizedBox(
+                                      height: 40.0,
+                                    ),
+                                    Center(
+                                      child: SizedBox(
+                                        height: 40,
+                                        child: Text(
+                                          AppLocalizations.of(context)!.question +
+                                              (index + 1).toString() +
+                                              ' / ' +
+                                              wordList.length.toString(),
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 22.0,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 60),
+                                    Center(
+                                      child: SizedBox(
+                                        height: 40.0,
+                                        child: Text(
+                                          AppLocalizations.of(context)!.sentence,
+                                          //ayat_quran[index].toString(),
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 22.0,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ),
+                                    const Divider(
+                                      color: Colors.black,
+                                      indent: 30.0,
+                                      endIndent: 30.0,
+                                    ),
+                                    Center(
+                                      child: SizedBox(
+                                        height: 40.0,
+                                        child: Text(
+                                          wordList[index].text.toString(),
+                                          //word_quran[index].toString(),
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 22.0,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'MeQuran2',
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const Divider(
+                                      color: Colors.black,
+                                      indent: 30.0,
+                                      endIndent: 30.0,
+                                    ),
+                                    Center(
+                                      child: SizedBox(
+                                        height: 60.0,
+                                        child: Text(
+                                          question.translation,
+                                          //question_quran[index].toString(),
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 22.0,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'MeQuran2',
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Center(
+                                      child: SizedBox(
+                                        child: Text(
+                                          question.question,
+                                          //questions[index].question,
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 18.0,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 20.00,
+                                    ),
+                                    Expanded(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          for (int i = 0;
+                                              i < options_arabic.length;
+                                              i++)
+                                            Flexible(
+                                              fit: FlexFit.loose,
+                                              flex: 1,
+                                              child: Container(
+                                                margin: const EdgeInsets.all(3),
+                                                child: RawMaterialButton(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5)),
+                                                  elevation: 0.0,
+                                                  fillColor: btnPressed
+                                                      ? options_arabic[i]
+                                                              .isSelected
+                                                          ? options_arabic[i]
+                                                                  .isCorrect
+                                                              ? Colors.green
+                                                              : Colors.red
+                                                          : !correctAnswer
+                                                              ? options_arabic[i]
+                                                                      .isCorrect
+                                                                  ? Colors.green
+                                                                  : !options_arabic[
+                                                                              i]
+                                                                          .isSelected
+                                                                      ? themeProvider
+                                                                              .isDarkMode
+                                                                          ? AppColor
+                                                                              .secondaryColor
+                                                                          : AppColor
+                                                                              .pripmaryColor
+                                                                      : null
+                                                              : themeProvider
+                                                                      .isDarkMode
+                                                                  ? AppColor
+                                                                      .secondaryColor
+                                                                  : AppColor
+                                                                      .pripmaryColor
+                                                      : themeProvider.isDarkMode
+                                                          ? AppColor
+                                                              .secondaryColor
+                                                          : AppColor
+                                                              .pripmaryColor,
+                                                  onPressed: !answered
+                                                      ? () {
+                                                          selectedOption =
+                                                              options_arabic[i]
+                                                                  .id;
+                                                          options_arabic[i]
+                                                              .isSelected = true;
+                                                          checkAnswer(
+                                                              wordList[index]
+                                                                  .id
+                                                                  .toString(),
+                                                              selectedOption);
+
+                                                          /**
+                                                  if (questions[index]
+                                                  .answers!
+                                                  .values
+                                                  .toList()[i]) {
+                                                  score++;
+                                                  print("yes");
+                                                  } else {
+                                                  print("no");
+                                                  }
+                                               **/
+                                                          setState(() {
+                                                            btnPressed = true;
+                                                            answered = true;
+                                                          });
+                                                        }
+                                                      : null,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(5.0),
+                                                    child: AutoSizeText(
+                                                      options_arabic[i].text,
+                                                      //questions[index].answers!.keys.toList()[i],
+                                                      softWrap: false,
+                                                      style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 18.0,
+                                                        fontFamily: 'MeQuran2',
+                                                      ),
+                                                      maxFontSize: 18.0,
+                                                      minFontSize: 16.0,
+                                                      maxLines: 1,
                                                     ),
-                                                    maxFontSize: 18.0,
-                                                    minFontSize: 16.0,
-                                                    maxLines: 1,
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                      ],
-                                    ),
-                                  )
-                                ],
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      //below is next button coding
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          RawMaterialButton(
+                            onPressed: () {
+                              if (_controller.page?.toInt() ==
+                                  wordList.length - 1) {
+                                addScore(score);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => QuizScore(score,
+                                            wordList.length, widget.page)));
+                              } else {
+                                if (!btnPressed) {
+                                  Fluttertoast.showToast(
+                                    msg: AppLocalizations.of(context)!
+                                        .pleaseAnswerQuestion,
+                                    fontSize: 20,
+                                    backgroundColor: Colors.black,
+                                    textColor: Colors.white,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 1,
+                                  );
+                                  return;
+                                }
+                                _controller.nextPage(
+                                    duration: const Duration(milliseconds: 250),
+                                    curve: Curves.easeInExpo);
+
+                                setState(() {
+                                  btnPressed = false;
+                                  correctAnswer = false;
+                                  for (int i = 0;
+                                      i < options_arabic.length;
+                                      i++) {
+                                    options_arabic[i].isCorrect = false;
+                                    options_arabic[i].isSelected = false;
+                                  }
+                                });
+                              }
+                            },
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5)),
+                            fillColor: themeProvider.isDarkMode
+                                ? Color(0xff808ba1)
+                                : Colors.orange[200],
+                            padding: const EdgeInsets.all(15.0),
+                            elevation: 0.0,
+                            child: Text(
+                              btnText,
+                              style: const TextStyle(color: Colors.black),
                             ),
                           ),
                         ],
                       ),
+                    ],
+                  );
+                },
+              )
+            : Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      child: CircularProgressIndicator(),
+                      width: 50,
+                      height: 50,
                     ),
-                    //below is next button coding
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        RawMaterialButton(
-                          onPressed: () {
-                            if (_controller.page?.toInt() ==
-                                wordList.length - 1) {
-                              addScore(score);
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => QuizScore(score,
-                                          wordList.length, widget.page)));
-                            } else {
-                              if (!btnPressed) {
-                                Fluttertoast.showToast(
-                                  msg: AppLocalizations.of(context)!
-                                      .pleaseAnswerQuestion,
-                                  fontSize: 20,
-                                  backgroundColor: Colors.black,
-                                  textColor: Colors.white,
-                                  gravity: ToastGravity.CENTER,
-                                  timeInSecForIosWeb: 1,
-                                );
-                                return;
-                              }
-                              _controller.nextPage(
-                                  duration: const Duration(milliseconds: 250),
-                                  curve: Curves.easeInExpo);
-
-                              setState(() {
-                                btnPressed = false;
-                                correctAnswer = false;
-                                for (int i = 0;
-                                    i < options_arabic.length;
-                                    i++) {
-                                  options_arabic[i].isCorrect = false;
-                                  options_arabic[i].isSelected = false;
-                                }
-                              });
-                            }
-                          },
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5)),
-                          fillColor: themeProvider.isDarkMode
-                              ? Color(0xff808ba1)
-                              : Colors.orange[200],
-                          padding: const EdgeInsets.all(15.0),
-                          elevation: 0.0,
-                          child: Text(
-                            btnText,
-                            style: const TextStyle(color: Colors.black),
-                          ),
-                        ),
-                      ],
-                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(32.0),
+                      child: Text(
+                        status,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )
                   ],
-                );
-              },
-            )
-          : Center(
-              child: SizedBox(
-                child: CircularProgressIndicator(),
-                width: 50,
-                height: 50,
+                ),
               ),
-            ),
+      ),
     );
   }
 
@@ -490,12 +500,26 @@ class _QuizState extends State<Quiz> {
   }
 
   void generateQuestions() async {
+    setState(() {
+      status = 'Retrieving words ...';
+    });
     await getWords();
+    setState(() {
+      status = 'Retrieving questions ...';
+    });
     await getQuestion();
+    setState(() {
+      status = 'Retrieving non-translate options ...';
+    });
     await getNonTranslatedOptions();
+    setState(() {
+      status = 'Retrieving translated options ...';
+    });
     await getTranslatedOptions();
+    setState(() {
+      status = 'Finishing up ...';
+    });
     await getAnswers();
-
     setState(() {
       dataReady = true;
     });
@@ -533,10 +557,8 @@ class _QuizState extends State<Quiz> {
         .collection('quranIrabUsers')
         .doc(AppUser.instance.user!.uid)
         .collection('quizs');
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    int old = prefs.getInt('${widget.page}score') ?? 0;
+    int old = widget.oldScore;
     if (old < score) {
-      prefs.setInt('${widget.page}score', score);
       quiz
           // existing document in 'users' collection: "ABC123"
           .doc(widget.page.toString())
@@ -546,7 +568,8 @@ class _QuizState extends State<Quiz> {
               'score': score,
               'date-taken': DateTime.now(),
               'medina_mushaf_page_id': widget.page,
-              'level': level
+              'level': level,
+              'pic-url': AppUser.instance.user!.photoURL ?? ''
             },
             SetOptions(merge: true),
           )

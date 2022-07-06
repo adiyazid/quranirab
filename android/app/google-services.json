@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:422246535912:android:f23ab06d55e927ef2cef5d",
+        "mobilesdk_app_id": "1:422246535912:android:58d01547387a26f42cef5d",
         "android_client_info": {
-          "package_name": "com.example.quranirab"
+          "package_name": "com.aqwise.quranirab"
         }
       },
       "oauth_client": [
@@ -30,6 +30,13 @@
             {
               "client_id": "422246535912-23lrmrak4fu6sfbmm40eid1f8qsh93d2.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "422246535912-ti5382sa0v7vgj5u91fre3cbgcar31n1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.quranirab"
+              }
             }
           ]
         }

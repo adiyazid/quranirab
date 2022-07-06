@@ -6,13 +6,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/widget/menu.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import '../../theme/theme_provider.dart';
 import '../../widget/appbar.widget.dart';
 import 'container.update.dart';
@@ -85,240 +86,244 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
           : Color.fromRGBO(255, 255, 255, 1),
       body: SingleChildScrollView(
         child: Column(children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                    width: 2.0,
-                    color: themeProvider.isDarkMode
-                        ? Colors.white
-                        : const Color(0xffE86F00)),
-              ),
-            ),
-            height: 57,
+          SizedBox(
+            height: MediaQuery.of(context).size.height,
             child: CustomScrollView(
-              slivers: const [Appbar()],
-            ),
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.05,
-          ),
-          Text(
-            AppLocalizations.of(context)!.userProfile,
-            textAlign: TextAlign.left,
-            style: TextStyle(
-                fontFamily: 'Open Sans',
-                fontSize: 36,
-                letterSpacing: -0.38723403215408325,
-                fontWeight: FontWeight.normal,
-                height: 1),
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          if (_load == false)
-            CircleAvatar(
-              radius: 85,
-              child: CircleAvatar(
-                  radius: 80,
-                  child: //if want to display the uploaded profile picture need to run at the terminal
-                      //flutter run -d chrome --web-renderer html
-                      //or need to setup CORS Configuration
-                      // refer https://stackoverflow.com/questions/65653801/flutter-web-cant-load-network-image-from-another-domain
-                      CachedNetworkImage(
-                    imageUrl: photoUrl ?? imageDefault,
-                    imageBuilder: (context, imageProvider) =>
-                        Stack(alignment: Alignment.topRight, children: [
-                      ClipOval(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: imageProvider,
-                              fit: BoxFit.cover,
-                              filterQuality: FilterQuality.low,
-                            ),
-                          ),
-                        ),
+              slivers: [
+                Appbar(),
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.03,
                       ),
-                      Positioned(
-                        right: 16,
-                        top: 116,
-                        child: ClipOval(
-                          child: GestureDetector(
-                            onTap: () {
-                              chooseImage();
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(8),
-                              color: themeProvider.isDarkMode
-                                  ? white
-                                  : Colors.orangeAccent,
-                              child: const Icon(
-                                Icons.edit,
-                                color: Colors.black,
-                                size: 23,
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    ]),
-                    placeholder: (context, url) => CircularProgressIndicator(),
-                    errorWidget: (context, url, error) =>
-                        Stack(alignment: Alignment.topRight, children: [
-                      Positioned(
-                        right: 16,
-                        top: 116,
-                        child: ClipOval(
-                          child: GestureDetector(
-                            onTap: () {
-                              chooseImage();
-                              /*showDialog(
+                      Text(
+                        AppLocalizations.of(context)!.userProfile,
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                            fontFamily: 'Open Sans',
+                            fontSize: 36,
+                            letterSpacing: -0.38723403215408325,
+                            fontWeight: FontWeight.normal,
+                            height: 1),
+                      ),
+                      SizedBox(
+                        height: 24,
+                      ),
+                      if (_load == false)
+                        CircleAvatar(
+                          radius: 85,
+                          child: CircleAvatar(
+                              radius: 80,
+                              child: //if want to display the uploaded profile picture need to run at the terminal
+                                  //flutter run -d chrome --web-renderer html
+                                  //or need to setup CORS Configuration
+                                  // refer https://stackoverflow.com/questions/65653801/flutter-web-cant-load-network-image-from-another-domain
+                                  CachedNetworkImage(
+                                imageUrl: photoUrl ?? imageDefault,
+                                imageBuilder: (context, imageProvider) => Stack(
+                                    alignment: Alignment.topRight,
+                                    children: [
+                                      ClipOval(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: imageProvider,
+                                              fit: BoxFit.cover,
+                                              filterQuality: FilterQuality.low,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        right: 16,
+                                        top: 116,
+                                        child: ClipOval(
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              chooseImage();
+                                            },
+                                            child: Container(
+                                              padding: const EdgeInsets.all(8),
+                                              color: themeProvider.isDarkMode
+                                                  ? white
+                                                  : Colors.orangeAccent,
+                                              child: const Icon(
+                                                Icons.edit,
+                                                color: Colors.black,
+                                                size: 23,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ]),
+                                placeholder: (context, url) =>
+                                    CircularProgressIndicator(),
+                                errorWidget: (context, url, error) => Stack(
+                                    alignment: Alignment.topRight,
+                                    children: [
+                                      Positioned(
+                                        right: 16,
+                                        top: 116,
+                                        child: ClipOval(
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              chooseImage();
+                                              /*showDialog(
                                   context: context,
                                   builder:
                                       (BuildContext context) {
                                     return AlertDialog(title: Text("test1"),);
                                   });*/
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(8),
-                              color: Colors.white,
-                              child: const Icon(
-                                Icons.edit,
-                                color: Colors.black,
-                                size: 23,
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    ]),
-                  )),
-            )
-          else
-            (kIsWeb)
-                ? CircleAvatar(
-                    radius: 85,
-                    child: CircleAvatar(
-                      //backgroundImage: AssetImage(themeProvider.isDarkMode?"images/dark.jpg":"images/light.jpg"),
-                      radius: 80,
-                      child: Stack(
-                        children: [
-                          ClipOval(
-                            child: Image.memory(
-                              webImage,
-                              width: 200,
-                              height: 200,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          Positioned(
-                            right: 16,
-                            top: 116,
-                            child: ClipOval(
-                              child: GestureDetector(
-                                onTap: () {
-                                  chooseImage();
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.all(8),
-                                  color: Colors.white,
-                                  child: const Icon(
-                                    Icons.edit,
-                                    color: Colors.black,
-                                    size: 23,
+                                            },
+                                            child: Container(
+                                              padding: const EdgeInsets.all(8),
+                                              color: Colors.white,
+                                              child: const Icon(
+                                                Icons.edit,
+                                                color: Colors.black,
+                                                size: 23,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ]),
+                              )),
+                        )
+                      else
+                        (kIsWeb)
+                            ? CircleAvatar(
+                                radius: 85,
+                                child: CircleAvatar(
+                                  //backgroundImage: AssetImage(themeProvider.isDarkMode?"images/dark.jpg":"images/light.jpg"),
+                                  radius: 80,
+                                  child: Stack(
+                                    children: [
+                                      ClipOval(
+                                        child: Image.memory(
+                                          webImage,
+                                          width: 200,
+                                          height: 200,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      Positioned(
+                                        right: 16,
+                                        top: 116,
+                                        child: ClipOval(
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              chooseImage();
+                                            },
+                                            child: Container(
+                                              padding: const EdgeInsets.all(8),
+                                              color: Colors.white,
+                                              child: const Icon(
+                                                Icons.edit,
+                                                color: Colors.black,
+                                                size: 23,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
                                   ),
                                 ),
-                              ),
-                            ),
-                          )
+                              )
+                            : Image.file(file),
+                      SizedBox(
+                        height: 24,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          NameUpdate(
+                            text: first_name ??
+                                AppLocalizations.of(context)!.firstName,
+                            controller: fnamecontroller,
+                          ),
+                          SizedBox(
+                            width: 40,
+                          ),
+                          NameUpdate(
+                            text: last_name ??
+                                AppLocalizations.of(context)!.lastName,
+                            controller: lnamecontroller,
+                          ),
                         ],
                       ),
-                    ),
-                  )
-                : Image.file(file),
-          SizedBox(
-            height: 24,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              NameUpdate(
-                text: first_name ?? AppLocalizations.of(context)!.firstName,
-                controller: fnamecontroller,
-              ),
-              SizedBox(
-                width: 18,
-              ),
-              NameUpdate(
-                text: last_name ?? AppLocalizations.of(context)!.lastName,
-                controller: lnamecontroller,
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 16,
-          ),
-          ContainerUpdate(
-            text: AppLocalizations.of(context)!.currentPassword,
-            controller: currentpass,
-            obsecure: _obsecure,
-          ),
-          SizedBox(
-            height: 16,
-          ),
-          ContainerUpdate(
-            text: AppLocalizations.of(context)!.newPassword,
-            controller: newpassword,
-            obsecure: _obsecure2,
-          ),
-          SizedBox(
-            height: 16,
-          ),
-          ContainerUpdate(
-            text: AppLocalizations.of(context)!.confirmPass,
-            controller: confirmpass,
-            obsecure: _obsecure3,
-          ),
-          SizedBox(
-            height: 16,
-          ),
-          GestureDetector(
-            onTap: () {
-              updateProfile(context);
-            },
-            child: Container(
-                width: MediaQuery.of(context).size.width < 600
-                    ? MediaQuery.of(context).size.width * 0.85
-                    : 522,
-                height: 54,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      ContainerUpdate(
+                        text: AppLocalizations.of(context)!.currentPassword,
+                        controller: currentpass,
+                        obsecure: _obsecure,
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      ContainerUpdate(
+                        text: AppLocalizations.of(context)!.newPassword,
+                        controller: newpassword,
+                        obsecure: _obsecure2,
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      ContainerUpdate(
+                        text: AppLocalizations.of(context)!.confirmPass,
+                        controller: confirmpass,
+                        obsecure: _obsecure3,
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          updateProfile(context);
+                        },
+                        child: Container(
+                            width: MediaQuery.of(context).size.width < 600
+                                ? MediaQuery.of(context).size.width * 0.85
+                                : 522,
+                            height: 54,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(20),
+                              ),
+                              color: themeProvider.isDarkMode
+                                  ? Color(0xff67748E)
+                                  : Color.fromRGBO(255, 181, 94, 1),
+                            ),
+                            child: Center(
+                              child: Text(
+                                AppLocalizations.of(context)!.saveChanges,
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    fontSize: 24,
+                                    letterSpacing:
+                                        0 /*percentages not used in flutter. defaulting to zero*/,
+                                    fontWeight: FontWeight.normal,
+                                    height: 1),
+                              ),
+                            )),
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                    ],
                   ),
-                  color: themeProvider.isDarkMode
-                      ? Color(0xff67748E)
-                      : Color.fromRGBO(255, 181, 94, 1),
-                ),
-                child: Center(
-                  child: Text(
-                    AppLocalizations.of(context)!.saveChanges,
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 24,
-                        letterSpacing:
-                            0 /*percentages not used in flutter. defaulting to zero*/,
-                        fontWeight: FontWeight.normal,
-                        height: 1),
-                  ),
-                )),
-          ),
-          SizedBox(
-            height: 16,
+                )
+              ],
+            ),
           ),
         ]),
       ),

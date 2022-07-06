@@ -1,15 +1,15 @@
 import 'package:floating_action_bubble/floating_action_bubble.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
-import 'package:quranirab/views/auth/signup.screen.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../Routes/route.dart';
 import '../../main.dart';
 
 class SigninWidget extends StatefulWidget {
@@ -40,17 +40,22 @@ class _SigninWidgetState extends State<SigninWidget>
     final curvedAnimation =
         CurvedAnimation(curve: Curves.bounceIn, parent: _animationController);
     _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation);
-
     super.initState();
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final appUser = Provider.of<AppUser>(context);
+    final appUser = Provider.of<AppUser>(context, listen: false);
     final theme = Provider.of<ThemeProvider>(context);
     // Figma Flutter Generator SigninWidget - FRAME
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: loading
             ? Center(
                 child: LoadingAnimationWidget.fourRotatingDots(
@@ -320,35 +325,37 @@ class _SigninWidgetState extends State<SigninWidget>
                                       ),
                                     );
                                   } else {
-                                    setState(() {});
-                                    loading = true;
                                     try {
-                                      await appUser.signIn(
-                                          email: _email.text,
-                                          password: _pass.text);
-                                      setState(() {});
-                                      loading = false;
-                                      showTopSnackBar(
-                                          context,
-                                          CustomSnackBar.success(
-                                            message:
-                                                AppLocalizations.of(context)!
-                                                    .loginSuccess,
-                                          ),
-                                          showOutAnimationDuration:
-                                              Duration(milliseconds: 200),
-                                          hideOutAnimationDuration:
-                                              Duration(milliseconds: 250),
-                                          displayDuration:
-                                              Duration(milliseconds: 1000));
+                                      if (mounted) {
+                                        setState(() {
+                                          loading = true;
+                                        });
+                                        await appUser
+                                            .signIn(
+                                                email: _email.text,
+                                                password: _pass.text)
+                                            .then((value) {
+                                          if (mounted) {
+                                            setState(() {
+                                              loading = false;
+                                            });
+                                          }
+                                          Navigator.pushNamed(
+                                              context, RoutesName.homePage);
+                                        });
+                                      }
                                     } catch (e) {
-                                      setState(() {});
-                                      loading = false;
-                                      showTopSnackBar(
-                                          context,
-                                          CustomSnackBar.error(
-                                            message: e.toString(),
-                                          ));
+                                      if (mounted) {
+                                        setState(() {
+                                          loading = false;
+                                        });
+                                      }
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                              content: Text(e
+                                                  .toString()
+                                                  .split("]")
+                                                  .last)));
                                     }
                                   }
                                 },
@@ -407,11 +414,8 @@ class _SigninWidgetState extends State<SigninWidget>
                                         height: 1),
                                   ),
                                   InkWell(
-                                    onTap: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const SignupWidget())),
+                                    onTap: () => Navigator.pushNamed(
+                                        context, RoutesName.registerPage),
                                     child: Text(
                                       AppLocalizations.of(context)!.signUp,
                                       textAlign: TextAlign.left,

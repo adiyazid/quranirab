@@ -63,5 +63,14 @@
   "wordType": "Jenis Perkataan",
   "sentence": "Ayat",
   "seeResult": "Lihat Keputusan",
-  "pleaseAnswerQuestion": "Sila jawab soalan berikut"
+  "pleaseAnswerQuestion": "Sila jawab soalan berikut",
+  "haveAccSignIn": "Sudah Ada Akaun? Log Masuk",
+  "featureTranslation": "Tekan tab \nterjemahan\nuntuk membaca \nterjemahan",
+  "readingAya": "Membaca Ayat",
+  "swipeHorizontal": "Seret mendatar untuk melihat \nayat yang terlebih panjang",
+  "wordsDetail": "Maklumat Huruf",
+  "pressEach": "Tekan setiap huruf untuk melihat\nmaklumatnya",
+  "customization": "Pengubahsuaian",
+  "clickTo": "Tekan untuk ubah saiz huruf dan tema",
+  "clickToDisplay": "Tekan untuk melihat terjemahan bahasa lain"
 }
