@@ -10746,24 +10746,6 @@ class AyaProvider extends ChangeNotifier {
     return labelCategory;
   }
 
-  // void getFontSize(BuildContext context) {
-  //   if (maxScreen < 400) {
-  //     value = 11;
-  //   } else if (maxScreen < 600) {
-  //     value = 13;
-  //   } else if (maxScreen < 800) {
-  //     value = 22;
-  //   } else if (maxScreen < 1000) {
-  //     value = 23;
-  //   } else if (maxScreen < 1200) {
-  //     value = 25;
-  //   } else if (maxScreen < 1400) {
-  //     value = 25;
-  //   } else {
-  //     value = 25;
-  //   }
-  // }
-
   void getScreenSize(BuildContext context) {
     maxScreen = MediaQuery.of(context).size.width;
   }
