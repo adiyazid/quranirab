@@ -128,6 +128,66 @@ class _JuzContainerState extends State<JuzContainer> {
       list.add('440');
     } else if (suraId == 39 && widget.mainIndex + 1 == 23) {
       list.add('458');
+    } else if (suraId == 68 && widget.mainIndex + 1 == 29) {
+      list.add('564');
+    } else if (suraId == 69 && widget.mainIndex + 1 == 29) {
+      list.add('566');
+    } else if (suraId == 71 && widget.mainIndex + 1 == 29) {
+      list.add('570');
+    } else if (suraId == 74 && widget.mainIndex + 1 == 29) {
+      list.add('575');
+    } else if (suraId == 75 && widget.mainIndex + 1 == 29) {
+      list.add('577');
+    } else if (suraId == 76 && widget.mainIndex + 1 == 29) {
+      list.add('578');
+    } else if (suraId == 77 && widget.mainIndex + 1 == 29) {
+      list.add('580');
+    } else if (suraId == 79 && widget.mainIndex + 1 == 30) {
+      list.add('583');
+    } else if (suraId == 83 && widget.mainIndex + 1 == 30) {
+      list.add('587');
+    } else if (suraId == 84 && widget.mainIndex + 1 == 30) {
+      list.add('589');
+    } else if (suraId == 87 && widget.mainIndex + 1 == 30) {
+      list.add('591');
+    } else if (suraId == 88 && widget.mainIndex + 1 == 30) {
+      list.add('592');
+    } else if (suraId == 90 && widget.mainIndex + 1 == 30) {
+      list.add('594');
+    } else if (suraId == 92 && widget.mainIndex + 1 == 30) {
+      list.add('595');
+    } else if (suraId == 93 && widget.mainIndex + 1 == 30) {
+      list.add('596');
+    } else if (suraId == 94 && widget.mainIndex + 1 == 30) {
+      list.add('596');
+    } else if (suraId == 96 && widget.mainIndex + 1 == 30) {
+      list.add('597');
+    } else if (suraId == 98 && widget.mainIndex + 1 == 30) {
+      list.add('598');
+    } else if (suraId == 99 && widget.mainIndex + 1 == 30) {
+      list.add('599');
+    } else if (suraId == 100 && widget.mainIndex + 1 == 30) {
+      list.add('599');
+    } else if (suraId == 101 && widget.mainIndex + 1 == 30) {
+      list.add('600');
+    } else if (suraId == 102 && widget.mainIndex + 1 == 30) {
+      list.add('600');
+    } else if (suraId == 104 && widget.mainIndex + 1 == 30) {
+      list.add('601');
+    } else if (suraId == 105 && widget.mainIndex + 1 == 30) {
+      list.add('601');
+    } else if (suraId == 107 && widget.mainIndex + 1 == 30) {
+      list.add('602');
+    } else if (suraId == 108 && widget.mainIndex + 1 == 30) {
+      list.add('602');
+    } else if (suraId == 110 && widget.mainIndex + 1 == 30) {
+      list.add('603');
+    } else if (suraId == 111 && widget.mainIndex + 1 == 30) {
+      list.add('603');
+    } else if (suraId == 113 && widget.mainIndex + 1 == 30) {
+      list.add('604');
+    } else if (suraId == 114 && widget.mainIndex + 1 == 30) {
+      list.add('604');
     }
     try {
       await FirebaseFirestore.instance
