@@ -48,42 +48,47 @@ class _JuzDisplayState extends State<JuzDisplay> {
     {"id": 30, "start": 77, "end": 113}
   ];
 
+
   @override
   Widget build(BuildContext context) {
     var themeProvider = Provider.of<ThemeProvider>(context);
     return kIsWeb
-        ? MasonryGridView.count(
-            controller: ScrollController(keepScrollOffset: false),
-            crossAxisCount: MediaQuery.of(context).size.width < 1200 ? 2 : 3,
-            crossAxisSpacing: 4.0,
-            mainAxisSpacing: 4.0,
-            shrinkWrap: false,
-            itemCount: _juz.length,
-            itemBuilder: (BuildContext context, int mainIndex) {
-              return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-                  child: JuzContainer(
-                    themeProvider: themeProvider,
-                    mainIndex: mainIndex,
-                    start: _juz[mainIndex]['start'],
-                    end: _juz[mainIndex]['end'],
-                    list: widget.sura,
-                  ));
-            })
+        ? ListView(
+          children: [
+            MasonryGridView.count(
+                controller: ScrollController(keepScrollOffset: false),
+                crossAxisCount: MediaQuery.of(context).size.width < 1200 ? 2 : 3,
+                crossAxisSpacing: 4.0,
+                mainAxisSpacing: 4.0,
+                shrinkWrap: true,
+                itemCount: _juz.length,
+                itemBuilder: (BuildContext context, int mainIndex) {
+                  return Padding(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+                      child: JuzContainer(
+                        themeProvider: themeProvider,
+                        mainIndex: mainIndex,
+                        start: _juz[mainIndex]['start'],
+                        end: _juz[mainIndex]['end'],
+                        list: widget.sura,
+                      ));
+                }),
+          ],
+        )
         : ListView.builder(
             itemCount: _juz.length,
             itemBuilder: (BuildContext context, int mainIndex) {
               return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-                  child: JuzContainer(
-                    themeProvider: themeProvider,
-                    mainIndex: mainIndex,
-                    start: _juz[mainIndex]['start'],
-                    end: _juz[mainIndex]['end'],
-                    list: widget.sura,
-                  ));
+                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
+                child: JuzContainer(
+                  themeProvider: themeProvider,
+                  mainIndex: mainIndex,
+                  start: _juz[mainIndex]['start'],
+                  end: _juz[mainIndex]['end'],
+                  list: widget.sura,
+                ),
+              );
             },
           );
   }

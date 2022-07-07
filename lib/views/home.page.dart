@@ -9,12 +9,12 @@ import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/auth/login.screen.dart';
 import 'package:quranirab/views/payment/payment.screen.dart';
+import 'package:quranirab/views/juz/juz.display.dart';
 import 'package:quranirab/views/surah.screen.dart';
 import 'package:quranirab/widget/menu.dart';
 import 'package:skeleton_loader/skeleton_loader.dart';
 
 import '../widget/appbar.widget.dart';
-import 'juz/juz.display.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -62,7 +62,6 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     var themeProvider = Provider.of<ThemeProvider>(context);
     // Figma Flutter Generator Desktop31Widget - FRAME
-
     return SafeArea(
       child: Scaffold(
           backgroundColor:
@@ -1084,11 +1083,9 @@ class _HomePageState extends State<HomePage>
 
     // Get data from docs and convert map to List
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-    if (mounted) {
-      setState(() {
-        _total = allData;
-      });
-    }
+    setState(() {
+      _total = allData;
+    });
     var data = _total.map((e) => e["medina_mushaf_page_id"]).toList();
     return data;
   }
@@ -1099,6 +1096,7 @@ class _HomePageState extends State<HomePage>
 
   Future<void> getList() async {
     await Provider.of<BookMarkProvider>(context, listen: false).getList();
+
     // Get docs from collection reference
     QuerySnapshot querySnapshot =
         await _collectionRef.orderBy('created_at').get();
