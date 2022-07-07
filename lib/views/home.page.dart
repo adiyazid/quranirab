@@ -9,7 +9,7 @@ import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/auth/login.screen.dart';
 import 'package:quranirab/views/payment/payment.screen.dart';
-import 'package:quranirab/views/Juz/juz.display.dart';
+import 'package:quranirab/views/juz/juz.display.dart';
 import 'package:quranirab/views/surah.screen.dart';
 import 'package:quranirab/widget/menu.dart';
 import 'package:skeleton_loader/skeleton_loader.dart';
