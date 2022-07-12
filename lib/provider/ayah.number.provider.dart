@@ -7867,7 +7867,7 @@ class AyaProvider extends ChangeNotifier {
       ],
       "page_467": [
         10,
-        24,
+        25,
         36,
         47,
         59,
