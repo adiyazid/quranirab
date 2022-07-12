@@ -10721,7 +10721,6 @@ class AyaProvider extends ChangeNotifier {
         return data;
       });
     }
-    print(obj);
     return obj;
   }
 
