@@ -40,6 +40,7 @@ dependencies:
   xml_parser: ^1.0.0
   xml: ^5.3.1
   flutter_parse: ^1.0.1
+  share_plus:
   postgres: ^2.4.1+2
   flutter_js: ^0.5.0+3
   js: ^0.6.0
