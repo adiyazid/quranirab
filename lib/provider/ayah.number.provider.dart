@@ -7866,21 +7866,7 @@ class AyaProvider extends ChangeNotifier {
         171,
         180
       ],
-      "page_467": [
-        10,
-        25,
-        33,
-        45,
-        56,
-        68,
-        81,
-        96,
-        108,
-        117,
-        132,
-        143,
-        157
-      ],
+      "page_467": [10, 25, 33, 45, 56, 68, 81, 96, 108, 117, 132, 143, 157],
       "page_468": [
         13,
         26,
@@ -8034,21 +8020,7 @@ class AyaProvider extends ChangeNotifier {
         187,
         198
       ],
-      "page_477": [
-        7,
-        19,
-        31,
-        50,
-        65,
-        80,
-        90,
-        100,
-        112,
-        123,
-        142,
-        154,
-        169
-      ],
+      "page_477": [7, 19, 31, 50, 65, 80, 90, 100, 112, 123, 142, 154, 169],
       "page_478": [
         14,
         26,
@@ -8082,9 +8054,7 @@ class AyaProvider extends ChangeNotifier {
         183,
         196,
         207
-
       ],
-
       "page_480": [
         11,
         22,
@@ -8101,7 +8071,6 @@ class AyaProvider extends ChangeNotifier {
         159,
         167,
         180
-
       ],
       "page_481": [
         16,
@@ -8120,7 +8089,6 @@ class AyaProvider extends ChangeNotifier {
         196,
         214
       ],
-
       "page_482": [
         13,
         30,
@@ -8137,26 +8105,8 @@ class AyaProvider extends ChangeNotifier {
         188,
         204,
         217
-
       ],
-
-      "page_483": [
-        13,
-        27,
-        35,
-        47,
-        58,
-        73,
-        88,
-        104,
-        117,
-        132,
-        149,
-        164,
-        178
-
-      ],
-
+      "page_483": [13, 27, 35, 47, 58, 73, 88, 104, 117, 132, 149, 164, 178],
       "page_484": [
         11,
         24,
@@ -8173,9 +8123,7 @@ class AyaProvider extends ChangeNotifier {
         178,
         195,
         210
-
       ],
-
       "page_485": [
         13,
         26,
@@ -8192,11 +8140,7 @@ class AyaProvider extends ChangeNotifier {
         157,
         166,
         177
-
       ],
-
-
-
       "page_486": [
         15,
         29,
@@ -8350,65 +8294,27 @@ class AyaProvider extends ChangeNotifier {
         191,
         204,
       ],
-      "page_498": [
-        10,
-        24,
-        36,
-        47,
-        59,
-        73,
-        89,
-        99,
-      ],
-      "page_499": [
-        10,
-        24,
-        36,
-        47,
-        59,
-        73,
-        89,
-        99,
-      ],
-      "page_500": [
-        10,
-        24,
-        36,
-        47,
-        59,
-        73,
-        89,
-        99,
-      ],
-      "page_501": [
-        10,
-        24,
-        36,
-        47,
-        59,
-        73,
-        89,
-        99,
-      ],
-      "page_502": [
-        10,
-        24,
-        36,
-        47,
-        59,
-        73,
-        89,
-        99,
-      ],
+      "page_498": [10, 24, 36, 47, 59, 73, 89, 99],
+      "page_499": [10, 24, 36, 47, 59, 73, 89, 99],
+      "page_500": [10, 24, 36, 47, 59, 73, 89, 99],
+      "page_501": [10, 24, 36, 47, 59, 73, 89, 99],
+      "page_502": [18, 37, 53, 65, 79, 88, 98, 113, 127, 142, 156, 167, 180],
       "page_503": [
-        10,
-        24,
-        36,
-        47,
-        59,
-        73,
-        89,
-        99,
+        16,
+        31,
+        44,
+        62,
+        75,
+        96,
+        113,
+        127,
+        137,
+        154,
+        166,
+        177,
+        188,
+        200,
+        211
       ],
       "page_504": [
         16,
@@ -10665,6 +10571,10 @@ class AyaProvider extends ChangeNotifier {
         {"page": 440, "sura_id": 36, "start": 3, "end": 13, "numStart": 1},
         {"page": 458, "sura_id": 38, "start": 0, "end": 3, "numStart": 0},
         {"page": 458, "sura_id": 39, "start": 3, "end": 13, "numStart": 5},
+        {"page": 467, "sura_id": 39, "start": 0, "end": 2, "numStart": 0},
+        {"page": 467, "sura_id": 40, "start": 2, "end": 13, "numStart": 1},
+        {"page": 502, "sura_id": 45, "start": 0, "end": 6, "numStart": 0},
+        {"page": 502, "sura_id": 46, "start": 6, "end": 13, "numStart": 5},
 //waiting remaining sura
         {"page": 564, "sura_id": 67, "start": 0, "end": 5, "numStart": 0},
         {"page": 564, "sura_id": 68, "start": 5, "end": 13, "numStart": 4},

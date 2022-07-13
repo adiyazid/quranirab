@@ -121,7 +121,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     final theme = Provider.of<ThemeProvider>(context);
     return Scaffold(
       backgroundColor:
-      theme.isDarkMode ? const Color(0xFF67748E) : Colors.white,
+          theme.isDarkMode ? const Color(0xFF67748E) : Colors.white,
       resizeToAvoidBottomInset: true,
       body: NestedScrollView(
         physics: const BouncingScrollPhysics(),
@@ -130,7 +130,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
             SliverAppBar(
               iconTheme: Theme.of(context).iconTheme,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              title: Text('Buy Premium QuranIrab'),
+              title: Text(
+                'Buy Premium QuranIrab',
+                style: TextStyle(
+                    color:
+                        theme.isDarkMode ? Colors.white : Colors.orangeAccent),
+              ),
               centerTitle: false,
               floating: true,
             ),
@@ -141,178 +146,178 @@ class _PaymentScreenState extends State<PaymentScreen> {
             border: Border(
                 top: BorderSide(
                     color:
-                    theme.isDarkMode ? Colors.white : Colors.orangeAccent)),
+                        theme.isDarkMode ? Colors.white : Colors.orangeAccent)),
           ),
           child: _paymentOutput == null
               ? Column(
-            children: [
-              CreditCardWidget(
-                cardNumber: cardNumber,
-                expiryDate: expiryDate,
-                cardHolderName: cardHolderName,
-                cvvCode: cvvCode,
-                showBackView: isCvvFocused,
-                obscureCardNumber: true,
-                obscureCardCvv: true,
-                onCreditCardWidgetChange: (CreditCardBrand) {},
-              ),
-              Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        CreditCardForm(
-                          cardNumber: cardNumber,
-                          expiryDate: expiryDate,
-                          cardHolderName: cardHolderName,
-                          cvvCode: cvvCode,
-                          onCreditCardModelChange: onCreditCardModelChange,
-                          themeColor: Theme.of(context).primaryColor,
-                          formKey: formKey,
-                          cardNumberDecoration: InputDecoration(
+                  children: [
+                    CreditCardWidget(
+                      cardNumber: cardNumber,
+                      expiryDate: expiryDate,
+                      cardHolderName: cardHolderName,
+                      cvvCode: cvvCode,
+                      showBackView: isCvvFocused,
+                      obscureCardNumber: true,
+                      obscureCardCvv: true,
+                      onCreditCardWidgetChange: (CreditCardBrand) {},
+                    ),
+                    Expanded(
+                        child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          CreditCardForm(
+                            cardNumber: cardNumber,
+                            expiryDate: expiryDate,
+                            cardHolderName: cardHolderName,
+                            cvvCode: cvvCode,
+                            onCreditCardModelChange: onCreditCardModelChange,
+                            themeColor: Theme.of(context).primaryColor,
+                            formKey: formKey,
+                            cardNumberDecoration: InputDecoration(
+                                labelStyle: TextStyle(
+                                    color:
+                                        theme.isDarkMode ? Colors.white : null),
+                                hintStyle: TextStyle(
+                                    color:
+                                        theme.isDarkMode ? Colors.white : null),
+                                border: OutlineInputBorder(),
+                                label: Text('Number'),
+                                hintText: 'xxxx xxxx xxxx xxxx'),
+                            expiryDateDecoration: InputDecoration(
+                                labelStyle: TextStyle(
+                                    color:
+                                        theme.isDarkMode ? Colors.white : null),
+                                hintStyle: TextStyle(
+                                    color:
+                                        theme.isDarkMode ? Colors.white : null),
+                                border: OutlineInputBorder(),
+                                label: Text('Expired Date'),
+                                hintText: 'xx/xx'),
+                            cvvCodeDecoration: InputDecoration(
+                                labelStyle: TextStyle(
+                                    color:
+                                        theme.isDarkMode ? Colors.white : null),
+                                border: OutlineInputBorder(),
+                                hintStyle: TextStyle(
+                                    color:
+                                        theme.isDarkMode ? Colors.white : null),
+                                label: Text('CVV'),
+                                hintText: 'xxx'),
+                            cardHolderDecoration: InputDecoration(
                               labelStyle: TextStyle(
                                   color:
-                                  theme.isDarkMode ? Colors.white : null),
-                              hintStyle: TextStyle(
-                                  color:
-                                  theme.isDarkMode ? Colors.white : null),
-                              border: OutlineInputBorder(),
-                              label: Text('Number'),
-                              hintText: 'xxxx xxxx xxxx xxxx'),
-                          expiryDateDecoration: InputDecoration(
-                              labelStyle: TextStyle(
-                                  color:
-                                  theme.isDarkMode ? Colors.white : null),
-                              hintStyle: TextStyle(
-                                  color:
-                                  theme.isDarkMode ? Colors.white : null),
-                              border: OutlineInputBorder(),
-                              label: Text('Expired Date'),
-                              hintText: 'xx/xx'),
-                          cvvCodeDecoration: InputDecoration(
-                              labelStyle: TextStyle(
-                                  color:
-                                  theme.isDarkMode ? Colors.white : null),
-                              border: OutlineInputBorder(),
-                              hintStyle: TextStyle(
-                                  color:
-                                  theme.isDarkMode ? Colors.white : null),
-                              label: Text('CVV'),
-                              hintText: 'xxx'),
-                          cardHolderDecoration: InputDecoration(
-                            labelStyle: TextStyle(
-                                color:
-                                theme.isDarkMode ? Colors.white : null),
-                            border: OutlineInputBorder(),
-                            hintStyle: TextStyle(
-                                color:
-                                theme.isDarkMode ? Colors.white : null),
-                            label: Text('Card Holder'),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                BorderSide(width: 1, color: Colors.blue),
-                              ),
-                              labelStyle: TextStyle(
-                                  color:
-                                  theme.isDarkMode ? Colors.white : null),
+                                      theme.isDarkMode ? Colors.white : null),
                               border: OutlineInputBorder(),
                               hintStyle: TextStyle(
                                   color:
-                                  theme.isDarkMode ? Colors.white : null),
-                              label: Text('Phone Number'),
+                                      theme.isDarkMode ? Colors.white : null),
+                              label: Text('Card Holder'),
                             ),
-                            validator: (e) {
-                              if (e!.isEmpty) {
-                                return 'Phone number cannot be null';
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(width: 1, color: Colors.blue),
+                                ),
+                                labelStyle: TextStyle(
+                                    color:
+                                        theme.isDarkMode ? Colors.white : null),
+                                border: OutlineInputBorder(),
+                                hintStyle: TextStyle(
+                                    color:
+                                        theme.isDarkMode ? Colors.white : null),
+                                label: Text('Phone Number'),
+                              ),
+                              validator: (e) {
+                                if (e!.isEmpty) {
+                                  return 'Phone number cannot be null';
+                                }
+                              },
+                              controller: _phone,
+                              keyboardType: TextInputType.numberWithOptions(
+                                  decimal: false),
+                            ),
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                primary: Color(0xff1b447b)),
+                            child: Container(
+                              margin: EdgeInsets.all(8.0),
+                              child: Text(
+                                'validate',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'halter',
+                                  fontSize: 14,
+                                  package: 'flutter_credit_card',
+                                ),
+                              ),
+                            ),
+                            onPressed: () async {
+                              if (formKey.currentState!.validate()) {
+                                await checkout(context, _phone.text, cardNumber,
+                                    expiryDate, cardHolderName, cvvCode);
+                                print('valid');
+                              } else {
+                                print('inValid');
                               }
                             },
-                            controller: _phone,
-                            keyboardType: TextInputType.numberWithOptions(
-                                decimal: false),
-                          ),
-                        ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              primary: Color(0xff1b447b)),
-                          child: Container(
-                            margin: EdgeInsets.all(8.0),
-                            child: Text(
-                              'validate',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'halter',
-                                fontSize: 14,
-                                package: 'flutter_credit_card',
-                              ),
-                            ),
-                          ),
-                          onPressed: () async {
-                            if (formKey.currentState!.validate()) {
-                              await checkout(context, _phone.text, cardNumber,
-                                  expiryDate, cardHolderName, cvvCode);
-                              print('valid');
-                            } else {
-                              print('inValid');
-                            }
-                          },
-                        )
-                      ],
-                    ),
-                  )),
-            ],
-          )
+                          )
+                        ],
+                      ),
+                    )),
+                  ],
+                )
               : Column(
-            children: [
-              Flexible(
-                child: ListView(
                   children: [
-                    ListTile(
-                        title: Text('Payment ID'),
-                        subtitle: Text(_paymentOutput!.id)),
-                    ListTile(
-                        title: Text('Payment Status'),
-                        subtitle: Text(_paymentOutput!.status)),
-                    ListTile(
-                        title: Text('Payment Amount'),
-                        subtitle: Text(_paymentOutput!.currency +
-                            ' ' +
-                            _paymentOutput!.amount.toString().substring(
-                                0,
-                                _paymentOutput!.amount.toString().length -
-                                    2))),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              primary: Colors.orange),
-                          onPressed: () async {
-                            if (!kIsWeb) {
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ReceiptScreen(
-                                          _paymentOutput!.charges.data
-                                              .last.receiptUrl)));
-                            } else {
-                              launchUrl(Uri.parse(_paymentOutput!
-                                  .charges.data.last.receiptUrl));
-                            }
-                          },
-                          child: Text('Get Receipt')),
+                    Flexible(
+                      child: ListView(
+                        children: [
+                          ListTile(
+                              title: Text('Payment ID'),
+                              subtitle: Text(_paymentOutput!.id)),
+                          ListTile(
+                              title: Text('Payment Status'),
+                              subtitle: Text(_paymentOutput!.status)),
+                          ListTile(
+                              title: Text('Payment Amount'),
+                              subtitle: Text(_paymentOutput!.currency +
+                                  ' ' +
+                                  _paymentOutput!.amount.toString().substring(
+                                      0,
+                                      _paymentOutput!.amount.toString().length -
+                                          2))),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: Colors.orange),
+                                onPressed: () async {
+                                  if (!kIsWeb) {
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ReceiptScreen(
+                                                _paymentOutput!.charges.data
+                                                    .last.receiptUrl)));
+                                  } else {
+                                    launchUrl(Uri.parse(_paymentOutput!
+                                        .charges.data.last.receiptUrl));
+                                  }
+                                },
+                                child: Text('Get Receipt')),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ],
-          ),
         ),
       ),
     );
