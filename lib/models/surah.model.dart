@@ -25,14 +25,14 @@ class surah {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['aya'] = this.aya;
-    data['created_at'] = this.created_at;
-    data['id'] = this.id;
-    data['medina_mushaf_page_id'] = this.medina_mushaf_page_id;
-    data['sura_id'] = this.sura_id;
-    data['text'] = this.text;
-    data['updated_at'] = this.updated_at;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['aya'] = aya;
+    data['created_at'] = created_at;
+    data['id'] = id;
+    data['medina_mushaf_page_id'] = medina_mushaf_page_id;
+    data['sura_id'] = sura_id;
+    data['text'] = text;
+    data['updated_at'] = updated_at;
     return data;
   }
 

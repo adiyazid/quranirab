@@ -3,18 +3,19 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:quran/quran.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
 import 'package:quranirab/provider/bookmark.provider.dart';
 import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/auth/login.screen.dart';
+import 'package:quranirab/views/juz/juz.display.dart';
 import 'package:quranirab/views/payment/payment.screen.dart';
 import 'package:quranirab/views/surah.screen.dart';
 import 'package:quranirab/widget/menu.dart';
 import 'package:skeleton_loader/skeleton_loader.dart';
 
 import '../widget/appbar.widget.dart';
-import 'juz/juz.display.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -29,6 +30,8 @@ class _HomePageState extends State<HomePage>
   late var snackBar;
 
   bool checkout = false;
+
+  final _page = TextEditingController();
 
   @override
   void initState() {
@@ -62,7 +65,6 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     var themeProvider = Provider.of<ThemeProvider>(context);
     // Figma Flutter Generator Desktop31Widget - FRAME
-
     return SafeArea(
       child: Scaffold(
           backgroundColor:
@@ -411,37 +413,140 @@ class _HomePageState extends State<HomePage>
                               SizedBox(
                                 height:
                                     MediaQuery.of(context).size.height * 0.07,
-                                width: 180,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: TabBar(
-                                    indicatorColor: themeProvider.isDarkMode
-                                        ? Colors.white
-                                        : Colors.black,
-                                    controller: _tabController,
-                                    tabs: const [
-                                      Text(
-                                        'Sura',
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                            fontFamily: 'Open Sans',
-                                            fontSize: 24,
-                                            letterSpacing: -0.38723403215408325,
-                                            fontWeight: FontWeight.normal,
-                                            height: 1),
+                                width: user.role == 'user' ? 180 : null,
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 2,
+                                      child: TabBar(
+                                        indicatorColor: themeProvider.isDarkMode
+                                            ? Colors.white
+                                            : Colors.black,
+                                        controller: _tabController,
+                                        tabs: const [
+                                          Text(
+                                            'Sura',
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(
+                                                fontFamily: 'Open Sans',
+                                                fontSize: 24,
+                                                letterSpacing:
+                                                    -0.38723403215408325,
+                                                fontWeight: FontWeight.normal,
+                                                height: 1),
+                                          ),
+                                          Text(
+                                            'Juz',
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(
+                                                fontFamily: 'Open Sans',
+                                                fontSize: 24,
+                                                letterSpacing:
+                                                    -0.38723403215408325,
+                                                fontWeight: FontWeight.normal,
+                                                height: 1),
+                                          ),
+                                        ],
                                       ),
-                                      Text(
-                                        'Juz',
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                            fontFamily: 'Open Sans',
-                                            fontSize: 24,
-                                            letterSpacing: -0.38723403215408325,
-                                            fontWeight: FontWeight.normal,
-                                            height: 1),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                    if (user.role != 'user')
+                                      TextButton(
+                                        onPressed: () async {
+                                          await showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title:
+                                                    Text('Insert Page Number'),
+                                                content: TextFormField(
+                                                  keyboardType: TextInputType
+                                                      .numberWithOptions(
+                                                          decimal: false),
+                                                  decoration: InputDecoration(
+                                                      label: Text('Page')),
+                                                  controller: _page,
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              context),
+                                                      child: Text('Back')),
+                                                  ElevatedButton(
+                                                      onPressed: () async {
+                                                        if (int.parse(_page
+                                                                    .text) >
+                                                                604 ||
+                                                            int.parse(_page
+                                                                    .text) <
+                                                                0) {
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(SnackBar(
+                                                                  content: Text(
+                                                                      'Page out of range. Please insert again')));
+                                                        } else {
+                                                          var suraId =
+                                                              await getSuraId(
+                                                                  _page.text);
+                                                          var suraName =
+                                                              getSurahName(
+                                                                  int.parse(
+                                                                      suraId));
+                                                          var suraDesc =
+                                                              getSurahNameEnglish(
+                                                                  int.parse(
+                                                                      suraId));
+                                                          List a =
+                                                              await getTotalPage(
+                                                                  suraId);
+                                                          var index = a.indexOf(
+                                                              _page.text);
+                                                          Provider.of<AyaProvider>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .getPage(int
+                                                                  .parse(_page
+                                                                      .text));
+                                                          Provider.of<AyaProvider>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .setDefault();
+                                                          Provider.of<AyaProvider>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .getStart(
+                                                                  int.parse(
+                                                                      suraId),
+                                                                  int.parse(
+                                                                      a.first));
+                                                          Navigator.pushReplacement(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) =>
+                                                                      SurahScreen(
+                                                                          a,
+                                                                          suraId,
+                                                                          suraName,
+                                                                          suraDesc,
+                                                                          index)));
+                                                        }
+                                                      },
+                                                      child: Text('Proceed'))
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                        child: Text(
+                                          'Go to page',
+                                          style: TextStyle(
+                                              color: themeProvider.isDarkMode
+                                                  ? Colors.white
+                                                  : Colors.black),
+                                        ),
+                                      )
+                                  ],
                                 ),
                               ),
                               SizedBox(
@@ -1084,11 +1189,9 @@ class _HomePageState extends State<HomePage>
 
     // Get data from docs and convert map to List
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-    if (mounted) {
-      setState(() {
-        _total = allData;
-      });
-    }
+    setState(() {
+      _total = allData;
+    });
     var data = _total.map((e) => e["medina_mushaf_page_id"]).toList();
     return data;
   }
@@ -1099,6 +1202,7 @@ class _HomePageState extends State<HomePage>
 
   Future<void> getList() async {
     await Provider.of<BookMarkProvider>(context, listen: false).getList();
+
     // Get docs from collection reference
     QuerySnapshot querySnapshot =
         await _collectionRef.orderBy('created_at').get();
@@ -1118,5 +1222,14 @@ class _HomePageState extends State<HomePage>
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => PaymentScreen()));
     // if (!await launchUrl(_url)) throw 'Could not launch $_url';
+  }
+
+  Future<String> getSuraId(String text) async {
+    var data = await FirebaseFirestore.instance
+        .collection('medina_mushaf_pages')
+        .doc(text)
+        .get()
+        .then((value) => value['sura_id']);
+    return data;
   }
 }
