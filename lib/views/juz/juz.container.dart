@@ -5,7 +5,9 @@ import 'package:provider/provider.dart';
 import 'package:quran/quran.dart';
 
 import '../../provider/ayah.number.provider.dart';
+import '../../provider/user.provider.dart';
 import '../../theme/theme_provider.dart';
+import '../payment/payment.screen.dart';
 import '../surah.screen.dart';
 
 class JuzContainer extends StatefulWidget {
@@ -29,6 +31,29 @@ class JuzContainer extends StatefulWidget {
 
 class _JuzContainerState extends State<JuzContainer> {
   List jusRange = [];
+  late var snackBar;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    Provider.of<AppUser>(context, listen: false).getRole();
+
+    snackBar = SnackBar(
+        backgroundColor: Colors.tealAccent,
+        content: Text(
+          Provider.of<AppUser>(context, listen: false).role != 'premium-user'
+              ? 'This content only unlock for paid version'
+              : 'Show Receipt',
+          style: TextStyle(color: Colors.black),
+        ),
+        action: SnackBarAction(
+          textColor: Colors.black,
+          label: 'Upgrade now!',
+          onPressed: _launchUrl,
+        ));
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,21 +137,38 @@ class _JuzContainerState extends State<JuzContainer> {
                     )),
                 child: ListTile(
                   onTap: () async {
-                    var name = widget.list[i]['tname'];
-                    var detail = widget.list[i]['ename'];
-                    var index = 0;
-                    var allPages = await getJuzRange(i + 1);
-                    Provider.of<AyaProvider>(context, listen: false)
-                        .getPage(int.parse(allPages.first));
-                    Provider.of<AyaProvider>(context, listen: false).setDefault();
-                    Provider.of<AyaProvider>(context, listen: false)
-                        .getStart(i + 1, int.parse(allPages.first));
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SurahScreen(
-                                allPages, '${i + 1}', name, detail, index)));
-                  },
+                    var role = Provider.of<
+                    AppUser>(
+                    context,
+                    listen:
+                    false)
+                        .role;
+                    if (i > 0 &&
+                    role ==
+                    'user') {
+                    ScaffoldMessenger.of(
+                    context)
+                        .showSnackBar(
+                    snackBar);
+                    } else {
+                      var name = widget.list[i]['tname'];
+                      var detail = widget.list[i]['ename'];
+                      var index = 0;
+                      var allPages = await getJuzRange(i + 1);
+                      Provider.of<AyaProvider>(context, listen: false)
+                          .getPage(int.parse(allPages.first));
+                      Provider.of<AyaProvider>(context, listen: false)
+                          .setDefault();
+                      Provider.of<AyaProvider>(context, listen: false)
+                          .getStart(i + 1, int.parse(allPages.first));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  SurahScreen(
+                                      allPages, '${i + 1}', name, detail,
+                                      index)));
+                    }},
                   leading: Container(
                       width:33,
                       height: 65,
@@ -182,7 +224,7 @@ class _JuzContainerState extends State<JuzContainer> {
                     minFontSize: 10.0,
                     maxLines: 2,),
                   trailing: Container(
-                      width:60,
+                      width:63,
                       decoration:
                       BoxDecoration(
                         borderRadius:
@@ -374,5 +416,13 @@ class _JuzContainerState extends State<JuzContainer> {
       }
     });
     return start;
+  }
+
+  void _launchUrl() async {
+    ///todo:for testing purpose
+    // GetStorage().erase();
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => PaymentScreen()));
+    // if (!await launchUrl(_url)) throw 'Could not launch $_url';
   }
 }
