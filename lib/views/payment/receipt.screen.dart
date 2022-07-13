@@ -107,15 +107,10 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
           IconButton(
               onPressed: () async {
                 try {
-//app directory for storing images.
                   final appDir = await getApplicationDocumentsDirectory();
-//current time
                   var datetime = DateTime.now();
-//qr image file creation
                   file = await File('${appDir.path}/$datetime.png').create();
-//appending data
                   await file?.writeAsBytes(screenshotBytes!);
-//Shares QR image
                   await Share.shareFiles(
                     [file!.path],
                     mimeTypes: ["image/png"],
@@ -135,9 +130,7 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
           Flexible(
             child: InAppWebView(
               key: webViewKey,
-              // contextMenu: contextMenu,
               initialUrlRequest: URLRequest(url: Uri.parse(widget.url)),
-              // initialFile: "assets/index.html",
               initialUserScripts: UnmodifiableListView<UserScript>([]),
               initialOptions: options,
               pullToRefreshController: pullToRefreshController,
@@ -158,7 +151,6 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
               },
               shouldOverrideUrlLoading: (controller, navigationAction) async {
                 var uri = navigationAction.request.url!;
-
                 if (![
                   "http",
                   "https",
