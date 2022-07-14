@@ -8294,7 +8294,7 @@ class AyaProvider extends ChangeNotifier {
         191,
         204,
       ],
-     "page_498": [
+      "page_498": [
         10,
         21,
         29,
@@ -8359,8 +8359,8 @@ class AyaProvider extends ChangeNotifier {
         202,
         218,
         231,
-      ],"page_502": [18, 37, 53, 65, 79, 88, 98, 113, 127, 142, 156, 167, 180],
-
+      ],
+      "page_502": [18, 37, 53, 65, 79, 88, 98, 113, 127, 142, 156, 167, 180],
       "page_503": [
         16,
         31,
