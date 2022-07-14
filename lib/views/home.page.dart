@@ -27,7 +27,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  late var snackBar;
+  late dynamic snackBar;
 
   bool checkout = false;
 

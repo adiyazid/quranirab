@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:path_provider/path_provider.dart';
@@ -50,28 +51,42 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
               iosId: "1",
               title: "Special",
               action: () async {
-                print("Menu item Special clicked!");
-                print(await webViewController?.getSelectedText());
+                if (kDebugMode) {
+                  print("Menu item Special clicked!");
+                }
+                if (kDebugMode) {
+                  print(await webViewController?.getSelectedText());
+                }
                 await webViewController?.clearFocus();
               })
         ],
         options: ContextMenuOptions(hideDefaultSystemContextMenuItems: false),
         onCreateContextMenu: (hitTestResult) async {
-          print("onCreateContextMenu");
-          print(hitTestResult.extra);
-          print(await webViewController?.getSelectedText());
+          if (kDebugMode) {
+            print("onCreateContextMenu");
+          }
+          if (kDebugMode) {
+            print(hitTestResult.extra);
+          }
+          if (kDebugMode) {
+            print(await webViewController?.getSelectedText());
+          }
         },
         onHideContextMenu: () {
-          print("onHideContextMenu");
+          if (kDebugMode) {
+            print("onHideContextMenu");
+          }
         },
         onContextMenuActionItemClicked: (contextMenuItemClicked) async {
           var id = (Platform.isAndroid)
               ? contextMenuItemClicked.androidId
               : contextMenuItemClicked.iosId;
-          print("onContextMenuActionItemClicked: " +
-              id.toString() +
-              " " +
-              contextMenuItemClicked.title);
+          if (kDebugMode) {
+            print("onContextMenuActionItemClicked: " +
+                id.toString() +
+                " " +
+                contextMenuItemClicked.title);
+          }
         });
 
     pullToRefreshController = PullToRefreshController(
@@ -199,7 +214,9 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                 });
               },
               onConsoleMessage: (controller, consoleMessage) {
-                print(consoleMessage);
+                if (kDebugMode) {
+                  print(consoleMessage);
+                }
               },
             ),
           ),

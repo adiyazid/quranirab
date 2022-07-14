@@ -5,7 +5,6 @@ import 'package:flutter/material.dart' hide Card;
 import 'package:flutter_credit_card/credit_card_form.dart';
 import 'package:flutter_credit_card/credit_card_model.dart';
 import 'package:flutter_credit_card/credit_card_widget.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/models/payment.output.dart';
 import 'package:quranirab/views/payment/receipt.screen.dart';
@@ -24,7 +23,6 @@ class PaymentScreen extends StatefulWidget {
 
 class _PaymentScreenState extends State<PaymentScreen> {
   final _phone = TextEditingController();
-  var intentId = GetStorage().read('intent');
   PaymentOutput? _paymentOutput;
 
   String cardNumber = '';
@@ -37,9 +35,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
   Future<void> checkout(BuildContext context, String phone, cardNumber,
       expiryDate, cardHolderName, cvvCode) async {
     try {
-      var customer;
-      var paymentIntent;
-      var paymentMethod;
+      dynamic customer;
+      Map<String, dynamic>? paymentIntent;
+      Map<String, dynamic> paymentMethod;
       var custId = Provider.of<AppUser>(context, listen: false).cid;
       if (Provider.of<AppUser>(context, listen: false).cid == null) {
         customer = await StripeService.createCustomer(cardHolderName,
@@ -74,7 +72,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               actions: [
                 ElevatedButton.icon(
                   onPressed: () async {
-                    var paymentConfirm;
+                    dynamic paymentConfirm;
                     try {
                       setState(() {});
                       paymentConfirm = await StripeService.confirmPayment(
@@ -159,7 +157,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       showBackView: isCvvFocused,
                       obscureCardNumber: true,
                       obscureCardCvv: true,
-                      onCreditCardWidgetChange: (CreditCardBrand) {},
+                      onCreditCardWidgetChange: (creditCardBrand) {},
                     ),
                     Expanded(
                         child: SingleChildScrollView(
@@ -235,6 +233,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 if (e!.isEmpty) {
                                   return 'Phone number cannot be null';
                                 }
+                                return null;
                               },
                               controller: _phone,
                               keyboardType: TextInputType.numberWithOptions(
@@ -263,9 +262,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               if (formKey.currentState!.validate()) {
                                 await checkout(context, _phone.text, cardNumber,
                                     expiryDate, cardHolderName, cvvCode);
-                                print('valid');
+                                if (kDebugMode) {
+                                  print('valid');
+                                }
                               } else {
-                                print('inValid');
+                                if (kDebugMode) {
+                                  print('inValid');
+                                }
                               }
                             },
                           )

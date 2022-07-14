@@ -1,6 +1,7 @@
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../provider/ayah.number.provider.dart';
 import '../../provider/bookmark.provider.dart';
@@ -166,6 +167,26 @@ class _TranslationState extends State<Translation> {
                                                                           .widget
                                                                           .detail,
                                                                       pages);
+                                                                } else if (item
+                                                                        .text ==
+                                                                    'Share') {
+                                                                  String
+                                                                      ayahNo =
+                                                                      ", ${widget.start! + index}";
+                                                                  await Share
+                                                                      .share(
+                                                                    widget._translate[
+                                                                            index] +
+                                                                        ' (' +
+                                                                        widget
+                                                                            .widget
+                                                                            .name +
+                                                                        ayahNo +
+                                                                        ')',
+                                                                    subject: widget
+                                                                        .widget
+                                                                        .name,
+                                                                  );
                                                                 }
                                                               },
                                                               child: Container(
