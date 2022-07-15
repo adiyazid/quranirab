@@ -176,7 +176,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               bottom: null,*/
                                 margin: const EdgeInsets.all(40.0),
                                 width: 509.0,
-                                height: MediaQuery.of(context).size.height * 0.8,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.8,
                                 child: Group1Widget(),
                               ),
                               Container(
@@ -186,7 +187,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               bottom: 178.0,*/
                                 margin: const EdgeInsets.all(65.0),
                                 width: 509.0,
-                                height: MediaQuery.of(context).size.height * 0.85,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.85,
                                 child: Group2Widget(),
                               )
                             ]),
