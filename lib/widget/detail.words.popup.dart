@@ -80,8 +80,9 @@ class _ListItemsState extends State<ListItems> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          EditData(widget.wordId)));
+                                      builder: (context) => EditData(
+                                            id: widget.wordId,
+                                          )));
                             },
                             child: Text('Edit')),
                       ),

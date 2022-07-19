@@ -15,7 +15,7 @@ class CVVText extends StatelessWidget {
     final theme = Provider.of<ThemeProvider>(context);
     return Scaffold(
       body: Center(
-        child: TextField(
+        child: TextFormField(
             controller: _cvv,
             decoration: InputDecoration(
                 border: InputBorder.none,

@@ -75,8 +75,9 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        EditData(widget.wordId)));
+                                    builder: (context) => EditData(
+                                          id: widget.wordId,
+                                        )));
                           },
                           child: Text(
                             'Edit',
