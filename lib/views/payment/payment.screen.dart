@@ -5,7 +5,7 @@ import 'package:flutter/material.dart' hide Card;
 import 'package:flutter_credit_card/credit_card_form.dart';
 import 'package:flutter_credit_card/credit_card_model.dart';
 import 'package:flutter_credit_card/credit_card_widget.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/models/payment.output.dart';
 import 'package:quranirab/views/payment/receipt.screen.dart';
@@ -26,7 +26,6 @@ class PaymentScreen extends StatefulWidget {
 
 class _PaymentScreenState extends State<PaymentScreen> {
   final _phone = TextEditingController();
-  var custId = GetStorage().read('custID');
   PaymentOutput? _paymentOutput;
 
   String cardNumber = '';
@@ -39,9 +38,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
   Future<void> checkout(BuildContext context, String phone, cardNumber,
       expiryDate, cardHolderName, cvvCode) async {
     try {
-      var customer;
-      var paymentIntent;
-      var paymentMethod;
+      dynamic customer;
+      dynamic paymentIntent;
+      dynamic paymentMethod;
       var custId = Provider.of<AppUser>(context, listen: false).cid;
       if (Provider.of<AppUser>(context, listen: false).cid == null) {
         customer = await StripeService.createCustomer(cardHolderName,
@@ -65,18 +64,19 @@ class _PaymentScreenState extends State<PaymentScreen> {
       showDialog(
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Buy QuranIrab Premium'),
+              title: Text(
+                AppLocalizations.of(context)!.buyPremium + ' QuranIrab',
+              ),
               content: ListTile(
-                  title: Text('Name: ' + customer!['name']),
-                  subtitle: Text('Amount: RM ' +
-                      paymentIntent!['amount'].toString().substring(0, 2) +
-                      '\n' +
-                      'Tel-No: ' +
-                      _phone.text)),
+                  title: Text('${AppLocalizations.of(context)!.name} : ' +
+                      customer!['name']),
+                  subtitle: Text(
+                      '${AppLocalizations.of(context)!.amount} : RM ' +
+                          paymentIntent!['amount'].toString().substring(0, 2))),
               actions: [
-                ElevatedButton.icon(
+                ElevatedButton(
                   onPressed: () async {
-                    var paymentConfirm;
+                    dynamic paymentConfirm;
                     try {
                       setState(() {});
                       paymentConfirm = await StripeService.confirmPayment(
@@ -100,8 +100,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       Navigator.pop(context);
                     }
                   },
-                  label: Text('Confirm Payment'),
-                  icon: Icon(Icons.save),
+                  child: Text(AppLocalizations.of(context)!.confirmPayment),
                 )
               ],
             );
@@ -132,7 +131,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
             SliverAppBar(
               iconTheme: Theme.of(context).iconTheme,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              title: Text('Buy Premium QuranIrab'),
+              title: Text(
+                AppLocalizations.of(context)!.buyPremium + ' QuranIrab',
+                style: TextStyle(
+                    color: theme.isDarkMode ? Colors.white : Colors.orange),
+              ),
               centerTitle: false,
               floating: true,
             ),
@@ -230,7 +233,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                               ? Colors.white
                                               : null),
                                       border: OutlineInputBorder(),
-                                      label: Text('Number'),
+                                      label: Text(
+                                          AppLocalizations.of(context)!.number),
                                       hintText: 'xxxx xxxx xxxx xxxx'),
                                   expiryDateDecoration: InputDecoration(
                                       labelStyle: TextStyle(
@@ -242,7 +246,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                               ? Colors.white
                                               : null),
                                       border: OutlineInputBorder(),
-                                      label: Text('Expired Date'),
+                                      label: Text(AppLocalizations.of(context)!
+                                          .expiredDate),
                                       hintText: 'xx/xx'),
                                   cvvCodeDecoration: InputDecoration(
                                       labelStyle: TextStyle(
@@ -266,7 +271,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                         color: theme.isDarkMode
                                             ? Colors.white
                                             : null),
-                                    label: Text('Card Holder'),
+                                    label: Text(AppLocalizations.of(context)!
+                                        .cardHolder),
                                   ),
                                 ),
                                 Padding(
@@ -286,7 +292,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                           color: theme.isDarkMode
                                               ? Colors.white
                                               : null),
-                                      label: Text('Phone Number'),
+                                      label: Text(AppLocalizations.of(context)!
+                                          .phoneNumber),
                                     ),
                                     validator: (e) {
                                       if (e!.isEmpty) {
@@ -309,7 +316,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   child: Container(
                                     margin: EdgeInsets.all(8.0),
                                     child: Text(
-                                      'validate',
+                                      AppLocalizations.of(context)!.validate,
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontFamily: 'halter',
@@ -344,13 +351,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             child: ListView(
                               children: [
                                 ListTile(
-                                    title: Text('Payment ID'),
+                                    title: Text(AppLocalizations.of(context)!
+                                        .paymentID),
                                     subtitle: Text(_paymentOutput!.id)),
                                 ListTile(
-                                    title: Text('Payment Status'),
+                                    title: Text(AppLocalizations.of(context)!
+                                        .paymentStatus),
                                     subtitle: Text(_paymentOutput!.status)),
                                 ListTile(
-                                    title: Text('Payment Amount'),
+                                    title: Text(AppLocalizations.of(context)!
+                                        .paymentAmount),
                                     subtitle: Text(_paymentOutput!.currency +
                                         ' ' +
                                         _paymentOutput!.amount
@@ -383,7 +393,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                               .charges.data.last.receiptUrl));
                                         }
                                       },
-                                      child: Text('Get Receipt')),
+                                      child: Text(AppLocalizations.of(context)!
+                                          .getReceipt)),
                                 ),
                               ],
                             ),

@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
@@ -117,7 +118,7 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: QuranThemes.darkTheme.primaryColor,
-        title: Text('Receipt detail'),
+        title: Text(AppLocalizations.of(context)!.receiptDetail),
         actions: [
           IconButton(
               onPressed: () async {
@@ -129,8 +130,7 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                   await Share.shareFiles(
                     [file!.path],
                     mimeTypes: ["image/png"],
-                    text:
-                        "Payment's Receipt for QuranIrab Premium, RM50 via card",
+                    text: AppLocalizations.of(context)!.shareReceipt,
                   );
                 } catch (e) {
                   ScaffoldMessenger.of(context)

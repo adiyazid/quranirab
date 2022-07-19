@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:quran/quran.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
 import 'package:quranirab/provider/bookmark.provider.dart';
 import 'package:quranirab/provider/user.provider.dart';
@@ -27,30 +26,16 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  late dynamic snackBar;
+  dynamic snackBar;
 
   bool checkout = false;
-
-  final _page = TextEditingController();
 
   @override
   void initState() {
     // TODO: implement initState
     Provider.of<AppUser>(context, listen: false).getRole();
     getList();
-    snackBar = SnackBar(
-        backgroundColor: Colors.tealAccent,
-        content: Text(
-          Provider.of<AppUser>(context, listen: false).role != 'premium-user'
-              ? 'This content only unlock for paid version'
-              : 'Show Receipt',
-          style: TextStyle(color: Colors.black),
-        ),
-        action: SnackBarAction(
-          textColor: Colors.black,
-          label: 'Upgrade now!',
-          onPressed: _launchUrl,
-        ));
+
     _tabController = TabController(length: 2, vsync: this);
     super.initState();
   }
@@ -63,6 +48,19 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
+    snackBar = SnackBar(
+        backgroundColor: Colors.tealAccent,
+        content: Text(
+          Provider.of<AppUser>(context, listen: false).role != 'premium-user'
+              ? AppLocalizations.of(context)!.contentLock
+              : AppLocalizations.of(context)!.showReceipt,
+          style: TextStyle(color: Colors.black),
+        ),
+        action: SnackBarAction(
+          textColor: Colors.black,
+          label: AppLocalizations.of(context)!.upgradeNow,
+          onPressed: _launchUrl,
+        ));
     var themeProvider = Provider.of<ThemeProvider>(context);
     // Figma Flutter Generator Desktop31Widget - FRAME
     return SafeArea(
@@ -413,7 +411,7 @@ class _HomePageState extends State<HomePage>
                               SizedBox(
                                 height:
                                     MediaQuery.of(context).size.height * 0.07,
-                                width: user.role == 'user' ? 180 : null,
+                                width: 180,
                                 child: Row(
                                   children: [
                                     Expanded(
@@ -449,103 +447,103 @@ class _HomePageState extends State<HomePage>
                                         ],
                                       ),
                                     ),
-                                    if (user.role != 'user')
-                                      TextButton(
-                                        onPressed: () async {
-                                          await showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                title:
-                                                    Text('Insert Page Number'),
-                                                content: TextFormField(
-                                                  keyboardType: TextInputType
-                                                      .numberWithOptions(
-                                                          decimal: false),
-                                                  decoration: InputDecoration(
-                                                      label: Text('Page')),
-                                                  controller: _page,
-                                                ),
-                                                actions: [
-                                                  TextButton(
-                                                      onPressed: () =>
-                                                          Navigator.pop(
-                                                              context),
-                                                      child: Text('Back')),
-                                                  ElevatedButton(
-                                                      onPressed: () async {
-                                                        if (int.parse(_page
-                                                                    .text) >
-                                                                604 ||
-                                                            int.parse(_page
-                                                                    .text) <
-                                                                0) {
-                                                          ScaffoldMessenger.of(
-                                                                  context)
-                                                              .showSnackBar(SnackBar(
-                                                                  content: Text(
-                                                                      'Page out of range. Please insert again')));
-                                                        } else {
-                                                          var suraId =
-                                                              await getSuraId(
-                                                                  _page.text);
-                                                          var suraName =
-                                                              getSurahName(
-                                                                  int.parse(
-                                                                      suraId));
-                                                          var suraDesc =
-                                                              getSurahNameEnglish(
-                                                                  int.parse(
-                                                                      suraId));
-                                                          List a =
-                                                              await getTotalPage(
-                                                                  suraId);
-                                                          var index = a.indexOf(
-                                                              _page.text);
-                                                          Provider.of<AyaProvider>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .getPage(int
-                                                                  .parse(_page
-                                                                      .text));
-                                                          Provider.of<AyaProvider>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .setDefault();
-                                                          Provider.of<AyaProvider>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .getStart(
-                                                                  int.parse(
-                                                                      suraId),
-                                                                  int.parse(
-                                                                      a.first));
-                                                          Navigator.pushReplacement(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder: (context) =>
-                                                                      SurahScreen(
-                                                                          a,
-                                                                          suraId,
-                                                                          suraName,
-                                                                          suraDesc,
-                                                                          index)));
-                                                        }
-                                                      },
-                                                      child: Text('Proceed'))
-                                                ],
-                                              );
-                                            },
-                                          );
-                                        },
-                                        child: Text(
-                                          'Go to page',
-                                          style: TextStyle(
-                                              color: themeProvider.isDarkMode
-                                                  ? Colors.white
-                                                  : Colors.black),
-                                        ),
-                                      )
+                                    // if (user.role != 'user')
+                                    //   TextButton(
+                                    //     onPressed: () async {
+                                    //       await showDialog(
+                                    //         context: context,
+                                    //         builder: (BuildContext context) {
+                                    //           return AlertDialog(
+                                    //             title:
+                                    //                 Text('Insert Page Number'),
+                                    //             content: TextFormField(
+                                    //               keyboardType: TextInputType
+                                    //                   .numberWithOptions(
+                                    //                       decimal: false),
+                                    //               decoration: InputDecoration(
+                                    //                   label: Text('Page')),
+                                    //               controller: _page,
+                                    //             ),
+                                    //             actions: [
+                                    //               TextButton(
+                                    //                   onPressed: () =>
+                                    //                       Navigator.pop(
+                                    //                           context),
+                                    //                   child: Text('Back')),
+                                    //               ElevatedButton(
+                                    //                   onPressed: () async {
+                                    //                     if (int.parse(_page
+                                    //                                 .text) >
+                                    //                             604 ||
+                                    //                         int.parse(_page
+                                    //                                 .text) <
+                                    //                             0) {
+                                    //                       ScaffoldMessenger.of(
+                                    //                               context)
+                                    //                           .showSnackBar(SnackBar(
+                                    //                               content: Text(
+                                    //                                   'Page out of range. Please insert again')));
+                                    //                     } else {
+                                    //                       var suraId =
+                                    //                           await getSuraId(
+                                    //                               _page.text);
+                                    //                       var suraName =
+                                    //                           getSurahName(
+                                    //                               int.parse(
+                                    //                                   suraId));
+                                    //                       var suraDesc =
+                                    //                           getSurahNameEnglish(
+                                    //                               int.parse(
+                                    //                                   suraId));
+                                    //                       List a =
+                                    //                           await getTotalPage(
+                                    //                               suraId);
+                                    //                       var index = a.indexOf(
+                                    //                           _page.text);
+                                    //                       Provider.of<AyaProvider>(
+                                    //                               context,
+                                    //                               listen: false)
+                                    //                           .getPage(int
+                                    //                               .parse(_page
+                                    //                                   .text));
+                                    //                       Provider.of<AyaProvider>(
+                                    //                               context,
+                                    //                               listen: false)
+                                    //                           .setDefault();
+                                    //                       Provider.of<AyaProvider>(
+                                    //                               context,
+                                    //                               listen: false)
+                                    //                           .getStart(
+                                    //                               int.parse(
+                                    //                                   suraId),
+                                    //                               int.parse(
+                                    //                                   a.first));
+                                    //                       Navigator.pushReplacement(
+                                    //                           context,
+                                    //                           MaterialPageRoute(
+                                    //                               builder: (context) =>
+                                    //                                   SurahScreen(
+                                    //                                       a,
+                                    //                                       suraId,
+                                    //                                       suraName,
+                                    //                                       suraDesc,
+                                    //                                       index)));
+                                    //                     }
+                                    //                   },
+                                    //                   child: Text('Proceed'))
+                                    //             ],
+                                    //           );
+                                    //         },
+                                    //       );
+                                    //     },
+                                    //     child: Text(
+                                    //       'Go to page',
+                                    //       style: TextStyle(
+                                    //           color: themeProvider.isDarkMode
+                                    //               ? Colors.white
+                                    //               : Colors.black),
+                                    //     ),
+                                    //   )
                                   ],
                                 ),
                               ),

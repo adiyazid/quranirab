@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/models/category.dart';
 import 'package:quranirab/theme/theme_provider.dart';
@@ -155,7 +156,7 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                           Padding(
                             padding: const EdgeInsets.all(40.0),
                             child: Text(
-                              'Leaderboards',
+                              AppLocalizations.of(context)!.leaderboard,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: themeProvider.isDarkMode
@@ -193,7 +194,7 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        'All time',
+                                        AppLocalizations.of(context)!.allTime,
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             color: themeProvider.isDarkMode
@@ -216,7 +217,8 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        'Last 30 days',
+                                        AppLocalizations.of(context)!
+                                            .last30days,
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             color: themeProvider.isDarkMode
@@ -262,7 +264,8 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                         child: oldDataTable.isEmpty
                                             ? Center(
                                                 child: Text(
-                                                'No data',
+                                                AppLocalizations.of(context)!
+                                                    .noData,
                                                 style: TextStyle(fontSize: 40),
                                               ))
                                             : DataTable(
@@ -294,7 +297,9 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                                 columns: [
                                                   DataColumn(
                                                       label: Text(
-                                                        'Rank',
+                                                        AppLocalizations.of(
+                                                                context)!
+                                                            .rank,
                                                         style: TextStyle(
                                                             color: themeProvider
                                                                     .isDarkMode
@@ -305,7 +310,9 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                                       onSort: null),
                                                   DataColumn(
                                                     label: Text(
-                                                      'Name',
+                                                      AppLocalizations.of(
+                                                              context)!
+                                                          .name,
                                                       style: TextStyle(
                                                           color: themeProvider
                                                                   .isDarkMode
@@ -315,7 +322,9 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                                   ),
                                                   DataColumn(
                                                       label: Text(
-                                                        'Total Quizzes',
+                                                        AppLocalizations.of(
+                                                                context)!
+                                                            .totalQuizzes,
                                                         style: TextStyle(
                                                             color: themeProvider
                                                                     .isDarkMode
@@ -326,7 +335,9 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                                       onSort: null),
                                                   DataColumn(
                                                       label: Text(
-                                                        'Score',
+                                                        AppLocalizations.of(
+                                                                context)!
+                                                            .score,
                                                         style: TextStyle(
                                                             color: themeProvider
                                                                     .isDarkMode
@@ -413,7 +424,8 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                         child: dataTable.isEmpty
                                             ? Center(
                                                 child: Text(
-                                                'No data',
+                                                AppLocalizations.of(context)!
+                                                    .noData,
                                                 style: TextStyle(fontSize: 40),
                                               ))
                                             : DataTable(
@@ -445,7 +457,9 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                                 columns: [
                                                   DataColumn(
                                                       label: Text(
-                                                        'Rank',
+                                                        AppLocalizations.of(
+                                                                context)!
+                                                            .rank,
                                                         style: TextStyle(
                                                             color: themeProvider
                                                                     .isDarkMode
@@ -456,7 +470,9 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                                       onSort: null),
                                                   DataColumn(
                                                     label: Text(
-                                                      'Name',
+                                                      AppLocalizations.of(
+                                                              context)!
+                                                          .name,
                                                       style: TextStyle(
                                                           color: themeProvider
                                                                   .isDarkMode
@@ -466,7 +482,9 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                                   ),
                                                   DataColumn(
                                                       label: Text(
-                                                        'Total Quizzes',
+                                                        AppLocalizations.of(
+                                                                context)!
+                                                            .totalQuizzes,
                                                         style: TextStyle(
                                                             color: themeProvider
                                                                     .isDarkMode
@@ -477,7 +495,9 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                                       onSort: null),
                                                   DataColumn(
                                                       label: Text(
-                                                        'Score',
+                                                        AppLocalizations.of(
+                                                                context)!
+                                                            .score,
                                                         style: TextStyle(
                                                             color: themeProvider
                                                                     .isDarkMode
@@ -579,15 +599,17 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                                 oldDataTable[index]["name"],
                                                 style: TextStyle(
                                                     color: Colors.black)),
-                                            subtitle: Text("Total Quiz: "+
-                                                oldDataTable[index]
-                                                        ["total-quiz"]
-                                                    .toString(),
+                                            subtitle: Text(
+                                                "${AppLocalizations.of(context)!.totalQuizzes} " +
+                                                    oldDataTable[index]
+                                                            ["total-quiz"]
+                                                        .toString(),
                                                 style: TextStyle(
                                                     color: Colors.black)),
                                             trailing: Text(
                                                 oldDataTable[index]["scores"]
-                                                    .toString() + " scores",
+                                                        .toString() +
+                                                    " ${AppLocalizations.of(context)!.score}",
                                                 style: TextStyle(
                                                     color: Colors.black)),
                                             tileColor: themeProvider.isDarkMode
@@ -620,14 +642,17 @@ class _LeaderBoardTableState extends State<LeaderBoardTable> {
                                                 dataTable[index]["name"],
                                                 style: TextStyle(
                                                     color: Colors.black)),
-                                            subtitle: Text("Total Quiz: "+
-                                                dataTable[index]["total-quiz"]
-                                                    .toString(),
+                                            subtitle: Text(
+                                                "${AppLocalizations.of(context)!.totalQuizzes} " +
+                                                    dataTable[index]
+                                                            ["total-quiz"]
+                                                        .toString(),
                                                 style: TextStyle(
                                                     color: Colors.black)),
                                             trailing: Text(
                                                 dataTable[index]["scores"]
-                                                    .toString() + " scores",
+                                                        .toString() +
+                                                    " ${AppLocalizations.of(context)!.score}",
                                                 style: TextStyle(
                                                     color: Colors.black)),
                                             tileColor: themeProvider.isDarkMode

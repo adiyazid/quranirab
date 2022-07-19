@@ -55,14 +55,10 @@ class _SurahScreenState extends State<SurahScreen>
 
   late int i;
 
-  List menuItems = [
-    ItemModel('Share', Icons.share),
-    ItemModel('Bookmark', Icons.bookmarks),
-  ];
-
   @override
   void initState() {
     // TODO: implement initState
+
     _tabController = TabController(vsync: this, length: 2, initialIndex: 1);
     SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
       FeatureDiscovery.discoverFeatures(context, const <String>{
@@ -155,6 +151,10 @@ class _SurahScreenState extends State<SurahScreen>
 
   @override
   Widget build(BuildContext context) {
+    List menuItems = [
+      ItemModel(AppLocalizations.of(context)!.share, Icons.share),
+      ItemModel(AppLocalizations.of(context)!.bookmark, Icons.bookmarks),
+    ];
     final themeProvider = Provider.of<ThemeProvider>(context);
     return SafeArea(
       child: Scaffold(

@@ -41,11 +41,12 @@ class _QuizHomeState extends State<QuizHome> {
           Appbar(),
           SliverToBoxAdapter(
               child: Center(
-                child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height*0.3),
+                  padding: EdgeInsets.symmetric(
+                      vertical: MediaQuery.of(context).size.height * 0.3),
                   child: Container(
                       margin: EdgeInsets.all(8),
                       color: themeProvider.isDarkMode
@@ -93,9 +94,9 @@ class _QuizHomeState extends State<QuizHome> {
                     10, () {
                   Navigator.pop(context);
                 }, true),
-            ],
-          ),
-              ))
+              ],
+            ),
+          ))
         ],
       ),
     );
