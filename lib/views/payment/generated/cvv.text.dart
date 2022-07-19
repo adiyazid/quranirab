@@ -15,21 +15,16 @@ class CVVText extends StatelessWidget {
     final theme = Provider.of<ThemeProvider>(context);
     return Scaffold(
       body: Center(
-        child: Column(
-          children: [
-            TextField(
-                controller: _cvv,
-                decoration: InputDecoration(
-                    border: InputBorder.none,
-                    filled: true,
-                    fillColor: theme.isDarkMode
-                        ? Color(0xff67748E)
-                        : Colors.white,
-                    labelText: ('CVV'),
-                    labelStyle: TextStyle(color: theme.isDarkMode?white: Colors.black)),
-                style: TextStyle(color: theme.isDarkMode?white: Colors.black)),
-          ], /* letterSpacing: 0.0, */
-        ),
+        child: TextField(
+            controller: _cvv,
+            decoration: InputDecoration(
+                border: InputBorder.none,
+                filled: true,
+                fillColor: theme.isDarkMode ? Color(0xff67748E) : Colors.white,
+                labelText: ('CVV'),
+                labelStyle:
+                    TextStyle(color: theme.isDarkMode ? white : Colors.black)),
+            style: TextStyle(color: theme.isDarkMode ? white : Colors.black)),
       ),
     );
   }

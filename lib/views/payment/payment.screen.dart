@@ -5,6 +5,7 @@ import 'package:flutter/material.dart' hide Card;
 import 'package:flutter_credit_card/credit_card_form.dart';
 import 'package:flutter_credit_card/credit_card_model.dart';
 import 'package:flutter_credit_card/credit_card_widget.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/models/payment.output.dart';
 import 'package:quranirab/views/payment/receipt.screen.dart';
@@ -25,6 +26,7 @@ class PaymentScreen extends StatefulWidget {
 
 class _PaymentScreenState extends State<PaymentScreen> {
   final _phone = TextEditingController();
+  var custId = GetStorage().read('custID');
   PaymentOutput? _paymentOutput;
 
   String cardNumber = '';
@@ -37,9 +39,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
   Future<void> checkout(BuildContext context, String phone, cardNumber,
       expiryDate, cardHolderName, cvvCode) async {
     try {
-      dynamic customer;
-      Map<String, dynamic>? paymentIntent;
-      Map<String, dynamic> paymentMethod;
+      var customer;
+      var paymentIntent;
+      var paymentMethod;
       var custId = Provider.of<AppUser>(context, listen: false).cid;
       if (Provider.of<AppUser>(context, listen: false).cid == null) {
         customer = await StripeService.createCustomer(cardHolderName,
@@ -74,7 +76,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               actions: [
                 ElevatedButton.icon(
                   onPressed: () async {
-                    dynamic paymentConfirm;
+                    var paymentConfirm;
                     try {
                       setState(() {});
                       paymentConfirm = await StripeService.confirmPayment(
@@ -130,12 +132,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
             SliverAppBar(
               iconTheme: Theme.of(context).iconTheme,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              title: Text(
-                'Buy Premium QuranIrab',
-                style: TextStyle(
-                    color:
-                        theme.isDarkMode ? Colors.white : Colors.orangeAccent),
-              ),
+              title: Text('Buy Premium QuranIrab'),
               centerTitle: false,
               floating: true,
             ),
@@ -170,10 +167,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 ),
                               ),
                               Container(
-                                /*left: 89.0,
-                              top: 115.0,
-                              right: null,
-                              bottom: null,*/
                                 margin: const EdgeInsets.all(40.0),
                                 width: 509.0,
                                 height:
@@ -181,14 +174,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 child: Group1Widget(),
                               ),
                               Container(
-                                /*left: null,
-                              top: null,
-                              right: 86.0,
-                              bottom: 178.0,*/
                                 margin: const EdgeInsets.all(65.0),
                                 width: 509.0,
                                 height:
-                                    MediaQuery.of(context).size.height * 0.85,
+                                    MediaQuery.of(context).size.height * 0.95,
                                 child: Group2Widget(),
                               )
                             ]),

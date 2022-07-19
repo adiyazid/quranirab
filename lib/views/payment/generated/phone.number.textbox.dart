@@ -18,7 +18,8 @@ class PhoneNumberTextBox extends StatelessWidget {
         border: Border.all(
           width: 1.0,
           color: theme.isDarkMode
-              ? Color(0xff808BA1) : Color.fromARGB(255, 255, 181, 94),
+              ? Color(0xff808BA1)
+              : Color.fromARGB(255, 255, 181, 94),
         ),
       ),
       child: ClipRRect(
