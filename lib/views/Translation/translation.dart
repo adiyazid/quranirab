@@ -7,7 +7,7 @@ import '../../provider/ayah.number.provider.dart';
 import '../../provider/bookmark.provider.dart';
 import '../../theme/theme_provider.dart';
 import '../surah.screen.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class Translation extends StatefulWidget {
   const Translation({
     Key? key,
@@ -139,7 +139,7 @@ class _TranslationState extends State<Translation> {
                                                               onTap: () async {
                                                                 // Obtain shared preferences.
                                                                 if (item.text ==
-                                                                    'Bookmark') {
+                                                                    AppLocalizations.of(context)!.bookmark) {
                                                                   List pages = widget
                                                                       .widget
                                                                       .allpages;
@@ -169,7 +169,7 @@ class _TranslationState extends State<Translation> {
                                                                       pages);
                                                                 } else if (item
                                                                         .text ==
-                                                                    'Share') {
+                                                                    AppLocalizations.of(context)!.share) {
                                                                   String
                                                                       ayahNo =
                                                                       ", ${widget.start! + index}";
