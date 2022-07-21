@@ -1,6 +1,7 @@
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../provider/ayah.number.provider.dart';
 import '../../provider/bookmark.provider.dart';
@@ -14,7 +15,7 @@ class Translation extends StatefulWidget {
     required List list,
     required List translate,
     required this.widget,
-    required this.start,
+    this.start,
     required this.menuItems,
     required this.widget1,
     required this.i,
@@ -98,10 +99,11 @@ class _TranslationState extends State<Translation> {
                                         child: Text(
                                           '${widget.widget.sura_id}:${widget.start! + index}',
                                           style: TextStyle(
-                                              fontSize: fontsize.value,
-                                              color: Theme.of(
-                                                  context)
-                                                  .textSelectionTheme.selectionColor,),
+                                            fontSize: fontsize.value,
+                                            color: Theme.of(context)
+                                                .textSelectionTheme
+                                                .selectionColor,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -165,6 +167,26 @@ class _TranslationState extends State<Translation> {
                                                                           .widget
                                                                           .detail,
                                                                       pages);
+                                                                } else if (item
+                                                                        .text ==
+                                                                    'Share') {
+                                                                  String
+                                                                      ayahNo =
+                                                                      ", ${widget.start! + index}";
+                                                                  await Share
+                                                                      .share(
+                                                                    widget._translate[
+                                                                            index] +
+                                                                        ' (' +
+                                                                        widget
+                                                                            .widget
+                                                                            .name +
+                                                                        ayahNo +
+                                                                        ')',
+                                                                    subject: widget
+                                                                        .widget
+                                                                        .name,
+                                                                  );
                                                                 }
                                                               },
                                                               child: Container(
@@ -244,6 +266,7 @@ class _TranslationState extends State<Translation> {
                                         child: Text(
                                           widget._translate[index],
                                           style: TextStyle(
+                                            fontFamily: 'MeQuran2',
                                             fontSize: fontsize.value,
                                           ),
                                         ),

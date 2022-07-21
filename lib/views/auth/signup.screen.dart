@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/user.provider.dart';
@@ -8,8 +9,8 @@ import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/auth/landing.page.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../Routes/route.dart';
 import '../../main.dart';
 
 class SignupWidget extends StatefulWidget {
@@ -53,12 +54,19 @@ class _SignupWidgetState extends State<SignupWidget>
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _animationController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // Figma Flutter Generator SignupWidget - FRAME
     final appUser = Provider.of<AppUser>(context);
     final theme = Provider.of<ThemeProvider>(context);
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: loading
             ? Center(
                 child: LoadingAnimationWidget.fourRotatingDots(
@@ -519,6 +527,25 @@ class _SignupWidgetState extends State<SignupWidget>
                                 ],
                               ),
                             ),
+                            InkWell(
+                              onTap: () => Navigator.pushNamed(
+                                  context, RoutesName.loginPage),
+                              child: Text(
+                                AppLocalizations.of(context)!.haveAccSignIn,
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    color: theme.isDarkMode
+                                        ? const Color.fromRGBO(255, 255, 255, 1)
+                                        : const Color.fromRGBO(0, 0, 0, 1),
+                                    fontFamily: 'Poppins',
+                                    fontSize: 16,
+                                    letterSpacing:
+                                        0 /*percentages not used in flutter. defaulting to zero*/,
+                                    fontWeight: FontWeight.normal,
+                                    height: 1),
+                              ),
+                            ),
 
                             ///button
                             InkWell(
@@ -573,16 +600,18 @@ class _SignupWidgetState extends State<SignupWidget>
                                   );
                                 } else {
                                   if (mounted) {
-                                    setState(() {});
+                                    setState(() {
+                                      loading = true;
+                                    });
                                   }
-                                  loading = true;
+
                                   try {
                                     await appUser.signUp(
                                         email: _email.text,
                                         password: _pass1.text,
                                         lastName: _lastName.text,
                                         firstName: _firstName.text);
-                                    await addUser();
+                                    await addUser().then((value) {});
                                     showTopSnackBar(
                                       context,
                                       CustomSnackBar.success(
@@ -597,9 +626,10 @@ class _SignupWidgetState extends State<SignupWidget>
                                                 LandingPage()));
 
                                     if (mounted) {
-                                      setState(() {});
+                                      setState(() {
+                                        loading = false;
+                                      });
                                     }
-                                    loading = false;
                                   } catch (e) {
                                     if (mounted) {
                                       setState(() {});

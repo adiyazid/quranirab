@@ -68,12 +68,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDX3p_ji1RaDUKrp3xL6nYPKYR9CO8Grm0',
-    appId: '1:422246535912:ios:e348fae2e6ce32fd2cef5d',
+    appId: '1:422246535912:ios:1dad25ba90f6ac0e2cef5d',
     messagingSenderId: '422246535912',
     projectId: 'quranirab-74bba',
     databaseURL: 'https://quranirab-74bba-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'quranirab-74bba.appspot.com',
-    iosClientId: '422246535912-ti5382sa0v7vgj5u91fre3cbgcar31n1.apps.googleusercontent.com',
-    iosBundleId: 'com.example.quranirab',
+    iosClientId: '422246535912-s9tsed0a7gebiov5fn379fdu6p84dn5p.apps.googleusercontent.com',
+    iosBundleId: 'com.aqwise.quranirab',
   );
 }

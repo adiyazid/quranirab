@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
 import 'package:skeleton_loader/skeleton_loader.dart';
@@ -8,7 +10,6 @@ import '../models/word.detail.dart';
 import '../provider/user.provider.dart';
 import '../theme/theme_provider.dart';
 import '../views/data_correction/edit.data.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MoreOptionsList extends StatefulWidget {
   final String surah;
@@ -46,7 +47,6 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
       List<WordDetail> parent = aya.getParent();
       return aya.loadingCategory
           ? SingleChildScrollView(
-              controller: ScrollController(),
               child: Column(
                 children: [
                   Align(
@@ -78,7 +78,13 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                                     builder: (context) =>
                                         EditData(widget.wordId)));
                           },
-                          child: Text('Edit',style: TextStyle(color: themeProvider.isDarkMode? Colors.white:Colors.black),)),
+                          child: Text(
+                            'Edit',
+                            style: TextStyle(
+                                color: themeProvider.isDarkMode
+                                    ? Colors.white
+                                    : Colors.black),
+                          )),
                     ),
                   const Divider(
                     thickness: 1,
@@ -99,7 +105,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                                 ConnectionState.active ||
                             snapshot.connectionState == ConnectionState.done) {
                           if (snapshot.hasError) {
-                            return const Text('Waiiting..');
+                            return const Text('Waiting..');
                           } else if (snapshot.hasData) {
                             return Card(
                               color: Provider.of<ThemeProvider>(context,
@@ -123,7 +129,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                       },
                     ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.7,
+                    height: context.height(),
                     child: TreeView(
                       startExpanded: true,
                       children: _getChildList(parent),

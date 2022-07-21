@@ -1,3 +1,4 @@
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -12,6 +13,8 @@ import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/auth/landing.page.dart';
 
+import 'Routes/onGenerateRoute.dart';
+import 'Routes/route.dart';
 import 'firebase_options.dart';
 import 'framework/horizontal.scroll.web.dart';
 import 'framework/ms.language.dart';
@@ -69,27 +72,35 @@ class _MyAppState extends State<MyApp> {
           builder: (context, _) {
             final themeProvider =
                 Provider.of<ThemeProvider>(context, listen: true);
-            return MaterialApp(
-              title: "QuranIrab Web App",
-              scrollBehavior: MyCustomScrollBehavior(),
-              home: LandingPage(),
-              locale: _locale,
-              themeMode: themeProvider.themeMode,
-              localizationsDelegates: const [
-                AppLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-                MsMaterialLocalizations.delegate,
-              ],
-              supportedLocales: const [
-                Locale('ms', 'MY'),
-                Locale('en', ''),
-                Locale('ar', ''),
-              ],
-              theme: QuranThemes.lightTheme,
-              darkTheme: QuranThemes.darkTheme,
-              debugShowCheckedModeBanner: false,
+            return FeatureDiscovery(
+              child: MaterialApp(
+                title: "QuranIrab Web App",
+                scrollBehavior: MyCustomScrollBehavior(),
+                home: LandingPage(),
+                locale: _locale,
+                themeMode: themeProvider.themeMode,
+                localizationsDelegates: const [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                  MsMaterialLocalizations.delegate,
+                ],
+                onGenerateRoute: RouteGenerator.generateRoute,
+                initialRoute: RoutesName.landingPage,
+                supportedLocales: const [
+                  Locale('ms', 'MY'),
+                  Locale('en', ''),
+                  Locale('ar', ''),
+                  Locale('zh', 'CN'),
+                  Locale('es', ''),
+                  Locale('fr', ''),
+                  Locale('ne', ''),
+                ],
+                theme: QuranThemes.lightTheme,
+                darkTheme: QuranThemes.darkTheme,
+                debugShowCheckedModeBanner: false,
+              ),
             );
           }),
     );
