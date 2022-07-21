@@ -99,6 +99,8 @@
   "totalQuizzes":"إجمالي الاختبارات",
   "score": "نتيجة",
   "rank": "مرتبة",
-  "noData": "لايوجد بيانات"
+  "noData": "لايوجد بيانات",
+  "bookmarkAdded": "Success: Bookmark Added",
+  "bookmarkError": "Error: Duplicate Bookmark"
 
 }

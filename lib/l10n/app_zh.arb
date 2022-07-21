@@ -99,5 +99,7 @@
   "totalQuizzes":"总测验",
   "score": "分数",
   "rank": "秩",
-  "noData": "没有数据"
+  "noData": "没有数据",
+  "bookmarkAdded": "Success: Bookmark Added",
+  "bookmarkError": "Error: Duplicate Bookmark"
 }

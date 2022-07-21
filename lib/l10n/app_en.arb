@@ -99,6 +99,8 @@
   "totalQuizzes":"Total Quizzes",
   "score": "Score",
   "rank": "Rank",
-  "noData": "No Data"
+  "noData": "No Data",
+  "bookmarkAdded": "Success: Bookmark Added",
+  "bookmarkError": "Error: Duplicate Bookmark"
 
 }

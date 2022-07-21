@@ -99,5 +99,7 @@
   "totalQuizzes":"कुल क्विजहरू",
   "score": "स्कोर",
   "rank": "श्रेणी",
-  "noData": "डाटा छैन"
+  "noData": "डाटा छैन",
+  "bookmarkAdded": "Success: Bookmark Added",
+  "bookmarkError": "Error: Duplicate Bookmark"
 }

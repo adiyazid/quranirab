@@ -52,9 +52,6 @@ class _SuraSliceState extends State<SuraSlice> {
         .getStart(int.parse(widget.suraId), int.parse(widget.page));
     FeatureDiscovery.clearPreferences(context, <String>{
       'quranirab_1',
-      'quranirab_2',
-      'quranirab_3',
-      'quranirab_5',
       'quranirab_4',
     });
     super.initState();

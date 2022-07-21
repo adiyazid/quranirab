@@ -99,5 +99,7 @@
   "totalQuizzes":"Cuestionarios totales",
   "score": "Puntaje",
   "rank": "Rango",
-  "noData": "Sin datos"
+  "noData": "Sin datos",
+  "bookmarkAdded": "Success: Bookmark Added",
+  "bookmarkError": "Error: Duplicate Bookmark"
 }

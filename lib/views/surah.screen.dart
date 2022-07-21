@@ -64,6 +64,9 @@ class _SurahScreenState extends State<SurahScreen>
       FeatureDiscovery.discoverFeatures(context, const <String>{
         // Feature ids for every feature that you want to showcase in order.
         'quranirab_1',
+        'quranirab_2',
+        'quranirab_3',
+        'quranirab_5',
         'quranirab_4',
       });
     });

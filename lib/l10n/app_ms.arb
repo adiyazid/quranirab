@@ -99,5 +99,7 @@
   "totalQuizzes":"Jumlah Kuiz: ",
   "score": "Skor",
   "rank": "Peringkat",
-  "noData": "Tiada data"
+  "noData": "Tiada data",
+  "bookmarkAdded": "Berjaya. Penanda buku ditambah",
+  "bookmarkError": "Ralat. Penanda buku untuk ayat ini sudah ada"
 }

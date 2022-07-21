@@ -99,5 +99,7 @@
   "totalQuizzes":"Nombre total de questionnaires",
   "score": "Score",
   "rank": "Le rang",
-  "noData": "Pas de données"
+  "noData": "Pas de données",
+  "bookmarkAdded": "Success: Bookmark Added",
+  "bookmarkError": "Error: Duplicate Bookmark"
 }
