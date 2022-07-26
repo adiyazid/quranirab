@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/models/category.dart';
 import 'package:quranirab/quiz_module/LeaderBoard.Table.dart';
@@ -64,7 +65,7 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                                     ),
                               const SizedBox(width: 32),
                               Text(
-                                'Leaderboards',
+                                AppLocalizations.of(context)!.leaderboard,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     color: themeProvider.isDarkMode
@@ -130,7 +131,7 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                                   ),
                                   Spacer(),
                                   Text(
-                                    'Overall',
+                                    AppLocalizations.of(context)!.overall,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         color: Color.fromRGBO(0, 0, 0, 1),
@@ -195,7 +196,8 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                                     ),
                                     Spacer(),
                                     Text(
-                                      'Page 1 - 201',
+                                      AppLocalizations.of(context)!.page +
+                                          ' 1 - 201',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           color: Color.fromRGBO(0, 0, 0, 1),
@@ -262,7 +264,8 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                                   ),
                                   Spacer(),
                                   Text(
-                                    'Page 202 - 402',
+                                    AppLocalizations.of(context)!.page +
+                                        ' 202 - 402',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         color: Color.fromRGBO(0, 0, 0, 1),
@@ -327,7 +330,8 @@ class _LeaderBoardMenuState extends State<LeaderBoardMenu> {
                                   ),
                                   Spacer(),
                                   Text(
-                                    'Page 403 - 604',
+                                    AppLocalizations.of(context)!.page +
+                                        ' 403 - 604',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         color: Color.fromRGBO(0, 0, 0, 1),

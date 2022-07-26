@@ -1,12 +1,13 @@
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../provider/ayah.number.provider.dart';
 import '../../provider/bookmark.provider.dart';
 import '../../theme/theme_provider.dart';
 import '../surah.screen.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class Translation extends StatefulWidget {
   const Translation({
     Key? key,
@@ -138,7 +139,7 @@ class _TranslationState extends State<Translation> {
                                                               onTap: () async {
                                                                 // Obtain shared preferences.
                                                                 if (item.text ==
-                                                                    'Bookmark') {
+                                                                    AppLocalizations.of(context)!.bookmark) {
                                                                   List pages = widget
                                                                       .widget
                                                                       .allpages;
@@ -166,6 +167,26 @@ class _TranslationState extends State<Translation> {
                                                                           .widget
                                                                           .detail,
                                                                       pages);
+                                                                } else if (item
+                                                                        .text ==
+                                                                    AppLocalizations.of(context)!.share) {
+                                                                  String
+                                                                      ayahNo =
+                                                                      ", ${widget.start! + index}";
+                                                                  await Share
+                                                                      .share(
+                                                                    widget._translate[
+                                                                            index] +
+                                                                        ' (' +
+                                                                        widget
+                                                                            .widget
+                                                                            .name +
+                                                                        ayahNo +
+                                                                        ')',
+                                                                    subject: widget
+                                                                        .widget
+                                                                        .name,
+                                                                  );
                                                                 }
                                                               },
                                                               child: Container(

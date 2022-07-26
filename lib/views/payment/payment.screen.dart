@@ -5,7 +5,7 @@ import 'package:flutter/material.dart' hide Card;
 import 'package:flutter_credit_card/credit_card_form.dart';
 import 'package:flutter_credit_card/credit_card_model.dart';
 import 'package:flutter_credit_card/credit_card_widget.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/models/payment.output.dart';
 import 'package:quranirab/views/payment/receipt.screen.dart';
@@ -14,6 +14,8 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../provider/user.provider.dart';
 import '../../services/stripe.service.dart';
 import '../../theme/theme_provider.dart';
+import 'generated/group1widget.dart';
+import 'generated/group2widget.dart';
 
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen({Key? key}) : super(key: key);
@@ -24,7 +26,6 @@ class PaymentScreen extends StatefulWidget {
 
 class _PaymentScreenState extends State<PaymentScreen> {
   final _phone = TextEditingController();
-  var intentId = GetStorage().read('intent');
   PaymentOutput? _paymentOutput;
 
   String cardNumber = '';
@@ -37,9 +38,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
   Future<void> checkout(BuildContext context, String phone, cardNumber,
       expiryDate, cardHolderName, cvvCode) async {
     try {
-      var customer;
-      var paymentIntent;
-      var paymentMethod;
+      dynamic customer;
+      dynamic paymentIntent;
+      dynamic paymentMethod;
       var custId = Provider.of<AppUser>(context, listen: false).cid;
       if (Provider.of<AppUser>(context, listen: false).cid == null) {
         customer = await StripeService.createCustomer(cardHolderName,
@@ -63,18 +64,19 @@ class _PaymentScreenState extends State<PaymentScreen> {
       showDialog(
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Buy QuranIrab Premium'),
+              title: Text(
+                AppLocalizations.of(context)!.buyPremium + ' QuranIrab',
+              ),
               content: ListTile(
-                  title: Text('Name: ' + customer!['name']),
-                  subtitle: Text('Amount: RM ' +
-                      paymentIntent!['amount'].toString().substring(0, 2) +
-                      '\n' +
-                      'Tel-No: ' +
-                      _phone.text)),
+                  title: Text('${AppLocalizations.of(context)!.name} : ' +
+                      customer!['name']),
+                  subtitle: Text(
+                      '${AppLocalizations.of(context)!.amount} : RM ' +
+                          paymentIntent!['amount'].toString().substring(0, 2))),
               actions: [
-                ElevatedButton.icon(
+                ElevatedButton(
                   onPressed: () async {
-                    var paymentConfirm;
+                    dynamic paymentConfirm;
                     try {
                       setState(() {});
                       paymentConfirm = await StripeService.confirmPayment(
@@ -98,8 +100,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       Navigator.pop(context);
                     }
                   },
-                  label: Text('Confirm Payment'),
-                  icon: Icon(Icons.save),
+                  child: Text(AppLocalizations.of(context)!.confirmPayment),
                 )
               ],
             );
@@ -130,190 +131,267 @@ class _PaymentScreenState extends State<PaymentScreen> {
             SliverAppBar(
               iconTheme: Theme.of(context).iconTheme,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              title: Text('Buy Premium QuranIrab'),
+              title: Text(
+                AppLocalizations.of(context)!.buyPremium + ' QuranIrab',
+                style: TextStyle(
+                    color: theme.isDarkMode ? Colors.white : Colors.orange),
+              ),
               centerTitle: false,
               floating: true,
             ),
           ];
         },
-        body: Container(
-          decoration: BoxDecoration(
-            border: Border(
-                top: BorderSide(
-                    color:
-                        theme.isDarkMode ? Colors.white : Colors.orangeAccent)),
-          ),
-          child: _paymentOutput == null
-              ? Column(
-                  children: [
-                    CreditCardWidget(
-                      cardNumber: cardNumber,
-                      expiryDate: expiryDate,
-                      cardHolderName: cardHolderName,
-                      cvvCode: cvvCode,
-                      showBackView: isCvvFocused,
-                      obscureCardNumber: true,
-                      obscureCardCvv: true,
-                      onCreditCardWidgetChange: (CreditCardBrand) {},
+        body: kIsWeb
+            ? ClipRRect(
+                borderRadius: BorderRadius.zero,
+                child: LayoutBuilder(builder:
+                    (BuildContext context, BoxConstraints constraints) {
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                            top: BorderSide(
+                                color: theme.isDarkMode
+                                    ? Colors.white
+                                    : Colors.orangeAccent)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 40),
+                        child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            direction: Axis.horizontal,
+                            alignment: WrapAlignment.center,
+                            spacing: 16.0,
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.zero,
+                                child: Container(
+                                  color: Color.fromARGB(255, 255, 255, 255),
+                                ),
+                              ),
+                              Group1Widget(),
+                              Group2Widget()
+                            ]),
+                      ),
                     ),
-                    Expanded(
-                        child: SingleChildScrollView(
-                      child: Column(
+                  );
+                }),
+              )
+            : Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                      top: BorderSide(
+                          color: theme.isDarkMode
+                              ? Colors.white
+                              : Colors.orangeAccent)),
+                ),
+                child: _paymentOutput == null
+                    ? Column(
                         children: [
-                          CreditCardForm(
+                          CreditCardWidget(
                             cardNumber: cardNumber,
                             expiryDate: expiryDate,
                             cardHolderName: cardHolderName,
                             cvvCode: cvvCode,
-                            onCreditCardModelChange: onCreditCardModelChange,
-                            themeColor: Theme.of(context).primaryColor,
-                            formKey: formKey,
-                            cardNumberDecoration: InputDecoration(
-                                labelStyle: TextStyle(
-                                    color:
-                                        theme.isDarkMode ? Colors.white : null),
-                                hintStyle: TextStyle(
-                                    color:
-                                        theme.isDarkMode ? Colors.white : null),
-                                border: OutlineInputBorder(),
-                                label: Text('Number'),
-                                hintText: 'xxxx xxxx xxxx xxxx'),
-                            expiryDateDecoration: InputDecoration(
-                                labelStyle: TextStyle(
-                                    color:
-                                        theme.isDarkMode ? Colors.white : null),
-                                hintStyle: TextStyle(
-                                    color:
-                                        theme.isDarkMode ? Colors.white : null),
-                                border: OutlineInputBorder(),
-                                label: Text('Expired Date'),
-                                hintText: 'xx/xx'),
-                            cvvCodeDecoration: InputDecoration(
-                                labelStyle: TextStyle(
-                                    color:
-                                        theme.isDarkMode ? Colors.white : null),
-                                border: OutlineInputBorder(),
-                                hintStyle: TextStyle(
-                                    color:
-                                        theme.isDarkMode ? Colors.white : null),
-                                label: Text('CVV'),
-                                hintText: 'xxx'),
-                            cardHolderDecoration: InputDecoration(
-                              labelStyle: TextStyle(
-                                  color:
-                                      theme.isDarkMode ? Colors.white : null),
-                              border: OutlineInputBorder(),
-                              hintStyle: TextStyle(
-                                  color:
-                                      theme.isDarkMode ? Colors.white : null),
-                              label: Text('Card Holder'),
-                            ),
+                            showBackView: isCvvFocused,
+                            obscureCardNumber: true,
+                            obscureCardCvv: true,
+                            onCreditCardWidgetChange: (CreditCardBrand) {},
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(width: 1, color: Colors.blue),
+                          Expanded(
+                              child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                CreditCardForm(
+                                  cardNumber: cardNumber,
+                                  expiryDate: expiryDate,
+                                  cardHolderName: cardHolderName,
+                                  cvvCode: cvvCode,
+                                  onCreditCardModelChange:
+                                      onCreditCardModelChange,
+                                  themeColor: Theme.of(context).primaryColor,
+                                  formKey: formKey,
+                                  cardNumberDecoration: InputDecoration(
+                                      labelStyle: TextStyle(
+                                          color: theme.isDarkMode
+                                              ? Colors.white
+                                              : null),
+                                      hintStyle: TextStyle(
+                                          color: theme.isDarkMode
+                                              ? Colors.white
+                                              : null),
+                                      border: OutlineInputBorder(),
+                                      label: Text(
+                                          AppLocalizations.of(context)!.number),
+                                      hintText: 'xxxx xxxx xxxx xxxx'),
+                                  expiryDateDecoration: InputDecoration(
+                                      labelStyle: TextStyle(
+                                          color: theme.isDarkMode
+                                              ? Colors.white
+                                              : null),
+                                      hintStyle: TextStyle(
+                                          color: theme.isDarkMode
+                                              ? Colors.white
+                                              : null),
+                                      border: OutlineInputBorder(),
+                                      label: Text(AppLocalizations.of(context)!
+                                          .expiredDate),
+                                      hintText: 'xx/xx'),
+                                  cvvCodeDecoration: InputDecoration(
+                                      labelStyle: TextStyle(
+                                          color: theme.isDarkMode
+                                              ? Colors.white
+                                              : null),
+                                      border: OutlineInputBorder(),
+                                      hintStyle: TextStyle(
+                                          color: theme.isDarkMode
+                                              ? Colors.white
+                                              : null),
+                                      label: Text('CVV'),
+                                      hintText: 'xxx'),
+                                  cardHolderDecoration: InputDecoration(
+                                    labelStyle: TextStyle(
+                                        color: theme.isDarkMode
+                                            ? Colors.white
+                                            : null),
+                                    border: OutlineInputBorder(),
+                                    hintStyle: TextStyle(
+                                        color: theme.isDarkMode
+                                            ? Colors.white
+                                            : null),
+                                    label: Text(AppLocalizations.of(context)!
+                                        .cardHolder),
+                                  ),
                                 ),
-                                labelStyle: TextStyle(
-                                    color:
-                                        theme.isDarkMode ? Colors.white : null),
-                                border: OutlineInputBorder(),
-                                hintStyle: TextStyle(
-                                    color:
-                                        theme.isDarkMode ? Colors.white : null),
-                                label: Text('Phone Number'),
-                              ),
-                              validator: (e) {
-                                if (e!.isEmpty) {
-                                  return 'Phone number cannot be null';
-                                }
-                              },
-                              controller: _phone,
-                              keyboardType: TextInputType.numberWithOptions(
-                                  decimal: false),
+                                Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: TextFormField(
+                                    decoration: InputDecoration(
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 1, color: Colors.blue),
+                                      ),
+                                      labelStyle: TextStyle(
+                                          color: theme.isDarkMode
+                                              ? Colors.white
+                                              : null),
+                                      border: OutlineInputBorder(),
+                                      hintStyle: TextStyle(
+                                          color: theme.isDarkMode
+                                              ? Colors.white
+                                              : null),
+                                      label: Text(AppLocalizations.of(context)!
+                                          .phoneNumber),
+                                    ),
+                                    validator: (e) {
+                                      if (e!.isEmpty) {
+                                        return 'Phone number cannot be null';
+                                      }
+                                    },
+                                    controller: _phone,
+                                    keyboardType:
+                                        TextInputType.numberWithOptions(
+                                            decimal: false),
+                                  ),
+                                ),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                      primary: Color(0xff1b447b)),
+                                  child: Container(
+                                    margin: EdgeInsets.all(8.0),
+                                    child: Text(
+                                      AppLocalizations.of(context)!.validate,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'halter',
+                                        fontSize: 14,
+                                        package: 'flutter_credit_card',
+                                      ),
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    if (formKey.currentState!.validate()) {
+                                      await checkout(
+                                          context,
+                                          _phone.text,
+                                          cardNumber,
+                                          expiryDate,
+                                          cardHolderName,
+                                          cvvCode);
+                                      print('valid');
+                                    } else {
+                                      print('inValid');
+                                    }
+                                  },
+                                )
+                              ],
                             ),
-                          ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                                primary: Color(0xff1b447b)),
-                            child: Container(
-                              margin: EdgeInsets.all(8.0),
-                              child: Text(
-                                'validate',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'halter',
-                                  fontSize: 14,
-                                  package: 'flutter_credit_card',
-                                ),
-                              ),
-                            ),
-                            onPressed: () async {
-                              if (formKey.currentState!.validate()) {
-                                await checkout(context, _phone.text, cardNumber,
-                                    expiryDate, cardHolderName, cvvCode);
-                                print('valid');
-                              } else {
-                                print('inValid');
-                              }
-                            },
-                          )
+                          )),
                         ],
-                      ),
-                    )),
-                  ],
-                )
-              : Column(
-                  children: [
-                    Flexible(
-                      child: ListView(
+                      )
+                    : Column(
                         children: [
-                          ListTile(
-                              title: Text('Payment ID'),
-                              subtitle: Text(_paymentOutput!.id)),
-                          ListTile(
-                              title: Text('Payment Status'),
-                              subtitle: Text(_paymentOutput!.status)),
-                          ListTile(
-                              title: Text('Payment Amount'),
-                              subtitle: Text(_paymentOutput!.currency +
-                                  ' ' +
-                                  _paymentOutput!.amount.toString().substring(
-                                      0,
-                                      _paymentOutput!.amount.toString().length -
-                                          2))),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    primary: Colors.orange),
-                                onPressed: () async {
-                                  if (!kIsWeb) {
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => ReceiptScreen(
-                                                _paymentOutput!.charges.data
-                                                    .last.receiptUrl)));
-                                  } else {
-                                    launchUrl(Uri.parse(_paymentOutput!
-                                        .charges.data.last.receiptUrl));
-                                  }
-                                },
-                                child: Text('Get Receipt')),
+                          Flexible(
+                            child: ListView(
+                              children: [
+                                ListTile(
+                                    title: Text(AppLocalizations.of(context)!
+                                        .paymentID),
+                                    subtitle: Text(_paymentOutput!.id)),
+                                ListTile(
+                                    title: Text(AppLocalizations.of(context)!
+                                        .paymentStatus),
+                                    subtitle: Text(_paymentOutput!.status)),
+                                ListTile(
+                                    title: Text(AppLocalizations.of(context)!
+                                        .paymentAmount),
+                                    subtitle: Text(_paymentOutput!.currency +
+                                        ' ' +
+                                        _paymentOutput!.amount
+                                            .toString()
+                                            .substring(
+                                                0,
+                                                _paymentOutput!.amount
+                                                        .toString()
+                                                        .length -
+                                                    2))),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          primary: Colors.orange),
+                                      onPressed: () async {
+                                        if (!kIsWeb) {
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ReceiptScreen(
+                                                          _paymentOutput!
+                                                              .charges
+                                                              .data
+                                                              .last
+                                                              .receiptUrl)));
+                                        } else {
+                                          launchUrl(Uri.parse(_paymentOutput!
+                                              .charges.data.last.receiptUrl));
+                                        }
+                                      },
+                                      child: Text(AppLocalizations.of(context)!
+                                          .getReceipt)),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
-                    ),
-                  ],
-                ),
-        ),
+              ),
       ),
     );
   }

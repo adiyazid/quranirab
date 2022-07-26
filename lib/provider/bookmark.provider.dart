@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:nb_utils/nb_utils.dart';
 import 'package:quranirab/models/bookmark.model.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
@@ -29,17 +29,23 @@ class BookMarkProvider extends ChangeNotifier {
     if (bookmarkList.isEmpty) {
       bookmarkList.add(newData);
       showTopSnackBar(
-          context, CustomSnackBar.success(message: 'Success: Bookmark Added'));
+          context,
+          CustomSnackBar.success(
+              message: AppLocalizations.of(context)!.bookmarkAdded));
     } else {
       bool duplicate =
           bookmarkList.any((element) => element.ayahNo == newData.ayahNo);
       if (!duplicate) {
         bookmarkList.add(newData);
-        showTopSnackBar(context,
-            CustomSnackBar.success(message: 'Success: Bookmark Added'));
+        showTopSnackBar(
+            context,
+            CustomSnackBar.success(
+                message: AppLocalizations.of(context)!.bookmarkAdded));
       } else {
-        showTopSnackBar(context,
-            CustomSnackBar.error(message: 'Error: Duplicate Bookmark'));
+        showTopSnackBar(
+            context,
+            CustomSnackBar.error(
+                message: AppLocalizations.of(context)!.bookmarkError));
       }
     }
     notifyListeners();
