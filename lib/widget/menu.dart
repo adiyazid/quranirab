@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/quiz_module/LeaderBoard.Menu.dart';
 import 'package:quranirab/theme/theme_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../Routes/route.dart';
 import '../views/user.profile/user.profile.dart';
@@ -68,7 +69,10 @@ class Menu extends StatelessWidget {
             buildMenuItem(
                 text: AppLocalizations.of(context)!.aboutUs,
                 icon: Icons.info_outline,
-                onTap: () {},
+                onTap: () async{
+                  const url = 'https://aqwise.my/about-us/';
+                  openBrowserURL(url: url, inApp: false);
+                },
                 darkMode: themeProvider.isDarkMode),
             const SizedBox(height: 16),
             buildMenuItem(
@@ -148,5 +152,19 @@ class Menu extends StatelessWidget {
 
   void SelectedItem(BuildContext context, int index) {
     Navigator.of(context).pop();
+  }
+
+  Future openBrowserURL({
+    required String url,
+    bool inApp = false,
+  }) async{
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceSafariVC: inApp,
+        forceWebView: inApp,
+        enableJavaScript: true,
+      );
+    }
   }
 }
