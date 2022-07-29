@@ -9,7 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../Routes/route.dart';
 import '../views/user.profile/user.profile.dart';
 import '../views/privacy.policy/privacy.policy.dart';
-
+import '../views/feedback/feedback.dart';
 
 class Menu extends StatelessWidget {
   final padding = const EdgeInsets.symmetric(horizontal: 10);
@@ -104,7 +104,12 @@ class Menu extends StatelessWidget {
             buildMenuItem(
                 text: AppLocalizations.of(context)!.feedback,
                 icon: Icons.feedback_outlined,
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                      builder: (context) => EmailScreen()));
+                },
                 darkMode: themeProvider.isDarkMode),
             const SizedBox(height: 16),
             buildMenuItem(
