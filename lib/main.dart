@@ -7,6 +7,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
 import 'package:quranirab/provider/bookmark.provider.dart';
+import 'package:quranirab/provider/card.provider.dart';
 import 'package:quranirab/provider/delete.provider.dart';
 import 'package:quranirab/provider/language.provider.dart';
 import 'package:quranirab/provider/user.provider.dart';
@@ -65,7 +66,9 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider<DeleteProvider>(
             create: (context) => DeleteProvider()),
         ChangeNotifierProvider<ThemeProvider>(
-            create: (context) => ThemeProvider())
+            create: (context) => ThemeProvider()),
+        ChangeNotifierProvider<CardProvider>(
+            create: (context) => CardProvider())
       ],
       child: ChangeNotifierProvider(
           create: (context) => ThemeProvider(),

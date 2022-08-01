@@ -90,6 +90,7 @@ dependencies:
   hidable:
   device_info_plus:
   package_info_plus:
+  credit_card_validator: ^2.0.1
 
 dev_dependencies:
   flutter_test:
