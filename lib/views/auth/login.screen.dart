@@ -349,13 +349,13 @@ class _SigninWidgetState extends State<SigninWidget>
                                         setState(() {
                                           loading = false;
                                         });
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                                content: Text(e
+                                                    .toString()
+                                                    .split("]")
+                                                    .last)));
                                       }
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                              content: Text(e
-                                                  .toString()
-                                                  .split("]")
-                                                  .last)));
                                     }
                                   }
                                 },

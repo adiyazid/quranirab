@@ -6,10 +6,11 @@ import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/quiz_module/LeaderBoard.Menu.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../Routes/route.dart';
-import '../views/user.profile/user.profile.dart';
-import '../views/privacy.policy/privacy.policy.dart';
 import '../views/feedback/feedback.dart';
+import '../views/privacy.policy/privacy.policy.dart';
+import '../views/user.profile/user.profile.dart';
 
 class Menu extends StatelessWidget {
   final padding = const EdgeInsets.symmetric(horizontal: 10);
@@ -19,7 +20,8 @@ class Menu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    String _url = 'https://www.freeprivacypolicy.com/live/8a9abf43-a7bd-4edb-8038-276754fc5d97';
+    String _url =
+        'https://www.freeprivacypolicy.com/live/8a9abf43-a7bd-4edb-8038-276754fc5d97';
     return Drawer(
       semanticLabel: 'Menu',
       child: Material(
@@ -72,7 +74,7 @@ class Menu extends StatelessWidget {
             buildMenuItem(
                 text: AppLocalizations.of(context)!.aboutUs,
                 icon: Icons.info_outline,
-                onTap: () async{
+                onTap: () async {
                   const url = 'https://aqwise.my/about-us/';
                   openBrowserURL(url: url, inApp: false);
                 },
@@ -93,9 +95,9 @@ class Menu extends StatelessWidget {
                 text: AppLocalizations.of(context)!.privacy,
                 icon: Icons.privacy_tip_outlined,
                 onTap: () {
-                  if (kIsWeb){
+                  if (kIsWeb) {
                     launchUrl(Uri.parse(_url));
-                  }else{
+                  } else {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -108,19 +110,17 @@ class Menu extends StatelessWidget {
                 text: AppLocalizations.of(context)!.feedback,
                 icon: Icons.feedback_outlined,
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                      builder: (context) => EmailScreen()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => EmailScreen()));
                 },
                 darkMode: themeProvider.isDarkMode),
-            const SizedBox(height: 16),
-            buildMenuItem(
-              text: AppLocalizations.of(context)!.help,
-              icon: Icons.help_outline,
-              onTap: () {},
-              darkMode: themeProvider.isDarkMode,
-            ),
+            // const SizedBox(height: 16),
+            // buildMenuItem(
+            //   text: AppLocalizations.of(context)!.help,
+            //   icon: Icons.help_outline,
+            //   onTap: () {},
+            //   darkMode: themeProvider.isDarkMode,
+            // ),
             const SizedBox(height: 16),
             buildMenuItem(
               darkMode: themeProvider.isDarkMode,
@@ -174,14 +174,7 @@ class Menu extends StatelessWidget {
   Future openBrowserURL({
     required String url,
     bool inApp = false,
-  }) async{
-    if (await canLaunch(url)) {
-      await launch(
-        url,
-        forceSafariVC: inApp,
-        forceWebView: inApp,
-        enableJavaScript: true,
-      );
-    }
+  }) async {
+    await launchUrl(Uri.parse(url));
   }
 }
