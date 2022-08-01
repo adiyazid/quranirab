@@ -1,12 +1,15 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/quiz_module/LeaderBoard.Menu.dart';
 import 'package:quranirab/theme/theme_provider.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import '../Routes/route.dart';
 import '../views/user.profile/user.profile.dart';
+import '../views/privacy.policy/privacy.policy.dart';
+import '../views/feedback/feedback.dart';
 
 class Menu extends StatelessWidget {
   final padding = const EdgeInsets.symmetric(horizontal: 10);
@@ -16,6 +19,7 @@ class Menu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    String _url = 'https://www.freeprivacypolicy.com/live/8a9abf43-a7bd-4edb-8038-276754fc5d97';
     return Drawer(
       semanticLabel: 'Menu',
       child: Material(
@@ -85,13 +89,27 @@ class Menu extends StatelessWidget {
             buildMenuItem(
                 text: AppLocalizations.of(context)!.privacy,
                 icon: Icons.privacy_tip_outlined,
-                onTap: () {},
+                onTap: () {
+                  if (kIsWeb){
+                    launchUrl(Uri.parse(_url));
+                  }else{
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Privacypolicy()));
+                  }
+                },
                 darkMode: themeProvider.isDarkMode),
             const SizedBox(height: 16),
             buildMenuItem(
                 text: AppLocalizations.of(context)!.feedback,
                 icon: Icons.feedback_outlined,
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                      builder: (context) => EmailScreen()));
+                },
                 darkMode: themeProvider.isDarkMode),
             const SizedBox(height: 16),
             buildMenuItem(
