@@ -100,7 +100,7 @@
   "score": "نتيجة",
   "rank": "مرتبة",
   "noData": "لايوجد بيانات",
-  "bookmarkAdded": "Success: Bookmark Added",
-  "bookmarkError": "Error: Duplicate Bookmark"
+  "bookmarkAdded": "النجاح: تمت إضافة إشارة مرجعية",
+  "bookmarkError": "خطأ: إشارة مرجعية مكررة"
 
 }

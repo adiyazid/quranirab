@@ -100,6 +100,6 @@
   "score": "Puntaje",
   "rank": "Rango",
   "noData": "Sin datos",
-  "bookmarkAdded": "Success: Bookmark Added",
-  "bookmarkError": "Error: Duplicate Bookmark"
+  "bookmarkAdded": "Éxito: marcador añadido",
+  "bookmarkError": "Error: marcador duplicado"
 }

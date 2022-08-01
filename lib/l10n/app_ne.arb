@@ -100,6 +100,6 @@
   "score": "स्कोर",
   "rank": "श्रेणी",
   "noData": "डाटा छैन",
-  "bookmarkAdded": "Success: Bookmark Added",
-  "bookmarkError": "Error: Duplicate Bookmark"
+  "bookmarkAdded": "सफलता: बुकमार्क थपियो",
+  "bookmarkError": "त्रुटि: डुप्लिकेट बुकमार्क"
 }
