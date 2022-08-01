@@ -325,25 +325,25 @@ class _SigninWidgetState extends State<SigninWidget>
                                       ),
                                     );
                                   } else {
+                                    if (mounted) {
+                                      setState(() {
+                                        loading = true;
+                                      });
+                                    }
                                     try {
-                                      if (mounted) {
-                                        setState(() {
-                                          loading = true;
-                                        });
-                                        await appUser
-                                            .signIn(
-                                                email: _email.text,
-                                                password: _pass.text)
-                                            .then((value) {
-                                          if (mounted) {
-                                            setState(() {
-                                              loading = false;
-                                            });
-                                          }
-                                          Navigator.pushNamed(
-                                              context, RoutesName.homePage);
-                                        });
-                                      }
+                                      await appUser
+                                          .signIn(
+                                              email: _email.text,
+                                              password: _pass.text)
+                                          .then((value) {
+                                        if (mounted) {
+                                          setState(() {
+                                            loading = false;
+                                          });
+                                        }
+                                        Navigator.pushNamed(
+                                            context, RoutesName.homePage);
+                                      });
                                     } catch (e) {
                                       if (mounted) {
                                         setState(() {
