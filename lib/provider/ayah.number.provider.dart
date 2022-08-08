@@ -17,7 +17,7 @@ class AyaProvider extends ChangeNotifier {
   var surahNo = 1;
   var category = 'Waiting to retrieve data...';
   final storageRef = FirebaseStorage.instance.ref();
-  double value = 16;
+  double value = kIsWeb ? 25 : 16;
   int? start;
   int? end;
   int nums = 0;
@@ -8192,21 +8192,7 @@ class AyaProvider extends ChangeNotifier {
         178,
         190,
       ],
-      "page_489": [
-        17,
-        34,
-        47,
-        59,
-        70,
-        81,
-        91,
-        103,
-        115,
-        126,
-        139,
-        148,
-        159
-      ],
+      "page_489": [17, 34, 47, 59, 70, 81, 91, 103, 115, 126, 139, 148, 159],
       "page_490": [
         15,
         26,
