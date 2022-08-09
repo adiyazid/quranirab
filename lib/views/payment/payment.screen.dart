@@ -94,9 +94,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text('Payment ${_paymentOutput!.status}')));
                     } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(
-                              'Error. Payment already made or card had been blacklist')));
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text(e.toString())));
                       Navigator.pop(context);
                     }
                   },
