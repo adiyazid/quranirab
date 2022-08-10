@@ -1,5 +1,6 @@
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -7,7 +8,7 @@ import '../../provider/ayah.number.provider.dart';
 import '../../provider/bookmark.provider.dart';
 import '../../theme/theme_provider.dart';
 import '../surah.screen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class Translation extends StatefulWidget {
   const Translation({
     Key? key,
@@ -48,8 +49,7 @@ class _TranslationState extends State<Translation> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:
-          const EdgeInsets.only(bottom: 56.0, top: 16, left: 16, right: 16),
+      padding: const EdgeInsets.only(bottom: 56.0, top: 8, left: 8, right: 8),
       child: Container(
         height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
@@ -59,7 +59,7 @@ class _TranslationState extends State<Translation> {
         ),
         child: widget._list.isNotEmpty && widget._translate.isNotEmpty
             ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Align(
                   alignment: Alignment.topLeft,
                   child: ListView.builder(
@@ -139,7 +139,9 @@ class _TranslationState extends State<Translation> {
                                                               onTap: () async {
                                                                 // Obtain shared preferences.
                                                                 if (item.text ==
-                                                                    AppLocalizations.of(context)!.bookmark) {
+                                                                    AppLocalizations.of(
+                                                                            context)!
+                                                                        .bookmark) {
                                                                   List pages = widget
                                                                       .widget
                                                                       .allpages;
@@ -169,7 +171,9 @@ class _TranslationState extends State<Translation> {
                                                                       pages);
                                                                 } else if (item
                                                                         .text ==
-                                                                    AppLocalizations.of(context)!.share) {
+                                                                    AppLocalizations.of(
+                                                                            context)!
+                                                                        .share) {
                                                                   String
                                                                       ayahNo =
                                                                       ", ${widget.start! + index}";

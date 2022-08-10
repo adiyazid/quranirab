@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
+import 'package:zoom_widget/zoom_widget.dart';
 
 import '../../theme/theme_provider.dart';
 import '../../widget/more_options_list.dart';
@@ -67,6 +68,7 @@ class _SuraSliceState extends State<SuraSlice> {
 
       return aya.loading
           ? Scaffold(
+              backgroundColor: Colors.white,
               drawerEnableOpenDragGesture: false,
               drawer: Drawer(
                 backgroundColor: themeProvider.isDarkMode
@@ -88,90 +90,101 @@ class _SuraSliceState extends State<SuraSlice> {
                   ),
                 ),
               ),
-              body: aya.breakIndex!.isNotEmpty
-                  ? SingleChildScrollView(
-                      padding: EdgeInsets.only(right: 16),
-                      child: DescribedFeatureOverlay(
-                        title: Text(
-                          AppLocalizations.of(context)!.readingAya,
-                          textAlign: TextAlign.justify,
-                        ),
-                        description:
-                            Text(AppLocalizations.of(context)!.swipeHorizontal),
-                        tapTarget: Icon(
-                          Icons.check,
-                          size: 24,
-                          color: Colors.black,
-                        ),
-                        featureId: 'quranirab_1',
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SizedBox(
-                              height: context.height() * 0.05,
-                            ),
-                            for (int index = aya.checkSurahStart(
-                                    Provider.of<AyaProvider>(context,
-                                            listen: false)
-                                        .page);
-                                index <
-                                    aya.checkSurahEnd(Provider.of<AyaProvider>(
-                                            context,
-                                            listen: false)
-                                        .page);
-                                index++)
-                              Directionality(
-                                textDirection: TextDirection.rtl,
-                                child: Center(
-                                  child: DescribedFeatureOverlay(
-                                    title: Text(AppLocalizations.of(context)!
-                                        .wordsDetail),
-                                    description: Text(
-                                        AppLocalizations.of(context)!
-                                            .pressEach),
-                                    tapTarget: Icon(
-                                      Icons.check,
-                                      color: Colors.black,
-                                      size: 24,
-                                    ),
-                                    featureId: 'quranirab_3',
-                                    child: SingleChildScrollView(
-                                      primary: true,
-                                      scrollDirection: Axis.horizontal,
-                                      child: Directionality(
-                                        textDirection: TextDirection.rtl,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            for (int i = 0 + index != 0
-                                                    ? aya.breakIndex![index - 1]
-                                                    : 0;
-                                                i < aya.breakIndex![index];
-                                                i++)
-                                              aya.checkAya(
-                                                aya.slice![i].end,
-                                              )
-                                                  ? FittedBox(
-                                                      fit: BoxFit.fitWidth,
-                                                      child: Row(
-                                                        children: [
-                                                          Consumer<AyaProvider>(
-                                                              builder: (context,
-                                                                  aya, child) {
-                                                            return aya.checkSymbol(
-                                                                    aya
-                                                                        .slice![
-                                                                            i]
-                                                                        .start)
-                                                                ? Row(
-                                                                    children: [
-                                                                      FittedBox(
-                                                                        fit: BoxFit
-                                                                            .fitWidth,
-                                                                        child: AutoSizeText(
+              body: Zoom(
+                backgroundColor: (themeProvider.isDarkMode)
+                    ? const Color(0xff666666)
+                    : const Color(0xFFffffff),
+                canvasColor: (themeProvider.isDarkMode)
+                    ? const Color(0xff666666)
+                    : const Color(0xFFffffff),
+                enableScroll: false,
+                maxZoomWidth: context.width() + 100,
+                maxZoomHeight: context.height() + 100,
+                onTap: () {
+                  print("You click the widget!");
+                },
+                initZoom: 0,
+                child: aya.breakIndex!.isNotEmpty
+                    ? SingleChildScrollView(
+                        child: DescribedFeatureOverlay(
+                          title: Text(
+                            AppLocalizations.of(context)!.readingAya,
+                            textAlign: TextAlign.justify,
+                          ),
+                          description: Text(
+                              AppLocalizations.of(context)!.swipeHorizontal),
+                          tapTarget: Icon(
+                            Icons.check,
+                            size: 24,
+                            color: Colors.black,
+                          ),
+                          featureId: 'quranirab_1',
+                          child: Container(
+                            margin: EdgeInsets.all(16),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                for (int index = aya.checkSurahStart(
+                                        Provider.of<AyaProvider>(context,
+                                                listen: false)
+                                            .page);
+                                    index <
+                                        aya.checkSurahEnd(
+                                            Provider.of<AyaProvider>(context,
+                                                    listen: false)
+                                                .page);
+                                    index++)
+                                  Center(
+                                    child: Directionality(
+                                      textDirection: TextDirection.rtl,
+                                      child: DescribedFeatureOverlay(
+                                        title: Text(
+                                            AppLocalizations.of(context)!
+                                                .wordsDetail),
+                                        description: Text(
+                                            AppLocalizations.of(context)!
+                                                .pressEach),
+                                        tapTarget: Icon(
+                                          Icons.check,
+                                          color: Colors.black,
+                                          size: 24,
+                                        ),
+                                        featureId: 'quranirab_3',
+                                        child: Directionality(
+                                          textDirection: TextDirection.rtl,
+                                          child: FittedBox(
+                                            fit: BoxFit.fitWidth,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisSize: MainAxisSize.max,
+                                              children: [
+                                                for (int i = 0 + index != 0
+                                                        ? aya.breakIndex![
+                                                            index - 1]
+                                                        : 0;
+                                                    i < aya.breakIndex![index];
+                                                    i++)
+                                                  aya.checkAya(
+                                                    aya.slice![i].end,
+                                                  )
+                                                      ? Row(
+                                                          children: [
+                                                            Consumer<
+                                                                    AyaProvider>(
+                                                                builder:
+                                                                    (context,
+                                                                        aya,
+                                                                        child) {
+                                                              return aya.checkSymbol(aya
+                                                                      .slice![i]
+                                                                      .start)
+                                                                  ? Row(
+                                                                      children: [
+                                                                        AutoSizeText(
                                                                             " ﲿ ",
                                                                             group:
                                                                                 _aya,
@@ -184,33 +197,21 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                               fontFamily: 'MeQuran2',
                                                                               fontSize: font.value,
                                                                             )),
-                                                                      ),
-                                                                      InkWell(
-                                                                        onTap:
-                                                                            () {
-                                                                          Scaffold.of(context)
-                                                                              .openDrawer();
-                                                                          Provider.of<AyaProvider>(context, listen: false).getCategoryName(
-                                                                              aya.slice![i].wordId,
-                                                                              aya.getLangID(context));
+                                                                        InkWell(
+                                                                          onTap:
+                                                                              () {
+                                                                            Scaffold.of(context).openDrawer();
+                                                                            Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.slice![i].wordId,
+                                                                                aya.getLangID(context));
 
-                                                                          aya.setWords(aya
-                                                                              .list!
-                                                                              .join()
-                                                                              .split('')
-                                                                              .getRange(aya.slice![i].start - 1, aya.slice![i].end)
-                                                                              .join());
-                                                                          if (mounted) {
-                                                                            setState(() {
-                                                                              aya.updateValue(i);
-                                                                              aya.set();
-                                                                            });
-                                                                          }
-                                                                        },
-                                                                        child:
-                                                                            FittedBox(
-                                                                          fit: BoxFit
-                                                                              .fitWidth,
+                                                                            aya.setWords(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
+                                                                            if (mounted) {
+                                                                              setState(() {
+                                                                                aya.updateValue(i);
+                                                                                aya.set();
+                                                                              });
+                                                                            }
+                                                                          },
                                                                           child: AutoSizeText(
                                                                               aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join(),
                                                                               group: _aya,
@@ -225,40 +226,32 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                                 //     : Colors.black)),
                                                                               )),
                                                                         ),
-                                                                      ),
-                                                                    ],
-                                                                  )
-                                                                : InkWell(
-                                                                    onTap: () {
-                                                                      Scaffold.of(
-                                                                              context)
-                                                                          .openDrawer();
-                                                                      Provider.of<AyaProvider>(context, listen: false).getCategoryName(
-                                                                          aya.slice![i]
-                                                                              .wordId,
-                                                                          aya.getLangID(context));
-                                                                      aya.setWords(aya
-                                                                          .list!
-                                                                          .join()
-                                                                          .split(
-                                                                              '')
-                                                                          .getRange(
-                                                                              aya.slice![i].start - 1,
-                                                                              aya.slice![i].end)
-                                                                          .join());
-                                                                      if (mounted) {
-                                                                        setState(
-                                                                            () {
-                                                                          aya.updateValue(
-                                                                              i);
-                                                                          aya.set();
-                                                                        });
-                                                                      }
-                                                                    },
-                                                                    child:
-                                                                        FittedBox(
-                                                                      fit: BoxFit
-                                                                          .fitWidth,
+                                                                      ],
+                                                                    )
+                                                                  : InkWell(
+                                                                      onTap:
+                                                                          () {
+                                                                        Scaffold.of(context)
+                                                                            .openDrawer();
+                                                                        Provider.of<AyaProvider>(context, listen: false).getCategoryName(
+                                                                            aya.slice![i].wordId,
+                                                                            aya.getLangID(context));
+                                                                        aya.setWords(aya
+                                                                            .list!
+                                                                            .join()
+                                                                            .split(
+                                                                                '')
+                                                                            .getRange(aya.slice![i].start - 1,
+                                                                                aya.slice![i].end)
+                                                                            .join());
+                                                                        if (mounted) {
+                                                                          setState(
+                                                                              () {
+                                                                            aya.updateValue(i);
+                                                                            aya.set();
+                                                                          });
+                                                                        }
+                                                                      },
                                                                       child: AutoSizeText(
                                                                           aya.list!
                                                                               .join()
@@ -277,24 +270,17 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                                 ? aya.getColor(aya.slice![i].wordId)
                                                                                 : null,
                                                                           )),
-                                                                    ),
-                                                                  );
-                                                          }),
-                                                          aya.list!
-                                                                          .join()
-                                                                          .split(
-                                                                              '')
-                                                                          .length -
-                                                                      aya
-                                                                          .slice![
-                                                                              i]
-                                                                          .end <
-                                                                  3
-                                                              ? FittedBox(
-                                                                  fit: BoxFit
-                                                                      .fitWidth,
-                                                                  child:
-                                                                      AutoSizeText(
+                                                                    );
+                                                            }),
+                                                            aya.list!
+                                                                            .join()
+                                                                            .split(
+                                                                                '')
+                                                                            .length -
+                                                                        aya.slice![i]
+                                                                            .end <
+                                                                    3
+                                                                ? AutoSizeText(
                                                                     " ${aya.list!.join().split('').length - aya.slice![i].end < 3 ? aya.ayaNumber.last : ""}",
                                                                     softWrap:
                                                                         true,
@@ -306,32 +292,26 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                       fontSize:
                                                                           font.value,
                                                                     ),
-                                                                  ),
-                                                                )
-                                                              : Container(),
+                                                                  )
+                                                                : Container(),
 
-                                                          //   SizedBox(width: 5,)
-                                                        ],
-                                                      ),
-                                                    )
-                                                  : FittedBox(
-                                                      fit: BoxFit.fitWidth,
-                                                      child: Row(
-                                                        children: [
-                                                          Consumer<AyaProvider>(
-                                                              builder: (context,
-                                                                  aya, child) {
-                                                            return aya.checkSymbol(
-                                                                    aya
-                                                                        .slice![
-                                                                            i]
-                                                                        .start)
-                                                                ? Row(
-                                                                    children: [
-                                                                      FittedBox(
-                                                                        fit: BoxFit
-                                                                            .fitWidth,
-                                                                        child: AutoSizeText(
+                                                            //   SizedBox(width: 5,)
+                                                          ],
+                                                        )
+                                                      : Row(
+                                                          children: [
+                                                            Consumer<
+                                                                    AyaProvider>(
+                                                                builder:
+                                                                    (context,
+                                                                        aya,
+                                                                        child) {
+                                                              return aya.checkSymbol(aya
+                                                                      .slice![i]
+                                                                      .start)
+                                                                  ? Row(
+                                                                      children: [
+                                                                        AutoSizeText(
                                                                             " ﲿ ",
                                                                             group:
                                                                                 _aya,
@@ -344,32 +324,20 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                               fontFamily: 'MeQuran2',
                                                                               fontSize: font.value,
                                                                             )),
-                                                                      ),
-                                                                      InkWell(
-                                                                        onTap:
-                                                                            () {
-                                                                          Scaffold.of(context)
-                                                                              .openDrawer();
-                                                                          Provider.of<AyaProvider>(context, listen: false).getCategoryName(
-                                                                              aya.slice![i].wordId,
-                                                                              aya.getLangID(context));
-                                                                          aya.setWords(aya
-                                                                              .list!
-                                                                              .join()
-                                                                              .split('')
-                                                                              .getRange(aya.slice![i].start - 1, aya.slice![i].end)
-                                                                              .join());
-                                                                          if (mounted) {
-                                                                            setState(() {
-                                                                              aya.updateValue(i);
-                                                                              aya.set();
-                                                                            });
-                                                                          }
-                                                                        },
-                                                                        child:
-                                                                            FittedBox(
-                                                                          fit: BoxFit
-                                                                              .fitWidth,
+                                                                        InkWell(
+                                                                          onTap:
+                                                                              () {
+                                                                            Scaffold.of(context).openDrawer();
+                                                                            Provider.of<AyaProvider>(context, listen: false).getCategoryName(aya.slice![i].wordId,
+                                                                                aya.getLangID(context));
+                                                                            aya.setWords(aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join());
+                                                                            if (mounted) {
+                                                                              setState(() {
+                                                                                aya.updateValue(i);
+                                                                                aya.set();
+                                                                              });
+                                                                            }
+                                                                          },
                                                                           child: AutoSizeText(
                                                                               aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join(),
                                                                               group: _aya,
@@ -381,40 +349,32 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                                 color: aya.getBoolean(i) ? aya.getColor(aya.slice![i].wordId) : null,
                                                                               )),
                                                                         ),
-                                                                      ),
-                                                                    ],
-                                                                  )
-                                                                : InkWell(
-                                                                    onTap: () {
-                                                                      Scaffold.of(
-                                                                              context)
-                                                                          .openDrawer();
-                                                                      Provider.of<AyaProvider>(context, listen: false).getCategoryName(
-                                                                          aya.slice![i]
-                                                                              .wordId,
-                                                                          aya.getLangID(context));
-                                                                      aya.setWords(aya
-                                                                          .list!
-                                                                          .join()
-                                                                          .split(
-                                                                              '')
-                                                                          .getRange(
-                                                                              aya.slice![i].start - 1,
-                                                                              aya.slice![i].end)
-                                                                          .join());
-                                                                      if (mounted) {
-                                                                        setState(
-                                                                            () {
-                                                                          aya.updateValue(
-                                                                              i);
-                                                                          aya.set();
-                                                                        });
-                                                                      }
-                                                                    },
-                                                                    child:
-                                                                        FittedBox(
-                                                                      fit: BoxFit
-                                                                          .fitWidth,
+                                                                      ],
+                                                                    )
+                                                                  : InkWell(
+                                                                      onTap:
+                                                                          () {
+                                                                        Scaffold.of(context)
+                                                                            .openDrawer();
+                                                                        Provider.of<AyaProvider>(context, listen: false).getCategoryName(
+                                                                            aya.slice![i].wordId,
+                                                                            aya.getLangID(context));
+                                                                        aya.setWords(aya
+                                                                            .list!
+                                                                            .join()
+                                                                            .split(
+                                                                                '')
+                                                                            .getRange(aya.slice![i].start - 1,
+                                                                                aya.slice![i].end)
+                                                                            .join());
+                                                                        if (mounted) {
+                                                                          setState(
+                                                                              () {
+                                                                            aya.updateValue(i);
+                                                                            aya.set();
+                                                                          });
+                                                                        }
+                                                                      },
                                                                       child: AutoSizeText(
                                                                           aya.list!.join().split('').getRange(aya.slice![i].start - 1, aya.slice![i].end).join().replaceAll('ﲿ',
                                                                               ''),
@@ -432,13 +392,9 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                                 ? aya.getColor(aya.slice![i].wordId)
                                                                                 : null,
                                                                           )),
-                                                                    ),
-                                                                  );
-                                                          }),
-                                                          FittedBox(
-                                                            fit:
-                                                                BoxFit.fitWidth,
-                                                            child: AutoSizeText(
+                                                                    );
+                                                            }),
+                                                            AutoSizeText(
                                                               "${aya.ayaNumber[aya.nums != 0 ? aya.nums - 1 : aya.nums]} ",
                                                               softWrap: true,
                                                               group: _aya,
@@ -448,23 +404,23 @@ class _SuraSliceState extends State<SuraSlice> {
                                                                 fontSize:
                                                                     font.value,
                                                               ),
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    )
-                                          ],
+                                                            )
+                                                          ],
+                                                        )
+                                              ],
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ),
-                          ],
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
-                    )
-                  : Container())
+                      )
+                    : Container(),
+              ))
           : Align(
               alignment: Alignment.center,
               child: CircularProgressIndicator(

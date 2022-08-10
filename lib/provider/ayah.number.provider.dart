@@ -17,7 +17,7 @@ class AyaProvider extends ChangeNotifier {
   var surahNo = 1;
   var category = 'Waiting to retrieve data...';
   final storageRef = FirebaseStorage.instance.ref();
-  double value = kIsWeb ? 25 : 16;
+  double value = 25;
   int? start;
   int? end;
   int nums = 0;
