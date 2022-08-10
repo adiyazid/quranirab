@@ -1,6 +1,7 @@
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_storage/get_storage.dart';
@@ -22,6 +23,8 @@ import 'framework/ms.language.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   await GetStorage.init();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
