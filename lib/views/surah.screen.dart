@@ -707,16 +707,16 @@ class TopSura extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Tab(
-                          child: AutoSizeText(
-                            AppLocalizations.of(context)!.translations,
-                            maxLines: 1,
-                            minFontSize: 16,
-                            style: TextStyle(
-                                fontSize: kIsWeb ? 20 : null,
-                                color: themeProvider.isDarkMode
-                                    ? Colors.white
-                                    : Colors.black),
-                          ),
+                        child: AutoSizeText(
+                          AppLocalizations.of(context)!.translations,
+                          maxLines: 1,
+                          minFontSize: 16,
+                          style: TextStyle(
+                              fontSize: kIsWeb ? 20 : null,
+                              color: themeProvider.isDarkMode
+                                  ? Colors.white
+                                  : Colors.black),
+                        ),
                       ),
                     ),
                   ),

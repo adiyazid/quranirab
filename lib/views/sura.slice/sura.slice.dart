@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
 
@@ -104,8 +105,12 @@ class _SuraSliceState extends State<SuraSlice> {
                         ),
                         featureId: 'quranirab_1',
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisSize: MainAxisSize.min,
                           children: [
+                            SizedBox(
+                              height: context.height() * 0.05,
+                            ),
                             for (int index = aya.checkSurahStart(
                                     Provider.of<AyaProvider>(context,
                                             listen: false)
@@ -455,8 +460,6 @@ class _SuraSliceState extends State<SuraSlice> {
                                   ),
                                 ),
                               ),
-                            SizedBox(
-                                height: MediaQuery.of(context).size.height * .2)
                           ],
                         ),
                       ),
