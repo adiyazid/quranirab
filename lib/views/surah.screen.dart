@@ -1,5 +1,7 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feature_discovery/feature_discovery.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -705,24 +707,28 @@ class TopSura extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Tab(
-                        child: Text(
-                          AppLocalizations.of(context)!.translations,
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: themeProvider.isDarkMode
-                                  ? Colors.white
-                                  : Colors.black),
-                        ),
+                          child: AutoSizeText(
+                            AppLocalizations.of(context)!.translations,
+                            maxLines: 1,
+                            minFontSize: 16,
+                            style: TextStyle(
+                                fontSize: kIsWeb ? 20 : null,
+                                color: themeProvider.isDarkMode
+                                    ? Colors.white
+                                    : Colors.black),
+                          ),
                       ),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Tab(
-                      child: Text(
+                      child: AutoSizeText(
                         AppLocalizations.of(context)!.reading,
+                        maxLines: 1,
+                        minFontSize: 16,
                         style: TextStyle(
-                            fontSize: 20,
+                            fontSize: kIsWeb ? 20 : null,
                             color: themeProvider.isDarkMode
                                 ? Colors.white
                                 : Colors.black),
