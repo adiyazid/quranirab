@@ -101,5 +101,6 @@
   "rank": "Le rang",
   "noData": "Pas de données",
   "bookmarkAdded": "Succès: signet ajouté",
-  "bookmarkError": "Erreur: signet en double"
+  "bookmarkError": "Erreur: signet en double",
+  "doubleClickToZoom": "Double Click To Zoom"
 }

@@ -101,6 +101,7 @@
   "rank": "مرتبة",
   "noData": "لايوجد بيانات",
   "bookmarkAdded": "النجاح: تمت إضافة إشارة مرجعية",
-  "bookmarkError": "خطأ: إشارة مرجعية مكررة"
+  "bookmarkError": "خطأ: إشارة مرجعية مكررة",
+  "doubleClickToZoom": "Double Click To Zoom"
 
 }

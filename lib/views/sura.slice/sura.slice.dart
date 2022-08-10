@@ -112,7 +112,7 @@ class _SuraSliceState extends State<SuraSlice> {
                             textAlign: TextAlign.justify,
                           ),
                           description: Text(
-                              AppLocalizations.of(context)!.swipeHorizontal),
+                              AppLocalizations.of(context)!.doubleClickToZoom),
                           tapTarget: Icon(
                             Icons.check,
                             size: 24,

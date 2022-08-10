@@ -101,5 +101,6 @@
   "rank": "秩",
   "noData": "没有数据",
   "bookmarkAdded": "成功：已添加书签",
-  "bookmarkError": "错误：重复的书签"
+  "bookmarkError": "错误：重复的书签",
+  "doubleClickToZoom": "Double Click To Zoom"
 }

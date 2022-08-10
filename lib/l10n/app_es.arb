@@ -101,5 +101,6 @@
   "rank": "Rango",
   "noData": "Sin datos",
   "bookmarkAdded": "Éxito: marcador añadido",
-  "bookmarkError": "Error: marcador duplicado"
+  "bookmarkError": "Error: marcador duplicado",
+  "doubleClickToZoom": "Double Click To Zoom"
 }

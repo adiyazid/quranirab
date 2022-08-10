@@ -101,6 +101,7 @@
   "rank": "Rank",
   "noData": "No Data",
   "bookmarkAdded": "Success: Bookmark Added",
-  "bookmarkError": "Error: Duplicate Bookmark"
+  "bookmarkError": "Error: Duplicate Bookmark",
+  "doubleClickToZoom": "Double Click To Zoom"
 
 }

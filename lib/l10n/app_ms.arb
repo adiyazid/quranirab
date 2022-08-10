@@ -101,5 +101,6 @@
   "rank": "Peringkat",
   "noData": "Tiada data",
   "bookmarkAdded": "Berjaya. Penanda buku ditambah",
-  "bookmarkError": "Ralat. Penanda buku untuk ayat ini sudah ada"
+  "bookmarkError": "Ralat. Penanda buku untuk ayat ini sudah ada",
+  "doubleClickToZoom": "Double Click To Zoom"
 }

@@ -101,5 +101,6 @@
   "rank": "श्रेणी",
   "noData": "डाटा छैन",
   "bookmarkAdded": "सफलता: बुकमार्क थपियो",
-  "bookmarkError": "त्रुटि: डुप्लिकेट बुकमार्क"
+  "bookmarkError": "त्रुटि: डुप्लिकेट बुकमार्क",
+  "doubleClickToZoom": "Double Click To Zoom"
 }
