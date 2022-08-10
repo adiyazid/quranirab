@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -25,6 +26,14 @@ class PaymentScreen extends StatefulWidget {
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
+  StreamSubscription<dynamic>? _subscription;
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+  }
+
   final _phone = TextEditingController();
   PaymentOutput? _paymentOutput;
 
