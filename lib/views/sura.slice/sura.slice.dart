@@ -98,8 +98,8 @@ class _SuraSliceState extends State<SuraSlice> {
                     ? const Color(0xff666666)
                     : const Color(0xFFffffff),
                 enableScroll: false,
-                maxZoomWidth: context.width() + 100,
-                maxZoomHeight: context.height() + 100,
+                maxZoomWidth: context.width(),
+                maxZoomHeight: context.height(),
                 onTap: () {
                   print("You click the widget!");
                 },

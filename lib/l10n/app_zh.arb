@@ -84,6 +84,9 @@
   "validate": "证实",
   "buyPremium": "购买溢价",
   "name": "姓名",
+  "subject": "主题",
+  "body": "内容",
+  "submit": "提交",
   "amount": "数量",
   "confirmPayment": "确认付款",
   "receiptDetail": "收据详情",
@@ -102,5 +105,5 @@
   "noData": "没有数据",
   "bookmarkAdded": "成功：已添加书签",
   "bookmarkError": "错误：重复的书签",
-  "doubleClickToZoom": "Double Click To Zoom"
+  "doubleClickToZoom": "双击放大"
 }

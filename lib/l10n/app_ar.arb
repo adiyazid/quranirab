@@ -84,6 +84,9 @@
   "validate": "تحقق",
   "buyPremium": "شراء قسط",
   "name": "اسم",
+  "subject": "موضوعات",
+  "body": "المحتوى",
+  "submit": "يُقدِّم",
   "amount": "مقدار",
   "confirmPayment": "تأكيد الدفع",
   "receiptDetail": "تفاصيل الإيصال",
@@ -102,6 +105,5 @@
   "noData": "لايوجد بيانات",
   "bookmarkAdded": "النجاح: تمت إضافة إشارة مرجعية",
   "bookmarkError": "خطأ: إشارة مرجعية مكررة",
-  "doubleClickToZoom": "Double Click To Zoom"
-
+  "doubleClickToZoom": "انقر نقرًا مزدوجًا للتكبير"
 }

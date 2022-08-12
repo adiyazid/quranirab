@@ -84,6 +84,9 @@
   "validate": "Sahkan",
   "buyPremium": "Beli Premium",
   "name": "Nama",
+  "subject": "Subjek",
+  "body": "Kandungan",
+  "submit": "Hantar",
   "amount": "Jumlah",
   "confirmPayment": "Sahkan Bayaran",
   "receiptDetail": "Maklumat Resit",
@@ -102,5 +105,5 @@
   "noData": "Tiada data",
   "bookmarkAdded": "Berjaya. Penanda buku ditambah",
   "bookmarkError": "Ralat. Penanda buku untuk ayat ini sudah ada",
-  "doubleClickToZoom": "Double Click To Zoom"
+  "doubleClickToZoom": "Klik dua kali untuk zum"
 }

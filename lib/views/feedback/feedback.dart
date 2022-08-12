@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:quranirab/widget/LanguagePopup.dart';
 import 'package:quranirab/widget/menu.dart';
 import 'package:quranirab/widget/setting.popup.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../theme/theme_provider.dart';
 
 class EmailScreen extends StatefulWidget {
@@ -322,7 +322,8 @@ return Scaffold(
                   child: TextFormField(
                     controller: nameController,
                     decoration: InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Name', labelStyle: TextStyle(color : themeProvider.isDarkMode ?Colors.white : Colors.black,)),
+                      label: Text(AppLocalizations.of(context)!.name, style: TextStyle(color : themeProvider.isDarkMode ?Colors.white : Colors.black,)),
+                        border: OutlineInputBorder(),),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Name cannot be empty';
@@ -341,7 +342,8 @@ return Scaffold(
                   child: TextFormField(
                     controller: subjectController,
                     decoration: InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Subject', labelStyle: TextStyle(color : themeProvider.isDarkMode ?Colors.white : Colors.black,)),
+                        label: Text(AppLocalizations.of(context)!.subject, style: TextStyle(color : themeProvider.isDarkMode ?Colors.white : Colors.black,)),
+                        border: OutlineInputBorder(),),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'This field is required';
@@ -360,7 +362,8 @@ return Scaffold(
                     controller: messageController,
                     keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Body', labelStyle: TextStyle(color : themeProvider.isDarkMode ?Colors.white : Colors.black,)),
+                        label: Text(AppLocalizations.of(context)!.body, style: TextStyle(color : themeProvider.isDarkMode ?Colors.white : Colors.black,)),
+                        border: OutlineInputBorder(),),
                     maxLines: 10,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -399,7 +402,7 @@ return Scaffold(
                         messageController.clear();
                       }
                     },
-                    child: Text('Submit',
+                    child: Text(AppLocalizations.of(context)!.submit,
                     style: TextStyle(color: themeProvider.isDarkMode ?Colors.white : Colors.black,)),
                   ),
                 ),
