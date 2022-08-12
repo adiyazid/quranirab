@@ -549,8 +549,8 @@ class _HomePageState extends State<HomePage>
                                 ),
                               ),
                               SizedBox(
-                                height: MediaQuery.of(context).size.height *
-                                    (kIsWeb ? 0.5 : 0.42),
+                                height:
+                                    MediaQuery.of(context).size.height * 0.42,
                                 child: TabBarView(
                                     controller: _tabController,
                                     children: [
@@ -962,9 +962,7 @@ class _HomePageState extends State<HomePage>
                                                           MediaQuery.of(context)
                                                                   .size
                                                                   .height *
-                                                              (kIsWeb
-                                                                  ? 0.5
-                                                                  : 0.4),
+                                                              0.42,
                                                       child:
                                                           MediaQuery.of(context)
                                                                       .size
