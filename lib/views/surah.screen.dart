@@ -137,15 +137,16 @@ class _SurahScreenState extends State<SurahScreen>
       for (var doc in querySnapshot.docs) {
         if (doc.exists) {
           setState(() {
-            start = int.parse(doc['aya']);
+            start = int.parse(doc['aya'] ?? '1');
           });
         }
       }
     });
-    print('starting at $start for page $id and sura id ${widget.sura_id}');
+    print(
+        'starting at ${start ?? 1}for page $id and sura id ${widget.sura_id}');
     var ids = Provider.of<LangProvider>(context, listen: false).langId;
     await Provider.of<LangProvider>(context, listen: false)
-        .getTranslation(ids, widget.sura_id, start);
+        .getTranslation(ids, widget.sura_id, start ?? 1);
     Provider.of<AyaProvider>(context, listen: false).getJuz(
         int.parse(widget.sura_id),
         '${Provider.of<AyaProvider>(context, listen: false).page}');
@@ -220,7 +221,7 @@ class _SurahScreenState extends State<SurahScreen>
                         widget1: widget,
                         hizb: hizb,
                         widget2: widget,
-                        start: start,
+                        start: start ?? 1,
                         tabController: _tabController,
                         themeProvider: themeProvider),
                   ),
