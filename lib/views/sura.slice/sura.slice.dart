@@ -92,6 +92,7 @@ class _SuraSliceState extends State<SuraSlice> {
                 ),
               ),
               body: Zoom(
+                zoomSensibility: 5,
                 backgroundColor: (themeProvider.isDarkMode)
                     ? const Color(0xff666666)
                     : const Color(0xFFffffff),
@@ -167,7 +168,10 @@ class _SuraSliceState extends State<SuraSlice> {
                                                     .size
                                                     .width,
                                             child: FittedBox(
-                                              fit: BoxFit.fitWidth,
+                                              fit:
+                                                  aya.page > 2 && aya.page < 596
+                                                      ? BoxFit.fitWidth
+                                                      : BoxFit.scaleDown,
                                               child: Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.start,
