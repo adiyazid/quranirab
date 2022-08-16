@@ -47,6 +47,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
       List<WordDetail> parent = aya.getParent();
       return aya.loadingCategory
           ? SingleChildScrollView(
+              primary: true,
               child: Column(
                 children: [
                   Align(

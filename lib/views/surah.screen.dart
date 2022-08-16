@@ -1,5 +1,7 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feature_discovery/feature_discovery.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -135,15 +137,16 @@ class _SurahScreenState extends State<SurahScreen>
       for (var doc in querySnapshot.docs) {
         if (doc.exists) {
           setState(() {
-            start = int.parse(doc['aya']);
+            start = int.parse(doc['aya'] ?? '1');
           });
         }
       }
     });
-    print('starting at $start for page $id and sura id ${widget.sura_id}');
+    print(
+        'starting at ${start ?? 1}for page $id and sura id ${widget.sura_id}');
     var ids = Provider.of<LangProvider>(context, listen: false).langId;
     await Provider.of<LangProvider>(context, listen: false)
-        .getTranslation(ids, widget.sura_id, start);
+        .getTranslation(ids, widget.sura_id, start ?? 1);
     Provider.of<AyaProvider>(context, listen: false).getJuz(
         int.parse(widget.sura_id),
         '${Provider.of<AyaProvider>(context, listen: false).page}');
@@ -218,7 +221,7 @@ class _SurahScreenState extends State<SurahScreen>
                         widget1: widget,
                         hizb: hizb,
                         widget2: widget,
-                        start: start,
+                        start: start ?? 1,
                         tabController: _tabController,
                         themeProvider: themeProvider),
                   ),
@@ -705,10 +708,12 @@ class TopSura extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Tab(
-                        child: Text(
+                        child: AutoSizeText(
                           AppLocalizations.of(context)!.translations,
+                          maxLines: 1,
+                          minFontSize: 16,
                           style: TextStyle(
-                              fontSize: 20,
+                              fontSize: kIsWeb ? 20 : null,
                               color: themeProvider.isDarkMode
                                   ? Colors.white
                                   : Colors.black),
@@ -719,10 +724,12 @@ class TopSura extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Tab(
-                      child: Text(
+                      child: AutoSizeText(
                         AppLocalizations.of(context)!.reading,
+                        maxLines: 1,
+                        minFontSize: 16,
                         style: TextStyle(
-                            fontSize: 20,
+                            fontSize: kIsWeb ? 20 : null,
                             color: themeProvider.isDarkMode
                                 ? Colors.white
                                 : Colors.black),

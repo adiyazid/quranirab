@@ -84,6 +84,9 @@
   "validate": "Validar",
   "buyPremium": "Comprar Premium",
   "name": "Nombre",
+  "subject": "Sujeto",
+  "body": "Contenido",
+  "submit": "Enviar",
   "amount": "Monto",
   "confirmPayment": "Confirmar pago",
   "receiptDetail": "Detalle del recibo",
@@ -101,5 +104,6 @@
   "rank": "Rango",
   "noData": "Sin datos",
   "bookmarkAdded": "Éxito: marcador añadido",
-  "bookmarkError": "Error: marcador duplicado"
+  "bookmarkError": "Error: marcador duplicado",
+  "doubleClickToZoom": "Doble clic para hacer zoom"
 }

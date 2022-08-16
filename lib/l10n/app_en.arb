@@ -84,6 +84,9 @@
   "validate": "Validate",
   "buyPremium": "Buy Premium",
   "name": "Name",
+  "subject": "Subject",
+  "body": "Body",
+  "submit": "Submit",
   "amount": "Amount",
   "confirmPayment": "Confirm Payment",
   "receiptDetail": "Receipt Detail",
@@ -101,6 +104,6 @@
   "rank": "Rank",
   "noData": "No Data",
   "bookmarkAdded": "Success: Bookmark Added",
-  "bookmarkError": "Error: Duplicate Bookmark"
-
+  "bookmarkError": "Error: Duplicate Bookmark",
+  "doubleClickToZoom": "Double Click To Zoom"
 }

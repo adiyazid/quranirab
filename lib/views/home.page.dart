@@ -1,7 +1,9 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:quranirab/provider/ayah.number.provider.dart';
 import 'package:quranirab/provider/bookmark.provider.dart';
@@ -88,7 +90,7 @@ class _HomePageState extends State<HomePage>
                       ),
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.02,
+                      height: 32,
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 32.0),
@@ -377,14 +379,13 @@ class _HomePageState extends State<HomePage>
                           )),
                     ),
                     SizedBox(
-                      height: 16,
+                      height: 32,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
                           left: 32.0, right: 32.0, bottom: 28.0),
                       child: Container(
-                        height: MediaQuery.of(context).size.height *
-                            (kIsWeb ? 0.6 : 0.5),
+                        height: context.height() * 0.53,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(10),
@@ -548,8 +549,8 @@ class _HomePageState extends State<HomePage>
                                 ),
                               ),
                               SizedBox(
-                                height: MediaQuery.of(context).size.height *
-                                    (kIsWeb ? 0.5 : 0.4),
+                                height:
+                                    MediaQuery.of(context).size.height * 0.42,
                                 child: TabBarView(
                                     controller: _tabController,
                                     children: [
@@ -565,20 +566,23 @@ class _HomePageState extends State<HomePage>
                                                     ? GridView.builder(
                                                         controller:
                                                             ScrollController(),
-                                                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                                            crossAxisCount:
-                                                                MediaQuery.of(context)
+                                                        gridDelegate:
+                                                            SliverGridDelegateWithFixedCrossAxisCount(
+                                                                crossAxisCount: MediaQuery.of(context)
                                                                             .size
                                                                             .width <
                                                                         1200
-                                                                    ? 2
+                                                                    ? MediaQuery.of(context).size.width <
+                                                                            700
+                                                                        ? 1
+                                                                        : 2
                                                                     : 3,
-                                                            crossAxisSpacing:
-                                                                5.0,
-                                                            mainAxisSpacing:
-                                                                5.0,
-                                                            childAspectRatio:
-                                                                4.5),
+                                                                crossAxisSpacing:
+                                                                    5.0,
+                                                                mainAxisSpacing:
+                                                                    5.0,
+                                                                childAspectRatio:
+                                                                    3.5),
                                                         itemCount: 114,
                                                         itemBuilder:
                                                             (BuildContext
@@ -740,7 +744,7 @@ class _HomePageState extends State<HomePage>
                                                                               fontWeight: FontWeight.normal,
                                                                               height: 1),
                                                                         ),
-                                                                        Text(
+                                                                        AutoSizeText(
                                                                           _list[index]
                                                                               [
                                                                               "ename"],
@@ -958,9 +962,7 @@ class _HomePageState extends State<HomePage>
                                                           MediaQuery.of(context)
                                                                   .size
                                                                   .height *
-                                                              (kIsWeb
-                                                                  ? 0.5
-                                                                  : 0.4),
+                                                              0.42,
                                                       child:
                                                           MediaQuery.of(context)
                                                                       .size

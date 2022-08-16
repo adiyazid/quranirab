@@ -84,6 +84,9 @@
   "validate": "Valider",
   "buyPremium": "Acheter Premium",
   "name": "Nom",
+  "subject": "Matière",
+  "body": "Contenu",
+  "submit": "Soumettre",
   "amount": "Montante",
   "confirmPayment": "Confirmer le paiement",
   "receiptDetail": "Détail du reçu",
@@ -101,5 +104,6 @@
   "rank": "Le rang",
   "noData": "Pas de données",
   "bookmarkAdded": "Succès: signet ajouté",
-  "bookmarkError": "Erreur: signet en double"
+  "bookmarkError": "Erreur: signet en double",
+  "doubleClickToZoom": "Double-cliquez pour zoomer"
 }
