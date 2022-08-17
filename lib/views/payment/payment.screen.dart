@@ -26,8 +26,6 @@ class PaymentScreen extends StatefulWidget {
 class _PaymentScreenState extends State<PaymentScreen> {
   @override
   void initState() {
-    // TODO: implement initState
-
     super.initState();
   }
 
@@ -353,9 +351,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                               expiryDate,
                                               cardHolderName,
                                               cvvCode);
-                                          print('valid');
+                                          if (kDebugMode) {
+                                            print('valid');
+                                          }
                                         } else {
-                                          print('inValid');
+                                          if (kDebugMode) {
+                                            print('inValid');
+                                          }
                                         }
                                       },
                                     )
