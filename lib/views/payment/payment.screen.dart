@@ -94,12 +94,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     setState(() {});
                     paymentConfirm = await StripeService.confirmPayment(
                         paymentIntent!['id'], paymentMethodID);
-                    setState(() {});
-
                     if (paymentConfirm['error'] != null) {
-                      print(paymentConfirm['error']);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Payment Fail')));
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(
+                              'Payment Fail. ${paymentConfirm['error']['message']}')));
                       Navigator.pop(context);
                     } else {
                       if (paymentConfirm['status'] == 'succeeded') {
