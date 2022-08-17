@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 class PaymentValidationProvider with ChangeNotifier {
   bool? _phoneNumIsValid;
@@ -33,7 +34,7 @@ class PaymentValidationProvider with ChangeNotifier {
   }
 
   void validateCvv(String value) {
-    _cvvNumIsValid = value.length == 3 ? true : false;
+    _cvvNumIsValid = value.length == 3 && value.isInt ? true : false;
     notifyListeners();
   }
 

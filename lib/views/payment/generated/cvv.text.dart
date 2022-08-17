@@ -32,8 +32,8 @@ class _CVVTextState extends State<CVVText> {
             decoration: InputDecoration(
                 errorText: validationProvider.cvvNumIsValid != null &&
                         !validationProvider.cvvNumIsValid!
-                    ? 'Must be numbers!'
-                    : '',
+                    ? 'Must be numbers and 3 digit!'
+                    : null,
                 errorStyle: TextStyle(
                     color: theme.isDarkMode ? Colors.tealAccent : Colors.red),
                 border: InputBorder.none,
