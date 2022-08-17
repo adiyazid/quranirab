@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class LangProvider extends ChangeNotifier {
-  String langId = '1';
+  String langId = '2';
   String? suraIds;
   int? starts;
   List translate = [];
