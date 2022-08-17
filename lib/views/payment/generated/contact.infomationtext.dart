@@ -12,7 +12,7 @@ class ContactInfomationText extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Provider.of<ThemeProvider>(context);
     return Text(
-      '''Contact infomation''',
+      '''Contact information''',
       overflow: TextOverflow.visible,
       textAlign: TextAlign.left,
       style: TextStyle(
@@ -20,7 +20,7 @@ class ContactInfomationText extends StatelessWidget {
         fontSize: 24.0,
         fontFamily: 'Poppins',
         fontWeight: FontWeight.w400,
-        color: theme.isDarkMode?white: Color.fromARGB(255, 0, 0, 0),
+        color: theme.isDarkMode ? white : Color.fromARGB(255, 0, 0, 0),
 
         /* letterSpacing: 0.0, */
       ),

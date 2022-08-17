@@ -93,6 +93,7 @@ dependencies:
   credit_card_validator: ^2.0.1
   in_app_purchase: ^3.0.7
   zoom_widget: ^0.2.1
+  pattern_formatter:
 
 dev_dependencies:
   flutter_test:

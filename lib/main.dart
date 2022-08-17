@@ -14,6 +14,7 @@ import 'package:quranirab/provider/language.provider.dart';
 import 'package:quranirab/provider/user.provider.dart';
 import 'package:quranirab/theme/theme_provider.dart';
 import 'package:quranirab/views/auth/landing.page.dart';
+import 'package:quranirab/views/payment/payment_validation_provider.dart';
 
 import 'Routes/onGenerateRoute.dart';
 import 'Routes/route.dart';
@@ -71,7 +72,9 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider<ThemeProvider>(
             create: (context) => ThemeProvider()),
         ChangeNotifierProvider<CardProvider>(
-            create: (context) => CardProvider())
+            create: (context) => CardProvider()),
+        ChangeNotifierProvider<PaymentValidationProvider>(
+            create: (context) => PaymentValidationProvider())
       ],
       child: ChangeNotifierProvider(
           create: (context) => ThemeProvider(),

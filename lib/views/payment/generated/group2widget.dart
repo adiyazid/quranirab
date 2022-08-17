@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:quranirab/provider/card.provider.dart';
 import 'package:quranirab/views/payment/generated/cvv.textbox.dart';
 import 'package:quranirab/views/payment/generated/mmyy.textbox.dart';
 
@@ -63,27 +61,6 @@ class Group2Widget extends StatelessWidget {
             ),
             Positioned(
               left: null,
-              top: 300,
-              right: 6.0,
-              child: Consumer<CardProvider>(builder: (context, card, _) {
-                if (card.ccNumResults != null &&
-                    card.ccNumResults!.message != '') {
-                  return Chip(label: Text(card.ccNumResults!.message));
-                } else if (card.expDateResults != null &&
-                    card.expDateResults!.message != '') {
-                  return Chip(label: Text(card.expDateResults!.message));
-                } else if (card.cvvResults != null &&
-                    card.cvvResults!.message != '') {
-                  return Chip(label: Text(card.cvvResults!.message));
-                } else if (card.cvv != null && card.ccNum == null) {
-                  return Chip(label: Text('Insert Card First'));
-                } else {
-                  return Container();
-                }
-              }),
-            ),
-            Positioned(
-              left: null,
               top: null,
               right: 6.0,
               bottom: 334.0,
@@ -121,9 +98,9 @@ class Group2Widget extends StatelessWidget {
             Positioned(
               left: null,
               top: null,
-              right: 405.0,
+              right: 315.0,
               bottom: 579.0,
-              width: 237.0,
+              width: 337.0,
               height: 38.0,
               child: ContactInfomationText(),
             ),
@@ -148,9 +125,9 @@ class Group2Widget extends StatelessWidget {
             Positioned(
               left: null,
               top: null,
-              right: 447.0,
+              right: 350.0,
               bottom: 403.0,
-              width: 200.0,
+              width: 300.0,
               height: 38.0,
               child: CardinfomationText(),
             ),
@@ -184,7 +161,7 @@ class Group2Widget extends StatelessWidget {
             Positioned(
               left: null,
               top: null,
-              right: 60.0,
+              right: 185, //60.0,
               bottom: 68.0,
               width: 286.0,
               height: 52.0,
