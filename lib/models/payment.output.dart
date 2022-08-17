@@ -54,10 +54,10 @@ class PaymentOutput {
 
   String id;
   String object;
-  int amount;
-  int amountCapturable;
+  int? amount;
+  int? amountCapturable;
   AmountDetails amountDetails;
-  int amountReceived;
+  int? amountReceived;
   dynamic application;
   dynamic applicationFeeAmount;
   dynamic automaticPaymentMethods;
@@ -67,7 +67,7 @@ class PaymentOutput {
   Charges charges;
   String clientSecret;
   String confirmationMethod;
-  int created;
+  int? created;
   String currency;
   dynamic customer;
   dynamic description;
@@ -95,20 +95,20 @@ class PaymentOutput {
   factory PaymentOutput.fromJson(Map<String, dynamic> json) => PaymentOutput(
         id: json["id"],
         object: json["object"],
-        amount: json["amount"],
-        amountCapturable: json["amount_capturable"],
+        amount: json["amount"] ?? 50,
+        amountCapturable: json["amount_capturable"] ?? 50,
         amountDetails: AmountDetails.fromJson(json["amount_details"]),
-        amountReceived: json["amount_received"],
+        amountReceived: json["amount_received"] ?? 50,
         application: json["application"],
         applicationFeeAmount: json["application_fee_amount"],
         automaticPaymentMethods: json["automatic_payment_methods"],
         canceledAt: json["canceled_at"],
         cancellationReason: json["cancellation_reason"],
-        captureMethod: json["capture_method"],
+        captureMethod: json["capture_method"] ?? 0,
         charges: Charges.fromJson(json["charges"]),
         clientSecret: json["client_secret"],
         confirmationMethod: json["confirmation_method"],
-        created: json["created"],
+        created: json["created"] ?? 0,
         currency: json["currency"],
         customer: json["customer"],
         description: json["description"],

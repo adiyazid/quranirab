@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class AppUser extends ChangeNotifier {
   String? cid;
-
+  String? pid;
   update() {
     notifyListeners();
   }
@@ -147,6 +147,11 @@ class AppUser extends ChangeNotifier {
 
   void setCid(custId) {
     cid = custId;
+    notifyListeners();
+  }
+
+  void setPid(id) {
+    pid = id;
     notifyListeners();
   }
 }
