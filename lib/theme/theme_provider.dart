@@ -62,7 +62,7 @@ class QuranThemes {
     colorScheme: const ColorScheme.dark(
       primary: Color(0xFF67748E),
     ),
-    textSelectionTheme: TextSelectionThemeData(selectionColor: Colors.white),
+    textSelectionTheme: TextSelectionThemeData(selectionColor: Colors.grey),
   );
   static final lightTheme = ThemeData(
     primaryColorDark: Colors.grey,
@@ -81,8 +81,6 @@ class QuranThemes {
     bottomAppBarColor: Colors.orange,
     dividerColor: const Color(0xFFE86F00),
     cardColor: Colors.orange,
-    textSelectionTheme: TextSelectionThemeData(selectionColor: Colors.black),
-    // textSelectionTheme:
-    // const TextSelectionThemeData(cursorColor: Colors.orange),
+    textSelectionTheme: TextSelectionThemeData(selectionColor: Colors.grey),
   );
 }
