@@ -12,8 +12,10 @@ class PhoneNumberTextBox extends StatelessWidget {
     final theme = Provider.of<ThemeProvider>(context);
     return Container(
       width: 647.0,
-      height: 64.0,
       decoration: BoxDecoration(
+        color: theme.isDarkMode
+            ? Color(0xff67748E)
+            : Color.fromARGB(255, 255, 255, 255),
         borderRadius: BorderRadius.circular(20.0),
         border: Border.all(
           width: 1.0,

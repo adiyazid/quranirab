@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quranirab/views/payment/payment_validation_provider.dart';
 
 import '../../../theme/theme_provider.dart';
 
@@ -13,7 +12,6 @@ class CardNumberTextBox extends StatelessWidget {
     final theme = Provider.of<ThemeProvider>(context);
     return Container(
       width: 647.0,
-      height: 64.0,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.0),
         border: Border.all(

@@ -24,6 +24,9 @@ class _CVVTextState extends State<CVVText> {
         Provider.of<PaymentValidationProvider>(context, listen: true);
     final theme = Provider.of<ThemeProvider>(context);
     return Scaffold(
+      backgroundColor: theme.isDarkMode
+          ? Color(0xff67748E)
+          : Color.fromARGB(255, 255, 255, 255),
       body: Center(
         child: Material(
           color: theme.isDarkMode ? Color(0xff67748E) : Colors.white,
