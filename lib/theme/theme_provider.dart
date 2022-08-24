@@ -50,7 +50,7 @@ class QuranThemes {
     cardColor: Colors.orange,
     canvasColor: Colors.orange,
     focusColor: const Color(0xFF808BA1),
-    secondaryHeaderColor: const Color(0xFFD2D6DA),
+    secondaryHeaderColor: Colors.white,
     //white(d2d6da) black color
     scaffoldBackgroundColor: const Color(0xFF666666),
     primaryColor: const Color(0xFF67748E),

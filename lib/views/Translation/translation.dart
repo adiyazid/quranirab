@@ -101,8 +101,7 @@ class _TranslationState extends State<Translation> {
                                           style: TextStyle(
                                             fontSize: fontsize.value,
                                             color: Theme.of(context)
-                                                .textSelectionTheme
-                                                .selectionColor,
+                                                .secondaryHeaderColor,
                                           ),
                                         ),
                                       ),
@@ -131,8 +130,7 @@ class _TranslationState extends State<Translation> {
                                                             size: 16,
                                                             color: Theme.of(
                                                                     context)
-                                                                .textSelectionTheme
-                                                                .selectionColor,
+                                                                .secondaryHeaderColor,
                                                           ),
                                                           Expanded(
                                                             child: InkWell(
@@ -209,8 +207,7 @@ class _TranslationState extends State<Translation> {
                                                                       TextStyle(
                                                                     color: Theme.of(
                                                                             context)
-                                                                        .textSelectionTheme
-                                                                        .selectionColor,
+                                                                        .secondaryHeaderColor,
                                                                     fontSize:
                                                                         14,
                                                                   ),
@@ -245,8 +242,7 @@ class _TranslationState extends State<Translation> {
                                               Icons.more_horiz,
                                               size: fontsize.value,
                                               color: Theme.of(context)
-                                                  .textSelectionTheme
-                                                  .selectionColor,
+                                                  .secondaryHeaderColor,
                                             ),
                                           ),
                                         ),

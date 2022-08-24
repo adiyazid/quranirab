@@ -276,7 +276,6 @@ class _SurahScreenState extends State<SurahScreen>
           // ),
           bottomSheet: Hidable(
             controller: scrollController,
-            wOpacity: true, // As default it's true.
             size:
                 MediaQuery.of(context).size.height * 0.1, // As default it's 56.
 

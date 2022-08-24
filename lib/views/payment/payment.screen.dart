@@ -180,21 +180,85 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 16.0, vertical: 40),
-                            child: Wrap(
-                                crossAxisAlignment: WrapCrossAlignment.center,
-                                direction: Axis.horizontal,
-                                alignment: WrapAlignment.center,
-                                spacing: 16.0,
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.zero,
-                                    child: Container(
-                                      color: Color.fromARGB(255, 255, 255, 255),
-                                    ),
-                                  ),
-                                  Group1Widget(),
-                                  Group2Widget()
-                                ]),
+                            child: app.receipt == null
+                                ? Wrap(
+                                    crossAxisAlignment:
+                                        WrapCrossAlignment.center,
+                                    direction: Axis.horizontal,
+                                    alignment: WrapAlignment.center,
+                                    spacing: 16.0,
+                                    children: [
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.zero,
+                                          child: Container(
+                                            color: Color.fromARGB(
+                                                255, 255, 255, 255),
+                                          ),
+                                        ),
+                                        Group1Widget(),
+                                        Group2Widget()
+                                      ])
+                                : Consumer<AppUser>(builder: (context, app, _) {
+                                    return Container(
+                                      height:
+                                          MediaQuery.of(context).size.height,
+                                      child: Column(
+                                        children: [
+                                          Flexible(
+                                            child: ListView(
+                                              children: [
+                                                ListTile(
+                                                    title: Text(
+                                                        AppLocalizations.of(
+                                                                context)!
+                                                            .paymentID),
+                                                    subtitle: Text(app.pid!)),
+                                                ListTile(
+                                                    title: Text(
+                                                        AppLocalizations.of(
+                                                                context)!
+                                                            .paymentStatus),
+                                                    subtitle:
+                                                        Text(app.status!)),
+                                                ListTile(
+                                                    title: Text(
+                                                        AppLocalizations.of(
+                                                                context)!
+                                                            .paymentAmount),
+                                                    subtitle: Text('RM 50.00')),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                              primary: Colors
+                                                                  .orange),
+                                                      onPressed: () async {
+                                                        if (!kIsWeb) {
+                                                          Navigator.pushReplacement(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) =>
+                                                                      ReceiptScreen(
+                                                                          app.receipt!)));
+                                                        } else {
+                                                          launchUrl(Uri.parse(
+                                                              app.receipt!));
+                                                        }
+                                                      },
+                                                      child: Text(
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .getReceipt)),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }),
                           ),
                         ),
                       );

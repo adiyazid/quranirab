@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 import '../.env.dart';
@@ -61,7 +61,9 @@ class StripeService {
           );
       return jsonDecode(response.body); //decode the response to json
     } catch (error) {
-      print('Error occured : ${error.toString()}');
+      if (kDebugMode) {
+        print('Error occured : ${error.toString()}');
+      }
     }
     return null;
   }
@@ -83,7 +85,9 @@ class StripeService {
           );
       return jsonDecode(response.body); //decode the response to json
     } catch (error) {
-      print('Error occured : ${error.toString()}');
+      if (kDebugMode) {
+        print('Error occured : ${error.toString()}');
+      }
     }
     return null;
   }
@@ -97,7 +101,9 @@ class StripeService {
 
       return jsonDecode(response.body); //decode the response to json
     } catch (error) {
-      print('Error occured : ${error.toString()}');
+      if (kDebugMode) {
+        print('Error occured : ${error.toString()}');
+      }
     }
     return null;
   }
@@ -109,7 +115,9 @@ class StripeService {
           );
       return jsonDecode(response.body); //decode the response to json
     } catch (error) {
-      print('Error occured : ${error.toString()}');
+      if (kDebugMode) {
+        print('Error occured : ${error.toString()}');
+      }
     }
     return null;
   }
@@ -123,10 +131,11 @@ class StripeService {
           body: body, //request body
           headers: headers //headers of the request specified in the base class
           );
-      debugPrint(response.body);
       return jsonDecode(response.body); //decode the response to json
     } catch (error) {
-      print('Error occured : ${error.toString()}');
+      if (kDebugMode) {
+        print('Error occured : ${error.toString()}');
+      }
     }
     return null;
   }
@@ -143,7 +152,9 @@ class StripeService {
           );
       return jsonDecode(response.body); //decode the response to json
     } catch (error) {
-      print('Error occured : ${error.toString()}');
+      if (kDebugMode) {
+        print('Error occured : ${error.toString()}');
+      }
     }
     return null;
   }
