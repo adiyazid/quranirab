@@ -11,7 +11,6 @@ import 'mmyy.text.dart';
 import 'name.on.card.text.dart';
 import 'name.on.card.textbox.dart';
 import 'pay.box.button.dart';
-import 'pay.text.button.dart';
 import 'pay.with.card.text.dart';
 import 'phone.number.text.dart';
 import 'phone.number.textbox.dart';
@@ -158,15 +157,6 @@ class Group2Widget extends StatelessWidget {
               height: 54.0,
               child: PayBoxButton(),
             ),
-            Positioned(
-              left: null,
-              top: null,
-              right: 185, //60.0,
-              bottom: 68.0,
-              width: 286.0,
-              height: 52.0,
-              child: PayTextButton(),
-            )
           ]),
     );
   }
