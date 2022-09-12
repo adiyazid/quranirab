@@ -353,7 +353,7 @@ class AyaProvider extends ChangeNotifier {
             id: int.parse(id),
             categoryId: int.parse(doc["id"]),
             name: name != '' ? name : doc["name"],
-            type: doc["word_type"] ?? 'None'));
+            word_type: doc["word_type"] ?? 'None'));
         notifyListeners();
       }
     });
@@ -10770,7 +10770,7 @@ class AyaProvider extends ChangeNotifier {
               : false,
           parent: data.parent,
           id: id,
-          type: data.type,
+          word_type: data.word_type,
           categoryId: data.categoryId,
           name: data.name)
     ]);
@@ -10894,7 +10894,7 @@ class AyaProvider extends ChangeNotifier {
               parent: parent,
               categoryId: int.parse(doc["id"].trim()),
               name: name != '' ? name : doc["name"],
-              type: doc["word_type"] ?? 'None');
+              word_type: doc["word_type"] ?? 'None');
         }
         return data;
       });
@@ -10915,7 +10915,7 @@ class AyaProvider extends ChangeNotifier {
             childType: doc["child_type"],
             parent: doc["ancestry"] ?? '',
             name: name != '' ? name : doc["name"],
-            type: doc['word_type'] ?? 'None',
+            word_type: doc['word_type'] ?? 'None',
             categoryId: int.parse(doc['id'])));
       }
     });
@@ -11020,5 +11020,52 @@ class AyaProvider extends ChangeNotifier {
         .then((value) => value.docs.first["id"]);
     print(id);
     return id;
+  }
+
+  Future<List<WordDetail>> getChild(
+      int childID, String parentID, String langID) async {
+    String temp = '';
+    if (parentID == '') {
+      temp = '$childID';
+    } else {
+      temp = '$parentID/$childID';
+    }
+    List<WordDetail> _list = [];
+    _list.clear();
+    await wordCategory
+        .where('ancestry', isEqualTo: temp)
+        .get()
+        .then((QuerySnapshot querySnapshot) async {
+      for (var doc in querySnapshot.docs) {
+        var name = await getCategoryNameTranslation(doc['id'], langID);
+        print(name);
+        wordDetail.add(WordDetail(
+            childType: doc["child_type"],
+            parent: doc["ancestry"] ?? '',
+            name: name != '' ? name : doc["name"],
+            word_type: doc['word_type'] ?? 'None',
+            categoryId: int.parse(doc['id'])));
+        //getParent();
+        //addDetail(WordDetail(name: name, type: doc['word_type'] ?? 'None', categoryId: int.parse(doc['id'])));
+        //replace(WordDetail(name: name, type: doc['word_type'] ?? 'None', categoryId: int.parse(doc['id'])), int.parse(doc['id']));
+        await getChild(int.parse(doc['id']), doc["ancestry"] ?? '', langID);
+      }
+    });
+    notifyListeners();
+    return wordDetail;
+  }
+
+  void removeAll() {
+    wordDetail.clear();
+    // This call tells the widgets that are listening to this model to rebuild.
+    notifyListeners();
+  }
+
+  void add(WordDetail item) {
+    wordDetail.add(item);
+    getParent();
+    getSubList(item.categoryId!, item.parent!);
+    // This call tells the widgets that are listening to this model to rebuild.
+    notifyListeners();
   }
 }

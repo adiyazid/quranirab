@@ -38,7 +38,7 @@ class _ListItemsState extends State<ListItems> {
         for (var item in name) {
           for (var element in word) {
             if (element.categoryId == item.categoryId) {
-              item.type = element.type;
+              item.word_type = element.word_type;
             }
           }
         }
@@ -122,7 +122,7 @@ class _ListItemsState extends State<ListItems> {
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.2,
                       child: ListView.builder(
-                        itemCount: name.last.type != "label"
+                        itemCount: name.last.word_type != "label"
                             ? name.length - 1
                             : name.length,
                         itemBuilder: (BuildContext context, int index) {
@@ -134,12 +134,12 @@ class _ListItemsState extends State<ListItems> {
                                     name[index + 1 < name.length
                                                         ? index + 1
                                                         : index]
-                                                    .type !=
+                                                    .word_type !=
                                                 'label' &&
                                             name[index + 1 < name.length
                                                         ? index + 1
                                                         : index]
-                                                    .type !=
+                                                    .word_type !=
                                                 'main-label'
                                         ? Expanded(
                                             flex: 3,
@@ -236,8 +236,8 @@ class _ListItemsState extends State<ListItems> {
                                             ),
                                           )
                                         : Container(),
-                                    if (name[index].type == 'label' ||
-                                        name[index].type == 'main-label')
+                                    if (name[index].word_type == 'label' ||
+                                        name[index].word_type == 'main-label')
                                       Expanded(
                                         flex: 3,
                                         child: Padding(

@@ -1,5 +1,5 @@
 class WordDetail {
-  String? type;
+  String? word_type;
   String? name;
   int? categoryId;
   int? id;
@@ -10,11 +10,20 @@ class WordDetail {
 
   WordDetail(
       {required this.name,
-      required this.type,
+      required this.word_type,
       required this.categoryId,
       this.id,
       this.parent,
       this.isparent,
       this.hasChild,
       this.childType});
+  // WordDetail.fromJson(Map<String, dynamic> json)
+  //     : name = json['tname'],
+  //       word_type = json['word_type'],
+  //       categoryId = json['id'],parent = json['ancestry'],;
+  //
+  // Map<String, dynamic> toJson() => {
+  //       'name': name,
+  //       'email': email,
+  //     };
 }
