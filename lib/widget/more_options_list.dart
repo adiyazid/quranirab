@@ -12,6 +12,7 @@ import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:tree_view/tree_view.dart';
 
 import '../models/word.detail.dart';
+import '../provider/language.provider.dart';
 import '../provider/user.provider.dart';
 import '../theme/theme_provider.dart';
 
@@ -66,7 +67,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                         icon: Icon(Icons.clear)),
                   ),
                   Text(
-                    aya.words ?? '',
+                    aya.words! + aya.wordID.toString() ?? '',
                     style: TextStyle(
                       fontFamily: 'MeQuran2',
                       fontSize: aya.value,
@@ -219,10 +220,10 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
             parent: _getDocumentWidget(
                 document: document,
                 list: Provider.of<AyaProvider>(context, listen: false)
-                    .getSubList(document.categoryId!, document.parent!)),
+                    .getSubList(document.categoryId!, document.ancestry!)),
             children: _getChildList(
               Provider.of<AyaProvider>(context, listen: false)
-                  .getSubList(document.categoryId!, document.parent!),
+                  .getSubList(document.categoryId!, document.ancestry!),
             ),
           ),
         );
@@ -245,7 +246,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
               child: ListTile(
                 leading: Icon(Icons.navigate_next),
                 title: Text(
-                  '(${document.parent})' + document.name!,
+                  '(${document.ancestry})' + document.name!,
                   style: TextStyle(fontFamily: 'MeQuran2'),
                 ),
                 subtitle: Text(document.childType!),
@@ -259,8 +260,8 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                           await wordCategories
                               .where('ancestry',
                                   isEqualTo: document.childType == 'all'
-                                      ? '${document.parent}'
-                                      : '${document.parent}' +
+                                      ? '${document.ancestry}'
+                                      : '${document.ancestry}' +
                                           '/${document.categoryId}')
                               .get()
                               .then((QuerySnapshot querySnapshot) async {
@@ -274,7 +275,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                                           .getLangID(context));
                               categories.add(WordDetail(
                                   childType: doc["child_type"],
-                                  parent: doc["ancestry"] ?? '',
+                                  ancestry: doc["ancestry"] ?? '',
                                   name: name,
                                   word_type: doc['word_type'] ?? 'None',
                                   categoryId: int.parse(doc['id'])));
@@ -318,7 +319,21 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                                                     child: Text("No"),
                                                   ),
                                                   ElevatedButton(
-                                                    onPressed: () {
+                                                    onPressed: () async {
+                                                      await Provider.of<
+                                                                  AyaProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .replace(Provider.of<
+                                                                      LangProvider>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .langId);
+                                                      await Provider.of<
+                                                                  AyaProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .flushUnrelatedData();
                                                       Navigator.pop(context);
                                                       Navigator.pop(context);
                                                     },
@@ -343,7 +358,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                         "${list.length} ${AppLocalizations.of(context)!.items}"),
               ),
             )
-          : list.isNotEmpty
+          : list.isNotEmpty || document.hasChild!
               ? Card(
                   color: Provider.of<ThemeProvider>(context, listen: false)
                           .isDarkMode
@@ -352,7 +367,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                   child: ListTile(
                     leading: Icon(Icons.arrow_right),
                     title: Text(
-                      '(${document.parent}) ${document.name} ',
+                      '(${document.ancestry}/${document.categoryId}) ${document.name} ',
                       style: TextStyle(fontFamily: 'MeQuran2'),
                     ),
                     subtitle: Text(document.childType!),
@@ -367,8 +382,8 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                               await wordCategories
                                   .where('ancestry',
                                       isEqualTo: document.childType == 'all'
-                                          ? '${document.parent}'
-                                          : '${document.parent}' +
+                                          ? '${document.ancestry}'
+                                          : '${document.ancestry}' +
                                               '/${document.categoryId}')
                                   .get()
                                   .then((QuerySnapshot querySnapshot) async {
@@ -383,7 +398,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                                               .getLangID(context));
                                   categories.add(WordDetail(
                                       childType: doc["child_type"],
-                                      parent: doc["ancestry"] ?? '',
+                                      ancestry: doc["ancestry"] ?? '',
                                       name: name,
                                       word_type: doc['word_type'] ?? 'None',
                                       categoryId: int.parse(doc['id'])));
@@ -439,7 +454,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
       if (element.categoryId == 2 ||
           element.categoryId == 328 ||
           element.categoryId == 426) {
-        parent = element.parent ?? '';
+        parent = element.ancestry ?? '';
       }
     }
     return parent;
@@ -483,6 +498,15 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                                     child: const Text('No')),
                                 ElevatedButton(
                                     onPressed: () async {
+                                      await Provider.of<AyaProvider>(context,
+                                              listen: false)
+                                          .replace(Provider.of<LangProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .langId);
+                                      await Provider.of<AyaProvider>(context,
+                                              listen: false)
+                                          .flushUnrelatedData();
                                       Navigator.pop(context);
                                       Navigator.pop(context);
                                     },
@@ -522,13 +546,8 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
 
   Widget alertDialogContent(WordDetail data, List<WordDetail> categories) {
     if (data.childType == 'all') {
-      List<String> list = [];
-      for (var element in categories) {
-        list.add(element.name ?? '');
-      }
-      return DropdownSearch<String>(
+      return DropdownSearch<WordDetail>(
         popupProps: PopupProps.dialog(
-          showSelectedItems: true,
           itemBuilder: _style1,
           dialogProps: DialogProps(
             contentTextStyle: TextStyle(fontFamily: 'MeQuran2', fontSize: 24),
@@ -540,14 +559,15 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
         dropdownDecoratorProps: DropDownDecoratorProps(
           dropdownSearchDecoration: InputDecoration(
             labelText:
-                "Word detail from parent ${data.parent!.split('/').last}",
+                "Word detail from parent ${data.ancestry!.split('/').last}",
           ),
         ),
-        items: list,
-        onChanged: (String? value) {
-          print(value);
+        items: categories,
+        onChanged: (WordDetail? value) {
+          Provider.of<AyaProvider>(context, listen: false)
+              .tempValue(value!, data.relationshipId!);
         },
-        selectedItem: data.name,
+        selectedItem: data,
       );
     } else if (data.childType == 'multiple') {
       List<bool> value = [];
@@ -664,17 +684,12 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
-          List<String> list = [];
-          for (var element in label) {
-            list.add(element.name ?? '');
-          }
           String? data = '';
           return SizedBox(
             height: MediaQuery.of(context).size.height * 0.4,
             child: AlertDialog(
-              content: DropdownSearch<String>(
+              content: DropdownSearch<WordDetail>(
                 popupProps: PopupProps.dialog(
-                  showSelectedItems: true,
                   itemBuilder: _style1,
                   dialogProps: DialogProps(
                     contentTextStyle:
@@ -687,16 +702,16 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                 dropdownDecoratorProps: DropDownDecoratorProps(
                   dropdownSearchDecoration: InputDecoration(
                     labelText:
-                        "Word detail from parent ${document.parent!.split('/').last}",
+                        "Word detail from parent ${document.ancestry!.split('/').last}",
                   ),
                 ),
-                items: list,
-                onChanged: (String? value) {
+                items: label,
+                onChanged: (WordDetail? value) {
                   setState(() {
-                    data = value;
+                    data = value!.name;
                   });
                 },
-                selectedItem: document.name,
+                selectedItem: document,
               ),
               actions: [
                 IconButton(
@@ -716,14 +731,16 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                             print(element.categoryId);
                             await Provider.of<AyaProvider>(context,
                                     listen: false)
-                                .replace(element, document.id);
+                                .replace(Provider.of<LangProvider>(context,
+                                        listen: false)
+                                    .langId);
                             List<WordDetail> child =
                                 await Provider.of<AyaProvider>(
                                         context,
                                         listen: false)
                                     .getChild(
                                         element.categoryId!,
-                                        element.parent!,
+                                        element.ancestry!,
                                         Provider.of<AyaProvider>(context,
                                                 listen: false)
                                             .getLangID(context));
@@ -754,20 +771,20 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
         });
   }
 
-  Widget _style(BuildContext context, String? selectedItem) {
+  Widget _style(BuildContext context, WordDetail? selectedItem) {
     return Text(
-      selectedItem!,
+      selectedItem!.name!,
       style: TextStyle(fontFamily: 'MeQuran2'),
     );
   }
 
-  Widget _style1(BuildContext context, String? item, bool isSelected) {
+  Widget _style1(BuildContext context, WordDetail? item, bool isSelected) {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(
-          item!,
+          item!.name!,
           textAlign: TextAlign.center,
           style: TextStyle(
               fontFamily: 'MeQuran2',

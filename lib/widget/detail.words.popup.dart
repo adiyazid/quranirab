@@ -257,11 +257,13 @@ class _ListItemsState extends State<ListItems> {
                                                     "${name[index].name}",
                                                     style: TextStyle(
                                                         fontSize:
-                                                            checkMainFontSize(
-                                                                name[index].id),
+                                                            checkMainFontSize(name[
+                                                                    index]
+                                                                .relationshipId),
                                                         fontFamily: 'MeQuran2',
                                                         color: checkMainColor(
-                                                            name[index].id)),
+                                                            name[index]
+                                                                .relationshipId)),
                                                     textAlign: TextAlign.end,
                                                   ),
                                                   scrollDirection:

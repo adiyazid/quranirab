@@ -2,8 +2,8 @@ class WordDetail {
   String? word_type;
   String? name;
   int? categoryId;
-  int? id;
-  String? parent;
+  int? relationshipId;
+  String? ancestry;
   bool? isparent;
   bool? hasChild;
   String? childType;
@@ -12,8 +12,8 @@ class WordDetail {
       {required this.name,
       required this.word_type,
       required this.categoryId,
-      this.id,
-      this.parent,
+      this.relationshipId,
+      this.ancestry,
       this.isparent,
       this.hasChild,
       this.childType});
