@@ -655,7 +655,6 @@ class _HomePageState extends State<HomePage>
                                                                 width: 400,
                                                                 height: 100,
                                                                 decoration:
-
                                                                     BoxDecoration(
                                                                         borderRadius:
                                                                             BorderRadius
