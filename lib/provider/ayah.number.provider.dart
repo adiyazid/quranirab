@@ -14,6 +14,7 @@ import '../models/surah.split.model.dart';
 class AyaProvider extends ChangeNotifier {
   WordDetail? data;
   WordDetail? replaceVal;
+  List<WordDetail> tempMultiWordDetail = [];
   int? replaceId;
   List<String> ancestry = [];
   var page = 1;
@@ -10884,44 +10885,80 @@ class AyaProvider extends ChangeNotifier {
     return obj;
   }
 
-  Future<void> replace(String langID) async {
-    if (replaceVal != null && replaceId != null) {
-      if (replaceVal!.childType == 'all') {
-        print(
-            'Get child for ${replaceVal!.ancestry}/${replaceVal!.categoryId}');
-        List<WordDetail> list = await getList(
-            '${replaceVal!.ancestry}/${replaceVal!.categoryId}', langID);
-        wordDetail.addAll(list);
-        notifyListeners();
-      }
-      WordDetail data = replaceVal!;
-      var index = wordDetail
-          .indexWhere((element) => element.relationshipId == replaceId);
-      wordDetail.replaceRange(index, index + 1, [
-        WordDetail(
-            childType: data.childType,
-            isparent:
-                data.ancestry!.split("/").length == 1 || data.ancestry == ''
-                    ? true
-                    : false,
-            hasChild:
-                data.ancestry!.split("/").length > 1 || data.ancestry == ''
-                    ? true
-                    : false,
-            ancestry: data.ancestry,
-            relationshipId: replaceId,
-            word_type: data.word_type,
-            categoryId: data.categoryId ?? 0,
-            name: data.name)
-      ]);
-      if (!ancestry.contains(data.ancestry)) {
-        ancestry.add(data.ancestry!);
+  Future<void> replace(String langID, BuildContext context) async {
+    if (tempMultiWordDetail.isNotEmpty) {
+      for (int i = 0; i < tempMultiWordDetail.length; i++) {
+        if (!wordDetail
+            .any((element) => element.name == tempMultiWordDetail[i].name)) {
+          wordDetail.add(tempMultiWordDetail[i]);
+          notifyListeners();
+        }
       }
 
-      ///todo:update changes
-      // await update("${replaceId}", data.categoryId!);
+      notifyListeners();
+    } else {
+      if (!wordDetail.contains(replaceVal)) {
+        if (replaceVal != null && replaceId != null) {
+          WordDetail data = replaceVal!;
+          if (replaceVal!.childType == 'all') {
+            if (!ancestry.contains(data.ancestry)) {
+              ancestry.add(data.ancestry!);
+            }
+            print(
+                'Get child for ${replaceVal!.ancestry}/${replaceVal!.categoryId}');
+            List<WordDetail> list = await getList(
+                '${replaceVal!.ancestry}/${replaceVal!.categoryId}', langID);
+            wordDetail.addAll(list);
+            notifyListeners();
+            var index = wordDetail
+                .indexWhere((element) => element.relationshipId == replaceId);
+            print('replacing value..' + '${wordDetail[index].name}');
+            wordDetail.replaceRange(index, index + 1, [
+              WordDetail(
+                  childType: data.childType,
+                  isparent: data.ancestry!.split("/").length == 1 ||
+                          data.ancestry == ''
+                      ? true
+                      : false,
+                  hasChild: data.ancestry!.split("/").length > 1 ||
+                          data.ancestry == ''
+                      ? true
+                      : false,
+                  ancestry: data.ancestry,
+                  relationshipId: replaceId,
+                  word_type: data.word_type,
+                  categoryId: data.categoryId ?? 0,
+                  name: data.name)
+            ]);
+          } else if (replaceVal!.childType == 'unique') {
+            var index = wordDetail.indexWhere(
+                (element) => element.ancestry == replaceVal!.ancestry);
+            print('replacing value..' + '${wordDetail[index].name}');
+            wordDetail.replaceRange(index, index + 1, [
+              WordDetail(
+                  childType: data.childType,
+                  isparent: data.ancestry!.split("/").length == 1 ||
+                          data.ancestry == ''
+                      ? true
+                      : false,
+                  hasChild: data.ancestry!.split("/").length > 1 ||
+                          data.ancestry == ''
+                      ? true
+                      : false,
+                  ancestry: data.ancestry,
+                  relationshipId: replaceId,
+                  word_type: data.word_type,
+                  categoryId: data.categoryId ?? 0,
+                  name: data.name)
+            ]);
+          }
+
+          ///todo:update changes
+          // await update("${replaceId}", data.categoryId!);
+        }
+        notifyListeners();
+      }
     }
-    notifyListeners();
   }
 
   Future<List<WordDetail>> getList(String parentID, String langID) async {
@@ -11109,23 +11146,40 @@ class AyaProvider extends ChangeNotifier {
     replaceVal = wordDetail;
     replaceId = id;
     notifyListeners();
+    print(replaceVal!.name! + "(" + replaceId.toString() + ")");
   }
 
-  flushUnrelatedData() {
-    List<WordDetail> deleteData = [];
-    wordDetail.forEach((element) {
-      if (!ancestry.contains(element.ancestry)) {
-        deleteData.add(element);
-        notifyListeners();
-      }
-    });
-    if (deleteData.isNotEmpty) {
-      deleteData.forEach((element) {
-        print('deleting data for ancestry other than $ancestry}');
-        wordDetail.remove(element);
-        notifyListeners();
+  flushUnrelatedData(String childType) {
+    if (childType == 'all') {
+      List<WordDetail> deleteData = [];
+      wordDetail.forEach((element) {
+        if (!ancestry.contains(element.ancestry)) {
+          deleteData.add(element);
+          notifyListeners();
+        }
       });
-      print(wordDetail.length);
+      if (deleteData.isNotEmpty) {
+        deleteData.forEach((element) {
+          print('deleting data for ancestry other than $ancestry}');
+          wordDetail.remove(element);
+          notifyListeners();
+        });
+        print(wordDetail.length);
+      }
+    }
+  }
+
+  void tempMultipleValue(List<WordDetail> categories, List<bool> value) {
+    for (int i = 0; i < value.length; i++) {
+      if (value[i]) {
+        if (!tempMultiWordDetail.contains(categories[i])) {
+          tempMultiWordDetail.add(categories[i]);
+        }
+      } else {
+        if (tempMultiWordDetail.contains(categories[i])) {
+          tempMultiWordDetail.remove(categories[i]);
+        }
+      }
     }
   }
 }

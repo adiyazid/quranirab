@@ -229,7 +229,7 @@ class _SurahScreenState extends State<SurahScreen>
               ];
             },
             body: TabBarView(
-              physics: NeverScrollableScrollPhysics(),
+              physics: AlwaysScrollableScrollPhysics(),
               controller: _tabController,
               children: [
                 Consumer<LangProvider>(builder: (context, lang, child) {

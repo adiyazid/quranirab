@@ -108,6 +108,7 @@ class _SuraSliceState extends State<SuraSlice> {
                 initZoom: 0,
                 child: aya.breakIndex!.isNotEmpty
                     ? SingleChildScrollView(
+                        primary: false,
                         child: DescribedFeatureOverlay(
                           title: Text(
                             AppLocalizations.of(context)!.readingAya,
