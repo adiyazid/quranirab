@@ -14,8 +14,8 @@ import '../models/surah.split.model.dart';
 class AyaProvider extends ChangeNotifier {
   WordDetail? data;
   WordDetail? replaceVal;
+  WordDetail? currentParentVal;
   List<WordDetail> tempMultiWordDetail = [];
-  int? replaceId;
   List<String> ancestry = [];
   var page = 1;
   var surahNo = 1;
@@ -77,6 +77,8 @@ class AyaProvider extends ChangeNotifier {
   var juz = 1;
 
   String langID = '1';
+
+  List<String> deleteCheckBoxList = [];
 
   get sliceData => _sliceData;
   bool visible = false;
@@ -356,14 +358,14 @@ class AyaProvider extends ChangeNotifier {
             hasChild:
                 parent.split("/").length > 1 || parent == '' ? true : false,
             ancestry: doc["ancestry"],
-            relationshipId: int.parse(id),
-            categoryId: int.parse(doc["id"]),
+            wordRelationshipId: int.parse(id),
+            wordCategoryId: int.parse(doc["id"]),
             name: name != '' ? name : doc["name"],
             word_type: doc["word_type"] ?? 'None'));
         notifyListeners();
       }
     });
-    wordDetail.sort((a, b) => a.categoryId!.compareTo(b.categoryId!));
+    wordDetail.sort((a, b) => a.wordCategoryId!.compareTo(b.wordCategoryId!));
   }
 
   Future<String> getCategoryNameTranslation(categoryId, langId) async {
@@ -10773,10 +10775,12 @@ class AyaProvider extends ChangeNotifier {
   }
 
   Future<void> update(String id, int wordId) async {
-    // await wordRelationship.doc(id).set({
-    //   "updated_at": DateTime.now().toString(),
-    //   "word_category_id": '$wordId'
-    // }, SetOptions(merge: true));
+    if (currentParentVal!.childType == 'unique') {
+      await wordRelationship.doc(id).set({
+        "updated_at": DateTime.now().toString(),
+        "word_category_id": '$wordId'
+      }, SetOptions(merge: true));
+    }
     notifyListeners();
   }
 
@@ -10875,7 +10879,7 @@ class AyaProvider extends ChangeNotifier {
               isparent: true,
               hasChild: true,
               ancestry: parent,
-              categoryId: int.parse(doc["id"].trim()),
+              wordCategoryId: int.parse(doc["id"].trim()),
               name: name != '' ? name : doc["name"],
               word_type: doc["word_type"] ?? 'None');
         }
@@ -10886,75 +10890,89 @@ class AyaProvider extends ChangeNotifier {
   }
 
   Future<void> replace(String langID, BuildContext context) async {
+    var currentID;
     if (tempMultiWordDetail.isNotEmpty) {
       for (int i = 0; i < tempMultiWordDetail.length; i++) {
         if (!wordDetail
             .any((element) => element.name == tempMultiWordDetail[i].name)) {
           wordDetail.add(tempMultiWordDetail[i]);
+          String newID = await getLastRelationshipId();
+          // print(tempMultiWordDetail[i].name);
+          // print(int.parse(newID) + 1);
+          await addNewRelationship(
+              relationshipID: int.parse(newID),
+              wordID: wordID,
+              categoryID: tempMultiWordDetail[i].wordCategoryId!);
           notifyListeners();
         }
       }
 
       notifyListeners();
     } else {
+      print(replaceVal!.childType);
       if (!wordDetail.contains(replaceVal)) {
-        if (replaceVal != null && replaceId != null) {
+        if (replaceVal != null && currentParentVal != null) {
+          print('exec this');
           WordDetail data = replaceVal!;
-          if (replaceVal!.childType == 'all') {
+          if (currentParentVal!.childType == 'all') {
             if (!ancestry.contains(data.ancestry)) {
               ancestry.add(data.ancestry!);
             }
             print(
-                'Get child for ${replaceVal!.ancestry}/${replaceVal!.categoryId}');
+                'Get child for ${replaceVal!.ancestry}/${replaceVal!.wordCategoryId}');
             List<WordDetail> list = await getList(
-                '${replaceVal!.ancestry}/${replaceVal!.categoryId}', langID);
+                '${replaceVal!.ancestry}/${replaceVal!.wordCategoryId}',
+                langID);
             wordDetail.addAll(list);
             notifyListeners();
-            var index = wordDetail
-                .indexWhere((element) => element.relationshipId == replaceId);
+            var index = wordDetail.indexWhere((element) =>
+                element.wordRelationshipId ==
+                currentParentVal!.wordRelationshipId);
             print('replacing value..' + '${wordDetail[index].name}');
-            wordDetail.replaceRange(index, index + 1, [
-              WordDetail(
-                  childType: data.childType,
-                  isparent: data.ancestry!.split("/").length == 1 ||
-                          data.ancestry == ''
-                      ? true
-                      : false,
-                  hasChild: data.ancestry!.split("/").length > 1 ||
-                          data.ancestry == ''
-                      ? true
-                      : false,
-                  ancestry: data.ancestry,
-                  relationshipId: replaceId,
-                  word_type: data.word_type,
-                  categoryId: data.categoryId ?? 0,
-                  name: data.name)
-            ]);
-          } else if (replaceVal!.childType == 'unique') {
+            replaceVal = WordDetail(
+                childType: data.childType,
+                isparent:
+                    data.ancestry!.split("/").length == 1 || data.ancestry == ''
+                        ? true
+                        : false,
+                hasChild:
+                    data.ancestry!.split("/").length > 1 || data.ancestry == ''
+                        ? true
+                        : false,
+                ancestry: data.ancestry,
+                wordRelationshipId: currentParentVal!.wordRelationshipId,
+                word_type: data.word_type,
+                wordCategoryId: data.wordCategoryId ?? 0,
+                name: data.name);
+            notifyListeners();
+            wordDetail.replaceRange(index, index + 1, [replaceVal!]);
+          } else if (currentParentVal!.childType == 'unique') {
             var index = wordDetail.indexWhere(
                 (element) => element.ancestry == replaceVal!.ancestry);
-            print('replacing value..' + '${wordDetail[index].name}');
-            wordDetail.replaceRange(index, index + 1, [
-              WordDetail(
-                  childType: data.childType,
-                  isparent: data.ancestry!.split("/").length == 1 ||
-                          data.ancestry == ''
-                      ? true
-                      : false,
-                  hasChild: data.ancestry!.split("/").length > 1 ||
-                          data.ancestry == ''
-                      ? true
-                      : false,
-                  ancestry: data.ancestry,
-                  relationshipId: replaceId,
-                  word_type: data.word_type,
-                  categoryId: data.categoryId ?? 0,
-                  name: data.name)
-            ]);
+            currentID = wordDetail[index].wordRelationshipId;
+            print('replacing value for ' +
+                '${replaceVal!.name} with id ($currentID) ');
+            replaceVal = WordDetail(
+                childType: data.childType,
+                isparent:
+                    data.ancestry!.split("/").length == 1 || data.ancestry == ''
+                        ? true
+                        : false,
+                hasChild:
+                    data.ancestry!.split("/").length > 1 || data.ancestry == ''
+                        ? true
+                        : false,
+                ancestry: data.ancestry,
+                wordRelationshipId: wordDetail[index].wordRelationshipId,
+                word_type: data.word_type,
+                wordCategoryId: data.wordCategoryId ?? 0,
+                name: data.name);
+            notifyListeners();
+            wordDetail.replaceRange(index, index + 1, [replaceVal!]);
           }
 
           ///todo:update changes
-          // await update("${replaceId}", data.categoryId!);
+          await update("$currentID", replaceVal!.wordCategoryId!);
         }
         notifyListeners();
       }
@@ -10969,8 +10987,9 @@ class AyaProvider extends ChangeNotifier {
         .then((QuerySnapshot querySnapshot) async {
       for (var doc in querySnapshot.docs) {
         if (!wordDetail
-            .any((element) => element.categoryId == int.parse(doc['id']))) {
+            .any((element) => element.wordCategoryId == int.parse(doc['id']))) {
           var name = await getCategoryNameTranslation(doc['id'], langID);
+          var id = await getLastRelationshipId();
           labelCategory.add(WordDetail(
               isparent: doc["ancestry"].split("/").length == 1 ||
                       doc["ancestry"] == ''
@@ -10984,8 +11003,8 @@ class AyaProvider extends ChangeNotifier {
               ancestry: doc["ancestry"] ?? '',
               name: name != '' ? name : doc["name"],
               word_type: doc['word_type'] ?? 'None',
-              relationshipId: 0,
-              categoryId: int.parse(doc['id'])));
+              wordRelationshipId: int.parse(id) + 1,
+              wordCategoryId: int.parse(doc['id'])));
           if (!ancestry.contains(doc["ancestry"])) {
             ancestry.add(doc["ancestry"]);
           }
@@ -11117,7 +11136,7 @@ class AyaProvider extends ChangeNotifier {
             ancestry: doc["ancestry"] ?? '',
             name: name != '' ? name : doc["name"],
             word_type: doc['word_type'] ?? 'None',
-            categoryId: int.parse(doc['id'])));
+            wordCategoryId: int.parse(doc['id'])));
         //getParent();
         //addDetail(WordDetail(name: name, type: doc['word_type'] ?? 'None', categoryId: int.parse(doc['id'])));
         //replace(WordDetail(name: name, type: doc['word_type'] ?? 'None', categoryId: int.parse(doc['id'])), int.parse(doc['id']));
@@ -11137,16 +11156,16 @@ class AyaProvider extends ChangeNotifier {
   void add(WordDetail item) {
     wordDetail.add(item);
     getParent();
-    getSubList(item.categoryId!, item.ancestry!);
+    getSubList(item.wordCategoryId!, item.ancestry!);
     // This call tells the widgets that are listening to this model to rebuild.
     notifyListeners();
   }
 
-  void tempValue(WordDetail wordDetail, int id) {
+  void tempValue(WordDetail wordDetail, WordDetail oldData) {
     replaceVal = wordDetail;
-    replaceId = id;
+    currentParentVal = oldData;
     notifyListeners();
-    print(replaceVal!.name! + "(" + replaceId.toString() + ")");
+    print(replaceVal!.name!);
   }
 
   flushUnrelatedData(String childType) {
@@ -11166,20 +11185,43 @@ class AyaProvider extends ChangeNotifier {
         });
         print(wordDetail.length);
       }
+    } else if (childType == 'multiple') {
+      deleteUncheckMultiple();
     }
   }
 
-  void tempMultipleValue(List<WordDetail> categories, List<bool> value) {
+  Future<void> tempMultipleValue(
+      List<WordDetail> categories, List<bool> value) async {
     for (int i = 0; i < value.length; i++) {
       if (value[i]) {
         if (!tempMultiWordDetail.contains(categories[i])) {
           tempMultiWordDetail.add(categories[i]);
         }
       } else {
-        if (tempMultiWordDetail.contains(categories[i])) {
-          tempMultiWordDetail.remove(categories[i]);
-        }
+        try {
+          var index = wordDetail.indexWhere((element) =>
+              element.wordCategoryId == categories[i].wordCategoryId);
+          var id = wordDetail[index].wordRelationshipId.toString();
+          if (!deleteCheckBoxList.contains(id)) {
+            deleteCheckBoxList.add(id);
+          }
+          notifyListeners();
+        } catch (e) {}
       }
+    }
+    print(deleteCheckBoxList);
+  }
+
+  Future<void> deleteUncheckMultiple() async {
+    if (deleteCheckBoxList.isNotEmpty) {
+      deleteCheckBoxList.forEach((id) async {
+        print('deleting data for id ' + id);
+        try {
+          await wordRelationship.doc(id).delete();
+        } catch (e) {
+          print(e);
+        }
+      });
     }
   }
 }

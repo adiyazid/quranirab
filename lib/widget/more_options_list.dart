@@ -221,10 +221,10 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
             parent: _getDocumentWidget(
                 wordDetail: document,
                 list: Provider.of<AyaProvider>(context, listen: false)
-                    .getSubList(document.categoryId!, document.ancestry!)),
+                    .getSubList(document.wordCategoryId!, document.ancestry!)),
             children: _getChildList(
               Provider.of<AyaProvider>(context, listen: false)
-                  .getSubList(document.categoryId!, document.ancestry!),
+                  .getSubList(document.wordCategoryId!, document.ancestry!),
             ),
           ),
         );
@@ -247,7 +247,8 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
               child: ListTile(
                 leading: Icon(Icons.navigate_next),
                 title: Text(
-                  '(${wordDetail.ancestry})' + wordDetail.name!,
+                  '${wordDetail.wordRelationshipId} (${wordDetail.wordCategoryId})' +
+                      wordDetail.name!,
                   style: TextStyle(fontFamily: 'MeQuran2'),
                 ),
                 subtitle: Text(wordDetail.childType!),
@@ -263,7 +264,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                                   isEqualTo: wordDetail.childType == 'all'
                                       ? '${wordDetail.ancestry}'
                                       : '${wordDetail.ancestry}' +
-                                          '/${wordDetail.categoryId}')
+                                          '/${wordDetail.wordCategoryId}')
                               .get()
                               .then((QuerySnapshot querySnapshot) async {
                             for (var doc in querySnapshot.docs) {
@@ -285,12 +286,12 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                                               doc["ancestry"] == ''
                                           ? true
                                           : false,
-                                  relationshipId: 0,
+                                  wordRelationshipId: 0,
                                   childType: doc["child_type"],
                                   ancestry: doc["ancestry"] ?? '',
                                   name: name,
                                   word_type: doc['word_type'] ?? 'None',
-                                  categoryId: int.parse(doc['id'])));
+                                  wordCategoryId: int.parse(doc['id'])));
                             }
                           });
 
@@ -352,6 +353,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                                                                   .childType!);
                                                       Navigator.pop(context);
                                                       Navigator.pop(context);
+                                                      Navigator.pop(context);
                                                     },
                                                     child: Text("Yes"),
                                                   ),
@@ -383,7 +385,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                   child: ListTile(
                     leading: Icon(Icons.arrow_right),
                     title: Text(
-                      '(${wordDetail.ancestry}/${wordDetail.categoryId}) ${wordDetail.name} ',
+                      '${wordDetail.wordRelationshipId} (${wordDetail.wordCategoryId}) ${wordDetail.name} ',
                       style: TextStyle(fontFamily: 'MeQuran2'),
                     ),
                     subtitle: Text(wordDetail.childType!),
@@ -400,7 +402,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                                       isEqualTo: wordDetail.childType == 'all'
                                           ? '${wordDetail.ancestry}'
                                           : '${wordDetail.ancestry}' +
-                                              '/${wordDetail.categoryId}')
+                                              '/${wordDetail.wordCategoryId}')
                                   .get()
                                   .then((QuerySnapshot querySnapshot) async {
                                 for (var doc in querySnapshot.docs) {
@@ -425,12 +427,12 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                                                   doc["ancestry"] == ''
                                               ? true
                                               : false,
-                                      relationshipId: 0,
+                                      wordRelationshipId: 0,
                                       childType: doc["child_type"],
                                       ancestry: doc["ancestry"] ?? '',
                                       name: name,
                                       word_type: doc['word_type'] ?? 'None',
-                                      categoryId: int.parse(doc['id'])));
+                                      wordCategoryId: int.parse(doc['id'])));
                                 }
                               });
 
@@ -447,7 +449,12 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                 )
               : ListTile(
                   leading: Icon(Icons.east),
-                  title: Text(wordDetail.name!,
+                  title: Text(
+                      wordDetail.wordRelationshipId.toString() +
+                          ' ' +
+                          wordDetail.wordCategoryId.toString() +
+                          ' ' +
+                          wordDetail.name!,
                       style: TextStyle(fontFamily: 'MeQuran2')),
                   subtitle: Text(wordDetail.childType!),
                   trailing: IconButton(
@@ -480,9 +487,9 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
     List<WordDetail> _list =
         Provider.of<AyaProvider>(context, listen: false).wordDetail;
     for (var element in _list) {
-      if (element.categoryId == 2 ||
-          element.categoryId == 328 ||
-          element.categoryId == 426) {
+      if (element.wordCategoryId == 2 ||
+          element.wordCategoryId == 328 ||
+          element.wordCategoryId == 426) {
         parent = element.ancestry ?? '';
       }
     }
@@ -540,6 +547,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                                               wordDetail.childType!);
                                       Navigator.pop(context);
                                       Navigator.pop(context);
+                                      Navigator.pop(context);
                                     },
                                     child: const Text('Yes')),
                               ],
@@ -575,8 +583,8 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
     }
   }
 
-  Widget alertDialogContent(WordDetail data, List<WordDetail> categories) {
-    if (data.childType == 'all') {
+  Widget alertDialogContent(WordDetail wordData, List<WordDetail> categories) {
+    if (wordData.childType == 'all') {
       return DropdownSearch<WordDetail>(
         popupProps: PopupProps.dialog(
           itemBuilder: _style1,
@@ -590,17 +598,17 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
         dropdownDecoratorProps: DropDownDecoratorProps(
           dropdownSearchDecoration: InputDecoration(
             labelText:
-                "Word detail from parent ${data.ancestry!.split('/').last}",
+                "Word detail from parent ${wordData.ancestry!.split('/').last}",
           ),
         ),
         items: categories,
         onChanged: (WordDetail? value) {
           Provider.of<AyaProvider>(context, listen: false)
-              .tempValue(value!, data.relationshipId!);
+              .tempValue(value!, wordData);
         },
-        selectedItem: data,
+        selectedItem: wordData,
       );
-    } else if (data.childType == 'multiple') {
+    } else if (wordData.childType == 'multiple') {
       List<bool> value = [];
       List<WordDetail> data =
           Provider.of<AyaProvider>(context, listen: false).wordDetail;
@@ -622,11 +630,11 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                 itemCount: categories.length,
                 itemBuilder: (BuildContext context, int index) {
                   return CheckboxListTile(
-                    onChanged: (v) {
+                    onChanged: (v) async {
                       setState(() {
                         value[index] = v!;
                       });
-                      Provider.of<AyaProvider>(context, listen: false)
+                      await Provider.of<AyaProvider>(context, listen: false)
                           .tempMultipleValue(categories, value);
                     },
                     value: value[index],
@@ -665,7 +673,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
           ///
         },
       );
-    } else if (data.childType == 'unique') {
+    } else if (wordData.childType == 'unique') {
       var gvalue;
       List<bool> value = [];
       List<WordDetail> data =
@@ -696,8 +704,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                         gvalue = v;
                       });
                       Provider.of<AyaProvider>(context, listen: false)
-                          .tempValue(
-                              categories[index], data[index].relationshipId!);
+                          .tempValue(categories[index], wordData);
                     },
                     groupValue: gvalue,
                   ),
@@ -763,7 +770,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                                 .removeAll();
                             Provider.of<AyaProvider>(context, listen: false)
                                 .addDetail(element);
-                            print(element.categoryId);
+                            print(element.wordCategoryId);
                             await Provider.of<AyaProvider>(context,
                                     listen: false)
                                 .replace(
@@ -776,7 +783,7 @@ class _MoreOptionsListState extends State<MoreOptionsList> {
                                         context,
                                         listen: false)
                                     .getChild(
-                                        element.categoryId!,
+                                        element.wordCategoryId!,
                                         element.ancestry!,
                                         Provider.of<AyaProvider>(context,
                                                 listen: false)
